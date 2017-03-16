@@ -1,0 +1,130 @@
+import Vue from 'vue';
+import Vuex from 'vuex';
+import axios from 'axios';
+import config from 'config';
+import { Message } from 'element-ui';
+
+Vue.use(Vuex);
+
+const store = new Vuex.Store({
+  state: {
+    shopData: [],
+    member_total: '',
+    redpacketData: [],
+    shopDict: {},
+    pageShopData: []
+  },
+  mutations: {
+    getPageShopData(state, payload) {
+      state.pageShopData = payload.pageShopData;
+    },
+    getShopList(state, payload) {
+      payload.shopData.list.unshift({shop_name: '全部', uid: ''});
+      state.shopData = payload.shopData;
+    },
+    updateMemberTotal(state, payload) {
+      state.member_total = payload.member_total;
+    },
+    getRedpacketData(state, payload) {
+      state.redpacketData = payload.redpacketData;
+    },
+    getShopDict(state, payload) {
+      var data = payload.shopData.list;
+      var tmpObj = {};
+      data.forEach((v) => {
+        tmpObj[v.uid] = v.shop_name;
+      });
+      console.log(tmpObj);
+      state.shopDict = tmpObj;
+    }
+  },
+  actions: {
+    getPageShopData({ commit }, payload) {
+      axios.get(`${config.host}/merchant/sub/list`, {
+        params: Object.assign({}, {start: 0, len: 10}, payload && payload.params)
+      })
+      .then((res) => {
+        let data = res.data;
+        if(data.respcd === config.code.OK) {
+          commit({
+            type: 'getPageShopData',
+            pageShopData: data.data
+          });
+        } else {
+          Message.error(data.respmsg);
+        }
+      })
+      .catch(() => {
+        Message.error('获取分页店铺列表失败');
+      });
+    },
+    getShopList({ commit }, payload) {
+      axios.get(`${config.host}/merchant/sub/list`)
+      .then((res) => {
+        let data = res.data;
+        if(data.respcd === config.code.OK) {
+          commit({
+            type: 'getShopList',
+            shopData: data.data
+          });
+          commit({
+            type: 'getShopDict',
+            shopData: data.data
+          });
+        } else {
+          Message.error(data.respmsg);
+        }
+      })
+      .catch(() => {
+        Message.error('首次获取店铺列表失败!');
+      });
+    },
+    getMemberTotal({ commit }, payload) {
+      axios.get(`${config.host}/merchant/member/count`)
+      .then((res) => {
+        let data = res.data;
+        if(data.respcd === config.code.OK) {
+          commit({
+            type: 'updateMemberTotal',
+            member_total: data.data.count
+          });
+        }
+      })
+      .catch(() => {
+        Message.error('获取会员数目失败!');
+      });
+    },
+    getRedpacketData({ commit }, payload) {
+      axios.get(`${config.host}/merchant/activity/list`, {
+        params: Object.assign({}, {
+          type: '',
+          sub_uid: '',
+          length: 10,
+          curpage: 0
+        }, payload && payload.params)
+      })
+      .then((res) => {
+        console.log(res);
+        let data = res.data;
+        if(data.respcd === config.code.OK) {
+          commit({
+            type: 'getRedpacketData',
+            redpacketData: data.data
+          });
+        } else {
+          Message.error(data.respmsg);
+        }
+      })
+      .catch(() => {
+         Message.error('获取红包数据失败!');
+      });
+    }
+  }
+});
+
+store.dispatch('getShopList');
+store.dispatch('getMemberTotal');
+store.dispatch('getRedpacketData');
+store.dispatch('getPageShopData');
+
+export default store;
