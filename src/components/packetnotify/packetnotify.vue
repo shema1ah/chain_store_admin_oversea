@@ -55,10 +55,8 @@
           cb('请输入使用条件');
         } else if(isNaN(val)) {
           cb('请输入数字');
-        } else if(this.packetValue === 0 && val < this.form.singleValue) {
+        } else if(val < this.form.singleValue) {
           cb('使用条件要大于单个红包金额');
-        } else if(this.packetValue === 1 && val < this.form.amt_max) {
-          cb('使用条件要大于随机金额最大值');
         } else if(!(/^\d+(\.\d{1,2})?$/.test(val))) {
           cb('小数点后只能有两位');
         } else {
