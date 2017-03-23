@@ -52,17 +52,20 @@ export default new Router({
         {
           path: 'createstorage',
           name: 'createstorage',
-          component: createstorage
+          component: createstorage,
+          meta: { keepAlive: true }
         },
         {
           path: 'reviewstorage',
           name: 'reviewstorage',
-          component: reviewstorage
+          component: reviewstorage,
+          meta: { keepAlive: true }
         },
         {
           path: 'alterstorage',
           name: 'alterstorage',
-          component: alterstorage
+          component: alterstorage,
+          meta: { keepAlive: false }
         }
       ]
     },

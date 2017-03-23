@@ -172,12 +172,12 @@ export default {
     }
 
     100% {
-      height: 96px;
+      height: 144px;
     }
   }
   @keyframes expand-leave {
     0% {
-      height: 96px;
+      height: 144px;
     }
 
     100% {

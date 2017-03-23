@@ -177,6 +177,7 @@
   import axios from 'axios';
   import config from 'config';
   import {deepClone} from 'common/js/util.js';
+  import Store from 'common/js/store.js';
 
   export default {
     data() {
@@ -242,7 +243,7 @@
               type: 'success',
               message: '创建成功'
             });
-            this.$store.dispatch('getRedpacketData');
+            this.$store.dispatch('getRedpacketData', { params: Store.get('packetparams') });
             this.$router.push('/memberredpacket');
           } else {
             this.$message.error(data.resperr);

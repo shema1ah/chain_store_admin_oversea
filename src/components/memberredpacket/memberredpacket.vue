@@ -218,6 +218,7 @@
   import axios from 'axios';
   import config from 'config';
   import {formatTime} from 'common/js/util.js';
+  import Store from 'src/common/js/store.js';
 
   export default {
     data() {
@@ -259,6 +260,12 @@
           curpage: 0
         };
       },
+      packetParams() {
+        return {
+          type: this.packetValue,
+          curpage: this.currentpage
+        };
+      },
       redpacketData() {
         return this.$store.state.redpacketData;
       },
@@ -268,7 +275,8 @@
     },
     methods: {
       packetChange(packettype) {
-       
+        Store.set('packetparams', this.packetParams);
+        console.log(Store.get('packetparams'));
         if(this.$refs['page']) {
           this.$refs['page'].internalCurrentPage = 1;
         }
@@ -286,13 +294,15 @@
         });
       },
       currentChange(current) {
+
         this.currentpage = current - 1;
+        Store.set('packetparams', this.packetParams);
+        console.log(Store.get('packetparams'));
         this.$store.dispatch('getRedpacketData', {
           params: Object.assign({}, this.basicParams, {curpage: current - 1})
         });
       },
       cancelAct(scope) {
-        
         this.$confirm('是否要取消此活动?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',

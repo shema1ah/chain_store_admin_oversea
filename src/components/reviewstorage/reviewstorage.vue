@@ -17,10 +17,15 @@
       </div>
       <div class="panel-body">
         <div class="review-info__wrapper">
-          <p class="review-info">
+          <div class="review-info flex">
             <span class="info-title">适用门店</span>
-            <span class="info-desc"><span class="ml-0">全部</span></span>
-          </p>
+            <div class="info-desc__wrapper">
+              <div class="info-desc">
+                <div><span v-for="shop in shopData">{{ shop.shop_name }}、</span></div>
+                <div class="info-desc remark mt-0 lh-16 ml-0">注：请确保以上门店均已开通储值服务，否则无法正常储值</div>
+              </div>
+            </div>
+          </div>
           <p class="review-info">
             <span class="info-title">开始时间</span>
             <span class="info-desc"><span class="highlight ml-0">{{ data.start_time }}</span></span>
@@ -75,6 +80,11 @@
     computed: {
       data() {
         return this.$route.params;
+      },
+      shopData() {
+        let shopData = deepClone(this.$store.state.shopData);
+        shopData.list.shift();
+        return shopData.list;
       }
     },
     methods: {

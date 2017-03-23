@@ -76,7 +76,7 @@
                   更多<i class="el-icon-caret-bottom el-icon--right"></i>
                 </span>
                 <el-dropdown-menu slot="dropdown" class="el-dropdown-menu__fix">
-                  <!-- <el-dropdown-item class="el-dropdown-item__fix" @click.native="changeStorage(scope.row, scope.$index)">修改活动</el-dropdown-item> -->
+                  <el-dropdown-item class="el-dropdown-item__fix" @click.native="changeStorage(scope.row, scope.$index)" :disabled="scope.row.activity_status.status === 3 || scope.row.activity_status.status === 4">修改活动</el-dropdown-item>
                   <el-dropdown-item class="el-dropdown-item__fix" :disabled="scope.row.activity_status.status === 3 || scope.row.activity_status.status === 4" @click.native="cancelStorage(scope.row.activity_info.activity_id)">终止活动</el-dropdown-item>
                 </el-dropdown-menu>
               </el-dropdown>
@@ -98,29 +98,38 @@
     </div>
     <el-dialog v-if="detailData.activity_info" v-model="isShowDetail" class="detail_dialog" title="储值活动详情">
       <template>
+        <el-row class="mb-5">
+          <el-col :span="7" class="title">适用门店</el-col>
+          <el-col :span="17" class="desc">
+            <div>
+              <span v-for="shop in shopData">{{ shop.shop_name }}、</span>
+            </div>
+            <div class="remark mt-0 lh-16">注：请确保以上门店均已开通储值服务，否则无法正常储值！</div>
+          </el-col>
+        </el-row>
         <el-row>
-          <el-col :span="8" class="title">储值规则</el-col>
-          <el-col :span="16" class="desc">
+          <el-col :span="7" class="title">储值规则</el-col>
+          <el-col :span="17" class="desc">
             <div class="desc-item" v-for="rule in detailData.activity_info.rules">
               储值{{ rule.present_amt | formatCurrency }}送{{ rule.pay_amt | formatCurrency }}元
             </div>
           </el-col>
         </el-row>
         <el-row>
-          <el-col :span="8" class="title">储值规则备注</el-col>
-          <el-col :span="16" class="desc">{{ detailData.activity_info.desc }}</el-col>
+          <el-col :span="7" class="title">储值规则备注</el-col>
+          <el-col :span="17" class="desc">{{ detailData.activity_info.desc }}</el-col>
         </el-row>
         <el-row>
-          <el-col :span="8" class="title">活动开始时间</el-col>
-          <el-col :span="16" class="desc">{{ detailData.activity_info.start_time }}</el-col>
+          <el-col :span="7" class="title">活动开始时间</el-col>
+          <el-col :span="17" class="desc">{{ detailData.activity_info.start_time }}</el-col>
         </el-row>
         <el-row>
-          <el-col :span="8" class="title">活动结束时间</el-col>
-          <el-col :span="16" class="desc">{{ detailData.activity_info.end_time }}</el-col>
+          <el-col :span="7" class="title">活动结束时间</el-col>
+          <el-col :span="17" class="desc">{{ detailData.activity_info.end_time }}</el-col>
         </el-row>
         <el-row>
-          <el-col :span="8" class="title">预留手机号码</el-col>
-          <el-col :span="16" class="desc">{{ detailData.activity_info.mch_mobile }}</el-col>
+          <el-col :span="7" class="title">预留手机号码</el-col>
+          <el-col :span="17" class="desc">{{ detailData.activity_info.mch_mobile }}</el-col>
         </el-row>
         
       </template>
@@ -132,6 +141,7 @@
   import axios from 'axios';
   import config from 'config';
   import {deepClone} from 'common/js/util';
+  import Store from 'common/js/store';
 
   export default {
     data() {
@@ -177,6 +187,11 @@
     computed: {
       storageData() {
         return this.$store.state.storageData;
+      },
+      shopData() {
+        let shopData = deepClone(this.$store.state.shopData);
+        shopData.list.shift();
+        return shopData.list;
       }
     },
     methods: {
@@ -247,7 +262,8 @@
       changeStorage(scope, index) {
         let data = this.fixData(scope);
         console.log(data);
-        this.$router.push({name: 'alterstorage', params: data});
+        Store.set('alterstoredata', data);
+        this.$router.push({name: 'alterstorage'});
       },
       hasPending() {
         axios.get(`${config.host}/merchant/prepaid/list`)
@@ -306,5 +322,11 @@
   .scope-highlight {
     font-weight: 500;
     margin: 0px 5px;
+  }
+  .mt-0 {
+    margin-top: 0px !important;
+  }
+  .mb-5 {
+    margin-bottom: 5px;
   }
 </style>

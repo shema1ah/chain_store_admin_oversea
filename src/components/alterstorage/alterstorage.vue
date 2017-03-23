@@ -39,12 +39,12 @@
               <el-form-item label="设置规则" min-width="150">
                 <div class="storage-item" v-for="(item, index) in form.rulesData">
                   <span>储值</span>
-                  <el-form-item :prop="'present_amt' + index">
-                    <el-input size="small" v-model.number="form.rulesData[index].present_amt" @change="bindPresentAmtValue(index)"></el-input>
-                  </el-form-item>
-                  <span>元送</span>
                   <el-form-item :prop="'pay_amt' + index">
                     <el-input size="small" v-model.number="form.rulesData[index].pay_amt" @change="bindPayAmtValue(index)"></el-input>
+                  </el-form-item>
+                  <span>元送</span>
+                  <el-form-item :prop="'present_amt' + index">
+                    <el-input size="small" v-model.number="form.rulesData[index].present_amt" @change="bindPresentAmtValue(index)"></el-input>
                   </el-form-item>
                   <span>元</span>
                   <el-button size="small" @click="addRule" :disabled="len === 4" v-if="index === 0" class="ml-15" type="primary" :plain="true">增加规则</el-button>
@@ -109,6 +109,7 @@
 <script>
   import {formatTime} from 'common/js/util.js';
   import Validator from 'src/validator';
+  import Store from 'common/js/store.js';
 
   export default {
 
@@ -123,7 +124,7 @@
           cb();
         }
       };
-      let alterData = this.$route.params;
+      let alterData = Store.get('alterstoredata');
       let info = alterData.activity_info;
       let rules = alterData.activity_info.rules;
       let state = alterData.activity_status.status;

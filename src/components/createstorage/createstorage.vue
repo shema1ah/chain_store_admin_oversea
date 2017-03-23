@@ -19,7 +19,8 @@
         <div class="myform_wrapper">
           <el-form :rules="formrules" :model="form" ref="form">
             <el-form-item label="适用门店">
-              <span>全部</span>
+              <span v-for="shop in shopData">{{ shop.shop_name }}、</span>
+              <div class="remark mt-0 lh-16">注：请确保以上门店均已开通储值服务，否则无法正常储值</div>
             </el-form-item>
             <el-form-item label="开始时间" prop="start_time">
               <el-date-picker v-model="form.start_time" type="date" placeholder="请选择开始时间" size="small" :clearable="false">
@@ -67,7 +68,7 @@
   </div>
 </template>
 <script>
-  import {formatTime} from 'common/js/util.js';
+  import {formatTime, deepClone} from 'common/js/util.js';
   import Validator from 'src/validator/';
 
   export default {
@@ -165,6 +166,11 @@
       },
       len() {
         return this.form.rulesData.length;
+      },
+      shopData() {
+        let shopData = deepClone(this.$store.state.shopData);
+        shopData.list.shift();
+        return shopData.list;
       }
     },
     methods: {
@@ -230,5 +236,8 @@
     & + .el-form-item__error {
       top: 42%;
     }
+  }
+  .lh-16 {
+    line-height: 16px;
   }
 </style>
