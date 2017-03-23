@@ -38,9 +38,9 @@
           style="width: 100%"
           row-class-name="el-table__row_fix"
           @sort-change="changeSort"
-          v-loading.body="loading"
+          v-loading="loading"
           >
-          <el-table-column  
+          <el-table-column 
             label="头像">
             <template scope="scope">
               <img v-if="scope.row.avatar" :src="scope.row.avatar" alt="" width="44" height="44" />
@@ -48,10 +48,12 @@
             </template>
           </el-table-column>
           <el-table-column
+            min-width="90"
             label="微信昵称">
             <template scope="scope">{{ scope.row.nickname || '-' }}</template>
           </el-table-column>
           <el-table-column
+            min-width="90"
             label="真实姓名">
             <template scope="scope">{{ scope.row.realname || '-' }}</template>
           </el-table-column>
@@ -98,7 +100,9 @@
       <div class="pagination_wrapper" v-if="memberData.count >= 10">
         <el-pagination
           ref="page"
-          layout="prev, pager, next"
+          layout="total, sizes, prev, pager, next, jumper"
+          :page-size="pageSize"
+          @size-change="handleSizeChange"
           :total="memberData.count"
           @current-change="currentChange">
         </el-pagination>
@@ -115,10 +119,12 @@
   export default {
     data() {
       return {
+        pageSize: 10,
         currentPage: 0,
         nameValue: '',
         memberData: {},
         loading: false,
+        uid: '',
         sortObj: {
           ascending: 'asc',
           descending: 'desc',
@@ -136,17 +142,19 @@
         return {
           sorted_key: 'lasttime',
           sort_way: 'desc',    
-          sub_uid: '',    // ? 是数组还是字符串 
+          sub_uid: this.uid,    // ? 是数组还是字符串 
           curpage: 0,
-          length: 10
+          length: this.pageSize
         };
       }
     },
     created() {
+      this.loading = true;
       axios.get(`${config.host}/merchant/member/list`, {
         params: this.basicParams
       })
       .then((res) => {
+        this.loading = false;
         let data = res.data;
         if(data.respcd === config.code.OK) {
           this.memberData = data.data;
@@ -155,6 +163,7 @@
         }
       })
       .catch(() => {
+        this.loading = false;
         this.$message.error('首次获取会员列表失败!');
       });
     },
@@ -182,21 +191,31 @@
           }
         })
         .catch(() => {
+          this.loading = false;
           this.$message.error('获取会员列表失败!');
         });
       },
       nameChange(uid) {
+        this.loading = true;
         if(this.$refs['page']) {
           this.$refs['page'].internalCurrentPage = 1;
         }
-        this.basicParams.sub_uid = uid;
+        this.uid = uid;
+        console.log(this.uid);
         this.getMemberData();
       },
       currentChange(current) {
+        this.loading = true;
         this.currentPage = current - 1;
         this.getMemberData({
           curpage: current - 1
         });
+      },
+      handleSizeChange(size) {
+        this.loading = true;
+        this.pageSize = size;
+        this.basicParams.curpage = 0;
+        this.getMemberData();
       }
     }
   };

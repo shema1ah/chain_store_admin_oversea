@@ -62,19 +62,31 @@
         </el-form>
       </div>
       <div class="panel-body">
-        <div class="panel-btn-group__wrapper panel-body-btn-group">
-          <a :href="detailHref" download>
-            <div class="panel-btn__download panel-btn__download_detail">
-              <i class="icon-download"></i>
-              <span>下载交易明细</span>
+        <div class="panel-btn-group__wrapper panel-body-btn-group flex-normal">
+          <div class="num_total">
+            <div class="num_wrapper">
+              <span class="num-title">成功交易笔数：</span>
+              <span class="num-desc">{{ transData.sucnum || 0 }}</span>
             </div>
-          </a>
-          <a :href="collectionHref" download>
-            <div class="panel-btn__download panel-btn__download_record">
-              <i class="icon-download"></i>
-              <span>下载交易汇总</span>
+            <div class="num_wrapper">
+              <span class="num-title">交易总金额：</span>
+              <span class="num-desc">{{ transData.sucamt || 0 }} 元</span>
             </div>
-          </a>
+          </div>
+          <div class="a-wrapper">
+            <a :href="detailHref" download>
+              <div class="panel-btn__download panel-btn__download_detail">
+                <i class="icon-download"></i>
+                <span>下载交易明细</span>
+              </div>
+            </a>
+            <a :href="collectionHref" download>
+              <div class="panel-btn__download panel-btn__download_record">
+                <i class="icon-download"></i>
+                <span>下载交易汇总</span>
+              </div>
+            </a>
+          </div>
         </div>
         <el-table
           :data="transData.data"
@@ -126,7 +138,9 @@
       <div class="pagination_wrapper" v-if="transData.num >= 10">
         <el-pagination
           ref="page"
-          layout="prev, pager, next"
+          layout="total, sizes, prev, pager, next, jumper"
+          :page-size="pageSize"
+          @size-change="handleSizeChange"
           :total="transData.num"
           @current-change="currentChange">
         </el-pagination>
@@ -161,6 +175,7 @@
       };
 
       return {
+        pageSize: 10,
         loading: false,
         form: {
           selectShopUid: '',
@@ -168,6 +183,7 @@
           dateRangeValue: defaultDateRange,
           operaValue: ''
         },
+        currentPage: 1,
         operaList: {},
         transData: {},
         formrules: {
@@ -204,15 +220,17 @@
           charset: 'utf-8',
           isdownload: false,
           page: 1,
-          maxnum: 10
+          maxnum: this.pageSize
         };
       }
     },
     created() {
+      this.loading = true;
       axios.get(`${config.host}/merchant/trade/info`, {
         params: this.basicParams
       })
       .then((res) => {
+        this.loading = false;
         let data = res.data;
         if(data.respcd === config.code.OK) {
           this.transData = data.data;
@@ -221,29 +239,29 @@
         }
       })
       .catch(() => {
+        this.loading = false;
         this.$message.error('首次获取交易列表失败');
       });
     },
     methods: {
       getTransData(params) {
-        console.log(params);
         if(params.which && this.$refs['page']) {
           this.$refs['page'].internalCurrentPage = 1;
         }
         this.$refs['form'].validate((valid) => {
-          this.loading = true;
           if(valid) {
+            this.loading = true;
             axios.get(`${config.host}/merchant/trade/info`, {
               params: Object.assign({}, this.basicParams, params)
             })
             .then((res) => {
+              this.loading = false;
               let data = res.data;
               if(data.respcd === config.code.OK) {
                 this.transData = data.data;
               } else {
                 this.$message.error(data.resperr);
               }
-              this.loading = false;
             })
             .catch(() => {
               this.loading = false;
@@ -285,6 +303,8 @@
         });
       },
       currentChange(current) {
+        this.currentPage = current;
+        console.log(current);
         this.getTransData({
           page: current
         });
@@ -307,6 +327,12 @@
         day = day >= 10 ? day : '0' + day;
 
         return `${year}-${month}-${day}`;
+      },
+      handleSizeChange(size) {
+        this.loading = true;
+        this.pageSize = size;
+        this.basicParams.page = 1;
+        this.getTransData({which: 1});
       }
     }
   };
@@ -481,5 +507,27 @@
   }
   .mr-16 {
     margin-right: 30px !important;
+  }
+  .a-wrapper {
+    display: flex;
+  }
+  .flex-normal {
+    justify-content: space-between;
+  }
+  .num_total {
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+    .num-title {
+      font-size: 14px;
+    }
+    .num-desc {
+      font-size: 17px;
+      color: #FE9B20;
+      font-weight: bold;
+    }
+    .num_wrapper:last-of-type {
+      margin-left: 30px;
+    }
   }
 </style>

@@ -164,6 +164,7 @@
         <div class="form-submit_wrapper">
           <span class="cancel" @click="backToEdit">返回修改</span>
           <div class="panel-btn__download panel-btn__download_detail" @click="submit">
+            <i class="el-icon-loading" v-if="iconShow"></i>
             <i class="icon-create"></i>
             <span>确认提交</span>
           </div>
@@ -180,12 +181,13 @@
   export default {
     data() {
       return {
+        iconShow: false,
         effectList: ['即刻生效', '次日生效']
       };
     },
     computed: {
       data() {
-        return deepClone(this.$route.params);
+        return this.$route.params;
       },
       shopDict() {
         return this.$store.state.shopDict;
@@ -210,41 +212,46 @@
         this.$router.go(-1);
       },
       fixData() {
-        if (this.data.packetValue === 0) {
-          this.data.amt_max = this.data.singleValue;
-          this.data.amt_min = this.data.singleValue;
+        var tmpData = deepClone(this.data);
+        if (tmpData.packetValue === 0) {
+          tmpData.amt_max = tmpData.singleValue;
+          tmpData.amt_min = tmpData.singleValue;
         }
-        if(this.data.sub_mchnt_list.indexOf('') !== -1) {
-          this.data.sub_mchnt_list = [];
+        if(tmpData.sub_mchnt_list.indexOf('') !== -1) {
+          tmpData.sub_mchnt_list = [];
         }
-        this.data.amt_min *= 100;
-        this.data.amt_max *= 100;
-        this.data.total_amt *= 100;
-        this.data.limit_amt *= 100;
-        if(this.data.obtain_amt) {
-          this.data.obtain_amt *= 100;
+        tmpData.amt_min *= 100;
+        tmpData.amt_max *= 100;
+        tmpData.total_amt *= 100;
+        tmpData.limit_amt *= 100;
+        if(tmpData.obtain_amt) {
+          tmpData.obtain_amt *= 100;
         }
+        return tmpData;
       },
       submit() {
-        this.fixData();
-        console.log(this.data);
-        axios.post(`${config.host}/merchant/activity/create`, this.data)
-          .then((res) => {
-            let data = res.data;
-            if (data.respcd === config.code.OK) {
-              this.$message({
-                type: 'success',
-                message: '创建成功'
-              });
-              this.$store.dispatch('getRedpacketData');
-              this.$router.push('/memberredpacket');
-            } else {
-              this.$message.error(data.resperr);
-            }
-          })
-          .catch(() => {
-            this.$message.error('创建失败');
-          });
+        let data = this.fixData();
+        console.log(data);
+        this.iconShow = true;
+        axios.post(`${config.host}/merchant/activity/create`, data)
+        .then((res) => {
+          this.iconShow = false;
+          let data = res.data;
+          if (data.respcd === config.code.OK) {
+            this.$message({
+              type: 'success',
+              message: '创建成功'
+            });
+            this.$store.dispatch('getRedpacketData');
+            this.$router.push('/memberredpacket');
+          } else {
+            this.$message.error(data.resperr);
+          }
+        })
+        .catch(() => {
+          this.iconShow = false;
+          this.$message.error('创建失败');
+        });
       }
     }
 };
@@ -284,7 +291,7 @@
 
 .flex .info-desc {
   line-height: 25px;
-}
+} 
 
 .mt-20 {
   margin-top: 20px;

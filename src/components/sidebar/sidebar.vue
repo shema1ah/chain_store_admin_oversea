@@ -43,6 +43,9 @@ export default {
         }, {
           val: '会员红包',
           pathname: 'memberredpacket'
+        }, {
+          val: '会员储值',
+          pathname: 'memberstorage'
         }]
       }, {
         val: '交易管理',

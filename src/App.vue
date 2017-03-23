@@ -173,6 +173,7 @@ export default {
     background-color: #f7f7f7;
   }
   body, html {
+    height: 100%;
     font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -ms-text-size-adjust: 100%;
@@ -300,7 +301,7 @@ export default {
         font-size: 16px;
         cursor: pointer;
         @at-root .el-icon-loading {
-          margin-right: 5px;
+          margin-right: 15px;
         }
       }
     }

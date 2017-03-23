@@ -58,8 +58,31 @@ let totalAmt = (rule, val, cb) => {
   }
 };
 
+let stoAmtValid = (rule, val, cb) => {
+  if(val === '') {
+    cb('请输入储值规则');
+  } else if(isNaN(val)) {
+    cb('请输入数字');
+  } else if(!(/^\d+(\.\d{1,2})?$/.test(val))) {
+    cb('小数点后只能有两位');
+  } else {
+    cb();
+  }
+};
+
+let mobileValid = (rule, val, cb) => {
+  let re = /^1[3578][01379]\d{8}$|^1[34578][01256]\d{8}$|^(134[012345678]\d{7}|1[34578][012356789]\d{8})$/;
+  if(val === '') {
+    cb('请输入预留手机号');
+  } else if(!re.test(val)) {
+    cb('请输入正确的手机号');
+  } else {
+    cb();
+  }
+};
+
 let Validator = {
-  totalAmt, obtainAmtValidator, singleValueValidator, couponNumValidator, amtMinValid
+  totalAmt, obtainAmtValidator, singleValueValidator, couponNumValidator, amtMinValid, stoAmtValid, mobileValid
 };
 
 export default Validator;

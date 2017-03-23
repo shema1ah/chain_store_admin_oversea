@@ -1,0 +1,146 @@
+<template>
+  <div>
+    <div class="banner_wrapper">
+      <div class="banner-breadcrumb">
+        <span>会员功能</span>
+        <i class="icon-right_arrow"></i>
+        <span>会员储值</span>
+        <i class="icon-right_arrow"></i>
+        <span>创建储值</span>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-header panel-header__fix">
+        <div class="panel-select-group">
+          <span class="panel-header__desc">预览储值信息</span>
+        </div>
+      </div>
+      <div class="panel-body">
+        <div class="review-info__wrapper">
+          <p class="review-info">
+            <span class="info-title">适用门店</span>
+            <span class="info-desc"><span class="ml-0">全部</span></span>
+          </p>
+          <p class="review-info">
+            <span class="info-title">开始时间</span>
+            <span class="info-desc"><span class="highlight ml-0">{{ data.start_time }}</span></span>
+          </p>
+          <p class="review-info">
+            <span class="info-title">结束时间</span>
+            <span class="info-desc"><span class="highlight ml-0">{{ data.end_time }}</span></span>
+          </p>
+          <div class="review-info flex">
+            <span class="info-title">储值规则</span>
+            <div class="info-desc__wrapper">
+              <div class="info-desc">
+                <div v-for="rule in data.rules">储值<span class="highlight">{{ rule.pay_amt | addZero }}</span>元送<span class="highlight">{{ rule.present_amt | addZero }}</span>元</span>
+                </div>
+                <!-- <div class="info-desc remark mt-20">备注：红包费用由商户承担</div> -->
+              </div>
+            </div>
+          </div>
+          <p class="review-info flex">
+            <span class="info-title no-shrink">储值规则备注</span>
+            <span class="info-desc"><span class="highlight ml-0">{{ data.desc }}</span></span>
+          </p>
+          <p class="review-info">
+            <span class="info-title">预留手机号</span>
+            <span class="info-desc"><span class="highlight ml-0">{{ data.mobile }}</span></span>
+          </p>
+        </div>
+        <div class="divider"></div>
+        <div class="form-submit_wrapper">
+          <span class="cancel" @click="backToEdit">返回修改</span>
+          <div class="panel-btn__download panel-btn__download_detail" @click="submit">
+            <i class="el-icon-loading" v-if="iconShow"></i>
+            <i class="icon-create"></i>
+            <span>确认提交</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+<script>
+  import axios from 'axios';
+  import config from 'config';
+  import {deepClone} from 'common/js/util.js';
+
+  export default {
+    data() {
+      return {
+        iconShow: false
+      };
+    },
+    computed: {
+      data() {
+        return this.$route.params;
+      }
+    },
+    methods: {
+      backToEdit() {
+        this.$router.go(-1);
+      },
+      fixData() {
+        var data = deepClone(this.data);
+        data.rules.forEach((v) => {
+          v.pay_amt *= 100;
+          v.present_amt *= 100;
+        });
+        return data;
+      },
+      submit() {
+        let data = this.fixData();
+        this.iconShow = true;
+        if(!this.data.flag) {
+          axios.post(`${config.host}/merchant/prepaid/create`, data)
+          .then((res) => {
+            this.iconShow = false;
+            let data = res.data;
+            if(data.respcd === config.code.OK) {
+              this.$message({
+                type: 'success',
+                message: '创建储值活动成功'
+              });
+              this.$store.dispatch('getStorageData');
+              this.$router.push('/memberstorage');
+            } else {
+              this.$message.error(data.resperr);
+            }
+          })
+          .catch(() => {
+            this.iconShow = false;
+            this.$message.error('创建储值活动失败');
+          });
+        } else {
+          axios.post(`${config.host}/merchant/prepaid/alter`, data)
+          .then((res) => {
+            this.iconShow = false;
+            let data = res.data;
+            if(data.respcd === config.code.OK) {
+              this.$message({
+                type: 'success',
+                message: '修改储值活动成功'
+              });
+              this.$store.dispatch('getStorageData');
+              this.$router.push('/memberstorage');
+            } else {
+              this.$message.error(data.resperr);
+            }
+          })
+          .catch(() => {
+            this.iconShow = false;
+            this.$message.error('修改储值活动失败');
+          });
+        }
+        
+      }
+    }
+};
+</script>
+
+<style>
+  .no-shrink {
+    flex-shrink: 0;
+  }
+</style>

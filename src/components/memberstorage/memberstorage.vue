@@ -6,17 +6,14 @@
         <i class="icon-right_arrow"></i>
         <span>会员储值</span>
       </div>
-      <router-link to="/createstorage">
-        <div class="banner-btn">
-          <i class="icon-create"></i>
-          <span class="banner-btn__desc">新建储值</span>
-        </div>
-      </router-link>
+      <div class="banner-btn" @click="createStorage">
+        <i class="icon-create"></i>
+        <span class="banner-btn__desc">新建储值</span>
+      </div>
     </div>
     <div class="panel">
       <div class="panel-header">
         <div class="panel-select-group">
-          
           <div class="panel-select__wrapper">
             <span class="panel-select__desc">活动状态</span>
             <el-select v-model="stateValue" placeholder="全部" size="small" @change="stateChange">
@@ -24,16 +21,6 @@
                 v-for="item in stateOptions"
                 :label="item.label"
                 :value="item.value">
-              </el-option>
-            </el-select>
-          </div>
-          <div class="panel-select__wrapper">
-            <span class="panel-select__desc">店铺名称</span>
-            <el-select v-model="nameValue" placeholder="全部" size="small" @change="nameChange">
-              <el-option
-                v-for="shop in shopData.list"
-                :label="shop.shop_name"
-                :value="shop.uid">
               </el-option>
             </el-select>
           </div>
@@ -46,66 +33,111 @@
           row-class-name="el-table__row_fix"
           v-loading="loading"
           element-loading-text="拼命加载中..."
+          id="memberstorage"
           >
           <el-table-column
-            prop="activity_info.desc"
-            label="活动时间">
+            label="活动时间"
+            min-width="180">
+            <template scope="scope">
+              <p><span class="scope_cotent_title">开始时间</span>{{ scope.row.activity_info.start_time | removeHMS }}</p>
+              <p><span class="scope_cotent_title">结束时间</span>{{ scope.row.activity_info.end_time | removeHMS }}</p>
+            </template>
           </el-table-column>
           <el-table-column
-            prop="activity_status.status"
             label="活动状态">
+            <template scope="scope">{{ storageDict[scope.row.activity_status.status] }}</template>
           </el-table-column>
           <el-table-column
-            prop="storagePeopleNum"
+            prop="activity_stat.user_num"
             label="储值人数">
           </el-table-column>
           <el-table-column
-            prop="storageNum"
             label="储值金额">
+            <template scope="scope">{{ scope.row.activity_stat.total_pay_amt | formatCurrency }}元</template>
           </el-table-column>
           <el-table-column
-            prop="storageRule"
-            label="储值规则">
+            prop="rules"
+            label="储值规则"
+            min-width="180">
+            <template scope="scope">
+              <div v-for="item in scope.row.activity_info.rules">
+                储值<span class="scope-highlight">{{ item.pay_amt | formatCurrency }}</span>元送<span class="scope-highlight">{{ item.present_amt | formatCurrency }}</span>元
+              </div>
+            </template>
           </el-table-column>
-
           <el-table-column
             width="300"
             label="操作">
             <template scope="scope">
-              <el-button type="text" size="small" class="el-button__fix">查看详情</el-button>
+              <el-button type="text" size="small" class="el-button__fix" @click="getDetailData(scope.row.activity_info.activity_id)">查看详情</el-button>
     <!--           <el-button type="text" size="small" class="el-button__fix">下载物料</el-button> -->
               <el-dropdown :hide-on-click="true">
                 <span class="el-dropdown-link el-dropdown-link__fix">
                   更多<i class="el-icon-caret-bottom el-icon--right"></i>
                 </span>
                 <el-dropdown-menu slot="dropdown" class="el-dropdown-menu__fix">
-                  <el-dropdown-item class="el-dropdown-item__fix">修改活动</el-dropdown-item>
-                  <el-dropdown-item class="el-dropdown-item__fix">终止活动</el-dropdown-item>
+                  <!-- <el-dropdown-item class="el-dropdown-item__fix" @click.native="changeStorage(scope.row, scope.$index)">修改活动</el-dropdown-item> -->
+                  <el-dropdown-item class="el-dropdown-item__fix" :disabled="scope.row.activity_status.status === 3 || scope.row.activity_status.status === 4" @click.native="cancelStorage(scope.row.activity_info.activity_id)">终止活动</el-dropdown-item>
                 </el-dropdown-menu>
               </el-dropdown>
             </template>
           </el-table-column>
         </el-table>
       </div>
-      <div class="pagination_wrapper" v-if="storageData.total_entries > 10">
+      <div class="pagination_wrapper" v-if="storageData.total_entries >= 10">
         <el-pagination
-          layout="prev, pager, next"
+          ref="page"
+          layout="total, sizes, prev, pager, next, jumper"
+          :page-size="pageSize"
+          @size-change="handleSizeChange" 
           :total="storageData.total_entries"
           @current-change="currentChange">
         </el-pagination>
       </div>
-      <div class="table_placeholer" v-else></div>
+      <div class="table_placeholder" v-else></div>
     </div>
+    <el-dialog v-if="detailData.activity_info" v-model="isShowDetail" class="detail_dialog" title="储值活动详情">
+      <template>
+        <el-row>
+          <el-col :span="8" class="title">储值规则</el-col>
+          <el-col :span="16" class="desc">
+            <div class="desc-item" v-for="rule in detailData.activity_info.rules">
+              储值{{ rule.present_amt | formatCurrency }}送{{ rule.pay_amt | formatCurrency }}元
+            </div>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="8" class="title">储值规则备注</el-col>
+          <el-col :span="16" class="desc">{{ detailData.activity_info.desc }}</el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="8" class="title">活动开始时间</el-col>
+          <el-col :span="16" class="desc">{{ detailData.activity_info.start_time }}</el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="8" class="title">活动结束时间</el-col>
+          <el-col :span="16" class="desc">{{ detailData.activity_info.end_time }}</el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="8" class="title">预留手机号码</el-col>
+          <el-col :span="16" class="desc">{{ detailData.activity_info.mch_mobile }}</el-col>
+        </el-row>
+        
+      </template>
+    </el-dialog>
   </div>
 </template>
 
 <script>
   import axios from 'axios';
   import config from 'config';
+  import {deepClone} from 'common/js/util';
 
   export default {
     data() {
       return {
+        pending: false,
+        storageDict: ['未开始', '进行中', '已结束', '已终止'],
         stateOptions: [
           {
             label: '全部',
@@ -129,74 +161,150 @@
           }
         ],
         stateValue: '',
+        detailData: {},
+        isShowDetail: false,
+        pageSize: 10,
         nameValue: '',
-        storageData: [],
-        loading: false
+        loading: false,
+        basicParams: {
+          pos: 0,
+          count: 10,
+          activity_status: ''
+        },
+        currentpage: 0
       };
     },
     computed: {
-      shopData() {
-        return this.$store.state.shopData;
-      },
-      basicParams() {
-        return {
-          pos: 0,
-          count: 10,
-          activityStatus: ''
-        };
+      storageData() {
+        return this.$store.state.storageData;
       }
     },
-    created() {
-      axios.get(`${config.host}/merchant/prepaid/list`, {
-        params: this.basicParams
-      })
-      .then((res) => {
-        let data = res.data;
-        if(data.respcd === config.code.OK) {
-          this.storageData = data.data;
-        } else {
-          this.$message.error(data.resperr);
-        }
-      })
-      .catch(() => {
-        this.$message.error('首次获取储值列表失败');
-      });
-    },
     methods: {
-      createStorage() {
-
-      },
       stateChange(state) {
-        this.basicParams.activityStatus = state;
-        this.getStorageData();
-      },
-      nameChange() {
-
+        if(this.$refs['page']) {
+          this.$refs['page'].internalCurrentPage = 1;
+        }
+        this.basicParams.activity_status = state;
+        this.$store.dispatch('getStorageData', {
+          params: this.basicParams
+        });
       },
       currentChange(current) {
-        this.basicParams.pos = current - 1;
-        this.getStorageData();
+        this.currentpage = current - 1;
+        this.$store.dispatch('getStorageData', {
+          params: Object.assign({}, this.basicParams, {pos: current - 1})
+        });
       },
-      getStorageData() {
-        axios.get(`${config.host}/merchant/prepaid/list`, {
+      handleSizeChange(size) {
+        if(this.$refs['page']) {
+          this.$refs['page'].internalCurrentPage = 1;
+        }
+        this.basicParams.count = size;
+        this.basicParams.pos = 0;
+        this.pageSize = size;
+        this.$store.dispatch('getStorageData', {
           params: this.basicParams
+        });
+      },
+      cancelStorage(id) {
+        this.$confirm('是否要取消此活动?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'wraning'
         })
+        .then(() => {
+          axios.post(`${config.host}/merchant/prepaid/stop`, {
+            activity_id: id
+          })
+          .then((res) => {
+            let data = res.data;
+            if(data.respcd === config.code.OK) {
+              this.$message({
+                type: 'success',
+                message: '取消储值活动成功'
+              });
+              this.$router.push('/memberstorage');
+              this.$store.dispatch('getStorageData', {
+                params: Object.assign({}, this.basicParams, {curpage: this.currentpage})
+              });
+            } else {
+              this.$message.error(data.resperr);
+            }
+          })
+          .catch(() => {
+            this.$message.error('取消储值活动失败');
+          });
+        });
+      },
+      fixData(data) {
+        data = deepClone(data);
+        data.activity_info.rules.forEach((v) => {
+          v.pay_amt = (v.pay_amt / 100).toFixed(2);
+          v.present_amt = (v.present_amt / 100).toFixed(2);
+        });
+        return data;
+      },
+      changeStorage(scope, index) {
+        let data = this.fixData(scope);
+        console.log(data);
+        this.$router.push({name: 'alterstorage', params: data});
+      },
+      hasPending() {
+        axios.get(`${config.host}/merchant/prepaid/list`)
         .then((res) => {
           let data = res.data;
+          this.pending = false;
+          let _this = this;
           if(data.respcd === config.code.OK) {
-            this.storageData = data.data;
+            let storageData = data.data.data;
+            for(let i = 0; i < storageData.length; i++) {
+              if(storageData[i].activity_status.status === 1 || storageData[i].activity_status.status === 0) {
+                _this.pending = true;
+                break;
+              }
+            }
+            if(_this.pending) {
+              _this.$message.error('当前有活动正在进行，请终止后再创建');
+            } else {
+              _this.$router.push('/memberstorage/createstorage');
+            }
           } else {
             this.$message.error(data.resperr);
           }
         })
         .catch(() => {
-          this.$message.error('获取储值列表失败');
+          this.$message.error('获取失败');
         });
+      },
+      getDetailData(id) {
+        axios.get(`${config.host}/merchant/prepaid/detail`, {
+          params: {
+            activity_id: id
+          }
+        })
+        .then((res) => {
+          let data = res.data;
+          if(data.respcd === config.code.OK) {
+            this.detailData = data.data;
+            this.isShowDetail = true;
+          } else {
+            this.$message.error(data.resperr);
+          }
+        })
+        .catch(() => {
+          this.$message.error('获取储值详情失败');
+        });
+      },
+      createStorage() {
+        this.hasPending();
       }
     }
   };
 </script>
 
 <style lang="scss">
-  
+  .scope-highlight {
+    font-weight: 500;
+    margin: 0px 5px;
+  }
 </style>

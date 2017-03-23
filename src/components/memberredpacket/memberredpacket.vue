@@ -16,13 +16,13 @@
     <div class="panel">
       <div class="panel-header">
         <div class="panel-select-group">
-          <div class="panel-select__wrapper">
+          <!-- <div class="panel-select__wrapper">
             <span class="panel-select__desc">店铺名称</span>
             <el-select v-model="nameValue" placeholder="全部" size="small" @change="nameChange">
               <el-option v-for="shop in shopData.list" :label="shop.shop_name" :value="shop.uid">
               </el-option>
             </el-select>
-          </div>
+          </div> -->
           <div class="panel-select__wrapper">
             <span class="panel-select__desc">红包类型</span>
             <el-select v-model="packetValue" placeholder="全部" size="small" @change="packetChange">
@@ -33,7 +33,7 @@
         </div>
       </div>
       <div class="panel-body">
-        <el-table :data="redpacketData.list" style="width: 100%" row-class-name="el-table__row_fix" v-loading="loading">
+        <el-table :data="redpacketData.list" style="width: 100%" row-class-name="el-table__row_fix" v-loading="loading" id="memberredpacket">
           <el-table-column prop="create_time" label="创建时间" min-width="145">
           </el-table-column>
           <el-table-column prop="title" label="活动名称" min-width="130">
@@ -53,7 +53,7 @@
           <el-table-column min-width="150" label="操作">
             <template scope="scope">
               <el-button type="text" size="small" class="el-button__fix" @click="showDetail(scope)">查看详情</el-button>
-              <el-dropdown :hide-on-click="false" @command="cancelAct(scope)">
+              <el-dropdown :hide-on-click="true" @command="cancelAct(scope)">
                 <span class="el-dropdown-link el-dropdown-link__fix">
                   更多<i class="el-icon-caret-bottom el-icon--right"></i>
                 </span>
@@ -67,7 +67,13 @@
         </el-table>
       </div>
       <div class="pagination_wrapper" v-if="redpacketData.total >= 10">
-        <el-pagination ref="page" layout="prev, pager, next" :total="redpacketData.total" @current-change="currentChange">
+        <el-pagination 
+          ref="page" 
+          layout="total, sizes, prev, pager, next, jumper"
+          :page-size="pageSize"
+          @size-change="handleSizeChange" 
+          :total="redpacketData.total" 
+          @current-change="currentChange">
         </el-pagination>
       </div>
       <div class="table_placeholder" v-else></div>
@@ -216,6 +222,7 @@
   export default {
     data() {
       return {
+        pageSize: 10,
         packetType: 0,
         effectList: ['当日生效', '次日生效'],
         isShowDetail: false,
@@ -241,7 +248,6 @@
       };
     },
     computed: {
-      
       member_total() {
         return this.$store.state.member_total;
       },
@@ -249,7 +255,7 @@
         return {
           type: this.packetValue,
           sub_uid: this.nameValue,
-          length: 10,
+          length: this.pageSize,
           curpage: 0
         };
       },
@@ -262,6 +268,7 @@
     },
     methods: {
       packetChange(packettype) {
+       
         if(this.$refs['page']) {
           this.$refs['page'].internalCurrentPage = 1;
         }
@@ -273,6 +280,7 @@
         if(this.$refs['page']) {
           this.$refs['page'].internalCurrentPage = 1;
         }
+        console.log(this.basicParams);
         this.$store.dispatch('getRedpacketData', {
           params: this.basicParams
         });
@@ -284,6 +292,7 @@
         });
       },
       cancelAct(scope) {
+        
         this.$confirm('是否要取消此活动?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
@@ -340,6 +349,17 @@
           .catch(() => {
             this.$message.error('获取红包信息失败');
           });
+      },
+      handleSizeChange(size) {
+        if(this.$refs['page']) {
+          this.$refs['page'].internalCurrentPage = 1;
+        }
+        this.pageSize = size;
+        this.basicParams.curpage = 0;
+        console.log(this.basicParams);
+        this.$store.dispatch('getRedpacketData', {
+          params: Object.assign({}, this.basicParams)
+        });
       }
     }
   };

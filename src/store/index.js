@@ -2,7 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import axios from 'axios';
 import config from 'config';
-import { Message } from 'element-ui';
+import { Message, Loading } from 'element-ui';
 
 Vue.use(Vuex);
 
@@ -11,10 +11,18 @@ const store = new Vuex.Store({
     shopData: [],
     member_total: '',
     redpacketData: [],
+    storageData: [],
     shopDict: {},
-    pageShopData: []
+    pageShopData: [],
+    redPacketComponent: {}
   },
   mutations: {
+    getRedpacketComponent(state, payload) {
+      state.redPacketComponent = payload.redPacketComponent;
+    },
+    getStorageData(state, payload) {
+      state.storageData = payload.storageData;
+    },
     getPageShopData(state, payload) {
       state.pageShopData = payload.pageShopData;
     },
@@ -39,6 +47,31 @@ const store = new Vuex.Store({
     }
   },
   actions: {
+    getStorageData({ commit }, payload) {
+      var loading = Loading.service({
+        target: document.getElementById('memberstorage'),
+        fullscreen: false
+      });
+      axios.get(`${config.host}/merchant/prepaid/list`, {
+        params: Object.assign({}, {activity_status: '', pos: 0, count: 10}, payload && payload.params)
+      })
+      .then((res) => {
+        loading.close();
+        let data = res.data;
+        if(data.respcd === config.code.OK) {
+          commit({
+            type: 'getStorageData',
+            storageData: data.data
+          });
+        } else {
+          Message.error(data.resperr);
+        }
+      })
+      .catch(() => {
+        loading.close();
+        Message.error('获取储值列表失败');
+      });
+    },
     getPageShopData({ commit }, payload) {
       axios.get(`${config.host}/merchant/sub/list`, {
         params: Object.assign({}, {start: 0, len: 10}, payload && payload.params)
@@ -95,6 +128,10 @@ const store = new Vuex.Store({
       });
     },
     getRedpacketData({ commit }, payload) {
+      var loading = Loading.service({
+        target: document.getElementById('memberredpacket'),
+        fullscreen: false
+      });
       axios.get(`${config.host}/merchant/activity/list`, {
         params: Object.assign({}, {
           type: '',
@@ -104,7 +141,7 @@ const store = new Vuex.Store({
         }, payload && payload.params)
       })
       .then((res) => {
-        console.log(res);
+        loading.close();
         let data = res.data;
         if(data.respcd === config.code.OK) {
           commit({
@@ -116,6 +153,7 @@ const store = new Vuex.Store({
         }
       })
       .catch(() => {
+        loading.close();
          Message.error('获取红包数据失败!');
       });
     }
@@ -126,5 +164,6 @@ store.dispatch('getShopList');
 store.dispatch('getMemberTotal');
 store.dispatch('getRedpacketData');
 store.dispatch('getPageShopData');
+store.dispatch('getStorageData');
 
 export default store;

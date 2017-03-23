@@ -17,6 +17,9 @@ import packetnotify from 'components/packetnotify/packetnotify';
 import packetshare from 'components/packetshare/packetshare';
 import packetspend from 'components/packetspend/packetspend';
 import createstorage from 'components/createstorage/createstorage';
+import reviewstorage from 'components/reviewstorage/reviewstorage';
+import alterstorage from 'components/alterstorage/alterstorage';
+import membersto from 'components/membersto/membersto';
 
 Vue.use(Router);
 
@@ -39,8 +42,29 @@ export default new Router({
       component: membercollpoint
     },
     {
-      path: '/createstorage',
-      component: createstorage
+      path: '/memberstorage',
+      component: membersto,
+      children: [
+        {
+          path: '',
+          component: memberstorage
+        },
+        {
+          path: 'createstorage',
+          name: 'createstorage',
+          component: createstorage
+        },
+        {
+          path: 'reviewstorage',
+          name: 'reviewstorage',
+          component: reviewstorage
+        },
+        {
+          path: 'alterstorage',
+          name: 'alterstorage',
+          component: alterstorage
+        }
+      ]
     },
     {
       path: '/memberredpacket',
@@ -81,10 +105,6 @@ export default new Router({
           component: reviewpacket
         }
       ]
-    },
-    {
-      path: '/memberstorage',
-      component: memberstorage
     },
     {
       path: '/transctl',

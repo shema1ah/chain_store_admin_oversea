@@ -11,6 +11,13 @@ let filters = {
 
   removeHMS(time) {
     return time.split(' ')[0];
+  },
+
+  addZero(number) {
+    if (isNaN(number)) {
+      return;
+    }
+    return (number * 100 / 100).toFixed(2);
   }
 
 };

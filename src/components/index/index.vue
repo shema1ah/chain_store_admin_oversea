@@ -212,9 +212,6 @@
       }
     }
   }
-  .index .el-button__fix:after {
-    background-color: transparent;
-  }
   .info_wrapper {
     padding: 20px 0px 30px 5px;
     @at-root .info {
