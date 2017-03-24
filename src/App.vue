@@ -154,6 +154,7 @@ export default {
               message: '解绑成功!'
             });
             this.$store.dispatch('getPageShopData');
+            this.$store.dispatch('getShopList');
           } else {
             this.$message.error(data.resperr);
           }

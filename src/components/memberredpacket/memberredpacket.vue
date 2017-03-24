@@ -16,13 +16,13 @@
     <div class="panel">
       <div class="panel-header">
         <div class="panel-select-group">
-          <!-- <div class="panel-select__wrapper">
+          <div class="panel-select__wrapper">
             <span class="panel-select__desc">店铺名称</span>
             <el-select v-model="nameValue" placeholder="全部" size="small" @change="nameChange">
               <el-option v-for="shop in shopData.list" :label="shop.shop_name" :value="shop.uid">
               </el-option>
             </el-select>
-          </div> -->
+          </div>
           <div class="panel-select__wrapper">
             <span class="panel-select__desc">红包类型</span>
             <el-select v-model="packetValue" placeholder="全部" size="small" @change="packetChange">
@@ -263,7 +263,8 @@
       packetParams() {
         return {
           type: this.packetValue,
-          curpage: this.currentpage
+          curpage: this.currentpage,
+          nameValue: this.nameValue
         };
       },
       redpacketData() {
@@ -288,13 +289,12 @@
         if(this.$refs['page']) {
           this.$refs['page'].internalCurrentPage = 1;
         }
-        console.log(this.basicParams);
+        Store.set('packetparams', this.packetParams);
         this.$store.dispatch('getRedpacketData', {
           params: this.basicParams
         });
       },
       currentChange(current) {
-
         this.currentpage = current - 1;
         Store.set('packetparams', this.packetParams);
         console.log(Store.get('packetparams'));
