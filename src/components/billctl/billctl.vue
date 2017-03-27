@@ -16,7 +16,6 @@
                 </el-date-picker>
                 <span class="remark note ml-0">* 请不要跨月查询</span>
               </el-form-item>
-              
             </div>
             <div class="panel-select__wrapper">
               <span class="panel-select__desc">店铺名称</span>
@@ -78,7 +77,6 @@
   import { formatObj } from 'common/js/util.js';
 
   export default {
-
     data() {
       let today = new Date();
       let yesterday = new Date();
@@ -101,7 +99,7 @@
           dateRangeValue: defaultDateRange,
           selectShopUid: '',
           order: ''
-        }, 
+        },
         formrules: {
           dateRangeValue: [{
             required: true,

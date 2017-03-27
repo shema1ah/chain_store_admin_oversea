@@ -91,7 +91,7 @@
           cb();
         }
       };
-      
+
       return {
         form: {
           start_time: '',
@@ -169,7 +169,7 @@
       },
       shopData() {
         let shopData = deepClone(this.$store.state.shopData);
-        shopData.list.shift();
+        shopData.length !== 0 && shopData.list.shift();
         return shopData.list;
       }
     },
@@ -194,7 +194,6 @@
           pay_amt: '',
           present_amt: ''
         });
-        console.log(this.form.rulesData);
       },
       removeRule(item) {
         let index = this.form.rulesData.indexOf(item);
@@ -202,7 +201,6 @@
         this.form.rulesData.forEach((v, index) => {
           v.grid_index = index + 1;
         });
-        console.log(this.form.rulesData);
       },
       bindPayAmtValue(index) {
         this.form['pay_amt' + index] = this.form.rulesData[index].pay_amt;

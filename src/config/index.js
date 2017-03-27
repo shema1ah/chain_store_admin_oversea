@@ -37,4 +37,3 @@ switch (env) {
 let config = { host, code };
 
 export default config;
-

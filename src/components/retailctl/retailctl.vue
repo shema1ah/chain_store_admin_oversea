@@ -83,7 +83,7 @@
       <el-row>
         <el-col :span="8" class="title">银行名称</el-col>
         <el-col :span="14" class="desc">
-          <div>{{ detailData['headbankname'] }}</div> 
+          <div>{{ detailData['headbankname'] }}</div>
           <div>{{ detailData['bankname'] }}</div>
         </el-col>
       </el-row>
@@ -112,7 +112,7 @@
     },
     methods: {
       currentChange() {
-        
+
       },
       associate() {
         this.$emit('associate');

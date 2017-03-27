@@ -53,7 +53,7 @@
                 </el-select>
               </el-form-item>
             </div>
-            
+
           </div>
           <div class="panel-header-btn-group">
             <div class="panel-header-btn" @click="reset">重置</div>
@@ -120,7 +120,7 @@
             label="交易金额"
             min-width="90">
             <template scope="scope">
-              <div><span class="scope_cotent_title">实收</span>{{ scope.row.txamt }}</div>
+              <div><span class="scope_cotent_title">实收</span>{{ scope.row.txamt }}元</div>
               <!-- <div><span class="scope_cotent_title">商家优惠</span>{{ scope.row.coupon_amt }}</div> -->
             </template>
           </el-table-column>

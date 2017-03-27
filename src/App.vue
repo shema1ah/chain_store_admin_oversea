@@ -272,7 +272,7 @@ export default {
     }
     .el-dialog__footer {
       padding: 20px 30px;
-      @at-root .el-dialog__footer 
+      @at-root .el-dialog__footer
       .cancel {
         box-sizing: border-box;
         width: 64px;
