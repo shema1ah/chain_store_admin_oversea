@@ -76,8 +76,8 @@
                   更多<i class="el-icon-caret-bottom el-icon--right"></i>
                 </span>
                 <el-dropdown-menu slot="dropdown" class="el-dropdown-menu__fix">
-                  <el-dropdown-item class="el-dropdown-item__fix" @click.native="changeStorage(scope.row, scope.$index)" :disabled="scope.row.activity_status.status === 3 || scope.row.activity_status.status === 4">修改活动</el-dropdown-item>
-                  <el-dropdown-item class="el-dropdown-item__fix" :disabled="scope.row.activity_status.status === 3 || scope.row.activity_status.status === 4" @click.native="cancelStorage(scope.row.activity_info.activity_id)">终止活动</el-dropdown-item>
+                  <el-dropdown-item class="el-dropdown-item__fix" @click.native="changeStorage(scope.row, scope.$index)" :disabled="scope.row.activity_status.status === 2 || scope.row.activity_status.status === 3">修改活动</el-dropdown-item>
+                  <el-dropdown-item class="el-dropdown-item__fix" :disabled="scope.row.activity_status.status === 2 || scope.row.activity_status.status === 3" @click.native="cancelStorage(scope.row.activity_info.activity_id)">终止活动</el-dropdown-item>
                 </el-dropdown-menu>
               </el-dropdown>
             </template>
@@ -89,7 +89,7 @@
           ref="page"
           layout="total, sizes, prev, pager, next, jumper"
           :page-size="pageSize"
-          @size-change="handleSizeChange" 
+          @size-change="handleSizeChange"
           :total="storageData.total_entries"
           @current-change="currentChange">
         </el-pagination>
@@ -131,7 +131,7 @@
           <el-col :span="7" class="title">预留手机号码</el-col>
           <el-col :span="17" class="desc">{{ detailData.activity_info.mch_mobile }}</el-col>
         </el-row>
-        
+
       </template>
     </el-dialog>
   </div>

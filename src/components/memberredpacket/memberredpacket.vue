@@ -67,12 +67,12 @@
         </el-table>
       </div>
       <div class="pagination_wrapper" v-if="redpacketData.total >= 10">
-        <el-pagination 
-          ref="page" 
+        <el-pagination
+          ref="page"
           layout="total, sizes, prev, pager, next, jumper"
           :page-size="pageSize"
-          @size-change="handleSizeChange" 
-          :total="redpacketData.total" 
+          @size-change="handleSizeChange"
+          :total="redpacketData.total"
           @current-change="currentChange">
         </el-pagination>
       </div>
@@ -264,7 +264,8 @@
         return {
           type: this.packetValue,
           curpage: this.currentpage,
-          nameValue: this.nameValue
+          nameValue: this.nameValue,
+          length: this.pageSize
         };
       },
       redpacketData() {
@@ -277,7 +278,6 @@
     methods: {
       packetChange(packettype) {
         Store.set('packetparams', this.packetParams);
-        console.log(Store.get('packetparams'));
         if(this.$refs['page']) {
           this.$refs['page'].internalCurrentPage = 1;
         }
@@ -364,9 +364,9 @@
         if(this.$refs['page']) {
           this.$refs['page'].internalCurrentPage = 1;
         }
+        Store.set('packetparams', this.packetparams);
         this.pageSize = size;
         this.basicParams.curpage = 0;
-        console.log(this.basicParams);
         this.$store.dispatch('getRedpacketData', {
           params: Object.assign({}, this.basicParams)
         });

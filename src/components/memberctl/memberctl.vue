@@ -40,7 +40,7 @@
           @sort-change="changeSort"
           v-loading="loading"
           >
-          <el-table-column 
+          <el-table-column
             label="头像">
             <template scope="scope">
               <img v-if="scope.row.avatar" :src="scope.row.avatar" alt="" width="44" height="44" />
@@ -141,8 +141,8 @@
       basicParams() {
         return {
           sorted_key: 'lasttime',
-          sort_way: 'desc',    
-          sub_uid: this.uid,    // ? 是数组还是字符串 
+          sort_way: 'desc',
+          sub_uid: this.uid,    // ? 是数组还是字符串
           curpage: 0,
           length: this.pageSize
         };
@@ -212,6 +212,9 @@
         });
       },
       handleSizeChange(size) {
+        if(this.$refs['page']) {
+          this.$refs['page'].internalCurrentPage = 1;
+        }
         this.loading = true;
         this.pageSize = size;
         this.basicParams.curpage = 0;

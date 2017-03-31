@@ -180,16 +180,19 @@
   import Store from 'common/js/store.js';
 
   export default {
+    beforeRouteEnter (to, from, next) {
+      next((vm) => {
+        vm.data = Store.get('reviewpacketdata');
+      });
+    },
     data() {
       return {
+        data: {},
         iconShow: false,
         effectList: ['即刻生效', '次日生效']
       };
     },
     computed: {
-      data() {
-        return this.$route.params;
-      },
       shopDict() {
         return this.$store.state.shopDict;
       },
@@ -243,6 +246,7 @@
               type: 'success',
               message: '创建成功'
             });
+            console.log(Store.get('packetparams'));
             this.$store.dispatch('getRedpacketData', { params: Store.get('packetparams') });
             this.$router.push('/memberredpacket');
           } else {
@@ -292,7 +296,7 @@
 
 .flex .info-desc {
   line-height: 25px;
-} 
+}
 
 .mt-20 {
   margin-top: 20px;

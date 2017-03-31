@@ -53,7 +53,6 @@
                 </el-select>
               </el-form-item>
             </div>
-
           </div>
           <div class="panel-header-btn-group">
             <div class="panel-header-btn" @click="reset">重置</div>
@@ -163,7 +162,6 @@
       let defaultDateRange = [];
       yesterday.setDate(yesterday.getDate() - 1);
       defaultDateRange.push(yesterday, today);
-
       let checkOrderNo = (rule, val, cb) => {
         if(val && !/\d+/.test(Number(val))) {
           cb(new Error('流水号必须为数字！'));

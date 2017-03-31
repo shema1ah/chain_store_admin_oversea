@@ -70,20 +70,24 @@
   import axios from 'axios';
   import config from 'config';
   import {deepClone} from 'common/js/util.js';
+  import Store from 'common/js/store.js';
 
   export default {
+    beforeRouteEnter (to, from, next) {
+      next((vm) => {
+        vm.data = Store.get('storagedata');
+      });
+    },
     data() {
       return {
-        iconShow: false
+        iconShow: false,
+        data: {}
       };
     },
     computed: {
-      data() {
-        return this.$route.params;
-      },
       shopData() {
         let shopData = deepClone(this.$store.state.shopData);
-        shopData.list.shift();
+        shopData.list && shopData.list.shift();
         return shopData.list;
       }
     },
@@ -143,7 +147,7 @@
             this.$message.error('修改储值活动失败');
           });
         }
-        
+
       }
     }
 };

@@ -70,6 +70,7 @@
 <script>
   import {formatTime, deepClone} from 'common/js/util.js';
   import Validator from 'src/validator/';
+  import Store from 'common/js/store.js';
 
   export default {
     data() {
@@ -181,7 +182,8 @@
         console.log(this.data);
         this.$refs['form'].validate((valid) => {
           if (valid) {
-            this.$router.push({ name: 'reviewstorage', params: this.data });
+            Store.set('storagedata', this.data);
+            this.$router.push({ name: 'reviewstorage' });
           } else {
             this.$message.error('请核对信息是否完整');
           }

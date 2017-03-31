@@ -44,6 +44,7 @@
   </div>
 </template>
 <script>
+  import Store from 'common/js/store.js';
   export default {
     data() {
       return {
@@ -63,7 +64,6 @@
     },
     methods: {
       changePacketType(label) {
-        console.log(label);
         this.$router.push({ name: label });
       },
       currentChange(currentPage) {
@@ -80,7 +80,8 @@
         console.log(packet.data);
         packet.$refs['form'].validate((valid) => {
           if(valid) {
-            this.$router.push({ name: 'reviewpacket', params: packet.data });
+            Store.set('reviewpacketdata', packet.data);
+            this.$router.push({ name: 'reviewpacket' });
           } else {
             this.$message.error('请检查输入信息是否正确');
           }

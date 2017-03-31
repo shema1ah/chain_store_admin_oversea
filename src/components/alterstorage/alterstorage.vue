@@ -114,7 +114,6 @@
   export default {
 
     data() {
-
       let expireValid = (rule, val, cb) => {
         if(val === '') {
           cb('请选择活动结束时间');
@@ -211,7 +210,8 @@
         console.log(this.data);
         this.$refs['form'].validate((valid) => {
           if (valid) {
-            this.$router.push({ name: 'reviewstorage', params: this.data });
+            Store.set('storagedata', this.data);
+            this.$router.push({ name: 'reviewstorage' });
           } else {
             this.$message.error('请核对信息是否完整');
           }
