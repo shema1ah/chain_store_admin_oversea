@@ -17,7 +17,7 @@ let couponNumValidator = (rule, val, cb) => {
     cb('请输入红包个数');
   } else if(isNaN(val)) {
     cb('请输入数字');
-  } else if(/\./.test(val)) {
+  } else if(!Number.isInteger(val)) {
     cb('红包个数必须为整数');
   } else {
     cb();
@@ -63,8 +63,8 @@ let stoAmtValid = (rule, val, cb) => {
     cb('请输入储值规则');
   } else if(isNaN(val)) {
     cb('请输入数字');
-  } else if(!(/^\d+(\.\d{1,2})?$/.test(val))) {
-    cb('小数点后只能有两位');
+  } else if(!Number.isInteger(val)) {
+    cb('请输入整数');
   } else {
     cb();
   }
