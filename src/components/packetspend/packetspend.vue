@@ -4,11 +4,11 @@
       <el-input v-model="form.act_name" size="small" class="el-form-item-300"></el-input>
     </el-form-item>
     <el-form-item label="开始时间" prop="start_time">
-      <el-date-picker v-model="form.start_time" type="date" placeholder="请选择开始时间" size="small" :clearable="false">
+      <el-date-picker v-model="form.start_time" type="date" :editable="false" placeholder="请选择开始时间" size="small" :clearable="false">
       </el-date-picker>
     </el-form-item>
     <el-form-item label="结束时间" prop="expire_time">
-      <el-date-picker v-model="form.expire_time" type="date" placeholder="请选结束时间" size="small" :clearable="false">
+      <el-date-picker v-model="form.expire_time" type="date" :editable="false" placeholder="请选结束时间" size="small" :clearable="false">
       </el-date-picker>
     </el-form-item>
     <el-form-item label="适用门店" prop="sub_mchnt_list">
@@ -30,13 +30,13 @@
     <template v-if="packetValue === 0">
       <el-form-item label="单个红包金额" v-if="packetValue === 0">
         <el-form-item prop="singleValue">
-          <el-input size="small" v-model.number="form.singleValue"></el-input>
+          <el-input size="small" type="number" v-model.number="form.singleValue"></el-input>
         </el-form-item>
         <span>元</span>
       </el-form-item>
       <el-form-item label="红包个数">
         <el-form-item prop="coupon_num">
-          <el-input size="small" v-model.number="form.coupon_num"></el-input>
+          <el-input size="small" type="number" v-model.number="form.coupon_num"></el-input>
         </el-form-item>
         <span>个</span>
       </el-form-item>
@@ -44,17 +44,17 @@
     <template v-if="packetValue === 1">
       <el-form-item label="单个红包金额">
         <el-form-item prop="amt_min">
-          <el-input v-model.number="form.amt_min" size="small"></el-input>
+          <el-input v-model.number="form.amt_min" type="number" size="small"></el-input>
         </el-form-item>
         <span>至</span>
         <el-form-item prop="amt_max">
-          <el-input v-model.number="form.amt_max" size="small"></el-input>
+          <el-input v-model.number="form.amt_max" type="number" size="small"></el-input>
         </el-form-item>
         <span>元</span>
       </el-form-item>
       <el-form-item label="红包总预算">
         <el-form-item prop="total_amt">
-          <el-input size="small" v-model.number="form.total_amt"></el-input>
+          <el-input size="small" type="number" v-model.number="form.total_amt"></el-input>
         </el-form-item>
         <span>元</span>
         <span class="remark ml-10">* 红包金额领取后被使用，才会消耗预算</span>
@@ -63,14 +63,14 @@
     <el-form-item label="领取条件">
       <span>微信支付满</span>
       <el-form-item prop="obtain_amt">
-        <el-input size="small" v-model.number="form.obtain_amt"></el-input>
+        <el-input size="small" type="number" v-model.number="form.obtain_amt"></el-input>
       </el-form-item>
       <span>元可领取</span>
     </el-form-item>
     <el-form-item label="使用条件">
       <span>微信支付</span>
       <el-form-item prop="limit_amt">
-        <el-input size="small" v-model.number="form.limit_amt"></el-input>
+        <el-input size="small" type="number" v-model.number="form.limit_amt"></el-input>
       </el-form-item>
       <span>元以上可用</span>
     </el-form-item>
@@ -83,7 +83,7 @@
     <el-form-item label="红包有效期">
       <span>领取后</span>
         <el-form-item prop="effect_date">
-          <el-input v-model.number="form.effect_date" size="small"></el-input>
+          <el-input type="number" v-model.number="form.effect_date" size="small"></el-input>
         </el-form-item>
       <span>天内可使用</span>
       <div class="remark">
@@ -95,7 +95,7 @@
 </template>
 
 <script>
-  import {formatTime} from 'common/js/util.js';
+  import {formatDate} from 'common/js/util.js';
   import Validator from 'src/validator/';
 
   export default {
@@ -103,10 +103,20 @@
       let expireValid = (rule, val, cb) => {
         if(val === '') {
           cb('请选择活动结束时间');
-        } else if(val.getTime() < this.form.start_time.getTime()) {
+        } else if(this.form.start_time && val.getTime() < this.form.start_time.getTime()) {
           cb('活动结束时间必须大于开始时间');
         } else {
           console.log(val);
+          cb();
+        }
+      };
+      let startValid = (rule, val, cb) => {
+        if(val === '') {
+          cb('请选择活动开始时间');
+        } else {
+          if(this.form.expire_time !== '') {
+            this.$refs['form'].validateField('expire_time');
+          }
           cb();
         }
       };
@@ -138,7 +148,7 @@
           cb();
         }
       };
-  
+
       return {
         flag: 1,
         switch: true,
@@ -165,7 +175,7 @@
             { required: true, message: '请输入活动名称' }
           ],
           start_time: [
-            { required: true, message: '请选择开始时间' }
+            { validator: startValid }
           ],
           expire_time: [
             { validator: expireValid }
@@ -231,8 +241,8 @@
           packetValue: this.packetValue,
           act_type: 'type_payment',
           act_name: this.form.act_name,
-          start_time: this.form.start_time && formatTime(this.form.start_time, 'yyyy-MM-dd'),
-          expire_time: this.form.expire_time && formatTime(this.form.expire_time, 'yyyy-MM-dd'),
+          start_time: this.form.start_time && formatDate(this.form.start_time),
+          expire_time: this.form.expire_time && formatDate(this.form.expire_time),
           singleValue: this.form.singleValue,
           amt_min: this.form.amt_min,
           amt_max: this.form.amt_max,

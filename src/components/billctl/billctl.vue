@@ -12,7 +12,7 @@
             <div class="panel-select__wrapper">
               <span class="panel-select__desc">打款时间</span>
               <el-form-item prop="dateRangeValue" class="relative">
-                <el-date-picker v-model="form.dateRangeValue" type="daterange" placeholder="选择日期范围" size="small" @change="changeDateRange" :clearable="false">
+                <el-date-picker v-model="form.dateRangeValue" type="daterange" placeholder="选择日期范围" size="small" @change="changeDateRange" :clearable="false" :editable="false">
                 </el-date-picker>
                 <span class="remark note ml-0">* 请不要跨月查询</span>
               </el-form-item>
@@ -28,13 +28,13 @@
             </div>
           </div>
           <div class="panel-btn-group__wrapper">
-            <a :href="detailHref" download="true">
+            <a :href="downHref" @click="downDetail(1)">
               <div class="panel-btn__download panel-btn__download_detail">
                 <i class="icon-download"></i>
                 <span>下载打款明细</span>
               </div>
             </a>
-            <a :href="recordHref" download="true">
+            <a :href="downHref" @click="downDetail(2)">
               <div class="panel-btn__download panel-btn__download_record">
                 <i class="icon-download"></i>
                 <span>下载打款记录</span>
@@ -72,7 +72,6 @@
   </div>
 </template>
 <script>
-  // import axios from 'axios';
   import config from 'config';
   import { formatObj } from 'common/js/util.js';
 
@@ -95,6 +94,7 @@
         }
       };
       return {
+        downHref: 'javascript:;',
         form: {
           dateRangeValue: defaultDateRange,
           selectShopUid: '',
@@ -138,6 +138,14 @@
       }
     },
     methods: {
+      // 点击下载按钮
+      downDetail(index) {
+        if(index === 1) {
+          this.downHref = this.recordHref;
+        }else{
+          this.downHref = this.recordHref;
+        }
+      },
       format(date) {
         let year = date.getFullYear();
         let month = date.getMonth() + 1;
@@ -209,15 +217,15 @@
 
 .panel-btn__download_detail {
   background-color: #7ED321;
-  &:active {
-    background-color: darken(#7ED321, 10%);
+  &:link,&:visited,&:hover,&:active {
+    background-color: darken(#7ED321, 5%);
   }
 }
 
 .panel-btn__download_record {
   background-color: #FE9B20;
-  &:active {
-    background-color: darken(#FE9B20, 10%);
+  &:link,&:visited,&:hover,&:active {
+    background-color: darken(#FE9B20, 5%);
   }
 }
 

@@ -217,7 +217,7 @@
 <script>
   import axios from 'axios';
   import config from 'config';
-  import {formatTime} from 'common/js/util.js';
+  import {formatDate} from 'common/js/util.js';
   import Store from 'src/common/js/store.js';
 
   export default {
@@ -333,7 +333,7 @@
         let createTime = scope.row.create_time;
         let date = new Date(createTime);
         date.setDate(date.getDate() + 1);
-        let notifyTime = formatTime(date, 'yyyy-MM-dd') + ' 11:00:00';
+        let notifyTime = formatDate(date) + ' 11:00:00';
 
         axios.get(`${config.host}/merchant/activity/info`, {
             params: {

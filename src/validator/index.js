@@ -59,12 +59,8 @@ let totalAmt = (rule, val, cb) => {
 };
 
 let stoAmtValid = (rule, val, cb) => {
-  if(val === '') {
-    cb('请输入储值规则');
-  } else if(isNaN(val)) {
-    cb('请输入数字');
-  } else if(!Number.isInteger(val)) {
-    cb('请输入整数');
+  if(!(/^\d+$/.test(val))) {
+    cb('请输正整数');
   } else {
     cb();
   }

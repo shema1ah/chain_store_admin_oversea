@@ -128,6 +128,9 @@
 
     /* Collapse
   --------------------------*/
+
+    /* Transfer
+  --------------------------*/
 }
 
 .el-color-hue-slider {
@@ -437,6 +440,8 @@
     display: inline-block;
 
     position: relative;
+
+    line-height: normal;
 }
 
 .el-color-picker__trigger {
@@ -452,6 +457,8 @@
     border: 1px solid #bfcbd9;
 
     border-radius: 4px;
+
+    font-size: 0;
 }
 
 .el-color-picker__color {
@@ -461,8 +468,6 @@
     display: inline-block;
 
     box-sizing: border-box;
-
-    vertical-align: middle;
 
     border: 1px solid #666;
 
@@ -497,9 +502,13 @@
 
     vertical-align: middle;
 
-    margin-top: -2px;
-
     color: #666;
+
+    position: absolute;
+
+    top: 4px;
+
+    left: 4px;
 }
 
 .el-color-picker__icon {
@@ -508,13 +517,15 @@
 
     position: relative;
 
-    vertical-align: middle;
+    top: -6px;
 
     margin-left: 8px;
 
     width: 12px;
 
     color: #888;
+
+    font-size: 12px;
 }
 
 .el-color-picker__panel {
@@ -660,5 +671,8 @@
   --------------------------*/
 
     /* Collapse
+  --------------------------*/
+
+    /* Transfer
   --------------------------*/
 }

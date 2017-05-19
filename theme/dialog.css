@@ -86,6 +86,8 @@
   --------------------------*/
     /* Collapse
   --------------------------*/
+    /* Transfer
+  --------------------------*/
 }
 .v-modal-enter{
     animation: v-modal-in .2s ease;
@@ -123,6 +125,7 @@
     border-radius: 2px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
     box-sizing: border-box;
+    margin-bottom: 50px;
 }
 
 .el-dialog--tiny{
@@ -140,6 +143,7 @@
 .el-dialog--full{
     width: 100%;
     top: 0;
+    margin-bottom: 0;
     height: 100%;
     overflow: auto;
 }
@@ -305,5 +309,7 @@
     /* Carousel
   --------------------------*/
     /* Collapse
+  --------------------------*/
+    /* Transfer
   --------------------------*/
 }

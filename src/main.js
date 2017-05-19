@@ -5,7 +5,7 @@ import "src/filters";
 import store from "./store";
 import App from './App';
 import router from './router';
-import { Select, Option, TableColumn, Table, Button, Pagination, Dropdown, DropdownItem, DropdownMenu, Loading, DatePicker, Input, Message, Form, FormItem, Radio, RadioGroup, Dialog, Col, MessageBox, Row } from 'element-ui';
+import { Select, Option, TableColumn, Table, Button, Pagination, Dropdown, DropdownItem, DropdownMenu, Loading, DatePicker, Input, Message, Form, FormItem, Radio, RadioGroup, RadioButton, Dialog, Col, MessageBox, Row, CheckboxGroup, Checkbox } from 'element-ui';
 import 'reset.css';
 import "common/scss/font.scss";
 import "assets/scss/ele-fix.scss";
@@ -31,6 +31,9 @@ Vue.use(RadioGroup);
 Vue.use(Dialog);
 Vue.use(Col);
 Vue.use(Row);
+Vue.use(RadioButton);
+Vue.use(CheckboxGroup);
+Vue.use(Checkbox);
 
 axios.interceptors.response.use((res) => {
   let data = res.data;

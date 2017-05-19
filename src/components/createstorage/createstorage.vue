@@ -23,22 +23,22 @@
               <div class="remark mt-0 lh-16">注：请确保以上门店均已开通储值服务，否则无法正常储值</div>
             </el-form-item>
             <el-form-item label="开始时间" prop="start_time">
-              <el-date-picker v-model="form.start_time" type="date" placeholder="请选择开始时间" size="small" :clearable="false">
+              <el-date-picker v-model="form.start_time" type="date" placeholder="请选择开始时间" size="small" :editable="false" :clearable="false">
               </el-date-picker>
             </el-form-item>
             <el-form-item label="结束时间" prop="end_time">
-              <el-date-picker v-model="form.end_time" type="date" placeholder="请选结束时间" size="small" :clearable="false">
+              <el-date-picker v-model="form.end_time" type="date" placeholder="请选结束时间" size="small" :editable="false" :clearable="false">
               </el-date-picker>
             </el-form-item>
             <el-form-item label="设置规则" min-width="150">
               <div class="storage-item" v-for="(item, index) in form.rulesData">
                 <span>储值</span>
                 <el-form-item :prop="'pay_amt' + index">
-                  <el-input size="small" v-model.number="form.rulesData[index].pay_amt" @change="bindPayAmtValue(index)"></el-input>
+                  <el-input size="small" type="number" v-model.trim="form['pay_amt' + index]" @change="bindPayAmtValue(index)"></el-input>
                 </el-form-item>
                 <span>元送</span>
                 <el-form-item :prop="'present_amt' + index">
-                  <el-input size="small" v-model.number="form.rulesData[index].present_amt" @change="bindPresentAmtValue(index)"></el-input>
+                  <el-input size="small" type="number" v-model.trim="form['present_amt' + index]" @change="bindPresentAmtValue(index)"></el-input>
                 </el-form-item>
                 <span>元</span>
                 <el-button size="small" @click="addRule" :disabled="len === 4" v-if="index === 0" class="ml-15" :plain="true" type="primary">增加规则</el-button>
@@ -50,7 +50,7 @@
               <div class="stro-info mt-20 error-42"><p>例如:</p> <p>1、一旦储值不予退款；</p> <p>2、储值用户可享所有商品优惠；</p></div>
             </el-form-item>
             <el-form-item label="预留手机号" prop="mobile">
-              <el-input size="small" v-model="form.mobile" class="panel-select-input-220"></el-input>
+              <el-input size="small" type="number" v-model.trim="form.mobile" class="panel-select-input-220"></el-input>
             </el-form-item>
           </el-form>
           <div class="divider"></div>
@@ -68,7 +68,7 @@
   </div>
 </template>
 <script>
-  import {formatTime, deepClone} from 'common/js/util.js';
+  import {formatDate, deepClone} from 'common/js/util.js';
   import Validator from 'src/validator/';
   import Store from 'common/js/store.js';
 
@@ -77,9 +77,19 @@
       let expireValid = (rule, val, cb) => {
         if(val === '') {
           cb('请选择活动结束时间');
-        } else if(val.getTime() < this.form.start_time.getTime()) {
+        } else if(this.form.start_time && val.getTime() < this.form.start_time.getTime()) {
           cb('活动结束时间必须大于开始时间');
         } else {
+          cb();
+        }
+      };
+      let startValid = (rule, val, cb) => {
+        if(val === '') {
+          cb('请选择活动开始时间');
+        } else {
+          if(this.form.end_time !== '') {
+            this.$refs['form'].validateField('end_time');
+          }
           cb();
         }
       };
@@ -99,25 +109,25 @@
           end_time: '',
           mobile: '',
           desc: '',
-          pay_amt0: '',
-          present_amt0: '',
-          pay_amt1: '',
-          present_amt1: '',
-          pay_amt2: '',
-          present_amt2: '',
-          pay_amt3: '',
-          present_amt3: '',
+          pay_amt0: null,
+          present_amt0: null,
+          pay_amt1: null,
+          present_amt1: null,
+          pay_amt2: null,
+          present_amt2: null,
+          pay_amt3: null,
+          present_amt3: null,
           rulesData: [
             {
               grid_index: 1,
-              pay_amt: '',
-              present_amt: ''
+              pay_amt: null,
+              present_amt: null
             }
           ]
         },
         formrules: {
           start_time: [
-            { required: true, message: '请输入开始时间' }
+            { validator: startValid }
           ],
           end_time: [
             { validator: expireValid }
@@ -158,8 +168,8 @@
     computed: {
       data() {
         return {
-          start_time: this.form.start_time && formatTime(this.form.start_time, 'yyyy-MM-dd'),
-          end_time: this.form.end_time && formatTime(this.form.end_time, 'yyyy-MM-dd'),
+          start_time: this.form.start_time && formatDate(this.form.start_time),
+          end_time: this.form.end_time && formatDate(this.form.end_time),
           mobile: this.form.mobile,
           desc: this.form.desc,
           rules: this.form.rulesData
@@ -179,7 +189,6 @@
         this.$router.push('/memberstorage');
       },
       preview() {
-        console.log(this.data);
         this.$refs['form'].validate((valid) => {
           if (valid) {
             Store.set('storagedata', this.data);
@@ -193,8 +202,8 @@
         let lastIndex = this.len + 1;
         this.form.rulesData.push({
           grid_index: lastIndex,
-          pay_amt: '',
-          present_amt: ''
+          pay_amt: null,
+          present_amt: null
         });
       },
       removeRule(item) {
@@ -205,10 +214,10 @@
         });
       },
       bindPayAmtValue(index) {
-        this.form['pay_amt' + index] = this.form.rulesData[index].pay_amt;
+        this.form.rulesData[index].pay_amt = this.form['pay_amt' + index];
       },
       bindPresentAmtValue(index) {
-        this.form['present_amt' + index] = this.form.rulesData[index].present_amt;
+        this.form.rulesData[index].present_amt = this.form['present_amt' + index];
       }
     }
   };

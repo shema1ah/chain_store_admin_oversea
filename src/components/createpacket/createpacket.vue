@@ -77,7 +77,6 @@
       },
       preview() {
         let packet = this.$refs['form'];
-        console.log(packet.data);
         packet.$refs['form'].validate((valid) => {
           if(valid) {
             Store.set('reviewpacketdata', packet.data);

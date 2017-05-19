@@ -92,6 +92,8 @@
   --------------------------*/
   /* Collapse
   --------------------------*/
+  /* Transfer
+  --------------------------*/
 }
 .v-modal-enter{
   animation: v-modal-in .2s ease;
@@ -207,6 +209,8 @@
   /* Carousel
   --------------------------*/
   /* Collapse
+  --------------------------*/
+  /* Transfer
   --------------------------*/
 }
 .el-button{
@@ -683,6 +687,8 @@
   --------------------------*/
   /* Collapse
   --------------------------*/
+  /* Transfer
+  --------------------------*/
 }
 .el-input{
   position: relative;
@@ -697,9 +703,6 @@
   cursor: not-allowed;
 }
 .el-input.is-disabled .el-input__inner::-webkit-input-placeholder{
-  color: rgb(217, 208, 191);
-}
-.el-input.is-disabled .el-input__inner::-moz-placeholder{
   color: rgb(217, 208, 191);
 }
 .el-input.is-disabled .el-input__inner:-ms-input-placeholder{
@@ -732,9 +735,6 @@
   width: 100%;
 }
 .el-input__inner::-webkit-input-placeholder{
-  color: rgb(190, 178, 151);
-}
-.el-input__inner::-moz-placeholder{
   color: rgb(190, 178, 151);
 }
 .el-input__inner:-ms-input-placeholder{
@@ -822,7 +822,7 @@
   display: block;
   margin: -10px;
 }
-.el-input-group__append .el-button, .el-input-group__append .el-select .el-input__inner, .el-input-group__append .el-select:hover .el-input__inner, .el-input-group__prepend .el-button, .el-input-group__prepend .el-select .el-input__inner, .el-input-group__prepend .el-select:hover .el-input__inner{
+.el-input-group__append button.el-button, .el-input-group__append div.el-select .el-input__inner, .el-input-group__append div.el-select:hover .el-input__inner, .el-input-group__prepend button.el-button, .el-input-group__prepend div.el-select .el-input__inner, .el-input-group__prepend div.el-select:hover .el-input__inner{
   border-color: transparent;
   background-color: transparent;
   color: inherit;
@@ -864,9 +864,6 @@
 .el-textarea.is-disabled .el-textarea__inner::-webkit-input-placeholder{
   color: rgb(217, 208, 191);
 }
-.el-textarea.is-disabled .el-textarea__inner::-moz-placeholder{
-  color: rgb(217, 208, 191);
-}
 .el-textarea.is-disabled .el-textarea__inner:-ms-input-placeholder{
   color: rgb(217, 208, 191);
 }
@@ -889,9 +886,6 @@
   transition: border-color .2s cubic-bezier(.645,.045,.355,1);
 }
 .el-textarea__inner::-webkit-input-placeholder{
-  color: rgb(190, 178, 151);
-}
-.el-textarea__inner::-moz-placeholder{
   color: rgb(190, 178, 151);
 }
 .el-textarea__inner:-ms-input-placeholder{
@@ -1154,5 +1148,7 @@
   /* Carousel
   --------------------------*/
   /* Collapse
+  --------------------------*/
+  /* Transfer
   --------------------------*/
 }
