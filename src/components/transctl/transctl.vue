@@ -91,8 +91,11 @@
               </el-form-item>
             </div>
             <div class="panel-header-btn-group">
+              <div class="panel-header-btn panel-header-btn__fill" @click="getTransData">
+                <span class="el-icon-loading" v-if="loading"></span>
+                <span v-else>查询</span>
+              </div>
               <div class="panel-header-btn" @click="reset">重置</div>
-              <div class="panel-header-btn panel-header-btn__fill" @click="getTransData">查询</div>
             </div>
           </div>
         </el-form>
@@ -203,11 +206,8 @@
 
   export default {
     data() {
-      let today = new Date();
-      let yesterday = new Date();
-      let defaultDateRange = [];
-      yesterday.setDate(yesterday.getDate() - 1);
-      defaultDateRange.push(yesterday, today);
+      let start = new Date();
+      let defaultDateRange = [start, start];
       let checkOrderNo = (rule, val, cb) => {
         if(val && !/\d+/.test(Number(val))) {
           cb(new Error('流水号必须为数字！'));
@@ -219,8 +219,11 @@
       };
       return {
         pageSize: 10,
+        status: true,
         loading: false,
         downHref: 'javascript:;',
+        starttime: '',
+        endtime: '',
         typeList: [
           {'name': '微信收款', 'value': 'wxpay'},
           {'name': '支付宝收款', 'value': 'alipay'},
@@ -234,8 +237,8 @@
           {'name': '撤销明细', 'value': 'cancel'}
         ],
         choosetimes: [
-          {'name': '今天', 'value': '0'},
-          {'name': '昨天', 'value': '1'},
+          {'name': '今天', 'value': '1'},
+          {'name': '昨天', 'value': '2'},
           {'name': '近7天', 'value': '7'},
           {'name': '近30天', 'value': '30'}
         ],
@@ -271,12 +274,6 @@
       shopData() {
         return this.$store.state.shopData;
       },
-      starttime() {
-        return this.form.dateRangeValue && formatDate(this.form.dateRangeValue[0]);
-      },
-      endtime() {
-        return this.form.dateRangeValue && formatDate(this.form.dateRangeValue[1]);
-      },
       basicParams() {
         return {
           userid: this.form.selectShopUid,
@@ -291,6 +288,16 @@
           paytypes: this.form.type.join(','),
           filters: this.form.other.join(',')
         };
+      }
+    },
+    watch: {
+      'form.dateRangeValue': function(val) {
+        if(!this.status) {
+          this.form.choosetime = '';
+        }
+        this.starttime = formatDate(val[0]);
+        this.endtime = formatDate(val[1]);
+        this.status = false;
       }
     },
     created() {
@@ -323,9 +330,12 @@
       },
       // 选择时间
       changeTime(value) {
-        let end = new Date();
-        let start = new Date(end.getTime() - 3600 * 1000 * 24 * value);
-        this.form.dateRangeValue = [start, end];
+        if(value) {
+          this.status = true;
+          let end = new Date();
+          let start = new Date(end.getTime() - 3600 * 1000 * 24 * (value - 1));
+          this.form.dateRangeValue = [start, end];
+        }
       },
       // check选择功能
       handleCheckAllChange1(event) {
@@ -389,7 +399,7 @@
           let data = res.data;
           if(data.respcd === config.code.OK) {
             if(!isEmptyObject(data.data)) {
-              data.data[''] = '全部';
+              data.data = Object.assign({'': '全部'}, data.data);
             } else {
               this.form.operaValue = '';
             }
@@ -411,6 +421,7 @@
       },
       // 重置表单
       reset() {
+        this.status = true;
         this.$refs['form'].resetFields();
       },
       handleSizeChange(size) {
@@ -622,6 +633,9 @@
         }
       }
     }
+    .el-icon-loading{
+      margin-right: 0;
+    }
   }
   .panel-header-btn-group {
     position: absolute;
@@ -638,15 +652,22 @@
         text-align: center;
         line-height: 35px;
         font-size: 17px;
-        color: #FE9B20;
         cursor: pointer;
-        &:first-of-type {
-          margin-right: 15px;
+        &:last-of-type {
+           color: #FE9B20;
+           background-color: #fff;
+            &:link,&:visited,&:hover,&:active{
+            background-color: darken(#fff, 10%);
+            }
         }
       }
       .panel-header-btn__fill {
+        margin-right: 15px;
         color: #fff;
         background-color: #FE9B20;
+        &:link,&:visited,&:hover,&:active {
+          background-color: darken(#FE9B20, 10%);
+        }
       }
     }
   }

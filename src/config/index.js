@@ -26,8 +26,8 @@ let code = {
 switch (env) {
   case 'development':
     // host = 'http://172.100.108.145:9099';
-    // host = 'http://172.100.101.107:9091';
-    host = 'http://172.100.111.45:9099';
+    host = 'http://172.100.101.107:9091';
+    // host = 'http://172.100.111.45:9099';
     break;
   case 'production':
     host = '';
