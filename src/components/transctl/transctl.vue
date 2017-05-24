@@ -201,8 +201,8 @@
   import qs from 'qs';
   import {formatDate, isEmptyObject} from 'common/js/util.js';
 
-  const typeLists = ['wxpay', 'alipay', 'jdpay', 'qqpay'];
-  const otherLists = ['prepaid', 'prepaid_recharge', 'coupon', 'cancel'];
+  const typeLists = ['wxpay', 'alipay', 'jdpay', 'qqpay', 'card'];
+  const otherLists = ['prepaid_recharge', 'prepaid', 'coupon', 'cancel'];
 
   export default {
     data() {
@@ -227,11 +227,12 @@
           {'name': '微信收款', 'value': 'wxpay'},
           {'name': '支付宝收款', 'value': 'alipay'},
           {'name': '京东收款', 'value': 'jdpay'},
-          {'name': 'QQ收款', 'value': 'qqpay'}
+          {'name': 'QQ收款', 'value': 'qqpay'},
+          {'name': '刷卡收款', 'value': 'card'}
         ],
         otherList: [
-          {'name': '储值充值', 'value': 'prepaid'},
-          {'name': '储值消费', 'value': 'prepaid_recharge'},
+          {'name': '储值充值', 'value': 'prepaid_recharge'},
+          {'name': '储值消费', 'value': 'prepaid'},
           {'name': '红包优惠', 'value': 'coupon'},
           {'name': '撤销明细', 'value': 'cancel'}
         ],
