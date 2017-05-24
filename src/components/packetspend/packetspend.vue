@@ -193,8 +193,7 @@
             { required: true, message: '请选择生效日期!' }
           ],
           effect_date: [
-            { required: true, message: '请输入有效期' },
-            { type: 'number', message: '请输入数字' }
+            { validator: Validator.dateValidator }
           ],
           amt_max: [
             { validator: amtAmxValid }

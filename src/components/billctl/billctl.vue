@@ -28,13 +28,13 @@
             </div>
           </div>
           <div class="panel-btn-group__wrapper">
-            <a :href="downHref" @click="downDetail(1)">
+            <a :href="detailHref" download="true">
               <div class="panel-btn__download panel-btn__download_detail">
                 <i class="icon-download"></i>
                 <span>下载打款明细</span>
               </div>
             </a>
-            <a :href="downHref" @click="downDetail(2)">
+            <a :href="recordHref" download="true">
               <div class="panel-btn__download panel-btn__download_record">
                 <i class="icon-download"></i>
                 <span>下载打款记录</span>
@@ -94,7 +94,7 @@
         }
       };
       return {
-        downHref: 'javascript:;',
+        defaultDateRange: defaultDateRange,
         form: {
           dateRangeValue: defaultDateRange,
           selectShopUid: '',
@@ -138,14 +138,6 @@
       }
     },
     methods: {
-      // 点击下载按钮
-      downDetail(index) {
-        if(index === 1) {
-          this.downHref = this.recordHref;
-        }else{
-          this.downHref = this.recordHref;
-        }
-      },
       format(date) {
         let year = date.getFullYear();
         let month = date.getMonth() + 1;
@@ -162,7 +154,7 @@
           let endmonth = this.form.dateRangeValue[1].getMonth();
           if (startmonth !== endmonth) {
             this.$message.error('请不要跨月进行选择!');
-            this.form.dateRangeValue = '';
+            this.form.dateRangeValue = this.defaultDateRange;
           }
         }
       }

@@ -122,9 +122,8 @@
         } else {
           if(this.form.expire_time !== '') {
             this.$refs.form.validateField('expire_time');
-          } else {
-            cb();
           }
+          cb();
         }
       };
       let amtAmxValid = (rule, val, cb) => {
@@ -199,8 +198,7 @@
             { required: true, message: '请选择生效日期!' }
           ],
           effect_date: [
-            { required: true, message: '请输入有效期' },
-            { type: 'number', message: '请输入数字' }
+            { validator: Validator.dateValidator }
           ],
           amt_max: [
             { validator: amtAmxValid }

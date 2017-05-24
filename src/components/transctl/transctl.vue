@@ -125,11 +125,11 @@
             </div>
           </div>
           <div class="a-wrapper">
-            <el-dropdown @command="downDetail">
+            <el-dropdown>
               <span class="el-dropdown-link"><img src="./img/download.png" alt="下载"></span>
               <el-dropdown-menu slot="dropdown">
-                <a :href="downHref"><el-dropdown-item command=1 class="download_detail">下载交易明细</el-dropdown-item></a>
-                <a :href="downHref"><el-dropdown-item command=2 class="download_record">下载交易汇总</el-dropdown-item></a>
+                <a :href="detailHref" download><el-dropdown-item command=1 class="download_detail">下载交易明细</el-dropdown-item></a>
+                <a :href="collectionHref" download><el-dropdown-item command=2 class="download_detail">下载交易汇总</el-dropdown-item></a>
               </el-dropdown-menu>
             </el-dropdown>
           </div>
@@ -219,9 +219,8 @@
       };
       return {
         pageSize: 10,
-        status: true,
+        status: false,
         loading: false,
-        downHref: 'javascript:;',
         starttime: '',
         endtime: '',
         typeList: [
@@ -320,20 +319,15 @@
       });
     },
     methods: {
-      // 点击下载按钮
-      downDetail(index) {
-        if(index == 1) {
-          this.downHref = this.detailHref;
-        }else{
-          this.downHref = this.collectionHref;
-        }
-      },
       // 选择时间
       changeTime(value) {
         if(value) {
           this.status = true;
           let end = new Date();
           let start = new Date(end.getTime() - 3600 * 1000 * 24 * (value - 1));
+          if(value == 2) {
+              end = start;
+          }
           this.form.dateRangeValue = [start, end];
         }
       },
@@ -401,7 +395,7 @@
             if(!isEmptyObject(data.data)) {
               data.data = Object.assign({'': '全部'}, data.data);
             } else {
-              this.form.operaValue = '';
+              data.data = {'': '全部'};
             }
             this.operaList = data.data;
           } else {
@@ -689,14 +683,6 @@
     .download_detail {
       background-color: #fff;
       color: #262323;
-      &:link,&:visited,&:hover,&:active {
-        color: #262323;
-        background-color: darken(#fff, 5%);
-      }
-    }
-    .download_record {
-      background-color: #7ED321;
-      color: #FFF;
       &:link,&:visited,&:hover,&:active {
         color: #FFF;
         background-color: darken(#7ED321, 5%);
