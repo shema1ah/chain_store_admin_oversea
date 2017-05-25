@@ -47,10 +47,10 @@
               <span class="panel-select__desc">操作员</span>
               <el-form-item>
                 <el-select v-model="form.operaValue" placeholder="全部" size="small" @change="operaChange" :disabled="form.selectShopUid === ''">
+                  <el-option label="全部" value=""></el-option>
                   <el-option
                           v-for="(label, value) in operaList"
-                          :label="label"
-                          :value="value">
+                         :label="label" :value="value" :key="value">
                   </el-option>
                 </el-select>
               </el-form-item>
@@ -166,7 +166,7 @@
               <div class="table-title">{{ scope.row.total_amt }}元</div>
               <div class="table-content">实收{{ scope.row.txamt }}元</div>
               <div v-show="scope.row.mchnt_coupon" class="table-content">商家红包{{ scope.row.mchnt_coupon }}元</div>
-              <div v-show="scope.row.hj_coupon" class="table-content">平台红包{{ scope.row.hj_coupon }}元</div>
+              <div v-show="scope.row.hj_coupon" class="table-content">平台补贴{{ scope.row.hj_coupon }}元</div>
             </template>
           </el-table-column>
           <el-table-column
@@ -199,7 +199,7 @@
   import axios from 'axios';
   import config from 'config';
   import qs from 'qs';
-  import {formatDate, isEmptyObject} from 'common/js/util.js';
+  import {formatDate} from 'common/js/util.js';
 
   const typeLists = ['wxpay', 'alipay', 'jdpay', 'qqpay', 'card'];
   const otherLists = ['prepaid_recharge', 'prepaid', 'coupon', 'cancel'];
@@ -221,8 +221,6 @@
         pageSize: 10,
         status: false,
         loading: false,
-        starttime: '',
-        endtime: '',
         typeList: [
           {'name': '微信收款', 'value': 'wxpay'},
           {'name': '支付宝收款', 'value': 'alipay'},
@@ -271,6 +269,7 @@
       collectionHref() {
         return `${config.host}/merchant/trade/total?${qs.stringify(this.basicParams)}`;
       },
+
       shopData() {
         return this.$store.state.shopData;
       },
@@ -278,8 +277,8 @@
         return {
           userid: this.form.selectShopUid,
           opuid: this.form.operaValue,
-          endtime: this.endtime,
-          starttime: this.starttime,
+          endtime: formatDate(this.form.dateRangeValue[1]),
+          starttime: formatDate(this.form.dateRangeValue[0]),
           orderno: this.form.orderno,
           charset: 'utf-8',
           isdownload: false,
@@ -295,8 +294,6 @@
         if(!this.status) {
           this.form.choosetime = '';
         }
-        this.starttime = formatDate(val[0]);
-        this.endtime = formatDate(val[1]);
         this.status = false;
       }
     },
@@ -382,9 +379,7 @@
         this.basicParams.opuid = opuid;
       },
       getOperators(uid) {
-        if(uid === '') {
-          this.form.operaValue = '';
-        }
+        this.form.operaValue = '';
         axios.get(`${config.host}/merchant/sub/opusers`, {
           params: {
             userid: uid
@@ -393,11 +388,6 @@
         .then((res) => {
           let data = res.data;
           if(data.respcd === config.code.OK) {
-            if(!isEmptyObject(data.data)) {
-              data.data = Object.assign({'': '全部'}, data.data);
-            } else {
-              data.data = {'': '全部'};
-            }
             this.operaList = data.data;
           } else {
             this.$message.error(data.resperr);
