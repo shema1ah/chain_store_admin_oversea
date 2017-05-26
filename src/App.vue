@@ -5,7 +5,7 @@
       <div class="header">
         <div class="user_wrapper">
           <div class="user_name">
-            Welcome, {{ shop.shopname }}
+            {{shop.shopname?'Welcome, '+shop.shopname:''}}
           </div>
           <a href="/merchant/logout">
             <div class="user_operation">
@@ -36,7 +36,7 @@
           <el-input v-model="form.bankuser" size="small" placeholder="请输入分店收款人姓名"></el-input>
         </el-form-item>
         <el-form-item label="银行卡号" prop="bankaccount">
-          <el-input v-model="form.bankaccount" asize="small" placeholder="请输入分店收款银行卡号"></el-input>
+          <el-input v-model="form.bankaccount" size="small" placeholder="请输入分店收款银行卡号"></el-input>
         </el-form-item>
       </el-form>
       <div class="divider"></div>
@@ -60,7 +60,8 @@ export default {
       visible: false,
       shop: {
         shopname: '',
-        bankaccount: ''
+        bankaccount: '',
+        uid: ''
       },
       form: {
         account: '',
@@ -93,8 +94,11 @@ export default {
       .then((res) => {
         let data = res.data;
         if(data.respcd === config.code.OK) {
-          this.shop.shopname = data.data.shopname;
-          this.shop.mobile = data.data.mobile;
+          this.shop = {
+            shopname: data.data.shopname,
+            mobile: data.data.mobile,
+            uid: data.data.uid
+          };
         } else {
           this.$message.error(data.respmsg);
         }

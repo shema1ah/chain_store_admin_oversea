@@ -86,6 +86,8 @@
   --------------------------*/
     /* Collapse
   --------------------------*/
+    /* Transfer
+  --------------------------*/
 }
 
 .el-input{
@@ -103,10 +105,6 @@
 }
 
 .el-input.is-disabled .el-input__inner::-webkit-input-placeholder{
-    color: rgb(217, 208, 191)
-}
-
-.el-input.is-disabled .el-input__inner::-moz-placeholder{
     color: rgb(217, 208, 191)
 }
 
@@ -144,10 +142,6 @@
 }
 
 .el-input__inner::-webkit-input-placeholder{
-    color: rgb(190, 178, 151)
-}
-
-.el-input__inner::-moz-placeholder{
     color: rgb(190, 178, 151)
 }
 
@@ -256,7 +250,7 @@
     margin: -10px
 }
 
-.el-input-group__append .el-button, .el-input-group__append .el-select .el-input__inner, .el-input-group__append .el-select:hover .el-input__inner, .el-input-group__prepend .el-button, .el-input-group__prepend .el-select .el-input__inner, .el-input-group__prepend .el-select:hover .el-input__inner{
+.el-input-group__append button.el-button, .el-input-group__append div.el-select .el-input__inner, .el-input-group__append div.el-select:hover .el-input__inner, .el-input-group__prepend button.el-button, .el-input-group__prepend div.el-select .el-input__inner, .el-input-group__prepend div.el-select:hover .el-input__inner{
     border-color: transparent;
     background-color: transparent;
     color: inherit;
@@ -307,10 +301,6 @@
     color: rgb(217, 208, 191)
 }
 
-.el-textarea.is-disabled .el-textarea__inner::-moz-placeholder{
-    color: rgb(217, 208, 191)
-}
-
 .el-textarea.is-disabled .el-textarea__inner:-ms-input-placeholder{
     color: rgb(217, 208, 191)
 }
@@ -336,10 +326,6 @@
 }
 
 .el-textarea__inner::-webkit-input-placeholder{
-    color: rgb(190, 178, 151)
-}
-
-.el-textarea__inner::-moz-placeholder{
     color: rgb(190, 178, 151)
 }
 
@@ -445,5 +431,7 @@
     /* Carousel
   --------------------------*/
     /* Collapse
+  --------------------------*/
+    /* Transfer
   --------------------------*/
 }

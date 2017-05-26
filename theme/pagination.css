@@ -93,6 +93,8 @@
   --------------------------*/
     /* Collapse
   --------------------------*/
+    /* Transfer
+  --------------------------*/
 }
 @charset "UTF-8";
 :root{
@@ -181,6 +183,8 @@
     /* Carousel
   --------------------------*/
     /* Collapse
+  --------------------------*/
+    /* Transfer
   --------------------------*/
 }
 .el-select-dropdown{
@@ -317,6 +321,8 @@
   --------------------------*/
     /* Collapse
   --------------------------*/
+    /* Transfer
+  --------------------------*/
 }
 .el-input{
     position: relative;
@@ -331,9 +337,6 @@
     cursor: not-allowed;
 }
 .el-input.is-disabled .el-input__inner::-webkit-input-placeholder{
-    color: rgb(217, 208, 191);
-}
-.el-input.is-disabled .el-input__inner::-moz-placeholder{
     color: rgb(217, 208, 191);
 }
 .el-input.is-disabled .el-input__inner:-ms-input-placeholder{
@@ -366,9 +369,6 @@
     width: 100%;
 }
 .el-input__inner::-webkit-input-placeholder{
-    color: rgb(190, 178, 151);
-}
-.el-input__inner::-moz-placeholder{
     color: rgb(190, 178, 151);
 }
 .el-input__inner:-ms-input-placeholder{
@@ -456,7 +456,7 @@
     display: block;
     margin: -10px;
 }
-.el-input-group__append .el-button, .el-input-group__append .el-select .el-input__inner, .el-input-group__append .el-select:hover .el-input__inner, .el-input-group__prepend .el-button, .el-input-group__prepend .el-select .el-input__inner, .el-input-group__prepend .el-select:hover .el-input__inner{
+.el-input-group__append button.el-button, .el-input-group__append div.el-select .el-input__inner, .el-input-group__append div.el-select:hover .el-input__inner, .el-input-group__prepend button.el-button, .el-input-group__prepend div.el-select .el-input__inner, .el-input-group__prepend div.el-select:hover .el-input__inner{
     border-color: transparent;
     background-color: transparent;
     color: inherit;
@@ -498,9 +498,6 @@
 .el-textarea.is-disabled .el-textarea__inner::-webkit-input-placeholder{
     color: rgb(217, 208, 191);
 }
-.el-textarea.is-disabled .el-textarea__inner::-moz-placeholder{
-    color: rgb(217, 208, 191);
-}
 .el-textarea.is-disabled .el-textarea__inner:-ms-input-placeholder{
     color: rgb(217, 208, 191);
 }
@@ -523,9 +520,6 @@
     transition: border-color .2s cubic-bezier(.645,.045,.355,1);
 }
 .el-textarea__inner::-webkit-input-placeholder{
-    color: rgb(190, 178, 151);
-}
-.el-textarea__inner::-moz-placeholder{
     color: rgb(190, 178, 151);
 }
 .el-textarea__inner:-ms-input-placeholder{
@@ -628,6 +622,8 @@
     /* Carousel
   --------------------------*/
     /* Collapse
+  --------------------------*/
+    /* Transfer
   --------------------------*/
 }
 .el-tag{
@@ -809,6 +805,8 @@
   --------------------------*/
     /* Collapse
   --------------------------*/
+    /* Transfer
+  --------------------------*/
 }
 .el-select-dropdown{}
 .el-select-dropdown__item{
@@ -824,7 +822,7 @@
     box-sizing: border-box;
     cursor: pointer;
 }
-.el-select-dropdown__item.hover{
+.el-select-dropdown__item.hover, .el-select-dropdown__item:hover{
     background-color: rgb(241, 239, 228);
 }
 .el-select-dropdown__item.selected{
@@ -931,6 +929,8 @@
     /* Carousel
   --------------------------*/
     /* Collapse
+  --------------------------*/
+    /* Transfer
   --------------------------*/
 }
 .el-select-group{
@@ -1040,6 +1040,8 @@
   --------------------------*/
     /* Collapse
   --------------------------*/
+    /* Transfer
+  --------------------------*/
 }
 .el-scrollbar{
     overflow: hidden;
@@ -1102,6 +1104,7 @@
 }
 .el-select .el-input__inner{
     cursor: pointer;
+    padding-right: 35px;
 }
 .el-select .el-input__inner:focus{
     border-color: #FE9B20;
@@ -1139,6 +1142,9 @@
 }
 .el-select .el-input.is-disabled .el-input__inner:hover{
     border-color: rgb(229, 222, 209);
+}
+.el-select > .el-input{
+    display: block;
 }
 .el-select .el-tag__close{
     margin-top: -2px;
@@ -1183,7 +1189,7 @@
     position: absolute;
     line-height: normal;
     white-space: normal;
-    z-index: 1000;
+    z-index: 1;
     top: 50%;
     transform: translateY(-50%);
 }
@@ -1285,6 +1291,8 @@
     /* Carousel
   --------------------------*/
     /* Collapse
+  --------------------------*/
+    /* Transfer
   --------------------------*/
 }
 
@@ -1570,5 +1578,7 @@
     /* Carousel
   --------------------------*/
     /* Collapse
+  --------------------------*/
+    /* Transfer
   --------------------------*/
 }

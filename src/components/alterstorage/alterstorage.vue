@@ -67,7 +67,7 @@
                 </el-date-picker>
               </el-form-item>
               <el-form-item label="结束时间" prop="end_time">
-                <el-date-picker v-model="form.end_time" type="date" placeholder="请选结束时间" size="small" :clearable="false">
+                <el-date-picker v-model="form.end_time" type="date" :editable="false" placeholder="请选结束时间" size="small" :clearable="false">
                 </el-date-picker>
               </el-form-item>
               <el-form-item label="设置规则" min-width="150">
@@ -107,7 +107,7 @@
   </div>
 </template>
 <script>
-  import {formatTime} from 'common/js/util.js';
+  import {formatDate} from 'common/js/util.js';
   import Validator from 'src/validator';
   import Store from 'common/js/store.js';
 
@@ -188,8 +188,8 @@
     computed: {
       data() {
         return {
-          start_time: this.form.start_time && formatTime(this.form.start_time, 'yyyy-MM-dd'),
-          end_time: this.form.end_time && formatTime(this.form.end_time, 'yyyy-MM-dd'),
+          start_time: this.form.start_time && formatDate(this.form.start_time),
+          end_time: this.form.end_time && formatDate(this.form.end_time),
           mobile: this.form.mobile,
           desc: this.form.desc,
           rules: this.form.rulesData,

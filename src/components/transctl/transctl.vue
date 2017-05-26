@@ -5,22 +5,32 @@
         <span>交易管理</span>
       </div>
     </div>
-    <div class="panel">
+    <div class="panel down">
       <div class="panel-header panel-header__auto">
         <el-form :model="form" :rules="formrules" ref="form">
-          <div class="panel-select-group panel-select-group__fix">
+          <div class="panel-select-group">
             <div class="panel-select__wrapper">
-              <span class="panel-select__desc panel-select-time__align">时间</span>
+              <span class="panel-select__desc">时间</span>
               <el-form-item prop="dateRangeValue">
                 <el-date-picker
                   v-model="form.dateRangeValue"
                   type="daterange"
+                  :editable="false"
                   placeholder="选择日期范围"
                   size="small"
                   :clearable="false">
                 </el-date-picker>
               </el-form-item>
             </div>
+            <div class="panel-select__wrapper">
+              <el-form-item prop="choosetime">
+                <el-radio-group v-model="form.choosetime" @change="changeTime">
+                  <el-radio-button v-for="item in choosetimes" :label="item.value">{{ item.name }}</el-radio-button>
+                </el-radio-group>
+              </el-form-item>
+            </div>
+          </div>
+          <div class="panel-select-group">
             <div class="panel-select__wrapper">
               <span class="panel-select__desc">店铺名称</span>
               <el-form-item prop="selectShopUid">
@@ -33,30 +43,60 @@
                 </el-select>
               </el-form-item>
             </div>
-          </div>
-          <div class="panel-select-group">
             <div class="panel-select__wrapper">
-              <span class="panel-select__desc">流水号</span>
-              <el-form-item prop="orderno">
-                <el-input v-model="form.orderno" placeholder="请输入流水号" size="small" class="panel-select-input__fix panel-select-input-220"></el-input>
-              </el-form-item>
-            </div>
-            <div class="panel-select__wrapper">
-              <span class="panel-select__desc mr-16">操作员</span>
-              <el-form-item prop="operaValue">
+              <span class="panel-select__desc">操作员</span>
+              <el-form-item>
                 <el-select v-model="form.operaValue" placeholder="全部" size="small" @change="operaChange" :disabled="form.selectShopUid === ''">
                   <el-option
-                    v-for="(label, value) in operaList"
-                    :label="label"
-                    :value="value">
+                          v-for="(label, value) in operaList"
+                          :label="label"
+                          :value="value">
                   </el-option>
                 </el-select>
               </el-form-item>
             </div>
           </div>
-          <div class="panel-header-btn-group">
-            <div class="panel-header-btn" @click="reset">重置</div>
-            <div class="panel-header-btn panel-header-btn__fill" @click="getTransData">查询</div>
+          <div class="panel-select-group">
+            <div class="panel-select__wrapper">
+              <span class="panel-select__desc">收款方式</span>
+              <el-form-item prop="checkAll1">
+                <el-checkbox v-model="form.checkAll1" @change="handleCheckAllChange1">不限</el-checkbox>
+              </el-form-item>
+              <el-form-item prop="type">
+                <el-checkbox-group v-model="form.type" @change="handleCheckedCitiesChange1">
+                  <el-checkbox v-for="item in typeList" :label="item.value" :key="item.value">{{ item.name }}</el-checkbox>
+                </el-checkbox-group>
+              </el-form-item>
+            </div>
+          </div>
+          <div class="panel-select-group">
+            <div class="panel-select__wrapper">
+              <span class="panel-select__desc">更多筛选</span>
+              <el-form-item prop="checkAll2">
+                <el-checkbox v-model="form.checkAll2" @change="handleCheckAllChange2">不限</el-checkbox>
+              </el-form-item>
+              <el-form-item prop="other">
+                <el-checkbox-group v-model="form.other" @change="handleCheckedCitiesChange2">
+                  <el-checkbox v-for="item in otherList" :label="item.value" :key="item.value">{{ item.name }}</el-checkbox>
+                </el-checkbox-group>
+              </el-form-item>
+            </div>
+          </div>
+
+          <div class="panel-select-group">
+            <div class="panel-select__wrapper">
+              <span class="panel-select__desc">流水号</span>
+              <el-form-item prop="orderno">
+                <el-input v-model="form.orderno" type="number" placeholder="请输入流水号" size="small" class="panel-select-input__fix panel-select-input-220"></el-input>
+              </el-form-item>
+            </div>
+            <div class="panel-header-btn-group">
+              <div class="panel-header-btn panel-header-btn__fill" @click="getTransData">
+                <span class="el-icon-loading" v-if="loading"></span>
+                <span v-else>查询</span>
+              </div>
+              <div class="panel-header-btn" @click="reset">重置</div>
+            </div>
           </div>
         </el-form>
       </div>
@@ -64,42 +104,47 @@
         <div class="panel-btn-group__wrapper panel-body-btn-group flex-normal">
           <div class="num_total">
             <div class="num_wrapper">
-              <span class="num-title">成功交易笔数：</span>
-              <span class="num-desc">{{ transData.sucnum || 0 }}</span>
+              <p class="num-title">交易总金额</p>
+              <p class="num-desc">{{ transData.sucamt || 0 }} 元</p>
             </div>
             <div class="num_wrapper">
-              <span class="num-title">交易总金额：</span>
-              <span class="num-desc">{{ transData.sucamt || 0 }} 元</span>
+              <p class="num-title">交易实收</p>
+              <p class="num-desc">{{ transData.total_txamt || 0 }} 元</p>
+            </div>
+            <div class="num_wrapper">
+              <p class="num-title">红包优惠</p>
+              <p class="num-desc">{{ transData.coupon_amt || 0 }} 元</p>
+            </div>
+            <div class="num_wrapper">
+              <p class="num-title">成功交易笔数</p>
+              <p class="num-desc">{{ transData.sucnum || 0 }} 笔</p>
+            </div>
+            <div class="num_wrapper">
+              <p class="num-title">撤销笔数</p>
+              <p class="num-default">{{ transData.cancelnum || 0 }} 笔</p>
             </div>
           </div>
           <div class="a-wrapper">
-            <a :href="detailHref" download>
-              <div class="panel-btn__download panel-btn__download_detail">
-                <i class="icon-download"></i>
-                <span>下载交易明细</span>
-              </div>
-            </a>
-            <a :href="collectionHref" download>
-              <div class="panel-btn__download panel-btn__download_record">
-                <i class="icon-download"></i>
-                <span>下载交易汇总</span>
-              </div>
-            </a>
+            <el-dropdown>
+              <span class="el-dropdown-link"><img src="./img/download.png" alt="下载"></span>
+              <el-dropdown-menu slot="dropdown">
+                <a :href="detailHref" download><el-dropdown-item command=1 class="download_detail">下载交易明细</el-dropdown-item></a>
+                <a :href="collectionHref" download><el-dropdown-item command=2 class="download_detail">下载交易汇总</el-dropdown-item></a>
+              </el-dropdown-menu>
+            </el-dropdown>
           </div>
         </div>
         <el-table
           :data="transData.data"
           style="width: 100%"
           row-class-name="el-table__row_fix"
-          v-loading="loading"
-          >
+          v-loading="loading">
           <el-table-column
-            prop="username"
-            label="店铺名称">
-          </el-table-column>
-          <el-table-column
-            prop="userid"
-            label="店铺ID">
+            label="店铺名称/ID">
+            <template scope="scope">
+              <div>{{ scope.row.username }}</div>
+              <div>{{ scope.row.userid }}</div>
+            </template>
           </el-table-column>
           <el-table-column
             label="操作员">
@@ -111,16 +156,17 @@
           </el-table-column>
           <el-table-column
             prop="sysdtm"
-            min-width="90"
+            min-width="150"
             label="交易时间">
-            <template scope="scope">{{ scope.row.sysdtm | removeHMS }}</template>
+            <template scope="scope">{{ scope.row.sysdtm }}</template>
           </el-table-column>
           <el-table-column
-            label="交易金额"
-            min-width="90">
+            label="交易金额">
             <template scope="scope">
-              <div><span class="scope_cotent_title">实收</span>{{ scope.row.txamt }}元</div>
-              <!-- <div><span class="scope_cotent_title">商家优惠</span>{{ scope.row.coupon_amt }}</div> -->
+              <div class="table-title">{{ scope.row.total_amt }}元</div>
+              <div class="table-content">实收{{ scope.row.txamt }}元</div>
+              <div v-show="scope.row.mchnt_coupon" class="table-content">商家红包{{ scope.row.mchnt_coupon }}元</div>
+              <div v-show="scope.row.hj_coupon" class="table-content">平台红包{{ scope.row.hj_coupon }}元</div>
             </template>
           </el-table-column>
           <el-table-column
@@ -153,15 +199,15 @@
   import axios from 'axios';
   import config from 'config';
   import qs from 'qs';
-  import {isEmptyObject} from 'common/js/util.js';
+  import {formatDate, isEmptyObject} from 'common/js/util.js';
+
+  const typeLists = ['wxpay', 'alipay', 'jdpay', 'qqpay', 'card'];
+  const otherLists = ['prepaid_recharge', 'prepaid', 'coupon', 'cancel'];
 
   export default {
     data() {
-      let today = new Date();
-      let yesterday = new Date();
-      let defaultDateRange = [];
-      yesterday.setDate(yesterday.getDate() - 1);
-      defaultDateRange.push(yesterday, today);
+      let start = new Date();
+      let defaultDateRange = [start, start];
       let checkOrderNo = (rule, val, cb) => {
         if(val && !/\d+/.test(Number(val))) {
           cb(new Error('流水号必须为数字！'));
@@ -171,15 +217,41 @@
           cb();
         }
       };
-
       return {
         pageSize: 10,
+        status: false,
         loading: false,
+        starttime: '',
+        endtime: '',
+        typeList: [
+          {'name': '微信收款', 'value': 'wxpay'},
+          {'name': '支付宝收款', 'value': 'alipay'},
+          {'name': '京东收款', 'value': 'jdpay'},
+          {'name': 'QQ收款', 'value': 'qqpay'},
+          {'name': '刷卡收款', 'value': 'card'}
+        ],
+        otherList: [
+          {'name': '储值充值', 'value': 'prepaid_recharge'},
+          {'name': '储值消费', 'value': 'prepaid'},
+          {'name': '红包优惠', 'value': 'coupon'},
+          {'name': '撤销明细', 'value': 'cancel'}
+        ],
+        choosetimes: [
+          {'name': '今天', 'value': '1'},
+          {'name': '昨天', 'value': '2'},
+          {'name': '近7天', 'value': '7'},
+          {'name': '近30天', 'value': '30'}
+        ],
         form: {
           selectShopUid: '',
           orderno: '',
           dateRangeValue: defaultDateRange,
-          operaValue: ''
+          operaValue: '',
+          checkAll1: true,
+          checkAll2: true,
+          choosetime: '1',
+          type: [],
+          other: []
         },
         currentPage: 1,
         operaList: {},
@@ -202,12 +274,6 @@
       shopData() {
         return this.$store.state.shopData;
       },
-      starttime() {
-        return this.form.dateRangeValue && this.format(this.form.dateRangeValue[0]);
-      },
-      endtime() {
-        return this.form.dateRangeValue && this.format(this.form.dateRangeValue[1]);
-      },
       basicParams() {
         return {
           userid: this.form.selectShopUid,
@@ -218,8 +284,20 @@
           charset: 'utf-8',
           isdownload: false,
           page: 1,
-          maxnum: this.pageSize
+          maxnum: this.pageSize,
+          paytypes: this.form.type.join(','),
+          filters: this.form.other.join(',')
         };
+      }
+    },
+    watch: {
+      'form.dateRangeValue': function(val) {
+        if(!this.status) {
+          this.form.choosetime = '';
+        }
+        this.starttime = formatDate(val[0]);
+        this.endtime = formatDate(val[1]);
+        this.status = false;
       }
     },
     created() {
@@ -242,7 +320,36 @@
       });
     },
     methods: {
+      // 选择时间
+      changeTime(value) {
+        if(value) {
+          this.status = true;
+          let end = new Date();
+          let start = new Date(end.getTime() - 3600 * 1000 * 24 * (value - 1));
+          if(value == 2) {
+              end = start;
+          }
+          this.form.dateRangeValue = [start, end];
+        }
+      },
+      // check选择功能
+      handleCheckAllChange1(event) {
+        this.form.type = event.target.checked ? [] : typeLists;
+      },
+      handleCheckedCitiesChange1(value) {
+        let checkCount = value.length;
+        this.form.checkAll1 = !(checkCount > 0);
+      },
+      handleCheckAllChange2(event) {
+        this.form.other = event.target.checked ? [] : otherLists;
+      },
+      handleCheckedCitiesChange2(value) {
+        let checkCount = value.length;
+        this.form.checkAll2 = !(checkCount > 0);
+      },
+      // 点击查询
       getTransData(params) {
+        this.downHref = 'javascript:;';
         if(params.which && this.$refs['page']) {
           this.$refs['page'].internalCurrentPage = 1;
         }
@@ -287,9 +394,9 @@
           let data = res.data;
           if(data.respcd === config.code.OK) {
             if(!isEmptyObject(data.data)) {
-              data.data[''] = '全部';
+              data.data = Object.assign({'': '全部'}, data.data);
             } else {
-              this.form.operaValue = '';
+              data.data = {'': '全部'};
             }
             this.operaList = data.data;
           } else {
@@ -307,24 +414,10 @@
           page: current
         });
       },
+      // 重置表单
       reset() {
-        let today = new Date();
-        let yesterday = new Date();
-        let defaultDateRange = [];
-        yesterday.setDate(yesterday.getDate() - 1);
-        defaultDateRange.push(yesterday, today);
-        this.form.dateRangeValue = defaultDateRange;
-        this.form.selectShopUid = '';
-        this.form.orderno = '';
-      },
-      format(date) {
-        let year = date.getFullYear();
-        let month = date.getMonth() + 1;
-        let day = date.getDate();
-        month = month >= 10 ? month : '0' + month;
-        day = day >= 10 ? day : '0' + day;
-
-        return `${year}-${month}-${day}`;
+        this.status = true;
+        this.$refs['form'].resetFields();
       },
       handleSizeChange(size) {
         this.loading = true;
@@ -337,7 +430,6 @@
 </script>
 
 <style lang="scss">
-
   // 采用BEM命名规则
 
   .banner_wrapper {
@@ -410,6 +502,7 @@
   .el-table__row_fix {
     height: 62px;
     min-height: 62px;
+    color: #282A2D;
   }
   .pagination_wrapper {
     display: flex;
@@ -457,26 +550,95 @@
   .panel-header__auto {
     position: relative;
     height: auto !important;
-    padding: 25px 0px;
+    padding: 25px 0;
   }
 
   .panel-select-group__fix {
     margin-bottom: 15px;
-  }
 
-  .panel-select-time__align {
-    margin-right: 30px !important;
+  }
+  .el-form-item__content {
+    .el-checkbox-group{
+      display: inline-block;
+      .el-checkbox{
+        margin-left: 15px;
+      }
+    }
   }
   .panel-select-input__fix {
     width: auto;
   }
 
+  .down{
+    .panel-select-group {
+      margin-bottom: 10px;
+      position: relative;
+      .panel-select__desc {
+        width: 70px;
+        margin: 0;
+      }
+      .el-input__inner {
+        width: 220px;
+      }
+      .el-checkbox__label {
+        color: #090909;
+      }
+    }
+    .panel-header__auto {
+      padding-bottom: 0;
+    }
+    .table-title {
+      font-size: 16px;
+      font-weight: 500;
+    }
+    .table-content {
+      font-size: 12px;
+    }
+    .num_total {
+      text-align: center;
+      display: flex;
+      p {
+        height: 30px;
+        line-height: 30px;
+      }
+      .num-title {
+        font-size: 15px;
+      }
+      .num-desc {
+        font-size: 18px;
+        color: #FF8100;
+        font-weight: bold;
+      }
+      .num-default {
+        font-size: 18px;
+        color: #8A8C92;
+        font-weight: bold;
+      }
+      .num_wrapper {
+        margin-left: 30px;
+      }
+    }
+    .a-wrapper {
+      margin-right: 30px;
+      .el-dropdown-link {
+        img {
+          padding: 5px;
+          border: 1px solid #7ED321;
+          cursor: pointer;
+        }
+      }
+    }
+    .el-icon-loading{
+      margin-right: 0;
+    }
+  }
   .panel-header-btn-group {
     position: absolute;
-    right: 20px;
-    top: 25px;
+    right: 30px;
+    bottom: 0;
     @at-root {
       .panel-header-btn {
+        float: left;
         box-sizing: border-box;
         width: 100px;
         height: 35px;
@@ -485,15 +647,22 @@
         text-align: center;
         line-height: 35px;
         font-size: 17px;
-        color: #FE9B20;
         cursor: pointer;
-        &:first-of-type {
-          margin-bottom: 15px;
+        &:last-of-type {
+           color: #FE9B20;
+           background-color: #fff;
+            &:link,&:visited,&:hover,&:active{
+            background-color: darken(#fff, 10%);
+            }
         }
       }
       .panel-header-btn__fill {
+        margin-right: 15px;
         color: #fff;
         background-color: #FE9B20;
+        &:link,&:visited,&:hover,&:active {
+          background-color: darken(#FE9B20, 10%);
+        }
       }
     }
   }
@@ -506,26 +675,19 @@
   .mr-16 {
     margin-right: 30px !important;
   }
-  .a-wrapper {
-    display: flex;
-  }
   .flex-normal {
     justify-content: space-between;
   }
-  .num_total {
-    display: flex;
-    align-items: center;
-    margin-left: 10px;
-    .num-title {
-      font-size: 14px;
-    }
-    .num-desc {
-      font-size: 17px;
-      color: #FE9B20;
-      font-weight: bold;
-    }
-    .num_wrapper:last-of-type {
-      margin-left: 30px;
+
+  .el-dropdown-menu {
+    padding: 0;
+    .download_detail {
+      background-color: #fff;
+      color: #262323;
+      &:link,&:visited,&:hover,&:active {
+        color: #FFF;
+        background-color: darken(#7ED321, 5%);
+      }
     }
   }
 </style>

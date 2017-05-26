@@ -16,14 +16,14 @@
     </el-form-item>
     <el-form-item label="单个红包金额">
       <el-form-item prop="singleValue">
-        <el-input size="small" v-model.number="form.singleValue"></el-input>
+        <el-input size="small" type="number" v-model.number="form.singleValue"></el-input>
       </el-form-item>
       <span>元</span>
     </el-form-item>
     <el-form-item label="使用条件">
       <span>微信支付</span>
       <el-form-item prop="limit_amt">
-        <el-input size="small" v-model.number="form.limit_amt"></el-input>
+        <el-input size="small" v-model.number="form.limit_amt" type="number"></el-input>
       </el-form-item>
       <span>元以上可用</span>
     </el-form-item>
@@ -43,9 +43,9 @@
 
 <script>
 
-  import {formatTime} from 'common/js/util.js';
+  import {formatDate} from 'common/js/util.js';
   import Validator from 'src/validator/';
-  
+
   export default {
 
     data() {
@@ -141,7 +141,7 @@
         let baseDate = new Date();
         let date = new Date();
         date.setDate(baseDate.getDate() + 1);
-        return formatTime(date, 'yyyy-MM-dd');
+        return formatDate(date);
       }
     }
   };

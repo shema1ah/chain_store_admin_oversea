@@ -86,11 +86,17 @@
   --------------------------*/
     /* Collapse
   --------------------------*/
+    /* Transfer
+  --------------------------*/
 }
 
 .el-step{
     position: relative;
     vertical-align: top;
+}
+
+.el-step:last-child .el-step__main{
+    padding-right: 0;
 }
 
 .el-step.is-vertical{}
@@ -376,5 +382,7 @@
     /* Carousel
   --------------------------*/
     /* Collapse
+  --------------------------*/
+    /* Transfer
   --------------------------*/
 }

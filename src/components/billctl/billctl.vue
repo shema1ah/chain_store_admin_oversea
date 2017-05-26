@@ -12,7 +12,7 @@
             <div class="panel-select__wrapper">
               <span class="panel-select__desc">打款时间</span>
               <el-form-item prop="dateRangeValue" class="relative">
-                <el-date-picker v-model="form.dateRangeValue" type="daterange" placeholder="选择日期范围" size="small" @change="changeDateRange" :clearable="false">
+                <el-date-picker v-model="form.dateRangeValue" type="daterange" placeholder="选择日期范围" size="small" @change="changeDateRange" :clearable="false" :editable="false">
                 </el-date-picker>
                 <span class="remark note ml-0">* 请不要跨月查询</span>
               </el-form-item>
@@ -72,7 +72,6 @@
   </div>
 </template>
 <script>
-  // import axios from 'axios';
   import config from 'config';
   import { formatObj } from 'common/js/util.js';
 
@@ -95,6 +94,7 @@
         }
       };
       return {
+        defaultDateRange: defaultDateRange,
         form: {
           dateRangeValue: defaultDateRange,
           selectShopUid: '',
@@ -154,7 +154,7 @@
           let endmonth = this.form.dateRangeValue[1].getMonth();
           if (startmonth !== endmonth) {
             this.$message.error('请不要跨月进行选择!');
-            this.form.dateRangeValue = '';
+            this.form.dateRangeValue = this.defaultDateRange;
           }
         }
       }
@@ -209,15 +209,15 @@
 
 .panel-btn__download_detail {
   background-color: #7ED321;
-  &:active {
-    background-color: darken(#7ED321, 10%);
+  &:link,&:visited,&:hover,&:active {
+    background-color: darken(#7ED321, 5%);
   }
 }
 
 .panel-btn__download_record {
   background-color: #FE9B20;
-  &:active {
-    background-color: darken(#FE9B20, 10%);
+  &:link,&:visited,&:hover,&:active {
+    background-color: darken(#FE9B20, 5%);
   }
 }
 
