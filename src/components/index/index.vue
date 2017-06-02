@@ -134,6 +134,9 @@
         return this.$store.state.pageShopData;
       }
     },
+    created() {
+      this.$store.dispatch('getPageShopData');
+    },
     methods: {
       currentChange(currentPage) {
         this.$store.dispatch({

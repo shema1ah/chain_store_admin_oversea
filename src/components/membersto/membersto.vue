@@ -1,15 +1,9 @@
 <template>
   <div>
-    <template v-if="$route.meta.keepAlive">
-     <keep-alive>
-        <router-view></router-view>
-      </keep-alive>
-    </template>
-    <template v-else>
+    <keep-alive>
       <router-view></router-view>
-    </template>
+    </keep-alive>
   </div>
-  
 </template>
 
 <script>

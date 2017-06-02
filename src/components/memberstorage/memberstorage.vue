@@ -91,7 +91,8 @@
           :page-size="pageSize"
           @size-change="handleSizeChange"
           :total="storageData.total_entries"
-          @current-change="currentChange">
+          @current-change="currentChange"
+          :current-page="currentpage">
         </el-pagination>
       </div>
       <div class="table_placeholder" v-else></div>
@@ -140,10 +141,26 @@
 <script>
   import axios from 'axios';
   import config from 'config';
-  import {deepClone} from 'common/js/util';
-  import Store from 'common/js/store';
+  import {deepClone} from '../../common/js/util';
+  import Store from '../../common/js/store';
 
   export default {
+    beforeRouteEnter (to, from, next) {
+      next((vm) => {
+        Object.assign(vm, {
+          stateValue: '',
+          pageSize: 10,
+          currentpage: 1,
+          flag: false
+        });
+        vm.$store.dispatch('getStorageData');
+        setTimeout(() => {
+          Object.assign(vm, {
+            flag: true
+          });
+        }, 1000);
+      });
+    },
     data() {
       return {
         pending: false,
@@ -174,14 +191,8 @@
         detailData: {},
         isShowDetail: false,
         pageSize: 10,
-        nameValue: '',
         loading: false,
-        basicParams: {
-          pos: 0,
-          count: 10,
-          activity_status: ''
-        },
-        currentpage: 0
+        currentpage: 1
       };
     },
     computed: {
@@ -192,34 +203,37 @@
         let shopData = deepClone(this.$store.state.shopData);
         shopData.list.shift();
         return shopData.list;
+      },
+      basicParams() {
+        return {
+          pos: this.currentpage - 1,
+          count: this.pageSize,
+          activity_status: this.stateValue
+        };
       }
     },
     methods: {
-      stateChange(state) {
-        if(this.$refs['page']) {
-          this.$refs['page'].internalCurrentPage = 1;
-        }
-        this.basicParams.activity_status = state;
-        this.$store.dispatch('getStorageData', {
-          params: this.basicParams
-        });
+      stateChange() {
+        this.currentChange();
       },
       currentChange(current) {
-        this.currentpage = current - 1;
-        this.$store.dispatch('getStorageData', {
-          params: Object.assign({}, this.basicParams, {pos: current - 1})
-        });
+        if(!current && this.currentpage !== 1) {
+          this.currentpage = 1;
+          return;
+        }
+        if(current) {
+          this.currentpage = current;
+        }
+        if(this.flag) {
+          this.$store.dispatch('getStorageData', {
+            params: this.basicParams
+          });
+        }
+        console.log(this.basicParams);
       },
       handleSizeChange(size) {
-        if(this.$refs['page']) {
-          this.$refs['page'].internalCurrentPage = 1;
-        }
-        this.basicParams.count = size;
-        this.basicParams.pos = 0;
         this.pageSize = size;
-        this.$store.dispatch('getStorageData', {
-          params: this.basicParams
-        });
+        this.currentChange();
       },
       cancelStorage(id) {
         this.$confirm('是否要取消此活动?', '提示', {
@@ -238,9 +252,8 @@
                 type: 'success',
                 message: '取消储值活动成功'
               });
-              this.$router.push('/memberstorage');
               this.$store.dispatch('getStorageData', {
-                params: Object.assign({}, this.basicParams, {curpage: this.currentpage})
+                params: this.basicParams
               });
             } else {
               this.$message.error(data.resperr);

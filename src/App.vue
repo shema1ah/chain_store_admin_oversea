@@ -15,9 +15,7 @@
           </a>
         </div>
       </div>
-      <keep-alive>
-        <router-view :shop="shop" @associate="associate" @showDetail="showDetail" @unbind="unbind"></router-view>
-      </keep-alive>
+      <router-view :shop="shop" @associate="associate" @showDetail="showDetail" @unbind="unbind"></router-view>
     </div>
     <el-dialog title="关联分店" v-model="visible" class="mydialog">
       <el-form :model="form" :rules="formrules" ref="form">
@@ -127,6 +125,7 @@ export default {
               this.visible = false;
               this.$refs['form'].resetFields();
               this.$store.dispatch('getPageShopData');
+              this.$store.dispatch('getShopList');
             } else {
               this.$message.error(data.resperr);
             }

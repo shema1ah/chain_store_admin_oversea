@@ -199,7 +199,7 @@
   import axios from 'axios';
   import config from 'config';
   import qs from 'qs';
-  import {formatDate} from 'common/js/util.js';
+  import {formatDate} from '../../common/js/util';
 
   const typeLists = ['wxpay', 'alipay', 'jdpay', 'qqpay', 'card'];
   const otherLists = ['prepaid_recharge', 'prepaid', 'coupon', 'cancel'];
@@ -301,8 +301,7 @@
       this.loading = true;
       axios.get(`${config.host}/merchant/trade/info`, {
         params: this.basicParams
-      })
-      .then((res) => {
+      }).then((res) => {
         this.loading = false;
         let data = res.data;
         if(data.respcd === config.code.OK) {
@@ -310,12 +309,12 @@
         } else {
           this.$message.error(data.resperr);
         }
-      })
-      .catch(() => {
+      }).catch(() => {
         this.loading = false;
         this.$message.error('首次获取交易列表失败');
       });
     },
+
     methods: {
       // 选择时间
       changeTime(value) {
@@ -329,6 +328,7 @@
           this.form.dateRangeValue = [start, end];
         }
       },
+
       // check选择功能
       handleCheckAllChange1(event) {
         this.form.type = event.target.checked ? [] : typeLists;
@@ -344,6 +344,7 @@
         let checkCount = value.length;
         this.form.checkAll2 = !(checkCount > 0);
       },
+
       // 点击查询
       getTransData(params) {
         this.downHref = 'javascript:;';
@@ -404,6 +405,7 @@
           page: current
         });
       },
+
       // 重置表单
       reset() {
         this.status = true;

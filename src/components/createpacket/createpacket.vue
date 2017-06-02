@@ -44,7 +44,7 @@
   </div>
 </template>
 <script>
-  import Store from 'common/js/store.js';
+  import Store from '../../common/js/store';
   export default {
     data() {
       return {

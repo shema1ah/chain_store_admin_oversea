@@ -69,8 +69,8 @@
 <script>
   import axios from 'axios';
   import config from 'config';
-  import {deepClone} from 'common/js/util.js';
-  import Store from 'common/js/store.js';
+  import {deepClone} from '../../common/js/util';
+  import Store from '../../common/js/store';
 
   export default {
     beforeRouteEnter (to, from, next) {
@@ -116,7 +116,6 @@
                 type: 'success',
                 message: '创建储值活动成功'
               });
-              this.$store.dispatch('getStorageData');
               this.$router.push('/memberstorage');
             } else {
               this.$message.error(data.resperr);

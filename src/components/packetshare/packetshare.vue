@@ -12,12 +12,11 @@
       </el-date-picker>
     </el-form-item>
     <el-form-item label="适用门店" prop="sub_mchnt_list">
-      <el-select v-model="form.sub_mchnt_list" placeholder="请选择门店" multiple size="small" @change="changeSelectShop" ref="selectShops">
+      <el-select v-model="form.sub_mchnt_list" placeholder="请选择门店" multiple size="small" ref="selectShops">
         <el-option
           v-for="shop in shopList"
           :label="shop.shop_name"
-          :value="shop.uid"
-          :disabled="shop.flag === flag">
+          :value="shop.uid">
         </el-option>
       </el-select>
     </el-form-item>
@@ -101,8 +100,8 @@
 </template>
 
 <script>
-  import {formatDate} from 'common/js/util.js';
-  import Validator from 'src/validator/';
+  import {formatDate} from '../../common/js/util';
+  import Validator from '../../validator';
 
   export default {
     data() {
@@ -156,8 +155,6 @@
       };
 
       return {
-        flag: 1,
-        switch: true,
         packetValue: 0,
         form: {
           act_name: '',
@@ -226,24 +223,13 @@
         return this.$store.state.shopData;
       },
       shopList() {
-        if(this.shopData && this.shopData.list) {
-          for(let i = 0; i < this.shopData.list.length; i++) {
-            if(i === 0) {
-              this.shopData.list[i].flag = 0;
-            } else {
-              this.shopData.list[i].flag = 1;
-            }
-          }
           return this.shopData.list;
-        }
-      },
+        },
       data() {
         if(this.packetValue === 0) {
           this.form.total_amt = (this.form.singleValue * 100 * this.form.coupon_num ) / 100;
         }
         return {
-          flag: 1,
-          switch: true,
           packetValue: this.packetValue,
           act_type: 'type_sharing',
           act_name: this.form.act_name,
@@ -263,19 +249,14 @@
         };
       }
     },
-    methods: {
-      changeSelectShop(v) {
-        let tmparr = this.form.sub_mchnt_list;
-        if(tmparr.indexOf('') !== -1 && this.switch) {
-          this.switch = false;
-          this.form.sub_mchnt_list = [''];
-          this.flag = 1;
-          setTimeout(() => {
-            this.switch = true;
-          }, 0);
-        }
-        if(tmparr.length === 0) {
-          this.flag = 3;
+    watch: {
+      'form.sub_mchnt_list': function (val, oldval) {
+        if(val.length > oldval.length) {
+          if(val.indexOf('') > 0) {
+            this.form.sub_mchnt_list = [''];
+          }else if(oldval.indexOf('') > -1) {
+            this.form.sub_mchnt_list.shift();
+          }
         }
       }
     }

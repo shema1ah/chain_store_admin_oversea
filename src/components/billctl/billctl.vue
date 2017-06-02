@@ -73,7 +73,7 @@
 </template>
 <script>
   import config from 'config';
-  import { formatObj } from 'common/js/util.js';
+  import { formatObj } from '../../common/js/util';
 
   export default {
     data() {

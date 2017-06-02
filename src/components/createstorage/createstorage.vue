@@ -68,9 +68,9 @@
   </div>
 </template>
 <script>
-  import {formatDate, deepClone} from 'common/js/util.js';
-  import Validator from 'src/validator/';
-  import Store from 'common/js/store.js';
+  import {formatDate, deepClone} from '../../common/js/util';
+  import Validator from '../../validator';
+  import Store from '../../common/js/store';
 
   export default {
     data() {

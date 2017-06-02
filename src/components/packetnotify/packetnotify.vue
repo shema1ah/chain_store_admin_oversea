@@ -1,16 +1,13 @@
 <template>
   <el-form :rules="formrules" :model="form" ref="form">
     <el-form-item label="目标通知到">
-      <span>{{ member_total }}</span>
+      <span>{{ member_total || 0 }}</span>
       <span>人</span>
     </el-form-item>
     <el-form-item label="适用门店" prop="sub_mchnt_list">
-      <el-select v-model="form.sub_mchnt_list" placeholder="请选择门店" multiple size="small" @change="changeSelectShop" ref="selectShops">
-        <el-option
-          v-for="shop in shopList"
-          :label="shop.shop_name"
-          :value="shop.uid"
-          :disabled="shop.flag === flag">
+      <el-select v-model="form.sub_mchnt_list" placeholder="请选择门店" multiple size="small"
+                 ref="selectShops">
+        <el-option v-for="shop in shopList" :label="shop.shop_name" :key="shop.uid" :value="shop.uid">
         </el-option>
       </el-select>
     </el-form-item>
@@ -43,21 +40,21 @@
 
 <script>
 
-  import {formatDate} from 'common/js/util.js';
-  import Validator from 'src/validator/';
+  import {formatDate} from '../../common/js/util';
+  import Validator from '../../validator';
 
   export default {
 
     data() {
 
       let limitAmtValidator = (rule, val, cb) => {
-        if(val === '') {
+        if (val === '') {
           cb('请输入使用条件');
-        } else if(isNaN(val)) {
+        } else if (isNaN(val)) {
           cb('请输入数字');
-        } else if(val < this.form.singleValue) {
+        } else if (val < this.form.singleValue) {
           cb('使用条件要大于单个红包金额');
-        } else if(!(/^\d+(\.\d{1,2})?$/.test(val))) {
+        } else if (!(/^\d+(\.\d{1,2})?$/.test(val))) {
           cb('小数点后只能有两位');
         } else {
           cb();
@@ -65,8 +62,6 @@
       };
 
       return {
-        flag: 1,
-        switch: true,
         form: {
           singleValue: '',
           limit_amt: '',
@@ -74,17 +69,17 @@
         },
         formrules: {
           limit_amt: [
-            { validator: limitAmtValidator }
+            {validator: limitAmtValidator}
           ],
           effect_date: [
-            { required: true, message: '请输入有限期' },
-            { type: 'number', message: '请输入数字' }
+            {required: true, message: '请输入有限期'},
+            {type: 'number', message: '请输入数字'}
           ],
           singleValue: [
-            { validator: Validator.singleValueValidator }
+            {validator: Validator.singleValueValidator}
           ],
           sub_mchnt_list: [
-            { required: true, message: '请选择适用门店' }
+            {required: true, message: '请选择适用门店'}
           ]
         }
       };
@@ -94,16 +89,7 @@
         return this.$store.state.shopData;
       },
       shopList() {
-        if(this.shopData && this.shopData.list) {
-          for(let i = 0; i < this.shopData.list.length; i++) {
-            if(i === 0) {
-              this.shopData.list[i].flag = 0;
-            } else {
-              this.shopData.list[i].flag = 1;
-            }
-          }
-          return this.shopData.list;
-        }
+        return this.shopData.list;
       },
       member_total() {
         return this.$store.state.member_total;
@@ -122,21 +108,21 @@
         };
       }
     },
+    watch: {
+      'form.sub_mchnt_list': function (val, oldval) {
+        if(val.length > oldval.length) {
+          if(val.indexOf('') > 0) {
+            this.form.sub_mchnt_list = [''];
+          }else if(oldval.indexOf('') > -1) {
+            this.form.sub_mchnt_list.shift();
+          }
+        }
+      }
+    },
+    created() {
+      this.$store.dispatch('getMemberTotal');
+    },
     methods: {
-      changeSelectShop() {
-        let tmparr = this.form.sub_mchnt_list;
-        if(tmparr.indexOf('') !== -1 && this.switch) {
-          this.switch = false;
-          this.form.sub_mchnt_list = [''];
-          this.flag = 1;
-          setTimeout(() => {
-            this.switch = true;
-          }, 0);
-        }
-        if(tmparr.length === 0) {
-          this.flag = 3;
-        }
-      },
       getNotifyTime() {
         let baseDate = new Date();
         let date = new Date();
@@ -150,6 +136,7 @@
   .el-form-item-300 {
     width: 300px;
   }
+
   .el-form-item-200 {
     width: 200px;
   }

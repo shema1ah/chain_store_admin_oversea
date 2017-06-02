@@ -73,7 +73,8 @@
           :page-size="pageSize"
           @size-change="handleSizeChange"
           :total="redpacketData.total"
-          @current-change="currentChange">
+          @current-change="currentChange"
+          :current-page="currentpage">>
         </el-pagination>
       </div>
       <div class="table_placeholder" v-else></div>
@@ -217,10 +218,29 @@
 <script>
   import axios from 'axios';
   import config from 'config';
-  import {formatDate} from 'common/js/util.js';
-  import Store from 'src/common/js/store.js';
+  import {formatDate} from '../../common/js/util';
 
   export default {
+    beforeRouteEnter (to, from, next) {
+      next((vm) => {
+        Object.assign(vm, {
+          flag: false,
+          currentpage: 1,
+          pageSize: 10,
+          packetValue: '',
+          nameValue: '',
+          packetType: 0
+        });
+        vm.$store.dispatch('getRedpacketData');
+
+        // 延时改变
+        setTimeout(() => {
+          Object.assign(vm, {
+            flag: true
+          });
+        }, 1000);
+      });
+    },
     data() {
       return {
         pageSize: 10,
@@ -245,7 +265,7 @@
         loading: false,
         detailData: {},
         show: false,
-        currentpage: 0
+        currentpage: 1
       };
     },
     computed: {
@@ -257,15 +277,7 @@
           type: this.packetValue,
           sub_uid: this.nameValue,
           length: this.pageSize,
-          curpage: 0
-        };
-      },
-      packetParams() {
-        return {
-          type: this.packetValue,
-          curpage: this.currentpage,
-          nameValue: this.nameValue,
-          length: this.pageSize
+          curpage: this.currentpage - 1
         };
       },
       redpacketData() {
@@ -276,32 +288,40 @@
       }
     },
     methods: {
-      packetChange(packettype) {
-        Store.set('packetparams', this.packetParams);
-        if(this.$refs['page']) {
-          this.$refs['page'].internalCurrentPage = 1;
-        }
-        this.$store.dispatch('getRedpacketData', {
-          params: this.basicParams
-        });
+      // 红包类型
+      packetChange() {
+        this.currentChange();
       },
-      nameChange(uid) {
-        if(this.$refs['page']) {
-          this.$refs['page'].internalCurrentPage = 1;
-        }
-        Store.set('packetparams', this.packetParams);
-        this.$store.dispatch('getRedpacketData', {
-          params: this.basicParams
-        });
+
+      // 店铺名称
+      nameChange() {
+        this.currentChange();
       },
+
+      // 改变当前页
       currentChange(current) {
-        this.currentpage = current - 1;
-        Store.set('packetparams', this.packetParams);
-        console.log(Store.get('packetparams'));
-        this.$store.dispatch('getRedpacketData', {
-          params: Object.assign({}, this.basicParams, {curpage: current - 1})
-        });
+        if(!current && this.currentpage !== 1) {
+          this.currentpage = 1;
+          return;
+        }
+        if(current) {
+          this.currentpage = current;
+        }
+        if(this.flag) {
+          this.$store.dispatch('getRedpacketData', {
+            params: this.basicParams
+          });
+        }
+        console.log(this.basicParams);
       },
+
+      // 改变size
+      handleSizeChange(size) {
+        this.pageSize = size;
+        this.currentChange();
+      },
+
+      // 取消活动
       cancelAct(scope) {
         this.$confirm('是否要取消此活动?', '提示', {
           confirmButtonText: '确定',
@@ -320,7 +340,7 @@
                 message: '红包活动取消成功'
               });
               this.$store.dispatch('getRedpacketData', {
-                params: Object.assign({}, this.basicParams, {curpage: this.currentpage})
+                params: this.basicParams
               });
             } else {
               this.$message.error(data.respmsg);
@@ -359,17 +379,6 @@
           .catch(() => {
             this.$message.error('获取红包信息失败');
           });
-      },
-      handleSizeChange(size) {
-        if(this.$refs['page']) {
-          this.$refs['page'].internalCurrentPage = 1;
-        }
-        Store.set('packetparams', this.packetparams);
-        this.pageSize = size;
-        this.basicParams.curpage = 0;
-        this.$store.dispatch('getRedpacketData', {
-          params: Object.assign({}, this.basicParams)
-        });
       }
     }
   };
