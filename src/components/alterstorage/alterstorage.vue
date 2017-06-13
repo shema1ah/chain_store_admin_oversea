@@ -204,7 +204,7 @@
     methods: {
       cancelAlteration() {
         console.log(this.$refs['form']);
-        this.$router.push('/memberstorage');
+        this.$router.push('/main/memberstorage');
       },
       preview() {
         console.log(this.data);

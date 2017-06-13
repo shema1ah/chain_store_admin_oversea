@@ -6,7 +6,7 @@
         <i class="icon-right_arrow"></i>
         <span>会员红包</span>
       </div>
-      <router-link to="/memberredpacket/createpacket">
+      <router-link to="/main/memberredpacket/createpacket">
         <div class="banner-btn">
           <i class="icon-create"></i>
           <span class="banner-btn__desc">新建红包</span>
@@ -88,7 +88,7 @@
         <el-row>
           <el-col :span="8" class="title">适用门店</el-col>
           <el-col :span="16" class="desc">
-            <span v-for="shop in detailData.effect_sub_merchant">{{ shop.shopname }}、</span>
+            <span v-for="(shop,index) in detailData.effect_sub_merchant">{{ shop.shopname }}{{ index < detailData.effect_sub_merchant.length - 1?"、":"" }}</span>
           </el-col>
         </el-row>
         <el-row>
@@ -123,7 +123,7 @@
         <el-row>
           <el-col :span="8" class="title">适用门店</el-col>
           <el-col :span="16" class="desc">
-            <span v-for="shop in detailData.effect_sub_merchant">{{ shop.shopname }}、</span>
+            <span v-for="(shop,index) in detailData.effect_sub_merchant">{{ shop.shopname }}{{ index < detailData.effect_sub_merchant.length - 1?"、":"" }}</span>
           </el-col>
         </el-row>
         <el-row>
@@ -173,7 +173,7 @@
         <el-row>
           <el-col :span="8" class="title">适用门店</el-col>
           <el-col :span="16" class="desc">
-            <span v-for="shop in detailData.effect_sub_merchant">{{ shop.shopname }}、</span>
+            <span v-for="(shop,index) in detailData.effect_sub_merchant">{{ shop.shopname }}{{ index < detailData.effect_sub_merchant.length - 1?"、":"" }}</span>
           </el-col>
         </el-row>
         <el-row>
@@ -238,7 +238,7 @@
           Object.assign(vm, {
             flag: true
           });
-        }, 1000);
+        }, 200);
       });
     },
     data() {
@@ -325,14 +325,11 @@
       cancelAct(scope) {
         this.$confirm('是否要取消此活动?', '提示', {
           confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'wraning'
-        })
-        .then(() => {
+          cancelButtonText: '关闭'
+        }).then(() => {
           axios.post(`${config.host}/merchant/activity/close`, {
             act_id: scope.row.id
-          })
-          .then((res) => {
+          }).then((res) => {
             let data = res.data;
             if (data.respcd === config.code.OK) {
               this.$message({
@@ -346,7 +343,9 @@
               this.$message.error(data.respmsg);
             }
           });
-        });
+        }).catch(() => {
+          console.log("取消");
+      });
       },
       showDetail(scope) {
         let actName = scope.row.title;
@@ -465,41 +464,6 @@
   padding-right: 20px;
   justify-content: flex-end;
   align-items: center;
-}
-
-.el-dropdown-menu__fix {
-  padding: 0px;
-  border: 1px solid #E8E7E6;
-  color: #FE9B20;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.05);
-  @at-root .el-dropdown-item__fix {
-    line-height: 32px;
-    padding: 0px 8px;
-    text-align: center;
-    font-size: 15px;
-    &:first-of-type {
-      border-bottom: 1px solid #E8E7E6;
-    }
-  }
-}
-
-.el-button__fix {
-  position: relative;
-  font-size: 15px;
-  border-radius: 0px;
-  margin-right: 15px;
-  @at-root .el-dropdown-link__fix {
-    font-size: 15px;
-    color: #FE9B20;
-  }
-  &::after {
-    position: absolute;
-    content: '';
-    height: 15px;
-    right: -10px;
-    width: 1px;
-    background-color: #FE9B20;
-  }
 }
 .detail_dialog {
   .el-row {

@@ -71,7 +71,7 @@
             <template scope="scope">
               <el-button type="text" size="small" class="el-button__fix" @click="getDetailData(scope.row.activity_info.activity_id)">查看详情</el-button>
     <!--           <el-button type="text" size="small" class="el-button__fix">下载物料</el-button> -->
-              <el-dropdown :hide-on-click="true">
+              <el-dropdown>
                 <span class="el-dropdown-link el-dropdown-link__fix">
                   更多<i class="el-icon-caret-bottom el-icon--right"></i>
                 </span>
@@ -103,7 +103,7 @@
           <el-col :span="7" class="title">适用门店</el-col>
           <el-col :span="17" class="desc">
             <div>
-              <span v-for="shop in shopData">{{ shop.shop_name }}、</span>
+              <span v-for="(shop,index) in shopData">{{ shop.shop_name }}{{ index < shopData.length - 1?"、":"" }}</span>
             </div>
             <div class="remark mt-0 lh-16">注：请确保以上门店均已开通储值服务，否则无法正常储值！</div>
           </el-col>
@@ -158,7 +158,7 @@
           Object.assign(vm, {
             flag: true
           });
-        }, 1000);
+        }, 200);
       });
     },
     data() {
@@ -238,14 +238,12 @@
       cancelStorage(id) {
         this.$confirm('是否要取消此活动?', '提示', {
           confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'wraning'
+          cancelButtonText: '关闭'
         })
         .then(() => {
           axios.post(`${config.host}/merchant/prepaid/stop`, {
             activity_id: id
-          })
-          .then((res) => {
+          }).then((res) => {
             let data = res.data;
             if(data.respcd === config.code.OK) {
               this.$message({
@@ -258,10 +256,11 @@
             } else {
               this.$message.error(data.resperr);
             }
-          })
-          .catch(() => {
+          }).catch(() => {
             this.$message.error('取消储值活动失败');
           });
+        }).catch(() => {
+          console.log("取消");
         });
       },
       fixData(data) {
@@ -295,7 +294,7 @@
             if(_this.pending) {
               _this.$message.error('当前有活动正在进行，请终止后再创建');
             } else {
-              _this.$router.push('/memberstorage/createstorage');
+              _this.$router.push('/main/memberstorage/createstorage');
             }
           } else {
             this.$message.error(data.resperr);

@@ -352,12 +352,11 @@
           this.$refs['page'].internalCurrentPage = 1;
         }
         this.$refs['form'].validate((valid) => {
-          if(valid) {
+          if(valid && !this.loading) {
             this.loading = true;
             axios.get(`${config.host}/merchant/trade/info`, {
               params: Object.assign({}, this.basicParams, params)
-            })
-            .then((res) => {
+            }).then((res) => {
               this.loading = false;
               let data = res.data;
               if(data.respcd === config.code.OK) {
@@ -365,14 +364,12 @@
               } else {
                 this.$message.error(data.resperr);
               }
-            })
-            .catch(() => {
+            }).catch(() => {
               this.loading = false;
               this.$message.error('获取交易数据失败');
             });
           } else {
-            this.loading = false;
-            this.$message.error('请核对流水号!');
+            this.$message.error('请核对流水号');
           }
         });
       },
@@ -504,41 +501,6 @@
     align-items: center;
   }
 
-  .el-dropdown-menu__fix {
-    padding: 0px;
-    border: 1px solid #E8E7E6;
-    color: #FE9B20;
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.05);
-    @at-root .el-dropdown-item__fix {
-      line-height: 32px;
-      padding: 0px 8px;
-      text-align: center;
-      font-size: 15px;
-      &:first-of-type {
-        border-bottom: 1px solid #E8E7E6;
-      }
-    }
-  }
-
-  .el-button__fix {
-    position: relative;
-    font-size: 15px;
-    border-radius: 0px;
-    margin-right: 15px;
-    @at-root .el-dropdown-link__fix {
-      font-size: 15px;
-      color: #FE9B20;
-    }
-    &::after {
-      position: absolute;
-      content: '';
-      height: 15px;
-      right: -10px;
-      width: 1px;
-      background-color: #FE9B20;
-    }
-  }
-
   .panel-header__auto {
     position: relative;
     height: auto !important;
@@ -622,40 +584,6 @@
     }
     .el-icon-loading{
       margin-right: 0;
-    }
-  }
-  .panel-header-btn-group {
-    position: absolute;
-    right: 30px;
-    bottom: 0;
-    @at-root {
-      .panel-header-btn {
-        float: left;
-        box-sizing: border-box;
-        width: 100px;
-        height: 35px;
-        border: 1px solid #FE9B20;
-        border-radius: 3px;
-        text-align: center;
-        line-height: 35px;
-        font-size: 17px;
-        cursor: pointer;
-        &:last-of-type {
-           color: #FE9B20;
-           background-color: #fff;
-            &:link,&:visited,&:hover,&:active{
-            background-color: darken(#fff, 10%);
-            }
-        }
-      }
-      .panel-header-btn__fill {
-        margin-right: 15px;
-        color: #fff;
-        background-color: #FE9B20;
-        &:link,&:visited,&:hover,&:active {
-          background-color: darken(#FE9B20, 10%);
-        }
-      }
     }
   }
   .el-form-item {

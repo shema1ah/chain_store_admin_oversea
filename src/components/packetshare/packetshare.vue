@@ -108,7 +108,7 @@
       let expireValid = (rule, val, cb) => {
         if(val === '') {
           cb('请选择活动结束时间');
-        } else if(val.getTime() < this.form.start_time.getTime()) {
+        } else if(this.form.start_time && val.getTime() < this.form.start_time.getTime()) {
           cb('活动结束时间必须大于开始时间');
         } else {
           console.log(val);
@@ -222,9 +222,11 @@
       shopData() {
         return this.$store.state.shopData;
       },
+
       shopList() {
           return this.shopData.list;
         },
+
       data() {
         if(this.packetValue === 0) {
           this.form.total_amt = (this.form.singleValue * 100 * this.form.coupon_num ) / 100;
@@ -249,6 +251,7 @@
         };
       }
     },
+
     watch: {
       'form.sub_mchnt_list': function (val, oldval) {
         if(val.length > oldval.length) {

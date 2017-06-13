@@ -186,7 +186,7 @@
     },
     methods: {
       cancelCreation() {
-        this.$router.push('/memberstorage');
+        this.$router.push('/main/memberstorage');
       },
       preview() {
         this.$refs['form'].validate((valid) => {

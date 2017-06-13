@@ -116,7 +116,7 @@
                 type: 'success',
                 message: '创建储值活动成功'
               });
-              this.$router.push('/memberstorage');
+              this.$router.push('/main/memberstorage');
             } else {
               this.$message.error(data.resperr);
             }
@@ -136,7 +136,7 @@
                 message: '修改储值活动成功'
               });
               this.$store.dispatch('getStorageData');
-              this.$router.push('/memberstorage');
+              this.$router.push('/main/memberstorage');
             } else {
               this.$message.error(data.resperr);
             }

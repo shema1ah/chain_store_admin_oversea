@@ -167,7 +167,6 @@
           sub_mchnt_list: ['']
         },
         formrules: {
-
           act_name: [
             { required: true, message: '请输入活动名称' }
           ],

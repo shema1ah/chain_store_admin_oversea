@@ -246,7 +246,7 @@
               type: 'success',
               message: '创建成功'
             });
-            this.$router.push('/memberredpacket');
+            this.$router.push('/main/memberredpacket');
           } else {
             this.$message.error(data.resperr);
           }
