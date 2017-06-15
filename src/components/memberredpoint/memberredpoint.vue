@@ -41,9 +41,15 @@
               <p><span class="scope_cotent_title">结束时间</span>{{ scope.row.expire_time | removeHMS }}</p>
             </template>
           </el-table-column>
-          <el-table-column prop="exchange_pt" label="集点条件" min-width="150">
+          <el-table-column label="集点条件" min-width="150">
+            <template scope="scope">
+              <span>支付满{{ scope.row.obtain_amt }}可集一点</span>
+            </template>
           </el-table-column>
-          <el-table-column prop="goods_name" label="礼品详情" min-width="100">
+          <el-table-column label="礼品详情" min-width="100">
+            <template scope="scope">
+              <span>满{{ scope.row.exchange_pt }}点可兑换{{ scope.row.goods_name }}一份</span>
+            </template>
           </el-table-column>
           <el-table-column prop="status_chn" label="状态">
           </el-table-column>
@@ -57,15 +63,15 @@
           </el-table-column>
           <el-table-column min-width="150" label="操作">
             <template scope="scope">
-              <el-button type="text" size="small" class="el-button__fix" @click="showDetail(scope.id)">查看详情</el-button>
+              <el-button type="text" size="small" class="el-button__fix" @click="showDetail(scope.row)">查看详情</el-button>
               <el-dropdown>
                 <span class="el-dropdown-link el-dropdown-link__fix">
                   更多<i class="el-icon-caret-bottom el-icon--right"></i>
                 </span>
                 <el-dropdown-menu slot="dropdown" class="el-dropdown-menu__fix collect">
-                  <el-dropdown-item class="el-dropdown-item__fix" :disabled="scope.row.state===2 || scope.row.state ===3" @click.native="editActivity(scope.row.id)">修改活动</el-dropdown-item>
+                  <el-dropdown-item class="el-dropdown-item__fix" :disabled="scope.row.state===2 || scope.row.state ===3" @click.native="editActivity(scope.row)">修改活动</el-dropdown-item>
                   <el-dropdown-item class="el-dropdown-item__fix" :disabled="scope.row.state===2 || scope.row.state ===3" @click.native="stopActivity(scope.row.id)">停止活动</el-dropdown-item>
-                  <a :href="collectionHref" @click="downLoad(scope.row.id)">
+                  <a href="scope.row.promotion_url" @click="downLoad(scope.row.id)">
                     <el-dropdown-item command=3 class="el-dropdown-item__fix">下载宣传物料</el-dropdown-item>
                   </a>
                 </el-dropdown-menu>
@@ -89,35 +95,39 @@
     </div>
     <el-dialog :visible.sync="isShowDetail" class="detail_dialog" title="集点详情">
       <el-row>
-        <el-col :span="8" class="title">目标点数</el-col>
-        <el-col :span="16" class="desc"></el-col>
+        <el-col :span="4" class="title">目标点数</el-col>
+        <el-col :span="20" class="desc"><span class="orange">{{ detailData.exchange_pt }}点</span></el-col>
       </el-row>
       <el-row>
-        <el-col :span="8" class="title">集点条件</el-col>
-        <el-col :span="16" class="desc">
-          <span></span>
+        <el-col :span="4" class="title">集点条件</el-col>
+        <el-col :span="20" class="desc">
+          支付满<span class="orange">{{ detailData.obtain_amt }}元</span>可集一点
+          <span v-if="detailData.obtain_limit == 0" style="font-size: 14px;" class="orange">/一次付款可集多点</span>
         </el-col>
       </el-row>
       <el-row>
-        <el-col :span="8" class="title">礼品名称</el-col>
-        <el-col :span="16" class="desc"></el-col>
+        <el-col :span="4" class="title">礼品名称</el-col>
+        <el-col :span="20" class="desc">{{ detailData.goods_name }}</el-col>
       </el-row>
       <el-row>
-        <el-col :span="8" class="title">礼品价格</el-col>
-        <el-col :span="16" class="desc"></el-col>
+        <el-col :span="4" class="title">礼品价格</el-col>
+        <el-col :span="20" class="desc">{{ detailData.goods_amt }}元</el-col>
       </el-row>
       <el-row>
-        <el-col :span="8" class="title">开始时间</el-col>
-        <el-col :span="16" class="desc"></el-col>
+        <el-col :span="4" class="title">活动时间</el-col>
+        <el-col :span="20" class="desc">{{ detailData.start_time }} - {{ detailData.expire_time }}</el-col>
       </el-row>
       <el-row>
-        <el-col :span="8" class="title">结束时间</el-col>
-        <el-col :span="16" class="desc"></el-col>
-      </el-row><el-row>
-        <el-col :span="8" class="title">适用门店</el-col>
-        <el-col :span="16" class="desc">
-          <div class="desc-item"></div>
-          <div class="remark">备注：红包费用由商户承担</div>
+        <el-col :span="4" class="title">适用门店</el-col>
+        <el-col :span="20" class="desc">
+          <div class="desc-item">
+            <span v-for="(shop,index) in detailData.apply_shops">{{ shop.shop_name }}{{ index < detailData.apply_shops.length - 1?"、":"" }}</span>
+          </div>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="20" :offset="4" class="desc">
+          <div class="remark">备注：会员在集点满额兑换礼品后，将自动重新集点</div>
         </el-col>
       </el-row>
     </el-dialog>
@@ -126,7 +136,6 @@
 <script>
   import axios from 'axios';
   import config from 'config';
-  // import {formatDate} from '../../common/js/util';
 
   export default {
     beforeRouteEnter (to, from, next) {
@@ -138,6 +147,8 @@
           nameValue: '',
           stateValue: ''
         });
+
+        vm.getData();
 
         // 延时改变
         setTimeout(() => {
@@ -151,7 +162,6 @@
       return {
         collectData: [],
         isShowDetail: false,
-        collectionHref: 'javascript:;',
         pageSize: 10,
         nameValue: '',
         stateValue: '',
@@ -196,7 +206,7 @@
       }
     },
     created() {
-      this.getData();
+      // this.getData();
     },
 
     methods: {
@@ -277,45 +287,16 @@
       },
 
       // 编辑活动
-      editActivity(id) {
-        console.log(id);
-        axios.post(`${config.host}/merchant/activity/close`, {
-          id: id
-        }).then((res) => {
-            let data = res.data;
-            if (data.respcd === config.code.OK) {
-              this.$message({
-                type: 'success',
-                message: '红包活动取消成功'
-              });
-
-            } else {
-              this.$message.error(data.respmsg);
-            }
-          }).catch(() => {
-            this.$message.error("停止活动失败");
-        });
+      editActivity(data) {
+        console.log(data, 1111);
+        this.$store.state.pointData = data;
+        this.$router.push("/main/memberredpoint/editpoint");
       },
 
-      // 下载
-      downLoad(id) {
-        this.collectionHref = 'javascript:;';
-        axios.post(`${config.ohost}/mchnt/mis/card/download_materiel`, {
-          id: id
-        }).then((res) => {
-          let data = res.data;
-          if (data.respcd === config.code.OK) {
-            this.$message({
-              type: 'success',
-              message: '红包活动取消成功'
-            });
-            this.collectionHref = data.promotion_url;
-          } else {
-            this.$message.error(data.respmsg);
-          }
-        }).catch(() => {
-          this.$message.error("请求失败");
-        });
+      // 展示详情
+      showDetail(data) {
+        this.detailData = data;
+        this.isShowDetail = true;
       }
     }
   };
@@ -325,5 +306,8 @@
   a {
     color: #FE9B20;
   }
+}
+.orange {
+  color: #FE9B20;
 }
 </style>

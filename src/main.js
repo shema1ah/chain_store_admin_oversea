@@ -36,6 +36,13 @@ Vue.use(CheckboxGroup);
 Vue.use(Checkbox);
 Vue.use(Rate);
 
+axios.interceptors.request.use(function (config) {
+  config.headers.Session = `Token3333`;
+  return config;
+}, function (err) {
+  return Promise.reject(err);
+});
+
 axios.interceptors.response.use((res) => {
   let data = res.data;
   if(data.respcd === config.code.SESSIONERR) {

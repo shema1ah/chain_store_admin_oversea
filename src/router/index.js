@@ -12,6 +12,8 @@ import memberctl from 'components/memberctl/memberctl';
 import memberredpoint from 'components/memberredpoint/memberredpoint';
 import memberpoint from 'components/memberpoint/memberpoint';
 import createpoint from 'components/createpoint/createpoint';
+import editpoint from 'components/editpoint/editpoint';
+import reviewpoint from 'components/reviewpoint/reviewpoint';
 import memberredpacket from 'components/memberredpacket/memberredpacket';
 import memberstorage from 'components/memberstorage/memberstorage';
 import createpacket from 'components/createpacket/createpacket';
@@ -71,6 +73,16 @@ export default new Router({
               path: 'createpoint',
               name: 'createpoint',
               component: createpoint
+            },
+            {
+              path: 'editpoint',
+              name: 'editpoint',
+              component: editpoint
+            },
+            {
+              path: 'reviewpoint',
+              name: 'reviewpoint',
+              component: reviewpoint
             }
           ]
         },

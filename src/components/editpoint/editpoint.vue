@@ -6,13 +6,13 @@
         <i class="icon-right_arrow"></i>
         <span>会员集点</span>
         <i class="icon-right_arrow"></i>
-        <span>创建集点</span>
+        <span>修改集点</span>
       </div>
     </div>
     <div class="panel">
       <div class="panel-header panel-header__fix">
         <div class="panel-select-group">
-          <span class="panel-header__desc">输入集点信息</span>
+          <span class="panel-header__desc">修改集点活动</span>
         </div>
       </div>
       <div class="panel-body">
@@ -54,6 +54,8 @@
             </el-form-item>
             <el-form-item prop="mchnt_id_list" label="适用门店">
               <el-select v-model="form.mchnt_id_list" placeholder="请选择门店" multiple filterable size="small">
+                <el-option v-for="shop in checkList" :label="shop.shopname" :key="shop.uid" :value="shop.uid">
+                </el-option>
                 <el-option v-for="shop in shopData" :label="shop.shopname" :key="shop.uid" :value="shop.uid" :disabled="shop.state == 0">
                 </el-option>
               </el-select>
@@ -109,7 +111,6 @@
       };
 
       let ptValid = (rule, val, cb) => {
-        console.log(val, 11111);
         if(!val) {
           cb('请输入目标集点');
         } else {
@@ -117,17 +118,21 @@
         }
       };
 
+      let pData = this.$store.state.pointData;
+
       return {
         textList: ['1点', '2点', '3点', '4点', '5点', '6点', '7点', '8点', '9点', '10点'],
-        checked: false,
+        checked: pData.obtain_limit == 0,
         shopData: [],
+        checkList: [],
+        id: pData.id,
         form: {
-          exchange_pt: null,
-          obtain_amt: null,
-          goods_name: '',
-          goods_amt: '',
-          start_time: '',
-          expire_time: '',
+          exchange_pt: +pData.exchange_pt,
+          obtain_amt: +pData.obtain_amt,
+          goods_name: pData.goods_name,
+          goods_amt: +pData.goods_amt,
+          start_time: new Date(pData.start_time),
+          expire_time: new Date(pData.expire_time),
           mchnt_id_list: []
         },
         formrules: {
@@ -167,7 +172,8 @@
           goods_amt: this.form.goods_amt,
           start_time: this.form.start_time && formatDate(this.form.start_time),
           expire_time: this.form.expire_time && formatDate(this.form.expire_time),
-          mchnt_id_list: this.form.mchnt_id_list
+          mchnt_id_list: this.form.mchnt_id_list,
+          id: this.id
         };
       }
     },
@@ -177,13 +183,36 @@
         this.$router.push('/main/memberredpoint');
       },
 
+      // 进入页面格式化数据
+      formatData(data) {
+        let checklist = this.$store.state.pointData.apply_shops;
+        let alllist = data;
+        let checkList = [];
+        let list = [];
+        let valueList = [];
+        for(let val of alllist) {
+          for(let index of checklist) {
+            if(val.uid == index.uid) {
+              checkList.push(val);
+              valueList.push(val.uid);
+            }else {
+              list.push(val);
+            }
+          }
+        }
+        this.shopData = list;
+        this.checkList = checkList;
+        this.form.mchnt_id_list = valueList;
+        console.log(valueList, 111, checkList, 2222, list);
+      },
+
       // 提交预览
       preview() {
         this.$refs['form'].validate((valid) => {
           if (valid) {
             console.log(this.data);
             this.$store.state.pointData = this.data;
-            this.$router.push('/main/memberredpoint/reviewpoint?type=create');
+            this.$router.push("/main/memberredpoint/reviewpoint?type=edit");
           } else {
             this.$message.error('请核对信息是否完整');
           }
@@ -195,7 +224,7 @@
         axios.get(`${config.host}/merchant/card/active_state`).then((res) => {
           let data = res.data;
           if (data.respcd === config.code.OK) {
-            this.shopData = data.data;
+            this.formatData(data.data);
           } else {
             this.$message.error(data.respmsg);
           }
@@ -208,43 +237,5 @@
 </script>
 
 <style lang="scss">
-  .createcollect {
-
-    .gray-explain {
-      color: #8A8C92;
-      font-size: 14px;
-      margin-top: 10px;
-    }
-
-    .black-explain {
-      color: #262424;
-      font-size: 14px;
-      margin-left: 20px;
-    }
-
-    .explain {
-      .el-form-item__content {
-        display: inline-block;
-        background: rgba(254, 155, 32,0.1);
-        padding: 10px;
-
-        .el-checkbox {
-          margin: 0;
-          .el-checkbox__label {
-            color: #262424;
-            font-size: 16px;
-          }
-        }
-
-        .content {
-          font-size: 12px;
-          color: #8A8C92;
-          height: 18px;
-          line-height: 18px;
-        }
-      }
-    }
-
-  }
 
 </style>
