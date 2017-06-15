@@ -1,7 +1,7 @@
 <template>
   <div class="sidebar">
     <div class="sidebar-logo__wrapper">
-      <img src="./img/logo.png" height="72" width="74" alt="logo" class="sidebar-img" />
+      <!--<img src="./img/logo.png" height="72" width="74" alt="logo" class="sidebar-img" />-->
       <h1 class="sidebar-logo__title">商户管理后台</h1>
     </div>
     <ul>
@@ -22,15 +22,24 @@
         </transition>
       </li>
     </ul>
-    <div class="copyright_wrapper">
+    <!--<div class="copyright_wrapper">
       <span class="copyright-text">Copyright</span>
       <span class="copyright-desc">&copy 2017 好近</span>
-    </div>
+    </div>-->
   </div>
 </template>
 <script>
 export default {
   data() {
+    let managePath;
+    let baseInfo = this.$store.state.baseInfo;
+
+    if(baseInfo.cate === 'bigmerchant') {
+      managePath = "chainmanage";
+    }else {
+      managePath = "singlemanage";
+    }
+
     return {
       navs: [{
         val: '首页概览',
@@ -58,12 +67,13 @@ export default {
         pathname: 'billctl'
       }, {
         val: '门店管理',
-        pathname: 'retailctl'
+        pathname: managePath
       }],
       isShow: true,
       isRotate: false
     };
   },
+
   methods: {
     router(router) {
       return `/${router}`;
@@ -83,7 +93,7 @@ export default {
     height: 100%;
     background-color: #2A2A2A;
     @at-root .sidebar-logo__wrapper {
-      margin: 30px auto 28px;
+      margin: 100px auto 28px;
       text-align: center;
     }
     @at-root .sidebar-img {
