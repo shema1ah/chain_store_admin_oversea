@@ -2,19 +2,19 @@
   <div class="sidebar">
     <div class="sidebar-logo__wrapper">
       <img src="./img/logo.png" height="72" width="74" alt="logo" class="sidebar-img" />
-      <h1 class="sidebar-logo__title">大商户后台</h1>
+      <h1 class="sidebar-logo__title">商户管理后台</h1>
     </div>
     <ul>
       <li v-for="nav in navs" :class="{'dark': $route.fullPath.indexOf('member') != -1 && nav.sub}">
-        <router-link class="sidebar-nav__item" v-if="nav.pathname" :to="router(nav.pathname)">{{ nav.val }}</router-link>
+        <router-link class="sidebar-nav__item" v-if="nav.pathname" :to="router('main/' + nav.pathname)">{{ nav.val }}</router-link>
         <a v-else class="sidebar-nav__item" @click="toggle">
-          {{ nav.val }} 
+          {{ nav.val }}
           <i v-if="nav.sub" class="icon-down_arrow" :class="{'icon-down_arrow__rotate': isRotate}"></i>
         </a>
         <transition name="collpase">
           <ul v-if="nav.sub" v-show="isShow" class="collpase">
             <li v-for="subnav in nav.sub">
-              <router-link class="sidebar-nav__item sidebar-nav__subitem" :to="router(subnav.pathname)">
+              <router-link class="sidebar-nav__item sidebar-nav__subitem" :to="router('main/' + subnav.pathname)">
                 {{ subnav.val }}
               </router-link>
             </li>
@@ -40,6 +40,9 @@ export default {
         sub: [{
           val: '会员管理',
           pathname: 'memberctl'
+        }, {
+          val: '会员集点',
+          pathname: 'memberredpoint'
         }, {
           val: '会员红包',
           pathname: 'memberredpacket'

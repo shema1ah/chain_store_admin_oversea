@@ -1,10 +1,14 @@
+@import 'element';
+@import 'button';
+@import 'dialog';
+
 @font-face {
   font-family: 'myicon';
   src:  url('../fonts/myicon.eot?36815y');
   src:  url('../fonts/myicon.eot?36815y#iefix') format('embedded-opentype'),
-    url('../fonts/myicon.ttf?36815y') format('truetype'),
-    url('../fonts/myicon.woff?36815y') format('woff'),
-    url('../fonts/myicon.svg?36815y#myicon') format('svg');
+  url('../fonts/myicon.ttf?36815y') format('truetype'),
+  url('../fonts/myicon.woff?36815y') format('woff'),
+  url('../fonts/myicon.svg?36815y#myicon') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -39,3 +43,25 @@
 .icon-download:before {
   content: "\e904";
 }
+
+html {
+  background: #f7f7f7;
+}
+body, html {
+  height: 100%;
+  font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+input[type="number"]{
+  -moz-appearance: textfield;
+  -webkit-appearance: none;
+}
+

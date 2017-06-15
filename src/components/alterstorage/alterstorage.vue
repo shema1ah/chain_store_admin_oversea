@@ -107,9 +107,9 @@
   </div>
 </template>
 <script>
-  import {formatDate} from 'common/js/util.js';
-  import Validator from 'src/validator';
-  import Store from 'common/js/store.js';
+  import {formatDate} from '../../common/js/util';
+  import Validator from '../../validator';
+  import Store from '../../common/js/store';
 
   export default {
 
@@ -204,7 +204,7 @@
     methods: {
       cancelAlteration() {
         console.log(this.$refs['form']);
-        this.$router.push('/memberstorage');
+        this.$router.push('/main/memberstorage');
       },
       preview() {
         console.log(this.data);

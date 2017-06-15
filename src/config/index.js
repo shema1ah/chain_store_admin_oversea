@@ -1,6 +1,6 @@
 let env = process.env.NODE_ENV;
 
-let host;
+let host, ohost;
 
 let code = {
     OK: '0000', // 成功
@@ -26,14 +26,26 @@ let code = {
 switch (env) {
   case 'development':
     // host = 'http://172.100.108.145:9099';
-    host = 'http://172.100.101.107:9091';
-    // host = 'http://172.100.111.45:9099';
+    // host = 'http://172.100.107.131:9099';
+    // host = 'http://172.100.101.107:9091';
+    host = 'http://172.100.107.33:9099';
+    ohost = 'http://172.100.107.33:2002';
+    // host = 'http://172.100.108.174:9099';
+    break;
+  case 'test':
+    // host = 'http://172.100.108.145:9099';
+    // host = 'http://172.100.107.131:9099';
+    // host = 'http://172.100.101.107:9091';
+    host = '';
+    ohost = 'http://172.100.111.45:6200';
+    // host = 'http://172.100.108.174:9099';
     break;
   case 'production':
     host = '';
+    ohost = 'https://o.qfpay.com';
     break;
 }
 
-let config = { host, code };
+let config = { host, ohost, code };
 
 export default config;

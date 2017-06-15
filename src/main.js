@@ -5,10 +5,9 @@ import "src/filters";
 import store from "./store";
 import App from './App';
 import router from './router';
-import { Select, Option, TableColumn, Table, Button, Pagination, Dropdown, DropdownItem, DropdownMenu, Loading, DatePicker, Input, Message, Form, FormItem, Radio, RadioGroup, RadioButton, Dialog, Col, MessageBox, Row, CheckboxGroup, Checkbox } from 'element-ui';
+import { Select, Option, TableColumn, Table, Button, Pagination, Dropdown, DropdownItem, DropdownMenu, Loading, DatePicker, Input, Message, Form, FormItem, Radio, RadioGroup, RadioButton, Dialog, Col, MessageBox, Row, CheckboxGroup, Checkbox, Rate } from 'element-ui';
 import 'reset.css';
-import "common/scss/font.scss";
-import "assets/scss/ele-fix.scss";
+import "assets/scss/common.scss";
 import axios from 'axios';
 import config from 'src/config';
 
@@ -25,6 +24,7 @@ Vue.use(Loading);
 Vue.use(DatePicker);
 Vue.use(Input);
 Vue.use(Form);
+Vue.use(TableColumn);
 Vue.use(FormItem);
 Vue.use(Radio);
 Vue.use(RadioGroup);
@@ -34,11 +34,19 @@ Vue.use(Row);
 Vue.use(RadioButton);
 Vue.use(CheckboxGroup);
 Vue.use(Checkbox);
+Vue.use(Rate);
+
+axios.interceptors.request.use(function (config) {
+  config.headers.Session = `Token3333`;
+  return config;
+}, function (err) {
+  return Promise.reject(err);
+});
 
 axios.interceptors.response.use((res) => {
   let data = res.data;
   if(data.respcd === config.code.SESSIONERR) {
-    location.href = `${config.host}/`;
+    location.href = `/`;
   } else {
     return res;
   }

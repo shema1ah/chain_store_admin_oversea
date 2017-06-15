@@ -73,7 +73,7 @@
 </template>
 <script>
   import config from 'config';
-  import { formatObj } from 'common/js/util.js';
+  import { formatObj } from '../../common/js/util';
 
   export default {
     data() {
@@ -162,7 +162,6 @@
 };
 </script>
 <style lang="scss">
-@import "../../common/scss/mixin.scss";
 .el-date-table td {
   vertical-align: middle;
 }
@@ -186,39 +185,6 @@
 
 .panel-body__fix {
   padding: 5px 15px !important;
-}
-
-.panel-btn__download {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 192px;
-  height: 40px;
-  border-radius: 3px;
-  font-size: 17px;
-  color: #fff;
-  cursor: pointer;
-  @include boxShadow();
-  .icon-download {
-    margin-right: 5px;
-  }
-  &:first-child {
-    margin-right: 20px;
-  }
-}
-
-.panel-btn__download_detail {
-  background-color: #7ED321;
-  &:link,&:visited,&:hover,&:active {
-    background-color: darken(#7ED321, 5%);
-  }
-}
-
-.panel-btn__download_record {
-  background-color: #FE9B20;
-  &:link,&:visited,&:hover,&:active {
-    background-color: darken(#FE9B20, 5%);
-  }
 }
 
 .panel-body-btn-group {

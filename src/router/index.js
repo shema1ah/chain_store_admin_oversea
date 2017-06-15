@@ -1,13 +1,19 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 
+import login from 'components/login/login';
+import register from 'components/register/register';
+import main from 'components/main/main';
 import billctl from 'components/billctl/billctl';
 import index from 'components/index/index';
-// import member from 'components/member/member';
 import retailctl from 'components/retailctl/retailctl';
 import transctl from 'components/transctl/transctl';
 import memberctl from 'components/memberctl/memberctl';
-import membercollpoint from 'components/membercollpoint/membercollpoint';
+import memberredpoint from 'components/memberredpoint/memberredpoint';
+import memberpoint from 'components/memberpoint/memberpoint';
+import createpoint from 'components/createpoint/createpoint';
+import editpoint from 'components/editpoint/editpoint';
+import reviewpoint from 'components/reviewpoint/reviewpoint';
 import memberredpacket from 'components/memberredpacket/memberredpacket';
 import memberstorage from 'components/memberstorage/memberstorage';
 import createpacket from 'components/createpacket/createpacket';
@@ -27,107 +33,145 @@ export default new Router({
   routes: [
     {
       path: '/',
-      redirect: '/index'
+      component: login
     },
     {
-      path: '/index',
-      component: index
+      path: '/login',
+      component: login
     },
     {
-      path: '/memberctl',
-      component: memberctl
+      path: '/register',
+      component: register,
+      name: 'register'
     },
     {
-      path: '/membercollpoint',
-      component: membercollpoint
+      path: '/forget',
+      component: register,
+      name: 'forget'
     },
     {
-      path: '/memberstorage',
-      component: membersto,
+      path: '/main',
+      component: main,
       children: [
         {
-          path: '',
-          component: memberstorage
+          path: 'index',
+          component: index
         },
         {
-          path: 'createstorage',
-          name: 'createstorage',
-          component: createstorage,
-          meta: { keepAlive: true }
+          path: 'memberctl',
+          component: memberctl
         },
         {
-          path: 'reviewstorage',
-          name: 'reviewstorage',
-          component: reviewstorage,
-          meta: { keepAlive: true }
-        },
-        {
-          path: 'alterstorage',
-          name: 'alterstorage',
-          component: alterstorage,
-          meta: { keepAlive: false }
-        }
-      ]
-    },
-    {
-      path: '/memberredpacket',
-      component: member,
-      children: [
-        {
-          path: '',
-          component: memberredpacket
-        },
-        {
-          path: 'createpacket',
-          component: createpacket,
+          path: 'memberredpoint',
+          component: memberpoint,
           children: [
             {
-              path: '/',
-              redirect: 'type_common'
+              path: '',
+              component: memberredpoint
             },
             {
-              path: 'type_common',
-              name: 'type_common',
-              component: packetnotify
+              path: 'createpoint',
+              name: 'createpoint',
+              component: createpoint
             },
             {
-              path: 'type_share',
-              name: 'type_share',
-              component: packetshare
+              path: 'editpoint',
+              name: 'editpoint',
+              component: editpoint
             },
             {
-              path: 'type_payment',
-              name: 'type_payment',
-              component: packetspend
+              path: 'reviewpoint',
+              name: 'reviewpoint',
+              component: reviewpoint
             }
           ]
         },
         {
-          path: 'reviewpacket',
-          name: 'reviewpacket',
-          component: reviewpacket
+          path: 'memberstorage',
+          component: membersto,
+          children: [
+            {
+              path: '',
+              component: memberstorage
+            },
+            {
+              path: 'createstorage',
+              name: 'createstorage',
+              component: createstorage
+            },
+            {
+              path: 'reviewstorage',
+              name: 'reviewstorage',
+              component: reviewstorage
+            },
+            {
+              path: 'alterstorage',
+              name: 'alterstorage',
+              component: alterstorage
+            }
+          ]
+        },
+        {
+          path: 'memberredpacket',
+          component: member,
+          children: [
+            {
+              path: '',
+              component: memberredpacket
+            },
+            {
+              path: 'createpacket',
+              component: createpacket,
+              children: [
+                {
+                  path: '/',
+                  redirect: 'type_common'
+                },
+                {
+                  path: 'type_common',
+                  name: 'type_common',
+                  component: packetnotify
+                },
+                {
+                  path: 'type_share',
+                  name: 'type_share',
+                  component: packetshare
+                },
+                {
+                  path: 'type_payment',
+                  name: 'type_payment',
+                  component: packetspend
+                }
+              ]
+            },
+            {
+              path: 'reviewpacket',
+              name: 'reviewpacket',
+              component: reviewpacket
+            }
+          ]
+        },
+        {
+          path: 'transctl',
+          component: transctl
+        },
+        {
+          path: 'retailctl',
+          component: retailctl
+        },
+        {
+          path: 'billctl',
+          component: billctl
+        },
+        {
+          path: 'createpacket',
+          component: createpacket
+        },
+        {
+          path: 'retailctl',
+          component: retailctl
         }
       ]
-    },
-    {
-      path: '/transctl',
-      component: transctl
-    },
-    {
-      path: '/retailctl',
-      component: retailctl
-    },
-    {
-      path: '/billctl',
-      component: billctl
-    },
-    {
-      path: '/createpacket',
-      component: createpacket
-    },
-    {
-      path: '/retailctl',
-      component: retailctl
     }
   ],
   linkActiveClass: 'active'

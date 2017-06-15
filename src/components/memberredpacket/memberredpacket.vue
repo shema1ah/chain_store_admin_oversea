@@ -6,7 +6,7 @@
         <i class="icon-right_arrow"></i>
         <span>会员红包</span>
       </div>
-      <router-link to="/memberredpacket/createpacket">
+      <router-link to="/main/memberredpacket/createpacket">
         <div class="banner-btn">
           <i class="icon-create"></i>
           <span class="banner-btn__desc">新建红包</span>
@@ -73,7 +73,8 @@
           :page-size="pageSize"
           @size-change="handleSizeChange"
           :total="redpacketData.total"
-          @current-change="currentChange">
+          @current-change="currentChange"
+          :current-page="currentpage">>
         </el-pagination>
       </div>
       <div class="table_placeholder" v-else></div>
@@ -87,7 +88,7 @@
         <el-row>
           <el-col :span="8" class="title">适用门店</el-col>
           <el-col :span="16" class="desc">
-            <span v-for="shop in detailData.effect_sub_merchant">{{ shop.shopname }}、</span>
+            <span v-for="(shop,index) in detailData.effect_sub_merchant">{{ shop.shopname }}{{ index < detailData.effect_sub_merchant.length - 1?"、":"" }}</span>
           </el-col>
         </el-row>
         <el-row>
@@ -122,7 +123,7 @@
         <el-row>
           <el-col :span="8" class="title">适用门店</el-col>
           <el-col :span="16" class="desc">
-            <span v-for="shop in detailData.effect_sub_merchant">{{ shop.shopname }}、</span>
+            <span v-for="(shop,index) in detailData.effect_sub_merchant">{{ shop.shopname }}{{ index < detailData.effect_sub_merchant.length - 1?"、":"" }}</span>
           </el-col>
         </el-row>
         <el-row>
@@ -172,7 +173,7 @@
         <el-row>
           <el-col :span="8" class="title">适用门店</el-col>
           <el-col :span="16" class="desc">
-            <span v-for="shop in detailData.effect_sub_merchant">{{ shop.shopname }}、</span>
+            <span v-for="(shop,index) in detailData.effect_sub_merchant">{{ shop.shopname }}{{ index < detailData.effect_sub_merchant.length - 1?"、":"" }}</span>
           </el-col>
         </el-row>
         <el-row>
@@ -217,10 +218,29 @@
 <script>
   import axios from 'axios';
   import config from 'config';
-  import {formatDate} from 'common/js/util.js';
-  import Store from 'src/common/js/store.js';
+  import {formatDate} from '../../common/js/util';
 
   export default {
+    beforeRouteEnter (to, from, next) {
+      next((vm) => {
+        Object.assign(vm, {
+          flag: false,
+          currentpage: 1,
+          pageSize: 10,
+          packetValue: '',
+          nameValue: '',
+          packetType: 0
+        });
+        vm.$store.dispatch('getRedpacketData');
+
+        // 延时改变
+        setTimeout(() => {
+          Object.assign(vm, {
+            flag: true
+          });
+        }, 200);
+      });
+    },
     data() {
       return {
         pageSize: 10,
@@ -245,7 +265,7 @@
         loading: false,
         detailData: {},
         show: false,
-        currentpage: 0
+        currentpage: 1
       };
     },
     computed: {
@@ -257,15 +277,7 @@
           type: this.packetValue,
           sub_uid: this.nameValue,
           length: this.pageSize,
-          curpage: 0
-        };
-      },
-      packetParams() {
-        return {
-          type: this.packetValue,
-          curpage: this.currentpage,
-          nameValue: this.nameValue,
-          length: this.pageSize
+          curpage: this.currentpage - 1
         };
       },
       redpacketData() {
@@ -276,43 +288,48 @@
       }
     },
     methods: {
-      packetChange(packettype) {
-        Store.set('packetparams', this.packetParams);
-        if(this.$refs['page']) {
-          this.$refs['page'].internalCurrentPage = 1;
-        }
-        this.$store.dispatch('getRedpacketData', {
-          params: this.basicParams
-        });
+      // 红包类型
+      packetChange() {
+        this.currentChange();
       },
-      nameChange(uid) {
-        if(this.$refs['page']) {
-          this.$refs['page'].internalCurrentPage = 1;
-        }
-        Store.set('packetparams', this.packetParams);
-        this.$store.dispatch('getRedpacketData', {
-          params: this.basicParams
-        });
+
+      // 店铺名称
+      nameChange() {
+        this.currentChange();
       },
+
+      // 改变当前页
       currentChange(current) {
-        this.currentpage = current - 1;
-        Store.set('packetparams', this.packetParams);
-        console.log(Store.get('packetparams'));
-        this.$store.dispatch('getRedpacketData', {
-          params: Object.assign({}, this.basicParams, {curpage: current - 1})
-        });
+        if(!current && this.currentpage !== 1) {
+          this.currentpage = 1;
+          return;
+        }
+        if(current) {
+          this.currentpage = current;
+        }
+        if(this.flag) {
+          this.$store.dispatch('getRedpacketData', {
+            params: this.basicParams
+          });
+        }
+        console.log(this.basicParams);
       },
+
+      // 改变size
+      handleSizeChange(size) {
+        this.pageSize = size;
+        this.currentChange();
+      },
+
+      // 取消活动
       cancelAct(scope) {
         this.$confirm('是否要取消此活动?', '提示', {
           confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'wraning'
-        })
-        .then(() => {
+          cancelButtonText: '关闭'
+        }).then(() => {
           axios.post(`${config.host}/merchant/activity/close`, {
             act_id: scope.row.id
-          })
-          .then((res) => {
+          }).then((res) => {
             let data = res.data;
             if (data.respcd === config.code.OK) {
               this.$message({
@@ -320,13 +337,15 @@
                 message: '红包活动取消成功'
               });
               this.$store.dispatch('getRedpacketData', {
-                params: Object.assign({}, this.basicParams, {curpage: this.currentpage})
+                params: this.basicParams
               });
             } else {
               this.$message.error(data.respmsg);
             }
           });
-        });
+        }).catch(() => {
+          console.log("取消");
+      });
       },
       showDetail(scope) {
         let actName = scope.row.title;
@@ -359,17 +378,6 @@
           .catch(() => {
             this.$message.error('获取红包信息失败');
           });
-      },
-      handleSizeChange(size) {
-        if(this.$refs['page']) {
-          this.$refs['page'].internalCurrentPage = 1;
-        }
-        Store.set('packetparams', this.packetparams);
-        this.pageSize = size;
-        this.basicParams.curpage = 0;
-        this.$store.dispatch('getRedpacketData', {
-          params: Object.assign({}, this.basicParams)
-        });
       }
     }
   };
@@ -456,41 +464,6 @@
   padding-right: 20px;
   justify-content: flex-end;
   align-items: center;
-}
-
-.el-dropdown-menu__fix {
-  padding: 0px;
-  border: 1px solid #E8E7E6;
-  color: #FE9B20;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.05);
-  @at-root .el-dropdown-item__fix {
-    line-height: 32px;
-    padding: 0px 8px;
-    text-align: center;
-    font-size: 15px;
-    &:first-of-type {
-      border-bottom: 1px solid #E8E7E6;
-    }
-  }
-}
-
-.el-button__fix {
-  position: relative;
-  font-size: 15px;
-  border-radius: 0px;
-  margin-right: 15px;
-  @at-root .el-dropdown-link__fix {
-    font-size: 15px;
-    color: #FE9B20;
-  }
-  &::after {
-    position: absolute;
-    content: '';
-    height: 15px;
-    right: -10px;
-    width: 1px;
-    background-color: #FE9B20;
-  }
 }
 .detail_dialog {
   .el-row {

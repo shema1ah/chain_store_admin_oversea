@@ -8,8 +8,9 @@
 
     <div class="panel">
       <div class="panel-header panel-header__fix">
-        <div class="panel-select-group">
+        <div class="panel-select-group panel-select-group__justify">
           <span class="panel-header__desc">基本信息</span>
+          <div class="panel-header-btn" @click="changePass">修改密码</div>
         </div>
       </div>
       <div class="panel-body">
@@ -105,10 +106,37 @@
       <el-row>
         <el-col :span="6" class="title">银行名称</el-col>
         <el-col :span="14" class="desc">
-          <div>{{ detailData['headbankname'] }}</div> 
+          <div>{{ detailData['headbankname'] }}</div>
           <div>{{ detailData['bankname'] }}</div>
         </el-col>
       </el-row>
+    </el-dialog>
+    <el-dialog title="修改密码" :visible.sync="showChangePass" custom-class="mydialog pass" top="20%" :show-close="false">
+      <el-form :model="form" :rules="formrules" ref="form">
+        <el-form-item label="登录账号">
+          <div>{{ shop.mobile }}</div>
+        </el-form-item>
+        <div class="yanz">
+          <el-form-item label="验证码" prop="code">
+            <el-input v-model="form.code" size="small" type="number" placeholder="请输入验证码"></el-input>
+          </el-form-item>
+          <el-button v-if="isSendCode" type="primary" class="panel-header-btn panel-header-btn__fill" @click="getCode">获取验证码</el-button>
+          <div v-else class="panel-header-btn panel-header-btn__fill send">{{ buttonCotent }}</div>
+        </div>
+        <el-form-item label="输入新密码" prop="pass">
+          <el-input v-model="form.pass" size="small" type="password" placeholder="请输入新密码"></el-input>
+        </el-form-item>
+        <el-form-item label="确认新密码" prop="repass">
+          <el-input v-model="form.repass" size="small" type="password" placeholder="请输入确认新密码"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <div @click="showChangePass = false" class="cancel">取消</div>
+        <div @click="submit" class="submit">
+          <span class="el-icon-loading" v-if="iconShow"></span>
+          <span v-else>确定</span>
+        </div>
+      </div>
     </el-dialog>
   </div>
 </template>
@@ -118,10 +146,53 @@
   import config from 'config';
   export default {
     data() {
+      let passValid = (rule, val, cb) => {
+        if(val === '') {
+          cb('请输入新密码');
+        } else {
+          if(this.form.repass !== '') {
+            this.$refs['form'].validateField('repass');
+          }
+          cb();
+        }
+      };
+      let repassValid = (rule, val, cb) => {
+        if(val === '') {
+          cb('请输入确认新密码');
+        } else if(this.form.pass && this.form.pass !== val) {
+          cb('新密码与确认密码不一致');
+        } else {
+          console.log(val);
+          cb();
+        }
+      };
+
       return {
         loading: false,
+        iconShow: false,
         isShowDetail: false,
-        detailData: {}
+        showChangePass: false,
+        detailData: {},
+        isSendCode: true,
+        buttonCotent: '',
+        form: {
+          code: '',
+          pass: '',
+          repass: ''
+        },
+        formrules: {
+          code: [
+            { required: true, message: '请输入验证码' }
+          ],
+          pass: [
+            { validator: passValid },
+            {max: 20, min: 6, message: '请输入6~20位数字或字母'}
+          ],
+          repass: [
+            { validator: repassValid },
+            {max: 20, min: 6, message: '请输入6~20位数字或字母'}
+          ]
+        }
       };
     },
     props: {
@@ -134,19 +205,111 @@
         return this.$store.state.pageShopData;
       }
     },
+    created() {
+      this.$store.dispatch('getPageShopData');
+    },
+    watch: {
+      'showChangePass': function(val) {
+        if(!val) {
+          setTimeout(() => {
+            this.stopTimer();
+          }, 200);
+        }
+      }
+    },
+
     methods: {
+      // 修改密码
+      changePass() {
+        this.showChangePass = true;
+      },
+
+      // 获取验证码
+      getCode() {
+        this.isSendCode = false;
+        axios.get(`${config.host}/mchnt/smscode/send`, {
+          params: {
+            mobile: this.shop.mobile,
+            mode: 'reset_pwd'
+          }
+        }).then((res) => {
+          let data = res.data;
+          if (data.respcd === config.code.OK) {
+            this.startTimer();
+          } else {
+            this.$message.error(data.respmsg);
+          }
+        }).catch(() => {
+          this.$message.error('请求失败!');
+        });
+      },
+
+      // 计时
+      startTimer() {
+        let num = 60;
+        this.buttonCotent = num + 's';
+        this.st = setInterval(() => {
+          num--;
+          if (num) {
+            this.buttonCotent = num + 's';
+          } else {
+            this.stopTimer();
+          }
+        }, 1000);
+      },
+
+      // 停止计时
+      stopTimer() {
+        this.isSendCode = true;
+        clearTimeout(this.st);
+      },
+
+      // 提交
+      submit() {
+        this.$refs['form'].validate((valid) => {
+          if(!this.iconShow && valid) {
+            this.iconShow = true;
+
+            axios.post(`${config.host}/mchnt/smscode/send`, {
+              mobile: this.shop.mobile,
+              password: this.form.pass,
+              code: this.form.code
+            }).then((res) => {
+              let data = res.data;
+              if (data.respcd === config.code.OK) {
+                this.showChangePass = false;
+                this.$message({
+                  type: 'success',
+                  message: '绑定成功!'
+                });
+                this.$router.push('/login');
+              } else {
+                this.$message.error(data.respmsg);
+              }
+              this.iconShow = false;
+            }).catch(() => {
+              this.$message.error('请求失败!');
+              this.iconShow = false;
+            });
+          }
+        });
+      },
+
       currentChange(currentPage) {
         this.$store.dispatch({
           type: 'getPageShopData',
           start: currentPage - 1
         });
       },
+
       associate() {
         this.$emit('associate');
       },
+
       unbind(scope) {
         this.$emit('unbind', scope.row.uid);
       },
+
       showDetail(scope) {
         axios.get(`${config.host}/merchant/info`, {
             params: {
@@ -168,8 +331,6 @@
 </script>
 
 <style lang="scss">
-  @import "../../common/scss/mixin.scss";
-
   .panel-header__desc {
     font-size: 18px;
     color: #FE9B20;
@@ -183,35 +344,6 @@
     justify-content: space-between;
   }
 
-  .panel-header-btn__associate{
-    display: flex;
-    width: 155px;
-    height: 35px;
-    box-sizing: border-box;
-    padding: 0;
-    background-color: #7ED321;
-    justify-content: center;
-    align-items: center;
-    border: none;
-    border-radius: 3px;
-    font-size: 17px;
-    transition: .3s;
-    color: #fff;
-    cursor: pointer;
-    .icon-create {
-      margin-right: 10px;
-      transition: .3s;
-    }
-    &:active {
-      background-color: darken(#7ED321,10%);
-    }
-    @include boxShadow();
-    &:hover {
-      .icon-create {
-        transform: rotateZ(90deg);
-      }
-    }
-  }
   .info_wrapper {
     padding: 20px 0px 30px 5px;
     @at-root .info {
@@ -251,6 +383,20 @@
     }
     .desc {
       color: black;
+    }
+  }
+  .index {
+    .panel-header-btn {
+      width: 155px;
+    }
+    .pass {
+      width: 420px;
+      .el-dialog__header {
+        text-align: center;
+      }
+      .el-form-item__label {
+        width: 90px;
+      }
     }
   }
 </style>

@@ -44,7 +44,7 @@
   </div>
 </template>
 <script>
-  import Store from 'common/js/store.js';
+  import Store from '../../common/js/store';
   export default {
     data() {
       return {
@@ -73,7 +73,7 @@
         });
       },
       cancelCreation() {
-        this.$router.push('/memberredpacket');
+        this.$router.push('/main/memberredpacket');
       },
       preview() {
         let packet = this.$refs['form'];
@@ -90,8 +90,6 @@
   };
 </script>
 <style lang="scss">
-@import "../../common/scss/mixin.scss";
-
 .form-item__detail {
   margin-top: 10px;
   color: #98989E;

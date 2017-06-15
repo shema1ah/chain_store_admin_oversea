@@ -71,7 +71,7 @@
             <template scope="scope">
               <el-button type="text" size="small" class="el-button__fix" @click="getDetailData(scope.row.activity_info.activity_id)">查看详情</el-button>
     <!--           <el-button type="text" size="small" class="el-button__fix">下载物料</el-button> -->
-              <el-dropdown :hide-on-click="true">
+              <el-dropdown>
                 <span class="el-dropdown-link el-dropdown-link__fix">
                   更多<i class="el-icon-caret-bottom el-icon--right"></i>
                 </span>
@@ -91,7 +91,8 @@
           :page-size="pageSize"
           @size-change="handleSizeChange"
           :total="storageData.total_entries"
-          @current-change="currentChange">
+          @current-change="currentChange"
+          :current-page="currentpage">
         </el-pagination>
       </div>
       <div class="table_placeholder" v-else></div>
@@ -102,7 +103,7 @@
           <el-col :span="7" class="title">适用门店</el-col>
           <el-col :span="17" class="desc">
             <div>
-              <span v-for="shop in shopData">{{ shop.shop_name }}、</span>
+              <span v-for="(shop,index) in shopData">{{ shop.shop_name }}{{ index < shopData.length - 1?"、":"" }}</span>
             </div>
             <div class="remark mt-0 lh-16">注：请确保以上门店均已开通储值服务，否则无法正常储值！</div>
           </el-col>
@@ -140,10 +141,26 @@
 <script>
   import axios from 'axios';
   import config from 'config';
-  import {deepClone} from 'common/js/util';
-  import Store from 'common/js/store';
+  import {deepClone} from '../../common/js/util';
+  import Store from '../../common/js/store';
 
   export default {
+    beforeRouteEnter (to, from, next) {
+      next((vm) => {
+        Object.assign(vm, {
+          stateValue: '',
+          pageSize: 10,
+          currentpage: 1,
+          flag: false
+        });
+        vm.$store.dispatch('getStorageData');
+        setTimeout(() => {
+          Object.assign(vm, {
+            flag: true
+          });
+        }, 200);
+      });
+    },
     data() {
       return {
         pending: false,
@@ -174,14 +191,8 @@
         detailData: {},
         isShowDetail: false,
         pageSize: 10,
-        nameValue: '',
         loading: false,
-        basicParams: {
-          pos: 0,
-          count: 10,
-          activity_status: ''
-        },
-        currentpage: 0
+        currentpage: 1
       };
     },
     computed: {
@@ -192,63 +203,64 @@
         let shopData = deepClone(this.$store.state.shopData);
         shopData.list.shift();
         return shopData.list;
+      },
+      basicParams() {
+        return {
+          pos: this.currentpage - 1,
+          count: this.pageSize,
+          activity_status: this.stateValue
+        };
       }
     },
     methods: {
-      stateChange(state) {
-        if(this.$refs['page']) {
-          this.$refs['page'].internalCurrentPage = 1;
-        }
-        this.basicParams.activity_status = state;
-        this.$store.dispatch('getStorageData', {
-          params: this.basicParams
-        });
+      stateChange() {
+        this.currentChange();
       },
       currentChange(current) {
-        this.currentpage = current - 1;
-        this.$store.dispatch('getStorageData', {
-          params: Object.assign({}, this.basicParams, {pos: current - 1})
-        });
+        if(!current && this.currentpage !== 1) {
+          this.currentpage = 1;
+          return;
+        }
+        if(current) {
+          this.currentpage = current;
+        }
+        if(this.flag) {
+          this.$store.dispatch('getStorageData', {
+            params: this.basicParams
+          });
+        }
+        console.log(this.basicParams);
       },
       handleSizeChange(size) {
-        if(this.$refs['page']) {
-          this.$refs['page'].internalCurrentPage = 1;
-        }
-        this.basicParams.count = size;
-        this.basicParams.pos = 0;
         this.pageSize = size;
-        this.$store.dispatch('getStorageData', {
-          params: this.basicParams
-        });
+        this.currentChange();
       },
       cancelStorage(id) {
         this.$confirm('是否要取消此活动?', '提示', {
           confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'wraning'
+          cancelButtonText: '关闭'
         })
         .then(() => {
           axios.post(`${config.host}/merchant/prepaid/stop`, {
             activity_id: id
-          })
-          .then((res) => {
+          }).then((res) => {
             let data = res.data;
             if(data.respcd === config.code.OK) {
               this.$message({
                 type: 'success',
                 message: '取消储值活动成功'
               });
-              this.$router.push('/memberstorage');
               this.$store.dispatch('getStorageData', {
-                params: Object.assign({}, this.basicParams, {curpage: this.currentpage})
+                params: this.basicParams
               });
             } else {
               this.$message.error(data.resperr);
             }
-          })
-          .catch(() => {
+          }).catch(() => {
             this.$message.error('取消储值活动失败');
           });
+        }).catch(() => {
+          console.log("取消");
         });
       },
       fixData(data) {
@@ -282,7 +294,7 @@
             if(_this.pending) {
               _this.$message.error('当前有活动正在进行，请终止后再创建');
             } else {
-              _this.$router.push('/memberstorage/createstorage');
+              _this.$router.push('/main/memberstorage/createstorage');
             }
           } else {
             this.$message.error(data.resperr);

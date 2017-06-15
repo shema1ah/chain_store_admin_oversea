@@ -9,6 +9,18 @@ let formatObj = (obj) => {
   return arr.join('&');
 };
 
+// 获取params的key对应的value
+const getParams = (key) => {
+  // 获取参数
+  let url = window.location.search;
+  // 正则筛选地址栏
+  let reg = new RegExp('(^|&)' + key + '=([^&]*)(&|$)');
+  // 匹配目标参数
+  let result = url.substr(1).match(reg);
+  // 返回参数值
+  return result ? decodeURIComponent(result[2]) : '';
+};
+
 // 日期格式化
 const formatDate = (parDate, formatStr) => {
   let date = new Date(parDate);
@@ -96,5 +108,9 @@ let deepClone = (obj) => {
 };
 
 module.exports = {
-  formatObj, formatDate, isEmptyObject, deepClone
+  formatObj,
+  formatDate,
+  isEmptyObject,
+  deepClone,
+  getParams
 };

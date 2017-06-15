@@ -27,7 +27,7 @@
           </p>
           <p class="review-info">
             <span class="info-title">通知会员数</span>
-            <span class="info-desc"><span class="highlight ml-0">{{ data.member_total }}</span>人</span>
+            <span class="info-desc"><span class="highlight ml-0">{{ data.member_total || 0 }}</span>人</span>
           </p>
           <p class="review-info">
             <span class="info-title">单个红包金额</span>
@@ -176,8 +176,8 @@
 <script>
   import axios from 'axios';
   import config from 'config';
-  import {deepClone} from 'common/js/util.js';
-  import Store from 'common/js/store.js';
+  import {deepClone} from '../../common/js/util';
+  import Store from '../../common/js/store';
 
   export default {
     beforeRouteEnter (to, from, next) {
@@ -246,9 +246,7 @@
               type: 'success',
               message: '创建成功'
             });
-            console.log(Store.get('packetparams'));
-            this.$store.dispatch('getRedpacketData', { params: Store.get('packetparams') });
-            this.$router.push('/memberredpacket');
+            this.$router.push('/main/memberredpacket');
           } else {
             this.$message.error(data.resperr);
           }

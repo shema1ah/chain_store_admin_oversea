@@ -47,10 +47,10 @@
               <span class="panel-select__desc">操作员</span>
               <el-form-item>
                 <el-select v-model="form.operaValue" placeholder="全部" size="small" @change="operaChange" :disabled="form.selectShopUid === ''">
+                  <el-option label="全部" value=""></el-option>
                   <el-option
                           v-for="(label, value) in operaList"
-                          :label="label"
-                          :value="value">
+                         :label="label" :value="value" :key="value">
                   </el-option>
                 </el-select>
               </el-form-item>
@@ -166,7 +166,7 @@
               <div class="table-title">{{ scope.row.total_amt }}元</div>
               <div class="table-content">实收{{ scope.row.txamt }}元</div>
               <div v-show="scope.row.mchnt_coupon" class="table-content">商家红包{{ scope.row.mchnt_coupon }}元</div>
-              <div v-show="scope.row.hj_coupon" class="table-content">平台红包{{ scope.row.hj_coupon }}元</div>
+              <div v-show="scope.row.hj_coupon" class="table-content">平台补贴{{ scope.row.hj_coupon }}元</div>
             </template>
           </el-table-column>
           <el-table-column
@@ -199,7 +199,7 @@
   import axios from 'axios';
   import config from 'config';
   import qs from 'qs';
-  import {formatDate, isEmptyObject} from 'common/js/util.js';
+  import {formatDate} from '../../common/js/util';
 
   const typeLists = ['wxpay', 'alipay', 'jdpay', 'qqpay', 'card'];
   const otherLists = ['prepaid_recharge', 'prepaid', 'coupon', 'cancel'];
@@ -221,8 +221,6 @@
         pageSize: 10,
         status: false,
         loading: false,
-        starttime: '',
-        endtime: '',
         typeList: [
           {'name': '微信收款', 'value': 'wxpay'},
           {'name': '支付宝收款', 'value': 'alipay'},
@@ -271,6 +269,7 @@
       collectionHref() {
         return `${config.host}/merchant/trade/total?${qs.stringify(this.basicParams)}`;
       },
+
       shopData() {
         return this.$store.state.shopData;
       },
@@ -278,8 +277,8 @@
         return {
           userid: this.form.selectShopUid,
           opuid: this.form.operaValue,
-          endtime: this.endtime,
-          starttime: this.starttime,
+          endtime: formatDate(this.form.dateRangeValue[1]),
+          starttime: formatDate(this.form.dateRangeValue[0]),
           orderno: this.form.orderno,
           charset: 'utf-8',
           isdownload: false,
@@ -295,8 +294,6 @@
         if(!this.status) {
           this.form.choosetime = '';
         }
-        this.starttime = formatDate(val[0]);
-        this.endtime = formatDate(val[1]);
         this.status = false;
       }
     },
@@ -304,8 +301,7 @@
       this.loading = true;
       axios.get(`${config.host}/merchant/trade/info`, {
         params: this.basicParams
-      })
-      .then((res) => {
+      }).then((res) => {
         this.loading = false;
         let data = res.data;
         if(data.respcd === config.code.OK) {
@@ -313,12 +309,12 @@
         } else {
           this.$message.error(data.resperr);
         }
-      })
-      .catch(() => {
+      }).catch(() => {
         this.loading = false;
         this.$message.error('首次获取交易列表失败');
       });
     },
+
     methods: {
       // 选择时间
       changeTime(value) {
@@ -332,6 +328,7 @@
           this.form.dateRangeValue = [start, end];
         }
       },
+
       // check选择功能
       handleCheckAllChange1(event) {
         this.form.type = event.target.checked ? [] : typeLists;
@@ -347,6 +344,7 @@
         let checkCount = value.length;
         this.form.checkAll2 = !(checkCount > 0);
       },
+
       // 点击查询
       getTransData(params) {
         this.downHref = 'javascript:;';
@@ -354,12 +352,11 @@
           this.$refs['page'].internalCurrentPage = 1;
         }
         this.$refs['form'].validate((valid) => {
-          if(valid) {
+          if(valid && !this.loading) {
             this.loading = true;
             axios.get(`${config.host}/merchant/trade/info`, {
               params: Object.assign({}, this.basicParams, params)
-            })
-            .then((res) => {
+            }).then((res) => {
               this.loading = false;
               let data = res.data;
               if(data.respcd === config.code.OK) {
@@ -367,14 +364,12 @@
               } else {
                 this.$message.error(data.resperr);
               }
-            })
-            .catch(() => {
+            }).catch(() => {
               this.loading = false;
               this.$message.error('获取交易数据失败');
             });
           } else {
-            this.loading = false;
-            this.$message.error('请核对流水号!');
+            this.$message.error('请核对流水号');
           }
         });
       },
@@ -382,9 +377,7 @@
         this.basicParams.opuid = opuid;
       },
       getOperators(uid) {
-        if(uid === '') {
-          this.form.operaValue = '';
-        }
+        this.form.operaValue = '';
         axios.get(`${config.host}/merchant/sub/opusers`, {
           params: {
             userid: uid
@@ -393,11 +386,6 @@
         .then((res) => {
           let data = res.data;
           if(data.respcd === config.code.OK) {
-            if(!isEmptyObject(data.data)) {
-              data.data = Object.assign({'': '全部'}, data.data);
-            } else {
-              data.data = {'': '全部'};
-            }
             this.operaList = data.data;
           } else {
             this.$message.error(data.resperr);
@@ -414,6 +402,7 @@
           page: current
         });
       },
+
       // 重置表单
       reset() {
         this.status = true;
@@ -512,41 +501,6 @@
     align-items: center;
   }
 
-  .el-dropdown-menu__fix {
-    padding: 0px;
-    border: 1px solid #E8E7E6;
-    color: #FE9B20;
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.05);
-    @at-root .el-dropdown-item__fix {
-      line-height: 32px;
-      padding: 0px 8px;
-      text-align: center;
-      font-size: 15px;
-      &:first-of-type {
-        border-bottom: 1px solid #E8E7E6;
-      }
-    }
-  }
-
-  .el-button__fix {
-    position: relative;
-    font-size: 15px;
-    border-radius: 0px;
-    margin-right: 15px;
-    @at-root .el-dropdown-link__fix {
-      font-size: 15px;
-      color: #FE9B20;
-    }
-    &::after {
-      position: absolute;
-      content: '';
-      height: 15px;
-      right: -10px;
-      width: 1px;
-      background-color: #FE9B20;
-    }
-  }
-
   .panel-header__auto {
     position: relative;
     height: auto !important;
@@ -630,40 +584,6 @@
     }
     .el-icon-loading{
       margin-right: 0;
-    }
-  }
-  .panel-header-btn-group {
-    position: absolute;
-    right: 30px;
-    bottom: 0;
-    @at-root {
-      .panel-header-btn {
-        float: left;
-        box-sizing: border-box;
-        width: 100px;
-        height: 35px;
-        border: 1px solid #FE9B20;
-        border-radius: 3px;
-        text-align: center;
-        line-height: 35px;
-        font-size: 17px;
-        cursor: pointer;
-        &:last-of-type {
-           color: #FE9B20;
-           background-color: #fff;
-            &:link,&:visited,&:hover,&:active{
-            background-color: darken(#fff, 10%);
-            }
-        }
-      }
-      .panel-header-btn__fill {
-        margin-right: 15px;
-        color: #fff;
-        background-color: #FE9B20;
-        &:link,&:visited,&:hover,&:active {
-          background-color: darken(#FE9B20, 10%);
-        }
-      }
     }
   }
   .el-form-item {
