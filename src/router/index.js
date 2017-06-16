@@ -6,7 +6,8 @@ import register from 'components/register/register';
 import main from 'components/main/main';
 import billctl from 'components/billctl/billctl';
 import index from 'components/index/index';
-import retailctl from 'components/retailctl/retailctl';
+import chainmanage from 'components/chainmanage/chainmanage';
+import singlemanage from 'components/singlemanage/singlemanage';
 import transctl from 'components/transctl/transctl';
 import memberctl from 'components/memberctl/memberctl';
 import memberredpoint from 'components/memberredpoint/memberredpoint';
@@ -156,10 +157,6 @@ export default new Router({
           component: transctl
         },
         {
-          path: 'retailctl',
-          component: retailctl
-        },
-        {
           path: 'billctl',
           component: billctl
         },
@@ -168,8 +165,12 @@ export default new Router({
           component: createpacket
         },
         {
-          path: 'retailctl',
-          component: retailctl
+          path: 'chainmanage',
+          component: chainmanage
+        },
+        {
+          path: 'singlemanage',
+          component: singlemanage
         }
       ]
     }

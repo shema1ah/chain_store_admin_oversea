@@ -89,6 +89,7 @@ export default {
   },
   created() {
     this.$store.dispatch('getShopList');
+
     axios.get(`${config.host}/merchant/info`)
       .then((res) => {
         let data = res.data;
@@ -98,6 +99,11 @@ export default {
             mobile: data.data.mobile,
             uid: data.data.uid
           };
+
+          // 存储账户基本信息
+          this.$store.state.baseInfo = data.data;
+          console.log(this.$store.state, 11111);
+
         } else {
           this.$message.error(data.respmsg);
         }
