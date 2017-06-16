@@ -31,16 +31,8 @@
 <script>
 export default {
   data() {
-    let managePath;
-    let baseInfo = this.$store.state.baseInfo;
-
-    if(baseInfo.cate === 'bigmerchant') {
-      managePath = "chainmanage";
-    }else {
-      managePath = "singlemanage";
-    }
-
     return {
+      baseInfo: {},
       navs: [{
         val: '首页概览',
         pathname: 'index'
@@ -67,7 +59,7 @@ export default {
         pathname: 'billctl'
       }, {
         val: '门店管理',
-        pathname: managePath
+        pathname: 'chainmanage'
       }],
       isShow: true,
       isRotate: false
