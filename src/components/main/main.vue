@@ -1,6 +1,6 @@
 <template>
   <div>
-    <sidebar></sidebar>
+    <sidebar :managePath="managePath"></sidebar>
     <div class="main">
       <div class="header">
         <div class="user_wrapper">
@@ -81,7 +81,8 @@ export default {
           { required: true, message: '请输入分店收款银行卡号!' }
         ]
       },
-      detailData: {}
+      detailData: {},
+      managePath: ''
     };
   },
   components: {
@@ -99,11 +100,8 @@ export default {
             mobile: data.data.mobile,
             uid: data.data.uid
           };
-
-          // 存储账户基本信息
-          this.$store.state.baseInfo = data.data;
-          console.log(this.$store.state, 11111);
-
+          // 单店 or 连锁店
+          this.managePath = data.data.cate;
         } else {
           this.$message.error(data.respmsg);
         }

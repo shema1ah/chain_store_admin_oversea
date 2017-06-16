@@ -21,6 +21,10 @@
           </ul>
         </transition>
       </li>
+      <li>
+        <router-link class="sidebar-nav__item" v-if="managePath === 'bigmerchant'" :to="router('main/bigmerchant')">门店管理</router-link>
+        <router-link class="sidebar-nav__item" v-else :to="router('main/singlemerchant')">门店管理</router-link>
+      </li>
     </ul>
     <!--<div class="copyright_wrapper">
       <span class="copyright-text">Copyright</span>
@@ -30,16 +34,8 @@
 </template>
 <script>
 export default {
+  props: ['managePath'],
   data() {
-    let managePath;
-    let baseInfo = this.$store.state.baseInfo;
-
-    if(baseInfo.cate === 'bigmerchant') {
-      managePath = "chainmanage";
-    }else {
-      managePath = "singlemanage";
-    }
-
     return {
       navs: [{
         val: '首页概览',
@@ -65,15 +61,11 @@ export default {
       }, {
         val: '账单管理',
         pathname: 'billctl'
-      }, {
-        val: '门店管理',
-        pathname: managePath
       }],
       isShow: true,
       isRotate: false
     };
   },
-
   methods: {
     router(router) {
       return `/${router}`;
