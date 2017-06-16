@@ -32,7 +32,6 @@
 export default {
   data() {
     return {
-      baseInfo: {},
       navs: [{
         val: '首页概览',
         pathname: 'index'

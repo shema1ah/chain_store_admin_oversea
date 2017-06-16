@@ -226,22 +226,26 @@
 
       // 获取验证码
       getCode() {
-        this.isSendCode = false;
-        axios.get(`${config.host}/mchnt/smscode/send`, {
-          params: {
-            mobile: this.shop.mobile,
-            mode: 'reset_pwd'
-          }
-        }).then((res) => {
-          let data = res.data;
-          if (data.respcd === config.code.OK) {
-            this.startTimer();
-          } else {
-            this.$message.error(data.respmsg);
-          }
-        }).catch(() => {
-          this.$message.error('请求失败!');
-        });
+        if(this.isSendCode) {
+          this.isSendCode = false;
+          axios.get(`${config.ohost}/mchnt/smscode/send`, {
+            params: {
+              mobile: this.shop.mobile,
+              mode: 'reset_pwd'
+            }
+          }).then((res) => {
+            let data = res.data;
+            if (data.respcd === config.code.OK) {
+              this.startTimer();
+            } else {
+              this.$message.error(data.respmsg);
+              this.isSendCode = true;
+            }
+          }).catch(() => {
+            this.$message.error('请求失败!');
+            this.isSendCode = true;
+          });
+        }
       },
 
       // 计时
@@ -270,7 +274,7 @@
           if(!this.iconShow && valid) {
             this.iconShow = true;
 
-            axios.post(`${config.host}/mchnt/smscode/send`, {
+            axios.post(`${config.ohost}/mchnt/smscode/send`, {
               mobile: this.shop.mobile,
               password: this.form.pass,
               code: this.form.code
@@ -286,9 +290,11 @@
               } else {
                 this.$message.error(data.respmsg);
               }
+              this.stopTimer();
               this.iconShow = false;
             }).catch(() => {
               this.$message.error('请求失败!');
+              this.stopTimer();
               this.iconShow = false;
             });
           }
