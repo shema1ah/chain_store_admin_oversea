@@ -90,30 +90,13 @@ export default {
   },
   created() {
     this.$store.dispatch('getShopList');
-
-    axios.get(`${config.host}/merchant/info`)
-      .then((res) => {
-        let data = res.data;
-        if(data.respcd === config.code.OK) {
-          this.shop = {
-            shopname: data.data.shopname,
-            mobile: data.data.mobile,
-            uid: data.data.uid
-          };
-          // 单店 or 连锁店
-          this.managePath = data.data.cate;
-        } else {
-          this.$message.error(data.respmsg);
-        }
-      })
-      .catch(() => {
-        this.$message.error('网络错误!');
-      });
+    this.getData();
   },
   methods: {
     // 退出登录
     logout() {
-      axios.get(`${config.host}/merchant/logout`).then((res) => {
+      axios.get(`${config.host}/merchant/logout`)
+      .then((res) => {
         let data = res.data;
         if (data.respcd === config.code.OK) {
           this.$router.push("/login");
@@ -123,6 +106,27 @@ export default {
       }).catch(() => {
         this.$message.error('请求失败');
       });
+    },
+
+    getData() {
+      axios.get(`${config.host}/merchant/info`)
+        .then((res) => {
+          let data = res.data;
+          if(data.respcd === config.code.OK) {
+            // 单店 or 连锁店
+            this.managePath = data.data.cate;
+            this.shop = {
+              shopname: data.data.shopname,
+              mobile: data.data.mobile,
+              uid: data.data.uid
+            };
+          } else {
+            this.$message.error(data.respmsg);
+          }
+        })
+        .catch(() => {
+          this.$message.error('网络错误!');
+        });
     },
 
     associate() {

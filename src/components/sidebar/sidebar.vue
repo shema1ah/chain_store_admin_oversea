@@ -37,6 +37,7 @@ export default {
   props: ['managePath'],
   data() {
     return {
+      baseInfo: {},
       navs: [{
         val: '首页概览',
         pathname: 'index'
@@ -61,6 +62,9 @@ export default {
       }, {
         val: '账单管理',
         pathname: 'billctl'
+      }, {
+        val: '公众号授权',
+        pathname: 'publicauth'
       }],
       isShow: true,
       isRotate: false
