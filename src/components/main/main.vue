@@ -1,6 +1,6 @@
 <template>
   <div>
-    <sidebar></sidebar>
+    <sidebar :managePath="managePath"></sidebar>
     <div class="main">
       <div class="header">
         <div class="user_wrapper">
@@ -81,7 +81,8 @@ export default {
           { required: true, message: '请输入分店收款银行卡号!' }
         ]
       },
-      detailData: {}
+      detailData: {},
+      managePath: ''
     };
   },
   components: {
@@ -94,7 +95,8 @@ export default {
   methods: {
     // 退出登录
     logout() {
-      axios.get(`${config.host}/merchant/logout`).then((res) => {
+      axios.get(`${config.host}/merchant/logout`)
+      .then((res) => {
         let data = res.data;
         if (data.respcd === config.code.OK) {
           this.$router.push("/login");
@@ -111,12 +113,13 @@ export default {
         .then((res) => {
           let data = res.data;
           if(data.respcd === config.code.OK) {
+            // 单店 or 连锁店
+            this.managePath = data.data.cate;
             this.shop = {
               shopname: data.data.shopname,
               mobile: data.data.mobile,
               uid: data.data.uid
             };
-
           } else {
             this.$message.error(data.respmsg);
           }
