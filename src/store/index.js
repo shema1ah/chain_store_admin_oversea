@@ -161,7 +161,7 @@ const store = new Vuex.Store({
 })
 
 // store.dispatch('getShopList');
-store.dispatch('getMemberTotal')
+// store.dispatch('getMemberTotal')
 // store.dispatch('getRedpacketData');
 // store.dispatch('getPageShopData');
 // store.dispatch('getStorageData');

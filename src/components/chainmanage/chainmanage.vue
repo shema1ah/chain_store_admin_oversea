@@ -10,7 +10,7 @@
       <div class="panel-header panel-header__fix">
         <div class="panel-select-group panel-select-group__justify">
           <span class="panel-header__desc">基本信息</span>
-          <div class="panel-header-btn" @click="changePass">修改密码</div>
+          <div class="panel-header-btn" @click="changePass('chain', shop.mobile)">修改密码</div>
         </div>
       </div>
       <div class="panel-body">
@@ -53,8 +53,7 @@
           :data="pageShopData.list"
           style="width: 100%"
           row-class-name="el-table__row_fix"
-          v-loading.body="loading"
-        >
+          v-loading.body="loading">
           <el-table-column
             prop="shop_name"
             label="分店名称">
@@ -78,8 +77,8 @@
                   更多<i class="el-icon-caret-bottom el-icon--right"></i>
                 </span>
                 <el-dropdown-menu slot="dropdown" class="el-dropdown-menu__fix collect">
-                  <el-dropdown-item class="el-dropdown-item__fix"  @click.native="editSubShop(scope.row)">修改密码</el-dropdown-item>
-                  <el-dropdown-item class="el-dropdown-item__fix"  @click.native="confirmDeleteShop(scope.row.id)">删除分店</el-dropdown-item>
+                  <el-dropdown-item class="el-dropdown-item__fix"  @click.native="changePass('single', scope.row.mobile)">修改密码</el-dropdown-item>
+                  <el-dropdown-item class="el-dropdown-item__fix"  @click.native="confirmDeleteShop(scope.row.uid)">删除分店</el-dropdown-item>
 
                 </el-dropdown-menu>
               </el-dropdown>
@@ -134,15 +133,8 @@
     <el-dialog title="修改密码" :visible.sync="showChangePass" custom-class="mydialog pass" top="20%" :show-close="false">
       <el-form :model="form" :rules="formrules" ref="form">
         <el-form-item label="登录账号">
-          <div>{{ shop.mobile }}</div>
+          <div>{{ userName }}</div>
         </el-form-item>
-        <div class="yanz">
-          <el-form-item label="验证码" prop="code">
-            <el-input v-model="form.code" size="small" type="number" placeholder="请输入验证码"></el-input>
-          </el-form-item>
-          <div v-if="isSendCode" class="panel-header-btn panel-header-btn__fill" @click="getCode">获取验证码</div>
-          <div v-else class="panel-header-btn panel-header-btn__fill" style="cursor: not-allowed">{{ buttonContent }}</div>
-        </div>
         <el-form-item label="输入新密码" prop="pass">
           <el-input v-model="form.pass" size="small" type="password" placeholder="请输入新密码"></el-input>
         </el-form-item>
@@ -152,7 +144,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <div @click="showChangePass = false" class="cancel">取消</div>
-        <div @click="showChangePass = false" class="submit">
+        <div @click="submit" class="submit">
           <span class="el-icon-loading" v-if="iconShow"></span>
           <span v-else>确定</span>
         </div>
@@ -169,6 +161,27 @@
   import config from 'config';
   export default {
     data() {
+      let passValid = (rule, val, cb) => {
+        if(val === '') {
+          cb('请输入新密码');
+        } else {
+          if(this.form.repass !== '') {
+            this.$refs['form'].validateField('repass');
+          }
+          cb();
+        }
+      };
+      let repassValid = (rule, val, cb) => {
+        if(val === '') {
+          cb('请输入确认新密码');
+        } else if(this.form.pass && this.form.pass !== val) {
+          cb('新密码与确认密码不一致');
+        } else {
+          console.log(val);
+          cb();
+        }
+      };
+
       return {
         loading: false,
         iconShow: false,
@@ -176,25 +189,20 @@
         showChangePass: false,
         showDeleteShopConfirm: false,
         detailData: {},
-        isSendCode: true,
-        buttonContent: '',
+        userName: '',
+        type: '',
         form: {
-          name: '',
-          code: '',
           pass: '',
           repass: ''
         },
         formrules: {
-          code: [
-            { required: true, message: '请输入验证码' }
-          ],
           pass: [
-            { required: true, message: '请输入新密码' },
-            { max: 20, min: 6, message: '请输入6~20位字符' }
+            { validator: passValid },
+            {max: 20, min: 6, message: '请输入6~20位数字或字母', trigger: 'blur'}
           ],
           repass: [
-            { required: true, message: '请输入确认新密码' },
-            { max: 20, min: 6, message: '请输入6~20位字符' }
+            { validator: repassValid },
+            {max: 20, min: 6, message: '请输入6~20位数字或字母', trigger: 'blur'}
           ]
         }
       };
@@ -211,15 +219,6 @@
     },
     created() {
       this.$store.dispatch('getPageShopData');
-    },
-    watch: {
-      'showChangePass': function(val) {
-        if(!val) {
-          setTimeout(() => {
-            this.stopTimer();
-          }, 200);
-        }
-      }
     },
 
     methods: {
@@ -255,34 +254,55 @@
           this.$router.push('/main/chainmanage/createsubshop');
       },
       // 修改密码
-      changePass() {
+      changePass(type, name) {
+        this.type = type;
+        this.userName = name;
+        console.log(type, 111, name, 2222);
         this.showChangePass = true;
       },
 
-      // 获取验证码
-      getCode() {
-        this.isSendCode = false;
-        this.startTimer();
-      },
+      // 修改密码提交
+      submit() {
+        this.$refs['form'].validate((valid) => {
+          if(!this.iconShow && valid) {
+            this.iconShow = true;
 
-      // 计时
-      startTimer() {
-        let num = 60;
-        this.buttonContent = num + 's';
-        this.st = setInterval(() => {
-            num--;
-        if (num) {
-          this.buttonContent = num + 's';
-        } else {
-          this.stopTimer();
-        }
-      }, 1000);
-      },
+            let src;
+            if(this.type === 'chain') {
+              src = 'big-submchnt';
+            }else {
+              src = 'mchnt';
+            }
+            axios.post(`${config.ohost}/mchnt/smscode/send`, {
+              mobile: this.shop.mobile,
+              password: this.form.pass,
+              mode: 'change',
+              username: this.userName,
+              src: src
+            }).then((res) => {
+              let data = res.data;
+              if (data.respcd === config.code.OK) {
+                this.$message({
+                  type: 'success',
+                  message: '修改成功!'
+                });
+                this.showChangePass = false;
 
-      // 停止计时
-      stopTimer() {
-        this.isSendCode = true;
-        clearTimeout(this.st);
+                if(this.type === 'chain') {
+                  this.$router.push('/login');
+                }
+              } else {
+                this.$message.error(data.respmsg);
+              }
+              this.stopTimer();
+              this.iconShow = false;
+            }).catch(() => {
+              this.$message.error('请求失败!');
+              this.stopTimer();
+              this.iconShow = false;
+            });
+          }
+        });
       },
 
       currentChange(currentPage) {

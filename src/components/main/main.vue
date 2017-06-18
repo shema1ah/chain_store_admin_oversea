@@ -90,6 +90,7 @@ export default {
   },
   created() {
     this.$store.dispatch('getShopList');
+    this.$store.dispatch('getMemberTotal');
     this.getData();
   },
   methods: {
