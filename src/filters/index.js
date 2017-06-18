@@ -1,28 +1,27 @@
-import Vue from 'vue';
+import Vue from 'vue'
 
 let filters = {
 
-  formatCurrency(number) {
+  formatCurrency (number) {
     if (isNaN(number)) {
-      return;
+      return
     }
-    return (number / 100).toFixed(2);
+    return (number / 100).toFixed(2)
   },
 
-  removeHMS(time) {
-    return time.split(' ')[0];
+  removeHMS (time) {
+    return time.split(' ')[0]
   },
 
-  addZero(number) {
+  addZero (number) {
     if (isNaN(number)) {
-      return;
+      return
     }
-    return (number * 100 / 100).toFixed(2);
+    return (number * 100 / 100).toFixed(2)
   }
 
-};
+}
 
 Object.keys(filters).forEach((k) => {
-  Vue.filter(k, filters[k]);
-});
-
+  Vue.filter(k, filters[k])
+})

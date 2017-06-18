@@ -8,6 +8,7 @@ module.exports = {
   },
   env: {
     browser: true,
+    es6: true
   },
   // https://github.com/feross/standard/blob/master/RULES.md#javascript-standard-style
   extends: 'standard',
@@ -25,7 +26,7 @@ module.exports = {
     'generator-star-spacing': 0,
     // allow debugger during development
     'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0,
-    'semi': ['error', 'always'],
+    'semi': [0,'always'],
     'indent': 0,
     'no-tabs': 0,
     'no-new': 0,

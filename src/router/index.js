@@ -1,34 +1,36 @@
-import Vue from 'vue';
-import Router from 'vue-router';
+import Vue from 'vue'
+import Router from 'vue-router'
 
-import login from 'components/login/login';
-import register from 'components/register/register';
-import main from 'components/main/main';
-import billctl from 'components/billctl/billctl';
-import index from 'components/index/index';
-import chainmanage from 'components/chainmanage/chainmanage';
-import singlemanage from 'components/singlemanage/singlemanage';
-import transctl from 'components/transctl/transctl';
-import memberctl from 'components/memberctl/memberctl';
-import memberredpoint from 'components/memberredpoint/memberredpoint';
-import memberpoint from 'components/memberpoint/memberpoint';
-import createpoint from 'components/createpoint/createpoint';
-import editpoint from 'components/editpoint/editpoint';
-import reviewpoint from 'components/reviewpoint/reviewpoint';
-import memberredpacket from 'components/memberredpacket/memberredpacket';
-import memberstorage from 'components/memberstorage/memberstorage';
-import createpacket from 'components/createpacket/createpacket';
-import reviewpacket from 'components/reviewpacket/reviewpacket';
-import member from 'components/member/member';
-import packetnotify from 'components/packetnotify/packetnotify';
-import packetshare from 'components/packetshare/packetshare';
-import packetspend from 'components/packetspend/packetspend';
-import createstorage from 'components/createstorage/createstorage';
-import reviewstorage from 'components/reviewstorage/reviewstorage';
-import alterstorage from 'components/alterstorage/alterstorage';
-import membersto from 'components/membersto/membersto';
+import login from 'components/login/login'
+import register from 'components/register/register'
+import main from 'components/main/main'
+import billctl from 'components/billctl/billctl'
+import index from 'components/index/index'
+import chainmanage from 'components/chainmanage/chainmanage'
+import createsubshop from 'components/chainmanage/createSubShop'
+// import routerhub from 'components/chainmanage/routerHub'
+import singlemanage from 'components/singlemanage/singlemanage'
+import transctl from 'components/transctl/transctl'
+import memberctl from 'components/memberctl/memberctl'
+import memberredpoint from 'components/memberredpoint/memberredpoint'
+import memberpoint from 'components/memberpoint/memberpoint'
+import createpoint from 'components/createpoint/createpoint'
+import editpoint from 'components/editpoint/editpoint'
+import reviewpoint from 'components/reviewpoint/reviewpoint'
+import memberredpacket from 'components/memberredpacket/memberredpacket'
+import memberstorage from 'components/memberstorage/memberstorage'
+import createpacket from 'components/createpacket/createpacket'
+import reviewpacket from 'components/reviewpacket/reviewpacket'
+import member from 'components/member/member'
+import packetnotify from 'components/packetnotify/packetnotify'
+import packetshare from 'components/packetshare/packetshare'
+import packetspend from 'components/packetspend/packetspend'
+import createstorage from 'components/createstorage/createstorage'
+import reviewstorage from 'components/reviewstorage/reviewstorage'
+import alterstorage from 'components/alterstorage/alterstorage'
+import membersto from 'components/membersto/membersto'
 
-Vue.use(Router);
+Vue.use(Router)
 
 export default new Router({
   routes: [
@@ -166,7 +168,15 @@ export default new Router({
         },
         {
           path: 'chainmanage',
-          component: chainmanage
+          name: '',
+          component: chainmanage,
+          children: [
+            {
+              path: 'createsubshop',
+              name: 'createsubshop',
+              component: createsubshop
+            }
+          ]
         },
         {
           path: 'singlemanage',
@@ -176,4 +186,5 @@ export default new Router({
     }
   ],
   linkActiveClass: 'active'
-});
+})
+

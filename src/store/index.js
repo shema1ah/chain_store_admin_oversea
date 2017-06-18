@@ -1,10 +1,10 @@
-import Vue from 'vue';
-import Vuex from 'vuex';
-import axios from 'axios';
-import config from 'config';
-import { Message, Loading } from 'element-ui';
+import Vue from 'vue'
+import Vuex from 'vuex'
+import axios from 'axios'
+import config from 'config'
+import { Message, Loading } from 'element-ui'
 
-Vue.use(Vuex);
+Vue.use(Vuex)
 
 const store = new Vuex.Store({
   state: {
@@ -17,121 +17,121 @@ const store = new Vuex.Store({
     redPacketComponent: {}
   },
   mutations: {
-    getRedpacketComponent(state, payload) {
-      state.redPacketComponent = payload.redPacketComponent;
+    getRedpacketComponent (state, payload) {
+      state.redPacketComponent = payload.redPacketComponent
     },
-    getStorageData(state, payload) {
-      state.storageData = payload.storageData;
+    getStorageData (state, payload) {
+      state.storageData = payload.storageData
     },
-    getPageShopData(state, payload) {
-      state.pageShopData = payload.pageShopData;
+    getPageShopData (state, payload) {
+      state.pageShopData = payload.pageShopData
     },
-    getShopList(state, payload) {
-      payload.shopData.list.unshift({shop_name: '全部', uid: ''});
-      state.shopData = payload.shopData;
+    getShopList (state, payload) {
+      payload.shopData.list.unshift({shop_name: '全部', uid: ''})
+      state.shopData = payload.shopData
     },
-    updateMemberTotal(state, payload) {
-      state.member_total = payload.member_total;
+    updateMemberTotal (state, payload) {
+      state.member_total = payload.member_total
     },
-    getRedpacketData(state, payload) {
-      state.redpacketData = payload.redpacketData;
+    getRedpacketData (state, payload) {
+      state.redpacketData = payload.redpacketData
     },
-    getShopDict(state, payload) {
-      var data = payload.shopData.list;
-      var tmpObj = {};
+    getShopDict (state, payload) {
+      var data = payload.shopData.list
+      var tmpObj = {}
       data.forEach((v) => {
-        tmpObj[v.uid] = v.shop_name;
-      });
-      console.log(tmpObj);
-      state.shopDict = tmpObj;
+        tmpObj[v.uid] = v.shop_name
+      })
+      console.log(tmpObj)
+      state.shopDict = tmpObj
     }
   },
   actions: {
-    getStorageData({ commit }, payload) {
+    getStorageData ({ commit }, payload) {
       var loading = Loading.service({
         target: document.getElementById('memberstorage'),
         fullscreen: false
-      });
+      })
       axios.get(`${config.host}/merchant/prepaid/list`, {
         params: Object.assign({}, {activity_status: '', pos: 0, count: 10}, payload && payload.params)
       })
       .then((res) => {
-        loading.close();
-        let data = res.data;
-        if(data.respcd === config.code.OK) {
+        loading.close()
+        let data = res.data
+        if (data.respcd === config.code.OK) {
           commit({
             type: 'getStorageData',
             storageData: data.data
-          });
+          })
         } else {
-          Message.error(data.resperr);
+          Message.error(data.resperr)
         }
       })
       .catch(() => {
-        loading.close();
-        Message.error('获取储值列表失败');
-      });
+        loading.close()
+        Message.error('获取储值列表失败')
+      })
     },
-    getPageShopData({ commit }, payload) {
+    getPageShopData ({ commit }, payload) {
       axios.get(`${config.host}/merchant/sub/list`, {
         params: Object.assign({}, {start: 0, len: 10}, payload && payload.params)
       })
       .then((res) => {
-        let data = res.data;
-        if(data.respcd === config.code.OK) {
+        let data = res.data
+        if (data.respcd === config.code.OK) {
           commit({
             type: 'getPageShopData',
             pageShopData: data.data
-          });
+          })
         } else {
-          Message.error(data.respmsg);
+          Message.error(data.respmsg)
         }
       })
       .catch(() => {
-        Message.error('获取分页店铺列表失败');
-      });
+        Message.error('获取分页店铺列表失败')
+      })
     },
-    getShopList({ commit }, payload) {
+    getShopList ({ commit }, payload) {
       axios.get(`${config.host}/merchant/sub/list`)
       .then((res) => {
-        let data = res.data;
-        if(data.respcd === config.code.OK) {
+        let data = res.data
+        if (data.respcd === config.code.OK) {
           commit({
             type: 'getShopList',
             shopData: data.data
-          });
+          })
           commit({
             type: 'getShopDict',
             shopData: data.data
-          });
+          })
         } else {
-          Message.error(data.respmsg);
+          Message.error(data.respmsg)
         }
       })
       .catch(() => {
-        Message.error('首次获取店铺列表失败!');
-      });
+        Message.error('首次获取店铺列表失败!')
+      })
     },
-    getMemberTotal({ commit }, payload) {
+    getMemberTotal ({ commit }, payload) {
       axios.get(`${config.host}/merchant/member/count`)
       .then((res) => {
-        let data = res.data;
-        if(data.respcd === config.code.OK) {
+        let data = res.data
+        if (data.respcd === config.code.OK) {
           commit({
             type: 'updateMemberTotal',
             member_total: data.data.count
-          });
+          })
         }
       })
       .catch(() => {
-        Message.error('获取会员数目失败!');
-      });
+        Message.error('获取会员数目失败!')
+      })
     },
-    getRedpacketData({ commit }, payload) {
+    getRedpacketData ({ commit }, payload) {
       var loading = Loading.service({
         target: document.getElementById('memberredpacket'),
         fullscreen: false
-      });
+      })
       axios.get(`${config.host}/merchant/activity/list`, {
         params: Object.assign({}, {
           type: '',
@@ -141,29 +141,29 @@ const store = new Vuex.Store({
         }, payload && payload.params)
       })
       .then((res) => {
-        loading.close();
-        let data = res.data;
-        if(data.respcd === config.code.OK) {
+        loading.close()
+        let data = res.data
+        if (data.respcd === config.code.OK) {
           commit({
             type: 'getRedpacketData',
             redpacketData: data.data
-          });
+          })
         } else {
-          Message.error(data.respmsg);
+          Message.error(data.respmsg)
         }
       })
       .catch(() => {
-        loading.close();
-         Message.error('获取红包数据失败!');
-      });
+        loading.close()
+        Message.error('获取红包数据失败!')
+      })
     }
   }
-});
+})
 
 // store.dispatch('getShopList');
-store.dispatch('getMemberTotal');
+store.dispatch('getMemberTotal')
 // store.dispatch('getRedpacketData');
 // store.dispatch('getPageShopData');
 // store.dispatch('getStorageData');
 
-export default store;
+export default store
