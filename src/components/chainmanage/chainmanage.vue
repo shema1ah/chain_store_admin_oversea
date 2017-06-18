@@ -36,16 +36,19 @@
             <i class="icon-create"></i>
             <span>关联分店</span>
           </div> -->
+          <el-button type="primary" class="panel-edit-btn__subshopnum" @click.native="editSubShopNum">编辑分店编号</el-button>
           <el-dropdown :hide-on-click="true">
             <div class="panel-header-btn__associate">
               <i class="icon-create"></i>
               <span>创建分店</span>
             </div>
+
             <el-dropdown-menu slot="dropdown" style="width:155px;">
               <el-dropdown-item @click.native="createShop">直接创建</el-dropdown-item>
               <el-dropdown-item @click.native="associate">关联已有</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
+
         </div>
       </div>
       <div class="panel-body">
@@ -151,6 +154,21 @@
       </div>
     </el-dialog>
 
+    <el-dialog title="编辑分店编号" :visible.sync="showEditSubShopNum" class="mydialog">
+      <el-form :rules="checkTagRules" ref="form-edit-subshop-num" label-position="right" label-width="152px;">
+
+          <el-form-item v-for="(shop, index) in subShopList.list" :label="shop.shop_name"  rules="">
+            <el-input v-model="shop.tag" size="small" placeholder="请输入二十位以内的文字或字母"></el-input>
+          </el-form-item>
+
+      </el-form>
+      <div class="divider"></div>
+      <div slot="footer" class="dialog-footer">
+        <div @click="showEditSubShopNum = false" class="cancel">关闭</div>
+        <div @click="submitEditSubShopNum" class="submit"><i class="el-icon-loading" v-show="iconShow"></i>确认</div>
+      </div>
+    </el-dialog>
+
     <el-dialog title="" :visible.sync="showDeleteShopConfirm" custom-class="mydialog pass" top="20%" :show-close="false">
     </el-dialog>
   </div>
@@ -159,7 +177,9 @@
 <script>
   import axios from 'axios';
   import config from 'config';
+  import ElButton from "../../../node_modules/element-ui/packages/button/src/button";
   export default {
+    components: {ElButton},
     data() {
       let passValid = (rule, val, cb) => {
         if(val === '') {
@@ -187,6 +207,7 @@
         iconShow: false,
         isShowDetail: false,
         showChangePass: false,
+        showEditSubShopNum: false,
         showDeleteShopConfirm: false,
         detailData: {},
         userName: '',
@@ -194,6 +215,9 @@
         form: {
           pass: '',
           repass: ''
+        },
+        checkTagRules: {
+
         },
         formrules: {
           pass: [
@@ -215,13 +239,29 @@
     computed: {
       pageShopData() {
         return this.$store.state.pageShopData;
+      },
+      subShopList() {
+        if(!this.$store.state.shopData.list[0].uid) {
+          this.$store.state.shopData.list.shift();
+        }
+        return this.$store.state.shopData;
       }
     },
     created() {
       this.$store.dispatch('getPageShopData');
+//      this.$store.dispatch('getShopList');
     },
-
+    mounted() {
+        console.log('mounted.....')
+      console.log(this.$store.state.shopData);
+    },
     methods: {
+      submitEditSubShopNum() {
+
+      },
+      editSubShopNum() {
+        this.showEditSubShopNum = true;
+      },
       // 确认是否删除分店
       confirmDeleteShop() {
 //         const h = this.$createElement;
@@ -354,7 +394,6 @@
     justify-content: space-between;
   }
 
-
   .info_wrapper {
     padding: 20px 0px 30px 5px;
   @at-root .info {
@@ -399,6 +438,10 @@
   .main {
     .panel-header-btn {
       width: 155px;
+    }
+    .panel-edit-btn__subshopnum {
+      width: 155px;
+      margin-left: 674px;
     }
     .pass {
       width: 420px;

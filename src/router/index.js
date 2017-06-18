@@ -181,6 +181,10 @@ export default new Router({
         {
           path: 'singlemanage',
           component: singlemanage
+        },
+        {
+          path: 'createsubshop',
+          component: createsubshop
         }
       ]
     }
