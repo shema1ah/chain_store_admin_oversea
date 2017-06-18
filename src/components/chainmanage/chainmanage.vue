@@ -32,10 +32,20 @@
       <div class="panel-header panel-header__fix">
         <div class="panel-select-group panel-select-group__justify">
           <span class="panel-header__desc">门店列表</span>
-          <div class="panel-header-btn__associate" @click="associate">
+          <!-- <div class="panel-header-btn__associate" @click="associate">
             <i class="icon-create"></i>
             <span>关联分店</span>
-          </div>
+          </div> -->
+          <el-dropdown :hide-on-click="true">
+            <div class="panel-header-btn__associate">
+              <i class="icon-create"></i>
+              <span>创建分店</span>
+            </div>
+            <el-dropdown-menu slot="dropdown" style="width:155px;">
+              <el-dropdown-item @click.native="createShop">直接创建</el-dropdown-item>
+              <el-dropdown-item @click.native="associate">关联已有</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
         </div>
       </div>
       <div class="panel-body">
@@ -62,7 +72,17 @@
             label="操作">
             <template scope="scope">
               <el-button type="text" size="small" class="el-button__fix" @click="showDetail(scope)">查看详情</el-button>
-              <el-button type="text" size="small" class="el-button__fix" @click="unbind(scope)">解绑此分店</el-button>
+              <!--<el-button type="text" size="small" class="el-button__fix" @click="unbind(scope)">解绑此分店</el-button>-->
+              <el-dropdown>
+                <span class="el-dropdown-link el-dropdown-link__fix">
+                  更多<i class="el-icon-caret-bottom el-icon--right"></i>
+                </span>
+                <el-dropdown-menu slot="dropdown" class="el-dropdown-menu__fix collect">
+                  <el-dropdown-item class="el-dropdown-item__fix"  @click.native="editSubShop(scope.row)">修改密码</el-dropdown-item>
+                  <el-dropdown-item class="el-dropdown-item__fix"  @click.native="confirmDeleteShop(scope.row.id)">删除分店</el-dropdown-item>
+
+                </el-dropdown-menu>
+              </el-dropdown>
             </template>
           </el-table-column>
         </el-table>
@@ -121,7 +141,7 @@
             <el-input v-model="form.code" size="small" type="number" placeholder="请输入验证码"></el-input>
           </el-form-item>
           <div v-if="isSendCode" class="panel-header-btn panel-header-btn__fill" @click="getCode">获取验证码</div>
-          <div v-else class="panel-header-btn panel-header-btn__fill" style="cursor: not-allowed">{{ buttonCotent }}</div>
+          <div v-else class="panel-header-btn panel-header-btn__fill" style="cursor: not-allowed">{{ buttonContent }}</div>
         </div>
         <el-form-item label="输入新密码" prop="pass">
           <el-input v-model="form.pass" size="small" type="password" placeholder="请输入新密码"></el-input>
@@ -138,6 +158,9 @@
         </div>
       </div>
     </el-dialog>
+
+    <el-dialog title="" :visible.sync="showDeleteShopConfirm" custom-class="mydialog pass" top="20%" :show-close="false">
+    </el-dialog>
   </div>
 </template>
 
@@ -151,9 +174,10 @@
         iconShow: false,
         isShowDetail: false,
         showChangePass: false,
+        showDeleteShopConfirm: false,
         detailData: {},
         isSendCode: true,
-        buttonCotent: '',
+        buttonContent: '',
         form: {
           name: '',
           code: '',
@@ -199,6 +223,37 @@
     },
 
     methods: {
+      // 确认是否删除分店
+      confirmDeleteShop() {
+//         const h = this.$createElement;
+        this.$prompt('zozo', '提示', {
+//          type: 'warning',
+//          message: '',
+//          showInput: true,
+//          inputType: 'password',
+          confirmButtonText: '确认',
+          cancelButtonText: '关闭',
+          inputValidator: function(input) {
+            console.log(input);
+          },
+          // inputPattern: /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
+          inputErrorMessage: '密码不能为空'
+        }).then(({ value }) => {
+
+        }).catch(() => {
+//          this.$message({
+//            type: 'info',
+//            message: '取消输入'
+//          });
+        });
+      },
+      editSubShop(shop) {
+
+      },
+        // 创建子门店
+      createShop() {
+          this.$router.push('/main/chainmanage/createsubshop');
+      },
       // 修改密码
       changePass() {
         this.showChangePass = true;
@@ -213,11 +268,11 @@
       // 计时
       startTimer() {
         let num = 60;
-        this.buttonCotent = num + 's';
+        this.buttonContent = num + 's';
         this.st = setInterval(() => {
             num--;
         if (num) {
-          this.buttonCotent = num + 's';
+          this.buttonContent = num + 's';
         } else {
           this.stopTimer();
         }
