@@ -2,184 +2,147 @@
   <div class="index">
     <div class="banner_wrapper">
       <div class="banner-breadcrumb">
-        <span>首页概览</span>
+        <span>首页</span>
       </div>
     </div>
 
     <div class="panel">
       <div class="panel-header panel-header__fix">
-        <div class="panel-select-group panel-select-group__justify">
-          <span class="panel-header__desc">基本信息</span>
-          <div class="panel-header-btn" @click="changePass">修改密码</div>
+        <div class="panel-select-group">
+          <h2 class="panel-header__desc">会员及交易数据统计</h2>
         </div>
       </div>
-      <div class="panel-body">
-        <div class="info_wrapper">
-          <div class="info">
-            <div class="info__title">商户名称</div>
-            <div class="info__sign">:</div>
-            <div class="info__desc">{{ shop.shopname }}</div>
-          </div>
-          <div class="info">
-            <div class="info__title">登录账号</div>
-            <div class="info__sign">:</div>
-            <div class="info__desc">{{ shop.mobile }}</div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="panel">
-      <div class="panel-header panel-header__fix">
-        <div class="panel-select-group panel-select-group__justify">
-          <span class="panel-header__desc">门店列表</span>
-          <div class="panel-header-btn__associate" @click="associate">
-            <i class="icon-create"></i>
-            <span>关联分店</span>
-          </div>
-        </div>
-      </div>
-      <div class="panel-body">
-        <el-table
-          :data="pageShopData.list"
-          style="width: 100%"
-          row-class-name="el-table__row_fix"
-          v-loading.body="loading"
-          >
-          <el-table-column
-            prop="shop_name"
-            label="分店名称">
-          </el-table-column>
-          <el-table-column
-            prop="mobile"
-            label="登录账号">
-          </el-table-column>
-          <el-table-column
-            prop="join_time"
-            label="注册时间">
-            <template scope="scope">{{ scope.row.join_time }}</template>
-          </el-table-column>
-          <el-table-column
-            label="操作">
-            <template scope="scope">
-              <el-button type="text" size="small" class="el-button__fix" @click="showDetail(scope)">查看详情</el-button>
-              <el-button type="text" size="small" class="el-button__fix" @click="unbind(scope)">解绑此分店</el-button>
-            </template>
-          </el-table-column>
-        </el-table>
-      </div>
-      <div class="pagination_wrapper" v-if="pageShopData.count >= 10">
-        <el-pagination
-          layout="prev, pager, next"
-          :total="pageShopData.count"
-          :page-size="10"
-          @current-change="currentChange">
-        </el-pagination>
-      </div>
-      <div class="table_placeholder" v-else></div>
-    </div>
-    <el-dialog v-model="isShowDetail" class="detail_dialog" title="门店详情">
-      <el-row>
-        <el-col :span="6" class="title">登录账号</el-col>
-        <el-col :span="10" class="desc">{{ detailData['mobile'] }}</el-col>
-      </el-row>
-      <el-row class="">
-        <el-col :span="6" class="title">店铺名称</el-col>
-        <el-col :span="10" class="desc">{{ detailData['shopname'] }}</el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="6" class="title">地址</el-col>
-        <el-col :span="10" class="desc">{{ detailData['address'] }}</el-col>
-      </el-row>
 
-      <el-row>
-        <el-col :span="6" class="title">手机号</el-col>
-        <el-col :span="10" class="desc">{{ detailData['mobile'] }}</el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="6" class="title">持卡人</el-col>
-        <el-col :span="10" class="desc">{{ detailData['bankuser'] }}</el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="6" class="title">银行账户</el-col>
-        <el-col :span="10" class="desc">{{ detailData['bankaccount'] }}</el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="6" class="title">银行名称</el-col>
-        <el-col :span="14" class="desc">
-          <div>{{ detailData['headbankname'] }}</div>
-          <div>{{ detailData['bankname'] }}</div>
-        </el-col>
-      </el-row>
-    </el-dialog>
-    <el-dialog title="修改密码" :visible.sync="showChangePass" custom-class="mydialog pass" top="20%" :show-close="false">
-      <el-form :model="form" :rules="formrules" ref="form">
-        <el-form-item label="登录账号">
-          <div>{{ shop.mobile }}</div>
-        </el-form-item>
-        <el-form-item label="输入新密码" prop="pass">
-          <el-input v-model="form.pass" size="small" type="password" placeholder="请输入新密码"></el-input>
-        </el-form-item>
-        <el-form-item label="确认新密码" prop="repass">
-          <el-input v-model="form.repass" size="small" type="password" placeholder="请输入确认新密码"></el-input>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <div @click="showChangePass = false" class="cancel">取消</div>
-        <div @click="submit" class="submit">
-          <span class="el-icon-loading" v-if="iconShow"></span>
-          <span v-else>确定</span>
+      <div class="panel-body panel-today">
+        <div class="member">
+          <h3><i></i>今日会员新增</h3>
+          <strong><em>{{info.new_member_num}}</em>人</strong>
+          <ul>
+            <li>
+              <strong><i></i>今日回头客</strong>
+              <span><em>{{info.old_member_num}}</em>个</span>
+            </li>
+            <li>
+              <strong><i></i>本月会员新增</strong>
+              <span><em>{{info.month_new_member}}</em>人</span>
+            </li>
+            <li>
+              <strong><i></i>累计会员数</strong>
+              <span><em>{{info.total_member}}</em>人</span>
+            </li>
+          </ul>
+        </div>
+        <div class="fee">
+          <h3>今日交易金额</h3>
+          <strong><em>{{info.today_total_amt | formatCurrency}}</em>元</strong>
+          <ul>
+            <li>
+              <strong><i></i>今日交易笔数</strong>
+              <span><em>{{info.nums}}</em>笔</span>
+            </li>
+            <li>
+              <strong><i></i>今日实收</strong>
+              <span><em>{{info.today_txamt | formatCurrency}}</em>元</span>
+            </li>
+            <li>
+              <strong><i></i>本月实收</strong>
+              <span><em>{{info.month_txamt | formatCurrency}}</em>元</span>
+            </li>
+          </ul>
         </div>
       </div>
-    </el-dialog>
+    </div>
+
+    <div class="data-show">
+      <h2>活动运营数据统计</h2>
+      <div class="content">
+        <div class="item"  @click="openDetail('coupon')" v-for="activity in activitys">
+          <h3><i></i>进行中的活动：红包</h3>
+          <div class="title">
+            <i class="icon"></i>
+            <span>
+              <strong>开业红包</strong>
+              活动已进行2天
+            </span>
+          </div>
+          <ul>
+            <li>
+              <strong>领取数</strong>
+              <span><em>3</em>个</span>
+            </li>
+            <li>
+              <strong>使用数</strong>
+              <span><em>3</em>个</span>
+            </li>
+            <li>
+              <strong>刺激消费数</strong>
+              <span><em>200</em>个</span>
+            </li>
+          </ul>
+        </div>
+        <div class="item" @click="openDetail('card')">
+          <h3><i class="collect"></i>进行中的活动：集点</h3>
+          <div class="title">
+            <i class="icon collect"></i>
+            <span>
+              <strong>满5点送芒果冰沙一杯</strong>
+              活动已进行2天
+            </span>
+          </div>
+          <ul>
+            <li>
+              <strong>领取数</strong>
+              <span><em>3</em>个</span>
+            </li>
+            <li>
+              <strong>使用数</strong>
+              <span><em>3</em>个</span>
+            </li>
+            <li>
+              <strong>刺激消费数</strong>
+              <span><em>200</em>个</span>
+            </li>
+          </ul>
+        </div>
+        <div class="item" @click="openDetail('storage')">
+          <h3><i class="store"></i>进行中的活动：储值</h3>
+          <div class="title">
+            <i class="icon store"></i>
+            <span>
+              <strong>储值活动</strong>
+              活动已进行2天
+            </span>
+          </div>
+          <ul>
+            <li>
+              <strong>领取数</strong>
+              <span><em>3</em>个</span>
+            </li>
+            <li>
+              <strong>使用数</strong>
+              <span><em>3</em>个</span>
+            </li>
+            <li>
+              <strong>刺激消费数</strong>
+              <span><em>200</em>个</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+
   </div>
 </template>
 
 <script>
-  import axios from 'axios';
-  import config from 'config';
+  import axios from 'axios'
+  import config from 'config'
   export default {
     data() {
-      let passValid = (rule, val, cb) => {
-        if(val === '') {
-          cb('请输入新密码');
-        } else {
-          if(this.form.repass !== '') {
-            this.$refs['form'].validateField('repass');
-          }
-          cb();
-        }
-      };
-      let repassValid = (rule, val, cb) => {
-        if(val === '') {
-          cb('请输入确认新密码');
-        } else if(this.form.pass && this.form.pass !== val) {
-          cb('新密码与确认密码不一致');
-        } else {
-          console.log(val);
-          cb();
-        }
-      };
-
       return {
-        loading: false,
-        iconShow: false,
-        isShowDetail: false,
-        showChangePass: false,
-        detailData: {},
-        form: {
-          pass: '',
-          repass: ''
-        },
-        formrules: {
-          pass: [
-            { validator: passValid },
-            {max: 20, min: 6, message: '请输入6~20位数字或字母', trigger: 'blur'}
-          ],
-          repass: [
-            { validator: repassValid },
-            {max: 20, min: 6, message: '请输入6~20位数字或字母', trigger: 'blur'}
-          ]
-        }
+        info: {},
+        activitys: []
       };
     },
     props: {
@@ -187,156 +150,209 @@
         type: Object
       }
     },
-    computed: {
-      pageShopData() {
-        return this.$store.state.pageShopData;
-      }
-    },
     created() {
-      this.$store.dispatch('getPageShopData');
+      this.fetchDashboardData()
+      this.fetchActivityData()
     },
-
     methods: {
-      // 修改密码
-      changePass() {
-        this.showChangePass = true;
-      },
-
-      // 提交
-      submit() {
-        this.$refs['form'].validate((valid) => {
-          if(!this.iconShow && valid) {
-            this.iconShow = true;
-
-            axios.post(`${config.ohost}/mchnt/smscode/send`, {
-              mobile: this.shop.mobile,
-              password: this.form.pass,
-              mode: 'change',
-              src: 'mchnt'
-            }).then((res) => {
-              let data = res.data;
-              if (data.respcd === config.code.OK) {
-                this.$message({
-                  type: 'success',
-                  message: '修改成功!'
-                });
-                this.showChangePass = false;
-                this.$router.push('/login');
-              } else {
-                this.$message.error(data.respmsg);
-              }
-              this.stopTimer();
-              this.iconShow = false;
-            }).catch(() => {
-              this.$message.error('请求失败!');
-              this.stopTimer();
-              this.iconShow = false;
-            });
-          }
-        });
-      },
-
-      currentChange(currentPage) {
-        this.$store.dispatch({
-          type: 'getPageShopData',
-          start: currentPage - 1
-        });
-      },
-
-      associate() {
-        this.$emit('associate');
-      },
-
-      unbind(scope) {
-        this.$emit('unbind', scope.row.uid);
-      },
-
-      showDetail(scope) {
-        axios.get(`${config.host}/merchant/info`, {
-            params: {
-              userid: scope.row.uid
+      fetchDashboardData() {
+        axios.get(`${config.host}/merchant/dashboard/stats`)
+          .then((res) => {
+            let data = res.data
+            console.log(data)
+            if(data.respcd === config.code.OK) {
+              this.info = data.data
+            } else {
+              this.$message.error(data.respmsg)
             }
           })
-          .then((res) => {
-            let data = res.data;
-            if (data.respcd === config.code.OK) {
-              this.detailData = data.data;
-              this.isShowDetail = true;
-            } else {
-              this.$message.error(data.respmsg);
-            }
+          .catch(() => {
+            this.$message.error('网络错误!')
           });
+      },
+      fetchActivityData() {
+        axios.get(`${config.host}/merchant/homeview`, {
+          params: {
+            type: 'coupon'
+          }
+        }).then((res) => {
+            let data = res.data
+            console.log(data)
+            if(data.respcd === config.code.OK) {
+              this.activitys = data.data.result
+              this.fetchCardData()
+            } else {
+              this.$message.error(data.respmsg)
+            }
+          })
+          .catch(() => {
+            this.$message.error('网络错误!')
+          })
+      },
+      openDetail(type) {
+        let pathname = ''
+        switch (type) {
+          case 'coupon':
+            pathname = 'memberredpacket'
+            break
+          case 'card':
+            pathname = 'memberredpoint'
+            break
+          case 'storage':
+            pathname = 'memberstorage'
+            break
+          default:
+            break
+        }
+        this.$router.push(pathname)
       }
     }
   };
 </script>
 
 <style lang="scss">
-  .panel-header__desc {
-    font-size: 18px;
-    color: #FE9B20;
+  .panel-body.panel-today{
+    padding: 28px 0;
   }
-
-  .panel-header__fix {
-    padding-right: 15px;
-  }
-
-  .panel-select-group__justify {
-    justify-content: space-between;
-  }
-
-  .info_wrapper {
-    padding: 20px 0px 30px 5px;
-    @at-root .info {
-      display: flex;
-      height: 28px;
-      align-items: flex-end;
+  .panel-today {
+    > div {
+      width: 48%;
+      display: inline-block;
+      text-align: center;
       &:first-child {
-        margin-bottom: 18px;
+        border-right: 1px solid #E8E7E6;
       }
-      @at-root .info__title {
-        font-size: 20px;
-        color: #262323;
+      > strong {
+        color: #FE9B20;
+        em {
+          font-size: 34px;
+        }
       }
-      @at-root .info__sign {
-        margin: 0px 15px 0px 10px;
+    }
+    h3 {
+      font-weight: bold;
+      margin-bottom: 12px;
+    }
+    ul {
+      width: 60%;
+      max-width: 280px;
+      padding-top: 10px;
+      padding-bottom: 15px;
+      margin: 0 auto;
+    }
+    li {
+      text-align: right;
+      line-height: 32px;
+      strong {
+        float: left;
+        i {
+          width: 7px;
+          height: 7px;
+          vertical-align: middle;
+          margin-right: 10px;
+          border-radius: 7px;
+          display: inline-block;
+          background-color: #8883F4;
+        }
+        color: #8A8C92;
       }
-      @at-root .info__desc {
+    }
+    .fee i{
+      background-color: #F5A623;
+    }
+  }
+  .data-show {
+    padding: 0 25px;
+    h2 {
+      font-size: 18px;
+      padding-bottom: 12px;
+    }
+  }
+  .content {
+	  margin-right: -12px;
+    .item {
+      width: 300px;
+      cursor: pointer;
+      margin-bottom: 18px;
+      display: inline-block;
+      margin-right: 12px;
+      background-color: #fff;
+      box-shadow: 0 3px 3px #E8E7E6;
+      &:hover {
+        box-shadow: 5px 5px 5px #E8E7E6;
+      }
+      h3 {
+        i {
+          width: 5px;
+          height: 22px;
+          vertical-align: middle;
+          margin-right: 10px;
+          display: inline-block;
+          background: #FF3D1F url('./img/title-bg.png') no-repeat 0 -1px;
+          &.collect {
+            background-color: #8883F4;
+          }
+          &.store {
+            background-color: #FF8100;
+          }
+        }
+        line-height: 40px;
         font-size: 15px;
-        color: #98989E;
+        border-bottom: 1px solid #E8E7E6;
       }
-    }
-  }
-  .table_placeholder {
-    height: 50px;
-  }
-
-  .detail_dialog {
-    .el-dialog {
-      width: 580px;
-    }
-    .el-dialog__title {
-      font-size: 20px;
-    }
-    .title {
-      font-size: 16px;
-      color: black;
-    }
-    .desc {
-      color: black;
-    }
-  }
-  .index {
-    .panel-header-btn {
-      width: 155px;
-    }
-    .pass {
-      width: 420px;
-      .el-dialog__header {
+      ul {
+        padding: 20px 5%;
+      }
+      .title {
+        padding:25px 0 10px 15px;
+        i {
+          width: 28px;
+          height: 28px;
+          margin-right: 5px;
+          display: inline-block;
+          background: url('./img/icons.png') no-repeat;
+          &.collect {
+            background-position: -28px 0;
+          }
+          &.store {
+            background-position: -56px 0;
+          }
+        }
+        i, span {
+          vertical-align: middle;
+        }
+        strong {
+          font-size: 14px;
+          display: block;
+          color: #262424;
+          padding-bottom: 8px;
+        }
+        span {
+          display: inline-block;
+          font-size: 12px;
+          color: #C2C2C2;
+        }
+      }
+      li {
+        width: 30%;
+        display: inline-block;
+        border-right: 1px solid #E8E7E6;
         text-align: center;
-      }
-      .el-form-item__label {
-        width: 90px;
+        &:last-child {
+          border-right: none;
+        }
+        strong {
+          color: #8A8C92;
+          font-size: 12px;
+          display: block;
+          margin-bottom: 4px;
+        }
+        span {
+          font-size: 12px;
+          em {
+            font-size: 16px;
+          }
+        }
       }
     }
   }
