@@ -43,7 +43,7 @@
           </el-table-column>
           <el-table-column label="集点条件" min-width="150">
             <template scope="scope">
-              <span>支付满{{ scope.row.obtain_amt }}可集一点</span>
+              <span>支付满{{ scope.row.obtain_amt }}元可集一点</span>
             </template>
           </el-table-column>
           <el-table-column label="礼品详情" min-width="100">
@@ -69,8 +69,8 @@
                   更多<i class="el-icon-caret-bottom el-icon--right"></i>
                 </span>
                 <el-dropdown-menu slot="dropdown" class="el-dropdown-menu__fix collect">
-                  <el-dropdown-item class="el-dropdown-item__fix" :disabled="scope.row.state===2 || scope.row.state ===3" @click.native="editActivity(scope.row)">修改活动</el-dropdown-item>
-                  <el-dropdown-item class="el-dropdown-item__fix" :disabled="scope.row.state===2 || scope.row.state ===3" @click.native="stopActivity(scope.row.id)">停止活动</el-dropdown-item>
+                  <el-dropdown-item class="el-dropdown-item__fix" :disabled="scope.row.state==2 || scope.row.state ==3" @click.native="editActivity(scope.row)">修改活动</el-dropdown-item>
+                  <el-dropdown-item class="el-dropdown-item__fix" :disabled="scope.row.state==2 || scope.row.state ==3" @click.native="stopActivity(scope.row.id)">停止活动</el-dropdown-item>
                   <a href="scope.row.promotion_url" @click="downLoad(scope.row.id)">
                     <el-dropdown-item command=3 class="el-dropdown-item__fix">下载宣传物料</el-dropdown-item>
                   </a>
@@ -205,9 +205,6 @@
         return this.$store.state.shopData;
       }
     },
-    created() {
-      // this.getData();
-    },
 
     methods: {
       // 改变活动状态
@@ -288,7 +285,6 @@
 
       // 编辑活动
       editActivity(data) {
-        console.log(data, 1111);
         this.$store.state.pointData = data;
         this.$router.push("/main/memberredpoint/editpoint");
       },

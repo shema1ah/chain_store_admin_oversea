@@ -85,6 +85,21 @@
   export default {
     beforeRouteEnter (to, from, next) {
       next((vm) => {
+        let pData = vm.$store.state.pointData;
+        if(pData) {
+          vm.form = {
+            exchange_pt: +pData.exchange_pt,
+            obtain_amt: +pData.obtain_amt,
+            goods_name: pData.goods_name,
+            goods_amt: +pData.goods_amt,
+            start_time: new Date(pData.start_time),
+            expire_time: new Date(pData.expire_time),
+            mchnt_id_list: []
+          };
+          vm.id = pData.id;
+          vm.checked = pData.obtain_limit == 0;
+        }
+
         vm.getData();
       });
     },
@@ -118,21 +133,19 @@
         }
       };
 
-      let pData = this.$store.state.pointData;
-
       return {
         textList: ['1点', '2点', '3点', '4点', '5点', '6点', '7点', '8点', '9点', '10点'],
-        checked: pData.obtain_limit == 0,
         shopData: [],
         checkList: [],
-        id: pData.id,
+        id: null,
+        checked: false,
         form: {
-          exchange_pt: +pData.exchange_pt,
-          obtain_amt: +pData.obtain_amt,
-          goods_name: pData.goods_name,
-          goods_amt: +pData.goods_amt,
-          start_time: new Date(pData.start_time),
-          expire_time: new Date(pData.expire_time),
+          exchange_pt: null,
+          obtain_amt: null,
+          goods_name: '',
+          goods_amt: null,
+          start_time: new Date(),
+          expire_time: new Date(),
           mchnt_id_list: []
         },
         formrules: {
@@ -185,25 +198,29 @@
 
       // 进入页面格式化数据
       formatData(data) {
-        let checklist = this.$store.state.pointData.apply_shops;
+        let checklist = (this.$store.state.pointData || {}).apply_shops;
         let alllist = data;
         let checkList = [];
         let list = [];
         let valueList = [];
         for(let val of alllist) {
+          let flag = false;
+
           for(let index of checklist) {
             if(val.uid == index.uid) {
               checkList.push(val);
               valueList.push(val.uid);
-            }else {
-              list.push(val);
+              flag = true;
             }
+          }
+
+          if(!flag) {
+            list.push(val);
           }
         }
         this.shopData = list;
         this.checkList = checkList;
         this.form.mchnt_id_list = valueList;
-        console.log(valueList, 111, checkList, 2222, list);
       },
 
       // 提交预览

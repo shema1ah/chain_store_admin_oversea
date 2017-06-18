@@ -2,11 +2,11 @@
   <div class="register">
     <div class="head">商户管理后台</div>
     <el-form :model="form" :rules="formrules" ref="form">
-      <el-form-item label="手机号" prop="mobile" v-if="isRegister">
-        <el-input v-model="form.mobile" size="small" type="number" placeholder="请输入手机号"></el-input>
+      <el-form-item label="手机号" prop="username" v-if="isRegister">
+        <el-input v-model="form.username" size="small" type="number" placeholder="请输入手机号"></el-input>
       </el-form-item>
-      <el-form-item label="账号" prop="username" v-if="!isRegister">
-        <el-input v-model="form.username" size="small" type="number" placeholder="请输入注册账号"></el-input>
+      <el-form-item label="账号" prop="mobile" v-if="!isRegister">
+        <el-input v-model="form.mobile" size="small" type="number" placeholder="请输入注册账号"></el-input>
       </el-form-item>
       <div class="yanz">
         <el-form-item label="验证码" prop="code">
@@ -89,7 +89,7 @@
         formrules: {
           mobile: [
             { required: true, message: '请输入手机号' },
-            { validator: phoneValid }
+            { validator: phoneValid, trigger: 'blur' }
           ],
           username: [
             { required: true, message: '请输入注册账号' }
@@ -99,18 +99,18 @@
           ],
           password: [
             { validator: passValid },
-            {max: 20, min: 6, message: '请输入6~20位数字或字母'}
+            {max: 20, min: 6, message: '请输入6~20位数字或字母', trigger: 'blur'}
           ],
           repass: [
             { validator: repassValid },
-            {max: 20, min: 6, message: '请输入6~20位数字或字母'}
+            {max: 20, min: 6, message: '请输入6~20位数字或字母', trigger: 'blur'}
           ],
           shopname: [
             { required: true, message: '请输入商户名称' }
           ],
           saleman_mobile: [
             { required: true, message: '请输入推荐人手机号' },
-            { validator: phoneValid }
+            { validator: phoneValid, trigger: 'blur' }
           ]
         }
       };
@@ -124,14 +124,14 @@
     methods: {
       // 获取验证码
       getCode() {
-        let type = this.isRegister ? 'mobile' : 'username';
+        let type = this.isRegister ? 'username' : 'mobile';
         this.$refs['form'].validateField(type, (valid) => {
           if(valid === '' && this.isSendCode) {
             this.isSendCode = false;
 
             axios.get(`${config.ohost}/mchnt/smscode/send`, {
               params: {
-                mobile: this.isRegister ? this.form.mobile : this.form.username,
+                mobile: this.isRegister ? this.form.username : this.form.mobile,
                 mode: this.isRegister ? 'signup' : 'reset_pwd'
               }
             }).then((res) => {
@@ -181,27 +181,31 @@
             let params, val;
             if(this.isRegister) {
               params = {
-                mobile: this.mobile,
-                password: this.password,
-                code: this.code
+                username: this.form.username,
+                password: this.form.password,
+                shopname: this.form.shopname,
+                code: this.form.code,
+                saleman_mobile: this.form.saleman_mobile,
+                format: 'cors'
               };
               val = "bigmchnt_signup";
             }else {
               params = {
-                username: this.username,
-                password: this.password,
-                shopname: this.shopname,
-                code: this.code,
-                saleman_mobile: this.saleman_mobile
+                mobile: this.form.mobile,
+                password: this.form.password,
+                code: this.form.code,
+                format: 'cors',
+                src: 'mchnt',
+                mode: 'reset'
               };
               val = "reset_pwd";
             }
-            axios.post(`${config.ohost}/mchnt/smscode/${val}`, params).then((res) => {
+            axios.post(`${config.ohost}/mchnt/user/${val}`, params).then((res) => {
               let data = res.data;
               if (data.respcd === config.code.OK) {
                 this.$message({
                   type: 'success',
-                  message: this.isRegister ? '注册成功!' : '修改密码成功!'
+                  message: this.isRegister ? '注册成功!' : '修改成功!'
                 });
                 this.$router.push('/login');
               } else {

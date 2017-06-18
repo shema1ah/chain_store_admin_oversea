@@ -22,9 +22,10 @@
         </transition>
       </li>
       <li>
-        <router-link class="sidebar-nav__item" v-if="managePath === 'bigmerchant'" :to="router('main/bigmerchant')">门店管理</router-link>
-        <router-link class="sidebar-nav__item" v-else :to="router('main/singlemerchant')">门店管理</router-link>
+        <router-link class="sidebar-nav__item" v-if="managePath === 'bigmerchant'" :to="router('main/chainmanage')">门店管理</router-link>
+        <router-link class="sidebar-nav__item" v-else :to="router('main/singlemanage')">门店管理</router-link>
       </li>
+      <li><a href="official_setting.html" class="sidebar-nav__item">智慧餐厅</a></li>
     </ul>
     <!--<div class="copyright_wrapper">
       <span class="copyright-text">Copyright</span>
@@ -61,9 +62,6 @@ export default {
       }, {
         val: '账单管理',
         pathname: 'billctl'
-      }, {
-        val: '公众号授权',
-        pathname: 'publicauth'
       }],
       isShow: true,
       isRotate: false

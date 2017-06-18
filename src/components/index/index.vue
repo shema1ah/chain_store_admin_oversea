@@ -116,13 +116,6 @@
         <el-form-item label="登录账号">
           <div>{{ shop.mobile }}</div>
         </el-form-item>
-        <div class="yanz">
-          <el-form-item label="验证码" prop="code">
-            <el-input v-model="form.code" size="small" type="number" placeholder="请输入验证码"></el-input>
-          </el-form-item>
-          <el-button v-if="isSendCode" type="primary" class="panel-header-btn panel-header-btn__fill" @click="getCode">获取验证码</el-button>
-          <div v-else class="panel-header-btn panel-header-btn__fill send">{{ buttonCotent }}</div>
-        </div>
         <el-form-item label="输入新密码" prop="pass">
           <el-input v-model="form.pass" size="small" type="password" placeholder="请输入新密码"></el-input>
         </el-form-item>
@@ -173,24 +166,18 @@
         isShowDetail: false,
         showChangePass: false,
         detailData: {},
-        isSendCode: true,
-        buttonCotent: '',
         form: {
-          code: '',
           pass: '',
           repass: ''
         },
         formrules: {
-          code: [
-            { required: true, message: '请输入验证码' }
-          ],
           pass: [
             { validator: passValid },
-            {max: 20, min: 6, message: '请输入6~20位数字或字母'}
+            {max: 20, min: 6, message: '请输入6~20位数字或字母', trigger: 'blur'}
           ],
           repass: [
             { validator: repassValid },
-            {max: 20, min: 6, message: '请输入6~20位数字或字母'}
+            {max: 20, min: 6, message: '请输入6~20位数字或字母', trigger: 'blur'}
           ]
         }
       };
@@ -208,64 +195,11 @@
     created() {
       this.$store.dispatch('getPageShopData');
     },
-    watch: {
-      'showChangePass': function(val) {
-        if(!val) {
-          setTimeout(() => {
-            this.stopTimer();
-          }, 200);
-        }
-      }
-    },
 
     methods: {
       // 修改密码
       changePass() {
         this.showChangePass = true;
-      },
-
-      // 获取验证码
-      getCode() {
-        if(this.isSendCode) {
-          this.isSendCode = false;
-          axios.get(`${config.ohost}/mchnt/smscode/send`, {
-            params: {
-              mobile: this.shop.mobile,
-              mode: 'reset_pwd'
-            }
-          }).then((res) => {
-            let data = res.data;
-            if (data.respcd === config.code.OK) {
-              this.startTimer();
-            } else {
-              this.$message.error(data.respmsg);
-              this.isSendCode = true;
-            }
-          }).catch(() => {
-            this.$message.error('请求失败!');
-            this.isSendCode = true;
-          });
-        }
-      },
-
-      // 计时
-      startTimer() {
-        let num = 60;
-        this.buttonCotent = num + 's';
-        this.st = setInterval(() => {
-          num--;
-          if (num) {
-            this.buttonCotent = num + 's';
-          } else {
-            this.stopTimer();
-          }
-        }, 1000);
-      },
-
-      // 停止计时
-      stopTimer() {
-        this.isSendCode = true;
-        clearTimeout(this.st);
       },
 
       // 提交
@@ -277,15 +211,16 @@
             axios.post(`${config.ohost}/mchnt/smscode/send`, {
               mobile: this.shop.mobile,
               password: this.form.pass,
-              code: this.form.code
+              mode: 'change',
+              src: 'mchnt'
             }).then((res) => {
               let data = res.data;
               if (data.respcd === config.code.OK) {
-                this.showChangePass = false;
                 this.$message({
                   type: 'success',
-                  message: '绑定成功!'
+                  message: '修改成功!'
                 });
+                this.showChangePass = false;
                 this.$router.push('/login');
               } else {
                 this.$message.error(data.respmsg);
