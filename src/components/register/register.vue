@@ -228,6 +228,9 @@
 
 <style lang="scss">
 .register {
+  height: 100%;
+  background: url('./img/bg.png') no-repeat 20px bottom;
+
   .head {
     color: #FE9B20;
     font-size: 24px;
