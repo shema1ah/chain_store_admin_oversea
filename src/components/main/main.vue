@@ -1,6 +1,6 @@
 <template>
   <div>
-    <sidebar :managePath="managePath"></sidebar>
+    <sidebar></sidebar>
     <div class="main">
       <div class="header">
         <div class="user_wrapper">
@@ -81,17 +81,16 @@ export default {
           { required: true, message: '请输入分店收款银行卡号!' }
         ]
       },
-      detailData: {},
-      managePath: ''
+      detailData: {}
     };
   },
   components: {
     sidebar
   },
   created() {
+    this.getData();
     this.$store.dispatch('getShopList');
     this.$store.dispatch('getMemberTotal');
-    this.getData();
   },
   methods: {
     // 退出登录
@@ -114,8 +113,6 @@ export default {
         .then((res) => {
           let data = res.data;
           if(data.respcd === config.code.OK) {
-            // 单店 or 连锁店
-            this.managePath = data.data.cate;
             this.shop = {
               shopname: data.data.shopname,
               mobile: data.data.mobile,
@@ -124,8 +121,7 @@ export default {
           } else {
             this.$message.error(data.respmsg);
           }
-        })
-        .catch(() => {
+        }).catch(() => {
           this.$message.error('网络错误!');
         });
     },

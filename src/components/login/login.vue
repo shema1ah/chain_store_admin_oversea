@@ -27,6 +27,9 @@
 <script>
   import axios from 'axios';
   import config from 'config';
+  import { getRole } from '../../common/js/util';
+  import Store from '../../common/js/store';
+
   export default {
     data() {
       return {
@@ -56,7 +59,9 @@
               this.loading = false;
               let data = res.data;
               if(data.respcd === config.code.OK) {
-                // console.log(data, 1111);
+                let val = getRole(data.data) || '';
+                Store.set('role', val);
+                console.log(22222222);
                 this.$router.push('/main/index');
               } else {
                 this.$message.error(data.resperr);

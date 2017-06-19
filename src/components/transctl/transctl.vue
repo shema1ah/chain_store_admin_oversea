@@ -30,7 +30,7 @@
               </el-form-item>
             </div>
           </div>
-          <div class="panel-select-group">
+          <div class="panel-select-group" v-show="!role.single">
             <div class="panel-select__wrapper">
               <span class="panel-select__desc">店铺名称</span>
               <el-form-item prop="selectShopUid">
@@ -56,7 +56,7 @@
               </el-form-item>
             </div>
           </div>
-          <div class="panel-select-group">
+          <div class="panel-select-group" v-show="!role.haiwai">
             <div class="panel-select__wrapper">
               <span class="panel-select__desc">收款方式</span>
               <el-form-item prop="checkAll1">
@@ -69,7 +69,7 @@
               </el-form-item>
             </div>
           </div>
-          <div class="panel-select-group">
+          <div class="panel-select-group" v-show="!role.haiwai">
             <div class="panel-select__wrapper">
               <span class="panel-select__desc">更多筛选</span>
               <el-form-item prop="checkAll2">
@@ -200,6 +200,7 @@
   import config from 'config';
   import qs from 'qs';
   import {formatDate} from '../../common/js/util';
+  import Store from '../../common/js/store';
 
   const typeLists = ['wxpay', 'alipay', 'jdpay', 'qqpay', 'card'];
   const otherLists = ['prepaid_recharge', 'prepaid', 'coupon', 'cancel'];
@@ -218,6 +219,7 @@
         }
       };
       return {
+        role: {},
         pageSize: 10,
         status: false,
         loading: false,
@@ -298,6 +300,7 @@
       }
     },
     created() {
+      this.role = Store.get('role');
       this.loading = true;
       axios.get(`${config.host}/merchant/trade/info`, {
         params: this.basicParams

@@ -130,7 +130,7 @@
         </el-col>
       </el-row>
     </el-dialog>
-    <el-dialog title="修改密码" :visible.sync="showChangePass" custom-class="mydialog pass" top="20%" :show-close="false">
+    <el-dialog title="修改密码" :visible.sync="showChangePass" @close="handleClose" custom-class="mydialog pass" top="20%" :show-close="false">
       <el-form :model="form" :rules="formrules" ref="form">
         <el-form-item label="登录账号">
           <div>{{ userName }}</div>
@@ -257,8 +257,15 @@
       changePass(type, name) {
         this.type = type;
         this.userName = name;
-        console.log(type, 111, name, 2222);
         this.showChangePass = true;
+      },
+
+      // 关闭弹出层,清除表单
+      handleClose() {
+        setTimeout(() => {
+          this.form.pass = '';
+          this.form.repass = '';
+        }, 200);
       },
 
       // 修改密码提交
@@ -273,7 +280,7 @@
             }else {
               src = 'mchnt';
             }
-            axios.post(`${config.ohost}/mchnt/smscode/send`, {
+            axios.post(`${config.ohost}/mchnt/user/reset_pwd`, {
               mobile: this.shop.mobile,
               password: this.form.pass,
               mode: 'change',
@@ -294,11 +301,9 @@
               } else {
                 this.$message.error(data.respmsg);
               }
-              this.stopTimer();
               this.iconShow = false;
             }).catch(() => {
               this.$message.error('请求失败!');
-              this.stopTimer();
               this.iconShow = false;
             });
           }

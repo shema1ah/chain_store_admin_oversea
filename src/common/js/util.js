@@ -107,10 +107,34 @@ let deepClone = (obj) => {
   return JSON.parse(JSON.stringify(obj))
 }
 
+// 角色判断 大商户、子商户、海外商户
+const getRole = (data) => {
+  let role = {
+    type: 'chain',
+    haiwai: false,
+    single: false
+  };
+  if(data.country !== 'CN') {
+    role.type = 'haiwai';
+    role.haiwai = true;
+
+    if(data.rate === 'submerchant') {
+      role.type = 'haiwai_single';
+      role.single = true;
+    }
+  }else {
+    if(data.rate === 'submerchant') {
+      role.type = 'single';
+    }
+  }
+  return role;
+}
+
 module.exports = {
   formatObj,
   formatDate,
   isEmptyObject,
   deepClone,
-  getParams
+  getParams,
+  getRole
 }
