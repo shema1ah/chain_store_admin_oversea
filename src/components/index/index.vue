@@ -212,7 +212,8 @@
               mobile: this.shop.mobile,
               password: this.form.pass,
               mode: 'change',
-              src: 'mchnt'
+              src: 'mchnt',
+              format: 'cors'
             }).then((res) => {
               let data = res.data;
               if (data.respcd === config.code.OK) {

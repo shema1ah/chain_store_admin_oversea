@@ -132,7 +132,8 @@
             axios.get(`${config.ohost}/mchnt/smscode/send`, {
               params: {
                 mobile: this.isRegister ? this.form.username : this.form.mobile,
-                mode: this.isRegister ? 'signup' : 'reset_pwd'
+                mode: this.isRegister ? 'signup' : 'reset_pwd',
+                format: 'cors'
               }
             }).then((res) => {
               let data = res.data;

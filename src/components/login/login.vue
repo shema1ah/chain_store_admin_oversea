@@ -61,7 +61,6 @@
               if(data.respcd === config.code.OK) {
                 let val = getRole(data.data) || '';
                 Store.set('role', val);
-                console.log(22222222);
                 this.$router.push('/main/index');
               } else {
                 this.$message.error(data.resperr);

@@ -23,8 +23,7 @@
               </el-option>
             </el-select>
           </div>
-
-          <div class="panel-select__wrapper">
+          <div class="panel-select__wrapper" v-show="!role.single">
             <span class="panel-select__desc">店铺名称</span>
             <el-select v-model="nameValue" placeholder="全部" size="small" @change="nameChange">
               <el-option v-for="shop in shopData.list" :label="shop.shop_name" :value="shop.uid">
@@ -136,6 +135,7 @@
 <script>
   import axios from 'axios';
   import config from 'config';
+  import Store from '../../common/js/store';
 
   export default {
     beforeRouteEnter (to, from, next) {
@@ -160,6 +160,7 @@
     },
     data() {
       return {
+        role: Store.get('role').single || {},
         collectData: [],
         isShowDetail: false,
         pageSize: 10,
@@ -263,7 +264,8 @@
           cancelButtonText: '关闭'
         }).then(() => {
           axios.post(`${config.ohost}/mchnt/mis/card/close_actv`, {
-            id: id
+            id: id,
+            format: 'cors'
           }).then((res) => {
             let data = res.data;
             if (data.respcd === config.code.OK) {

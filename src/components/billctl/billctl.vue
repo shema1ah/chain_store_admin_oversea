@@ -17,7 +17,7 @@
                 <span class="remark note ml-0">* 请不要跨月查询</span>
               </el-form-item>
             </div>
-            <div class="panel-select__wrapper">
+            <div class="panel-select__wrapper" v-show="!role.single">
               <span class="panel-select__desc">店铺名称</span>
               <el-form-item prop="selectShopUid">
                 <el-select v-model="form.selectShopUid" placeholder="全部" size="small">
@@ -74,6 +74,7 @@
 <script>
   import config from 'config';
   import { formatObj } from '../../common/js/util';
+  import Store from '../../common/js/store';
 
   export default {
     data() {
@@ -93,7 +94,9 @@
           }
         }
       };
+
       return {
+        role: Store.get('role').single || {},
         defaultDateRange: defaultDateRange,
         form: {
           dateRangeValue: defaultDateRange,
