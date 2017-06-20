@@ -56,55 +56,57 @@
     <div class="data-show">
       <h2>活动运营数据统计</h2>
       <div class="content">
-        <div class="item"  @click="openDetail('coupon')" v-for="activity in activitys">
-          <h3><i></i>进行中的活动：红包</h3>
-          <div class="title">
-            <i class="icon"></i>
-            <span>
-              <strong>开业红包</strong>
-              活动已进行2天
-            </span>
+        <div class="item" v-for="activity in activitys">
+          <div @click="openDetail('coupon')" v-if="activity.type === 'coupon'">
+            <h3><i></i>进行中的活动：红包</h3>
+            <div class="title">
+              <i class="icon"></i>
+              <span>
+                <strong>{{activity.title}}</strong>
+                活动已进行{{activity.going_days}}天
+              </span>
+            </div>
+            <ul>
+              <li>
+                <strong>领取数</strong>
+                <span><em>{{activity.used_num}}</em>个</span>
+              </li>
+              <li>
+                <strong>使用数</strong>
+                <span><em>{{activity.use}}</em>个</span>
+              </li>
+              <li>
+                <strong>刺激消费数</strong>
+                <span><em>{{activity.total_amt}}</em>个</span>
+              </li>
+            </ul>
           </div>
-          <ul>
-            <li>
-              <strong>领取数</strong>
-              <span><em>3</em>个</span>
-            </li>
-            <li>
-              <strong>使用数</strong>
-              <span><em>3</em>个</span>
-            </li>
-            <li>
-              <strong>刺激消费数</strong>
-              <span><em>200</em>个</span>
-            </li>
-          </ul>
-        </div>
-        <div class="item" @click="openDetail('card')">
-          <h3><i class="collect"></i>进行中的活动：集点</h3>
-          <div class="title">
-            <i class="icon collect"></i>
-            <span>
-              <strong>满5点送芒果冰沙一杯</strong>
-              活动已进行2天
-            </span>
+          <div @click="openDetail('card')" v-if="activity.type === 'card'">
+            <h3><i class="collect"></i>进行中的活动：集点</h3>
+            <div class="title">
+              <i class="icon collect"></i>
+              <span>
+                <strong>满{{activity.exchange_pt}}点送{{activity.goods_name}}</strong>
+                活动已进行{{activity.going_days}}天
+              </span>
+            </div>
+            <ul>
+              <li>
+                <strong>参与人数</strong>
+                <span><em>{{activity.in_person_no}}</em>个</span>
+              </li>
+              <li>
+                <strong>会员复购数</strong>
+                <span><em>{{activity.repeat_no}}</em>个</span>
+              </li>
+              <li>
+                <strong>兑换数</strong>
+                <span><em>{{activity.exchange_num}}</em>份</span>
+              </li>
+            </ul>
           </div>
-          <ul>
-            <li>
-              <strong>领取数</strong>
-              <span><em>3</em>个</span>
-            </li>
-            <li>
-              <strong>使用数</strong>
-              <span><em>3</em>个</span>
-            </li>
-            <li>
-              <strong>刺激消费数</strong>
-              <span><em>200</em>个</span>
-            </li>
-          </ul>
         </div>
-        <div class="item" @click="openDetail('storage')">
+        <!-- <div class="item" @click="openDetail('storage')">
           <h3><i class="store"></i>进行中的活动：储值</h3>
           <div class="title">
             <i class="icon store"></i>
@@ -115,23 +117,21 @@
           </div>
           <ul>
             <li>
-              <strong>领取数</strong>
-              <span><em>3</em>个</span>
+              <strong>今日储值</strong>
+              <span><em>21</em>元</span>
             </li>
             <li>
-              <strong>使用数</strong>
-              <span><em>3</em>个</span>
+              <strong>储值会员</strong>
+              <span><em>3</em>位</span>
             </li>
             <li>
-              <strong>刺激消费数</strong>
-              <span><em>200</em>个</span>
+              <strong>储值金额</strong>
+              <span><em>200</em>元</span>
             </li>
           </ul>
-        </div>
+        </div> -->
       </div>
     </div>
-
-
   </div>
 </template>
 
@@ -159,7 +159,6 @@
         axios.get(`${config.host}/merchant/dashboard/stats`)
           .then((res) => {
             let data = res.data
-            console.log(data)
             if(data.respcd === config.code.OK) {
               this.info = data.data
             } else {
@@ -171,16 +170,11 @@
           });
       },
       fetchActivityData() {
-        axios.get(`${config.host}/merchant/homeview`, {
-          params: {
-            type: 'coupon'
-          }
-        }).then((res) => {
+        axios.get(`${config.host}/merchant/homeview`)
+          .then((res) => {
             let data = res.data
-            console.log(data)
             if(data.respcd === config.code.OK) {
               this.activitys = data.data.result
-              this.fetchCardData()
             } else {
               this.$message.error(data.respmsg)
             }
