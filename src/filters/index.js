@@ -18,6 +18,24 @@ let filters = {
       return
     }
     return (number * 100 / 100).toFixed(2)
+  },
+
+  tradeStatus (cancel) {
+    if (cancel === 0) {
+      return '交易成功'
+    } else {
+      return '交易取消'
+    }
+  },
+
+  busicdText (busicd) {
+    if (busicd.indexOf('8002') !== -1) {
+      return '微信消费'
+    } else if (busicd.indexOf('8001') !== -1) {
+      return '支付宝收款'
+    } else {
+      return busicd
+    }
   }
 
 }
