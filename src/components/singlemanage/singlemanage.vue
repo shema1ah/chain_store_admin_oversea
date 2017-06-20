@@ -258,12 +258,6 @@
     .edit-pwd-btn {
       width: 155px;
     }
-    .panel-header-btn {
-      width: 155px;
-      float: none;
-      background-color: #fe9b20;
-      color: #ffffff;
-    }
     .pass {
       width: 420px;
       .el-dialog__header {

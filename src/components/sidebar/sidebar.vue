@@ -54,7 +54,6 @@
       // 根据角色左侧菜单初始化
       getPath() {
         this.role = Store.get('role') || {};
-        console.log(Store.get('role'), 1111);
         switch (this.role.type) {
           case 'chain':
             this.navs = [

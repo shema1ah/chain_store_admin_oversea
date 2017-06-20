@@ -160,7 +160,7 @@
     },
     data() {
       return {
-        role: Store.get('role').single || {},
+        role: Store.get('role') || {},
         collectData: [],
         isShowDetail: false,
         pageSize: 10,

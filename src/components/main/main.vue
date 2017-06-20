@@ -1,13 +1,13 @@
 <template>
   <div>
-    <sidebar :managePath="managePath"></sidebar>
+    <sidebar></sidebar>
     <div class="main">
       <div class="header">
         <div class="user_wrapper">
           <div class="user_name">
             {{shop.shopname?'Welcome, '+shop.shopname:''}}
           </div>
-          <a href="/merchant/logout">
+          <a href="javascript:;" @click="logout">
             <div class="user_operation">
               <i class="icon-ic_logout"></i>
               <span class="text">退出</span>
@@ -47,9 +47,11 @@
 </template>
 
 <script>
-import sidebar from '../../components/sidebar/sidebar.vue';
 import axios from 'axios';
 import config from '../../config';
+import { getRole } from '../../common/js/util';
+import Store from '../../common/js/store';
+import sidebar from '../../components/sidebar/sidebar.vue';
 
 export default {
   data() {
@@ -81,8 +83,7 @@ export default {
           { required: true, message: '请输入分店收款银行卡号!' }
         ]
       },
-      detailData: {},
-      managePath: ''
+      detailData: {}
     };
   },
   components: {
@@ -94,13 +95,32 @@ export default {
     this.getData();
   },
   methods: {
+    // 退出登录
+    logout() {
+      axios.get(`${config.host}/merchant/signout`)
+      .then((res) => {
+        let data = res.data;
+        if (data.respcd === config.code.OK) {
+          this.$router.push("/login");
+        } else {
+          this.$message.error(data.respmsg);
+        }
+      }).catch(() => {
+        this.$message.error('请求失败');
+      });
+    },
+
     getData() {
       axios.get(`${config.host}/merchant/info`)
         .then((res) => {
           let data = res.data;
           if(data.respcd === config.code.OK) {
-            // 单店 or 连锁店
-            this.managePath = data.data.cate;
+            // 本地调试或者刷新页面时设置role
+            if(!Store.get('role')) {
+              let val = getRole(data.data);
+              Store.set('role', val);
+            }
+
             this.shop = {
               shopname: data.data.shopname,
               mobile: data.data.mobile,

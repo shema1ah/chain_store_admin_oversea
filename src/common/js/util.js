@@ -118,13 +118,14 @@ const getRole = (data) => {
     role.type = 'haiwai';
     role.haiwai = true;
 
-    if(data.rate === 'submerchant') {
+    if(data.cate === 'submerchant') {
       role.type = 'haiwai_single';
       role.single = true;
     }
   }else {
-    if(data.rate === 'submerchant') {
+    if(data.cate === 'submerchant') {
       role.type = 'single';
+      role.single = true;
     }
   }
   return role;
