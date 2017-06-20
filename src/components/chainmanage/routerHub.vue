@@ -1,11 +1,7 @@
 <template>
-    <div>
-        <transition>
-            <keep-alive>
-                     <router-view name="createsubshop"></router-view>
-            </keep-alive>
-        </transition>
-    </div>
+  <router-view name="chainmanage">
+    <router-view name="createsubshop"></router-view>
+  </router-view>
 </template>
 <script>
     export default {

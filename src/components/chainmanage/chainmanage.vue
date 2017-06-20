@@ -154,11 +154,14 @@
       </div>
     </el-dialog>
 
-    <el-dialog title="编辑分店编号" :visible.sync="showEditSubShopNum" class="mydialog">
-      <el-form :rules="checkTagRules" ref="form-edit-subshop-num" label-position="right" label-width="152px;">
+    <el-dialog title="编辑分店编号" :visible.sync="showEditSubShopNum" class="mydialog" custom-class="edit-sub-tag">
+      <el-form :rules="checkTagRules" ref="form-edit-subshop-num" label-position="left">
 
-          <el-form-item v-for="(shop, index) in subShopList.list" :label="shop.shop_name"  rules="">
-            <el-input v-model="shop.tag" size="small" placeholder="请输入二十位以内的文字或字母"></el-input>
+          <el-form-item v-for="(shop, index) in shopData.list" v-if="index !== 0" prop="shop.tag">
+            <el-tooltip placement="bottom" :content="shop.shop_name" class="subshoptip">
+              <label>{{shop.shop_name}}</label>
+            </el-tooltip>
+            <el-input v-model="shop.tag" size="small" placeholder="请输入二十位以内的文字或字母" style="width:72%"></el-input>
           </el-form-item>
 
       </el-form>
@@ -169,17 +172,31 @@
       </div>
     </el-dialog>
 
-    <el-dialog title="" :visible.sync="showDeleteShopConfirm" custom-class="mydialog pass" top="20%" :show-close="false">
+    <el-dialog title="提示" :visible.sync="showDeleteShopConfirm" custom-class="mydialog pass" top="20%" :show-close="false">
+        <div style="margin-bottom: 20px;">若要删除分店，请输入总账户登录密码以确认操作</div>
+        <el-form :model="formpwd" :rules="formrules" ref="pwdform">
+          <el-form-item prop="primeaccountpwd">
+            <el-input v-model="formpwd.primeaccountpwd" placeholder="请输入总账户登录密码" type="password"></el-input>
+          </el-form-item>
+
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+          <div @click="checkPrimeShopPwd" class="submit"><i class="el-icon-loading" v-show="iconShow"></i>确认</div>
+        </div>
     </el-dialog>
   </div>
+
 </template>
 
 <script>
   import axios from 'axios';
   import config from 'config';
   import ElButton from "../../../node_modules/element-ui/packages/button/src/button";
+  import ElForm from "../../../node_modules/element-ui/packages/form/src/form";
   export default {
-    components: {ElButton},
+    components: {
+      ElForm,
+      ElButton},
     data() {
       let passValid = (rule, val, cb) => {
         if(val === '') {
@@ -201,7 +218,18 @@
           cb();
         }
       };
-
+      let tagValid = (rule, val, cb) => {
+//          alert(val);
+          console.log(val)
+      };
+//      let primeAccountPwdValid = (rule, val, cb) => {
+//          if(val === '') {
+//              cb('请输入总账户密码');
+//          } else {
+//            console.log(val);
+//            cb();
+//          }
+//      }
       return {
         loading: false,
         iconShow: false,
@@ -212,21 +240,32 @@
         detailData: {},
         userName: '',
         type: '',
+        formpwd: {
+          primeaccountpwd: ''
+        },
         form: {
           pass: '',
-          repass: ''
+          repass: '',
+          tag: ''
         },
         checkTagRules: {
-
+          tag: [
+            { validator: tagValid },
+            { max: 20, min: 0, message: '请输入二十以内的文字或字母' }
+          ]
         },
         formrules: {
           pass: [
             { validator: passValid },
-            {max: 20, min: 6, message: '请输入6~20位数字或字母', trigger: 'blur'}
+            { max: 20, min: 6, message: '请输入6~20位数字或字母', trigger: 'blur' }
           ],
           repass: [
             { validator: repassValid },
-            {max: 20, min: 6, message: '请输入6~20位数字或字母', trigger: 'blur'}
+            { max: 20, min: 6, message: '请输入6~20位数字或字母', trigger: 'blur' }
+          ],
+          primeaccountpwd: [
+//            { validator: primeAccountPwdValid },
+            { required: true, message: '请输入总账户密码', trigger: 'blur' }
           ]
         }
       };
@@ -240,54 +279,29 @@
       pageShopData() {
         return this.$store.state.pageShopData;
       },
-      subShopList() {
-        if(!this.$store.state.shopData.list[0].uid) {
-          this.$store.state.shopData.list.shift();
-        }
+      shopData() {
         return this.$store.state.shopData;
       }
     },
     created() {
       this.$store.dispatch('getPageShopData');
-//      this.$store.dispatch('getShopList');
-    },
-    mounted() {
-        console.log('mounted.....')
-      console.log(this.$store.state.shopData);
+      this.$store.dispatch('getShopList');
     },
     methods: {
+        // 检查提交主账户密码
+      checkPrimeShopPwd() {
+
+      },
       submitEditSubShopNum() {
 
       },
+      // 编辑子商户
       editSubShopNum() {
         this.showEditSubShopNum = true;
       },
       // 确认是否删除分店
-      confirmDeleteShop() {
-//         const h = this.$createElement;
-        this.$prompt('zozo', '提示', {
-//          type: 'warning',
-//          message: '',
-//          showInput: true,
-//          inputType: 'password',
-          confirmButtonText: '确认',
-          cancelButtonText: '关闭',
-          inputValidator: function(input) {
-            console.log(input);
-          },
-          // inputPattern: /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
-          inputErrorMessage: '密码不能为空'
-        }).then(({ value }) => {
-
-        }).catch(() => {
-//          this.$message({
-//            type: 'info',
-//            message: '取消输入'
-//          });
-        });
-      },
-      editSubShop(shop) {
-
+      confirmDeleteShop(uid) {
+        this.showDeleteShopConfirm = true;
       },
         // 创建子门店
       createShop() {
@@ -362,8 +376,36 @@
         this.$emit('associate');
       },
 
-      unbind(scope) {
-        this.$emit('unbind', scope.row.uid);
+      unbind(uid) {
+        this.$confirm('是否要删除此分店?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '关闭'
+        })
+          .then(() => {
+            axios.get(`${config.host}/merchant/sub/remove`, {
+              params: {
+                sub_uid: uid
+              }
+            })
+              .then((res) => {
+                let data = res.data;
+                if(data.respcd === config.code.OK) {
+                  this.$message({
+                    type: 'success',
+                    message: '解绑成功!'
+                  });
+                  this.$store.dispatch('getPageShopData');
+                  this.$store.dispatch('getShopList');
+                } else {
+                  this.$message.error(data.resperr);
+                }
+              })
+              .catch(() => {
+                this.$message.error('解绑失败!');
+              });
+          }).catch(() => {
+          console.log("取消");
+        });
       },
 
       showDetail(scope) {
@@ -458,5 +500,15 @@
         width: 90px;
       }
     }
+    .el-tooltip.subshoptip {
+      display: inline-block;
+      width: 100px;
+      overflow: hidden;
+      height: 16px;
+      line-height: 20px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
   }
 </style>

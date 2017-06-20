@@ -1,6 +1,6 @@
 <template>
   <div>
-    <sidebar></sidebar>
+    <sidebar :managePath="managePath"></sidebar>
     <div class="main">
       <div class="header">
         <div class="user_wrapper">
@@ -15,7 +15,7 @@
           </a>
         </div>
       </div>
-      <router-view :shop="shop" @associate="associate" @showDetail="showDetail" @unbind="unbind"></router-view>
+      <router-view :shop="shop" @associate="associate" @showDetail="showDetail"></router-view>
     </div>
     <el-dialog title="关联分店" v-model="visible" class="mydialog">
       <el-form :model="form" :rules="formrules" ref="form">
@@ -81,16 +81,17 @@ export default {
           { required: true, message: '请输入分店收款银行卡号!' }
         ]
       },
-      detailData: {}
+      detailData: {},
+      managePath: ''
     };
   },
   components: {
     sidebar
   },
   created() {
-    this.getData();
-    this.$store.dispatch('getShopList');
+//    this.$store.dispatch('getShopList');
     this.$store.dispatch('getMemberTotal');
+    this.getData();
   },
   methods: {
     // 退出登录
@@ -113,15 +114,30 @@ export default {
         .then((res) => {
           let data = res.data;
           if(data.respcd === config.code.OK) {
+            // 单店 or 连锁店
+            this.managePath = data.data.cate;
             this.shop = {
               shopname: data.data.shopname,
               mobile: data.data.mobile,
               uid: data.data.uid
             };
+            if(data.data.cate === 'submerchant') {
+                Object.assign(this.shop, {
+                  address: data.data.address,
+                  bankaccount: data.data.bankaccount,
+                  headbankname: data.data.headbankname, // 总行名称
+                  bankname: data.data.bankname, // 支行名称
+                  bankuser: data.data.bankuser, // 持卡人
+                  telephone: data.data.telephone, // 手机号
+                  cate: data.data.cate, // 商户分类
+                  country: data.data.country // 国家地区
+                })
+            }
           } else {
             this.$message.error(data.respmsg);
           }
-        }).catch(() => {
+        })
+        .catch(() => {
           this.$message.error('网络错误!');
         });
     },
@@ -156,37 +172,6 @@ export default {
     showDetail(type, data) {
       this.detailData = data;
       this.detailData.type = type;
-    },
-    unbind(uid) {
-      this.$confirm('是否要删除此分店?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '关闭'
-      })
-      .then(() => {
-        axios.get(`${config.host}/merchant/sub/remove`, {
-          params: {
-            sub_uid: uid
-          }
-        })
-        .then((res) => {
-          let data = res.data;
-          if(data.respcd === config.code.OK) {
-            this.$message({
-              type: 'success',
-              message: '解绑成功!'
-            });
-            this.$store.dispatch('getPageShopData');
-            this.$store.dispatch('getShopList');
-          } else {
-            this.$message.error(data.resperr);
-          }
-        })
-        .catch(() => {
-          this.$message.error('解绑失败!');
-        });
-      }).catch(() => {
-        console.log("取消");
-      });
     }
   }
 };

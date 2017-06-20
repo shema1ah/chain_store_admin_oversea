@@ -5,7 +5,7 @@ import 'src/filters'
 import store from './store'
 import App from './App'
 import router from './router'
-import { Select, Option, TableColumn, Table, Button, Pagination, Dropdown, DropdownItem, DropdownMenu, Loading, DatePicker, Input, Message, Form, FormItem, Radio, RadioGroup, RadioButton, Dialog, Col, MessageBox, Row, CheckboxGroup, Checkbox, Rate } from 'element-ui'
+import { Select, Option, TableColumn, Table, Button, Pagination, Dropdown, DropdownItem, DropdownMenu, Loading, DatePicker, Input, Message, Form, FormItem, Radio, RadioGroup, RadioButton, Dialog, Col, MessageBox, Row, CheckboxGroup, Checkbox, Rate, Tooltip } from 'element-ui'
 import 'reset.css'
 import 'assets/scss/common.scss'
 import axios from 'axios'
@@ -35,6 +35,7 @@ Vue.use(RadioButton)
 Vue.use(CheckboxGroup)
 Vue.use(Checkbox)
 Vue.use(Rate)
+Vue.use(Tooltip)
 
 // header增加cookie验证信息
 /* axios.interceptors.request.use(function (config) {

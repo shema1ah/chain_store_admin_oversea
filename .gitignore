@@ -3,3 +3,6 @@ node_modules/
 dist/
 npm-debug.log
 .idea/
+.idea/*.xml
+.idea/*.iml
+.idea/**/*.xml
