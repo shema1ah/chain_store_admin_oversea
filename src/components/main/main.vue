@@ -7,7 +7,7 @@
           <div class="user_name">
             {{shop.shopname?'Welcome, '+shop.shopname:''}}
           </div>
-          <a href="javascript:;" @click="logout">
+          <a href="/merchant/logout">
             <div class="user_operation">
               <i class="icon-ic_logout"></i>
               <span class="text">退出</span>
@@ -94,21 +94,6 @@ export default {
     this.getData();
   },
   methods: {
-    // 退出登录
-    logout() {
-      axios.get(`${config.host}/merchant/logout`)
-      .then((res) => {
-        let data = res.data;
-        if (data.respcd === config.code.OK) {
-          this.$router.push("/login");
-        } else {
-          this.$message.error(data.respmsg);
-        }
-      }).catch(() => {
-        this.$message.error('请求失败');
-      });
-    },
-
     getData() {
       axios.get(`${config.host}/merchant/info`)
         .then((res) => {
