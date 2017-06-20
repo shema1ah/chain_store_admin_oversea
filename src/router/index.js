@@ -169,21 +169,15 @@ export default new Router({
         {
           path: 'chainmanage',
           name: '',
-          component: chainmanage,
-          children: [
-            {
-              path: 'createsubshop',
-              name: 'createsubshop',
-              component: createsubshop
-            }
-          ]
+          component: chainmanage
+
         },
         {
           path: 'singlemanage',
           component: singlemanage
         },
         {
-          path: 'createsubshop',
+          path: 'chainmanage/createsubshop',
           component: createsubshop
         }
       ]

@@ -133,7 +133,7 @@
         </el-col>
       </el-row>
     </el-dialog>
-    <el-dialog title="修改密码" :visible.sync="showChangePass" @close="handleClose" custom-class="mydialog pass" top="20%" :show-close="false">
+    <el-dialog title="修改密码" :visible.sync="showChangePass" @close="handleClose('form')" custom-class="mydialog pass" top="20%" :show-close="false">
       <el-form :model="form" :rules="formrules" ref="form">
         <el-form-item label="登录账号">
           <div>{{ userName }}</div>
@@ -168,11 +168,11 @@
       <div class="divider"></div>
       <div slot="footer" class="dialog-footer">
         <div @click="showEditSubShopNum = false" class="cancel">关闭</div>
-        <div @click="submitEditSubShopNum" class="submit"><i class="el-icon-loading" v-show="iconShow"></i>确认</div>
+        <div @click="submitEditSubShopTag" class="submit"><i class="el-icon-loading" v-show="iconShow"></i>确认</div>
       </div>
     </el-dialog>
 
-    <el-dialog title="提示" :visible.sync="showDeleteShopConfirm" custom-class="mydialog pass" top="20%" :show-close="false">
+    <el-dialog title="提示" :visible.sync="showDeleteShopConfirm" custom-class="mydialog pass" top="20%" :show-close="false" @close="handleClose('pwdform')">
         <div style="margin-bottom: 20px;">若要删除分店，请输入总账户登录密码以确认操作</div>
         <el-form :model="formpwd" :rules="formrules" ref="pwdform">
           <el-form-item prop="primeaccountpwd">
@@ -181,7 +181,7 @@
 
         </el-form>
         <div slot="footer" class="dialog-footer">
-          <div @click="checkPrimeShopPwd" class="submit"><i class="el-icon-loading" v-show="iconShow"></i>确认</div>
+          <div @click="checkPrimeShopPwd('pwdform')" class="submit"><i class="el-icon-loading" v-show="iconShow"></i>确认</div>
         </div>
     </el-dialog>
   </div>
@@ -222,14 +222,14 @@
 //          alert(val);
           console.log(val)
       };
-//      let primeAccountPwdValid = (rule, val, cb) => {
-//          if(val === '') {
-//              cb('请输入总账户密码');
-//          } else {
-//            console.log(val);
-//            cb();
-//          }
-//      }
+      let primeAccountPwdValid = (rule, val, cb) => {
+          if(val === '') {
+              cb('请输入总账户密码');
+          } else {
+            console.log(val);
+            cb();
+          }
+      }
       return {
         loading: false,
         iconShow: false,
@@ -240,6 +240,7 @@
         detailData: {},
         userName: '',
         type: '',
+        shouldDeleteUid: '',
         formpwd: {
           primeaccountpwd: ''
         },
@@ -264,7 +265,7 @@
             { max: 20, min: 6, message: '请输入6~20位数字或字母', trigger: 'blur' }
           ],
           primeaccountpwd: [
-//            { validator: primeAccountPwdValid },
+            { validator: primeAccountPwdValid },
             { required: true, message: '请输入总账户密码', trigger: 'blur' }
           ]
         }
@@ -289,10 +290,18 @@
     },
     methods: {
         // 检查提交主账户密码
-      checkPrimeShopPwd() {
-
+      checkPrimeShopPwd(formName) {
+          this.$refs[formName].validate((valid) => {
+            if(valid) {
+                // 发验证主账户密码请求
+              console.log('验证密码通过')
+            } else {
+              console.log("validate doesn't passed!!");
+              return false;
+            }
+          })
       },
-      submitEditSubShopNum() {
+      submitEditSubShopTag() {
 
       },
       // 编辑子商户
@@ -301,6 +310,8 @@
       },
       // 确认是否删除分店
       confirmDeleteShop(uid) {
+          console.log('deleteing uid:', uid);
+        this.shouldDeleteUid = uid;
         this.showDeleteShopConfirm = true;
       },
         // 创建子门店
@@ -315,11 +326,8 @@
       },
 
       // 关闭弹出层,清除表单
-      handleClose() {
-        setTimeout(() => {
-          this.form.pass = '';
-          this.form.repass = '';
-        }, 200);
+      handleClose(formName) {
+        this.$refs[formName].resetFields();
       },
 
       // 修改密码提交
@@ -428,7 +436,7 @@
   };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   .panel-header__desc {
     font-size: 18px;
     color: #FE9B20;
