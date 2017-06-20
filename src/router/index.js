@@ -8,7 +8,7 @@ import billctl from 'components/billctl/billctl'
 import index from 'components/index/index'
 import chainmanage from 'components/chainmanage/chainmanage'
 import createsubshop from 'components/chainmanage/createSubShop'
-// import routerhub from 'components/chainmanage/routerHub'
+import routerhub from 'components/chainmanage/routerHub'
 import singlemanage from 'components/singlemanage/singlemanage'
 import transctl from 'components/transctl/transctl'
 import memberctl from 'components/memberctl/memberctl'
@@ -168,17 +168,21 @@ export default new Router({
         },
         {
           path: 'chainmanage',
-          name: '',
-          component: chainmanage
-
+          component: routerhub,
+          children: [
+            {
+              path: '',
+              component: chainmanage
+            },
+            {
+              path: 'createsubshop',
+              component: createsubshop
+            }
+          ]
         },
         {
           path: 'singlemanage',
           component: singlemanage
-        },
-        {
-          path: 'chainmanage/createsubshop',
-          component: createsubshop
         }
       ]
     }
