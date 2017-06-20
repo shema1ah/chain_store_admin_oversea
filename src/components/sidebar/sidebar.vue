@@ -35,7 +35,7 @@
   export default {
     data() {
       return {
-        role: {},
+        role: Store.get('role') || {},
         navs: [],
         isShow: true,
         isRotate: false
@@ -53,7 +53,6 @@
 
       // 根据角色左侧菜单初始化
       getPath() {
-        this.role = Store.get('role') || {};
         switch (this.role.type) {
           case 'chain':
             this.navs = [
