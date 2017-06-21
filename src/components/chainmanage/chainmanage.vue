@@ -184,6 +184,33 @@
           <div @click="checkPrimeShopPwd('pwdform')" class="submit"><i class="el-icon-loading" v-show="iconShow"></i>确认</div>
         </div>
     </el-dialog>
+
+    <el-dialog title="关联分店" v-model="visible" class="mydialog"  @close="handleClose('associate_form')">
+      <el-form :model="associate_form" :rules="formrules" ref="associate_form">
+        <div class="desc">
+          <p>请输入您的分店信息，以做关联。</p>
+          <p>如您的分店还没有钱方好近商户的账号，请联系客服或</p>
+          <p>者业务员为您的分店入网。</p>
+        </div>
+        <el-form-item label="分店账号" prop="account">
+          <el-input v-model="associate_form.account" size="small" placeholder="请输入分店登录手机号"></el-input>
+        </el-form-item>
+        <el-form-item label="登录密码" prop="password">
+          <el-input type="password" v-model="associate_form.password" size="small" placeholder="请输入分店登录密码"></el-input>
+        </el-form-item>
+        <el-form-item label="收款人" prop="bankuser">
+          <el-input v-model="associate_form.bankuser" size="small" placeholder="请输入分店收款人姓名"></el-input>
+        </el-form-item>
+        <el-form-item label="银行卡号" prop="bankaccount">
+          <el-input v-model="associate_form.bankaccount" size="small" placeholder="请输入分店收款银行卡号"></el-input>
+        </el-form-item>
+      </el-form>
+      <div class="divider"></div>
+      <div slot="footer" class="dialog-footer">
+        <div @click="visible = false" class="cancel">取 消</div>
+        <div @click="submit_bind" class="submit"><i class="el-icon-loading" v-show="iconShow"></i>确 定</div>
+      </div>
+    </el-dialog>
   </div>
 
 </template>
@@ -231,6 +258,7 @@
           }
       }
       return {
+        visible: false,
         loading: false,
         iconShow: false,
         isShowDetail: false,
@@ -241,6 +269,12 @@
         userName: '',
         type: '',
         shouldDeleteUid: '',
+        associate_form: {
+          account: '',
+          password: '',
+          payee: '',
+          cardno: ''
+        },
         formpwd: {
           primeaccountpwd: ''
         },
@@ -267,6 +301,18 @@
           primeaccountpwd: [
             { validator: primeAccountPwdValid },
             { required: true, message: '请输入总账户密码', trigger: 'blur' }
+          ],
+          account: [
+            { required: true, message: '请输入分店登录手机号!' }
+          ],
+          password: [
+            { required: true, message: '请输入分店登录密码!' }
+          ],
+          bankuser: [
+            { required: true, message: '请输入分店收款人姓名!' }
+          ],
+          bankaccount: [
+            { required: true, message: '请输入分店收款银行卡号!' }
           ]
         }
       };
@@ -286,9 +332,13 @@
     },
     created() {
       this.$store.dispatch('getPageShopData');
-      this.$store.dispatch('getShopList');
+//      this.$store.dispatch('getShopList');
     },
     methods: {
+//      showDetail(type, data) {
+//        this.detailData = data;
+//        this.detailData.type = type;
+//      },
         // 检查提交主账户密码
       checkPrimeShopPwd(formName) {
           this.$refs[formName].validate((valid) => {
@@ -330,16 +380,16 @@
         this.$refs[formName].resetFields();
       },
 
-      // 修改密码提交
+      // 大商户修改自己的密码提交
       submit() {
         this.$refs['form'].validate((valid) => {
           if(!this.iconShow && valid) {
             this.iconShow = true;
 
             let src;
-            if(this.type === 'chain') {
+            if(this.type === 'single') {
               src = 'big-submchnt';
-            }else {
+            }else if(this.type === 'chain') {
               src = 'mchnt';
             }
             axios.post(`${config.ohost}/mchnt/user/reset_pwd`, {
@@ -381,9 +431,32 @@
       },
 
       associate() {
-        this.$emit('associate');
+        this.visible = true;
       },
-
+      submit_bind() {
+        this.$refs['associate_form'].validate((valid) => {
+          if(valid) {
+            this.iconShow = true;
+            axios.post(`${config.host}/merchant/sub/bind`, this.associate_form)
+              .then((res) => {
+                this.iconShow = false;
+                let data = res.data;
+                if(data.respcd === config.code.OK) {
+                  this.$message({
+                    type: 'success',
+                    message: '绑定成功!'
+                  });
+                  this.visible = false;
+                  this.$refs['associate_form'].resetFields();
+                  this.$store.dispatch('getPageShopData');
+                  this.$store.dispatch('getShopList');
+                } else {
+                  this.$message.error(data.resperr);
+                }
+              });
+          }
+        });
+      },
       unbind(uid) {
         this.$confirm('是否要删除此分店?', '提示', {
           confirmButtonText: '确定',

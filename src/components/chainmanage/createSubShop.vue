@@ -18,7 +18,7 @@
         <div class="sub_info_wrapper" >
           <el-form :model="shopInfo" label-width="96px" label-position="left">
             <el-form-item label="分店登录密码" prop="">
-              <el-input v-model="shopInfo.pass" size="small" type="password" placeholder="请输入新密码" auto-complete="off" class="sub-account-item-info"></el-input>
+              <el-input v-model="shopInfo.password" size="small" type="password" placeholder="请输入新密码" auto-complete="off" class="sub-account-item-info"></el-input>
             </el-form-item>
 
             <div class="panel-select-group">
@@ -31,20 +31,16 @@
             </el-form-item>
 
             <el-form-item label="经营类型" prop="">
-              <el-input id="op_type" icon="caret-bottom" v-model="shopInfo.pass" size="small" type="text" placeholder="请选择经营类型" auto-complete="off" class="sub-account-item-info"
-                        @click="showTreeComponent"></el-input>
-              <el-tree ref="op-type-tree" :data="data" :props="defaultProps" @node-click="handleNodeClick" v-show="shopInfo.isShowTree" style="position:absolute;top:32px;z-index:9;width:238px;"></el-tree>
+              <el-input id="op_type" icon="caret-bottom" v-model="shopInfo.shoptype_name" size="small" type="text" placeholder="请选择经营类型" auto-complete="off" class="sub-account-item-info"
+                        @click="showTreeComponent" readonly></el-input>
+              <el-tree id="op-type-tree" :data="shop_types" :props="defaultProps" @node-click="handleNodeClick" v-show="shopInfo.isShowTree" style="position:absolute;top:32px;z-index:9;width:238px;"></el-tree>
             </el-form-item>
 
-            <el-input v-model="shopInfo.longitude"  type="hidden" placeholder="请输入新密码" auto-complete="off" class="hidden"></el-input>
+            <el-input v-model="shopInfo.longitude"  type="hidden" placeholder="请输入新密码" auto-complete="off" class="hidden" ref="longitude"></el-input>
 
-            <el-input v-model="shopInfo.latitude"  type="hidden" placeholder="请输入新密码" auto-complete="off" class="hidden"></el-input>
+            <el-input v-model="shopInfo.latitude"  type="hidden" placeholder="请输入新密码" auto-complete="off" class="hidden" ref="latitude"></el-input>
 
-            <el-input v-model="shopInfo.city_no"  type="hidden" placeholder="请输入新密码" auto-complete="off" class="hidden"></el-input>
-
-            <el-form-item label="所属商圈" prop="">
-              <el-input v-model="shopInfo.regions" icon="caret-bottom" size="small" type="text" placeholder="请输入新密码" auto-complete="off" class="sub-account-item-info"></el-input>
-            </el-form-item>
+            <el-input v-model="shopInfo.city_no"  type="hidden" placeholder="请输入新密码" auto-complete="off" class="hidden" ref="city_no"></el-input>
 
             <el-form-item label="店铺地址" prop="">
               <el-input v-model="shopInfo.location" icon="caret-bottom" size="small" type="text" placeholder="请输入新密码" auto-complete="off" class="sub-account-item-info"></el-input>
@@ -119,14 +115,11 @@
             </el-form-item>
             <div style="width:100%;padding-bottom:2px;"></div>
           </el-form>
-
-
           </div>
         </div>
 
       </div>
     </div>
-  </div>
 </template>
 
 <script>
@@ -145,11 +138,12 @@ export default {
          shopInfo: {
            password: '', // 密码
            shopname: '', // 商户名
+           shoptype_id: '', // 经营类型（商户类型）id
+           shoptype_name: '', // 经营类型（商户类型）
            isShowTree: false, // 是否显示经营类型树状结构
            longitude: -1, // 经度
            latitude: -1, // 纬度
            city_no: 0, //  城市代号
-           regions: [], // 商圈列表
            location: '', // 店铺地址
            address: '', // 详细门牌号
            username: '', // 店主名
@@ -160,62 +154,67 @@ export default {
            bankcity: '', // 开户地
            headbankname: '' // 开户行名称
          },
-        data: [{
-          label: '一级 1',
-          children: [{
-            label: '二级 1-1',
-            children: [{
-              label: '三级 1-1-1'
-            }]
-          }]
-        }, {
-          label: '一级 2',
-          children: [{
-            label: '二级 2-1',
-            children: [{
-              label: '三级 2-1-1'
-            }]
-          }, {
-            label: '二级 2-2',
-            children: [{
-              label: '三级 2-2-1'
-            }]
-          }]
-        }, {
-          label: '一级 3',
-          children: [{
-            label: '二级 3-1',
-            children: [{
-              label: '三级 3-1-1'
-            }]
-          }, {
-            label: '二级 3-2',
-            children: [{
-              label: '三级 3-2-1'
-            }]
-          }]
+        shop_types: [{
+          "parent_id": 0,
+          "id": 1,
+          "weight": 1,
+          "name": "饮料",
+          "shoptypes": [
+              {
+            "parent_id": 1,
+                "id": 10,
+            "weight": 1,
+                "name": "酸奶"
+          },
+            {
+              "parent_id": 1,
+              "id": 5,
+              "weight": 2,
+              "name": "果汁",
+              shoptypes: [
+                {"parent_id": 5,
+                  "id": 51,
+                  "weight": 3,
+                  "name": "汇源果汁"
+                }
+              ]
+            }
+          ]
         }],
         defaultProps: {
-          children: 'children',
-          label: 'label'
+          children: 'shoptypes',
+          label: 'name',
+          value: 'id'
         }
       }
     },
   created() {
+      this.getOperationType();
 
   },
+  update() {
+      console.log(2);
+      console.log(this.shopInfo);
+  },
   methods: {
-    showTreeComponent(e) {
-        console.log(e);
-        this.shopInfo.isShowTree = true;
-    },
-    handleNodeClick() {
+    getOperationType() { // 获取经营类型 传0
 
+    },
+    showTreeComponent(e) {
+        this.shopInfo.isShowTree = true;
+        e.stopPropagation();
+    },
+    handleNodeClick(node) {
+      console.log(node);
+      this.shopInfo.shoptype_id = node.id;
+      this.shopInfo.shoptype_name = node.name;
     }
   },
   mounted() {
-      document.addEventListener('click', function(e) {
-          if(e.target.id !== 'op_type') {
+      var _self = this;
+      document.addEventListener('click', (e) => {
+          if('el-tree-node'.indexOf(e.target.className) == -1) {
+            if(_self.shopInfo.isShowTree) this.shopInfo.isShowTree = false;
           }
       }, false)
   }
