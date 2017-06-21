@@ -16,7 +16,7 @@
     <div class="panel">
       <div class="panel-header">
         <div class="panel-select-group">
-          <div class="panel-select__wrapper">
+          <div class="panel-select__wrapper" v-show="!role.single">
             <span class="panel-select__desc">店铺名称</span>
             <el-select v-model="nameValue" placeholder="全部" size="small" @change="nameChange">
               <el-option v-for="shop in shopData.list" :label="shop.shop_name" :value="shop.uid">
@@ -219,6 +219,7 @@
   import axios from 'axios';
   import config from 'config';
   import {formatDate} from '../../common/js/util';
+  import Store from '../../common/js/store';
 
   export default {
     beforeRouteEnter (to, from, next) {
@@ -243,6 +244,7 @@
     },
     data() {
       return {
+        role: Store.get('role') || {},
         pageSize: 10,
         packetType: 0,
         effectList: ['当日生效', '次日生效'],

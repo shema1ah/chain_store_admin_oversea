@@ -112,7 +112,8 @@
             params = "actv_change";
           }
           axios.post(`${config.ohost}/mchnt/card/v1/${params}`, Object.assign(this.data, {
-            mchnt_id_list: this.data.mchnt_id_list.join(",")
+            mchnt_id_list: this.data.mchnt_id_list.join(","),
+            format: 'cors'
           }))
             .then((res) => {
               this.loading = false;

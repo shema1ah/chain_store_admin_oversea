@@ -27,6 +27,9 @@
 <script>
   import axios from 'axios';
   import config from 'config';
+  import { getRole } from '../../common/js/util';
+  import Store from '../../common/js/store';
+
   export default {
     data() {
       return {
@@ -52,12 +55,14 @@
           if(!this.loading && valid) {
             this.loading = true;
 
-            axios.post(`${config.host}/merchant/login`, this.form).then((res) => {
+            axios.post(`${config.host}/merchant/login`, Object.assign(this.form, { format: 'cors' })).then((res) => {
               this.loading = false;
               let data = res.data;
               if(data.respcd === config.code.OK) {
-                // console.log(data, 1111);
-                this.$router.push('/main/index');
+                let val = getRole(data.data) || '';
+                this.$store.state.role = val;
+                Store.set('role', val);
+                this.$router.push('/main/index')
               } else {
                 this.$message.error(data.resperr);
               }
@@ -107,6 +112,9 @@
         }
       }
 
+      .el-input {
+        padding-left: 30px;
+      }
       .username {
         background: url("./img/phone.png") no-repeat left center;
       }
@@ -116,7 +124,7 @@
         height: 21px;
         color: #2F323A;
         font-weight: 200;
-        padding: 0 10px 0 30px;
+        padding: 0 10px 0 0;
         font-size: 15px;
         line-height: 1;
         border: none;

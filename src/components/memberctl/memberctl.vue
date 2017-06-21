@@ -18,7 +18,7 @@
       </div> -->
     </div>
     <div class="panel">
-      <div class="panel-header">
+      <div class="panel-header" v-show="!role.single">
         <div class="panel-select-group">
           <div class="panel-select__wrapper">
             <span class="panel-select__desc">店铺名称</span>
@@ -115,10 +115,12 @@
 <script>
   import axios from 'axios';
   import config from 'config';
+  import Store from '../../common/js/store';
 
   export default {
     data() {
       return {
+        role: Store.get('role') || {},
         pageSize: 10,
         currentPage: 0,
         nameValue: '',
