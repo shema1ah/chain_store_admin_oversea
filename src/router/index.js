@@ -6,6 +6,7 @@ import register from 'components/register/register'
 import main from 'components/main/main'
 import billctl from 'components/billctl/billctl'
 import index from 'components/index/index'
+import todaytrade from 'components/todaytrade/todaytrade'
 import chainmanage from 'components/chainmanage/chainmanage'
 import createsubshop from 'components/chainmanage/createSubShop'
 import routerhub from 'components/chainmanage/routerHub'
@@ -59,6 +60,10 @@ export default new Router({
         {
           path: 'index',
           component: index
+        },
+        {
+          path: 'todaytrade',
+          component: todaytrade
         },
         {
           path: 'memberctl',
