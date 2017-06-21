@@ -121,6 +121,7 @@
 
       .el-input {
         padding-left: 30px;
+        box-sizing: border-box;
       }
       .username {
         background: url("./img/phone.png") no-repeat left center;

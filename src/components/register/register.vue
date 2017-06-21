@@ -1,5 +1,5 @@
 <template>
-  <div class="register">
+  <div class="registerb">
     <div class="head">商户管理后台</div>
     <el-form :model="form" :rules="formrules" ref="form">
       <el-form-item label="手机号" prop="username" v-if="isRegister">
@@ -227,7 +227,7 @@
 </script>
 
 <style lang="scss">
-.register {
+.registerb {
   height: 100%;
   background: url('./img/bg.png') no-repeat 20px bottom;
 
@@ -261,6 +261,7 @@
     }
     .el-form-item__content {
       width: 100%;
+      line-height: 1;
     }
   }
   .panel-header-btn {
