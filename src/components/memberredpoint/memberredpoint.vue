@@ -287,7 +287,7 @@
 
       // 编辑活动
       editActivity(data) {
-        this.$store.state.pointData = data;
+        Store.set('pointData', data);
         this.$router.push("/main/memberredpoint/editpoint");
       },
 

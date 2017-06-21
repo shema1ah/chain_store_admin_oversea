@@ -49,6 +49,9 @@ Vue.use(Tooltip)
 axios.interceptors.response.use((res) => {
   let data = res.data
   if (data.respcd === config.code.SESSIONERR) {
+    // 清除本地cookie
+    document.cookie = "sessionid=''; expires=" + new Date(0).toUTCString();
+
     location.href = `/`
   } else {
     return res

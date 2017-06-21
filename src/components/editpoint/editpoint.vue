@@ -81,11 +81,12 @@
   import Validator from '../../validator';
   import axios from 'axios';
   import config from 'config';
+  import Store from '../../common/js/store';
 
   export default {
     beforeRouteEnter (to, from, next) {
       next((vm) => {
-        let pData = vm.$store.state.pointData;
+        let pData = Store.get('pointData');
         if(pData) {
           vm.form = {
             exchange_pt: +pData.exchange_pt,
@@ -198,7 +199,7 @@
 
       // 进入页面格式化数据
       formatData(data) {
-        let checklist = (this.$store.state.pointData || {}).apply_shops;
+        let checklist = (Store.get('pointData') || {}).apply_shops;
         let alllist = data;
         let checkList = [];
         let list = [];
@@ -228,7 +229,7 @@
         this.$refs['form'].validate((valid) => {
           if (valid) {
             console.log(this.data);
-            this.$store.state.pointData = this.data;
+            Store.set('pointData', this.data);
             this.$router.push("/main/memberredpoint/reviewpoint?type=edit");
           } else {
             this.$message.error('请核对信息是否完整');

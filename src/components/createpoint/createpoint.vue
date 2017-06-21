@@ -72,13 +72,13 @@
       </div>
     </div>
   </div>
-  </div>
 </template>
 <script>
   import {formatDate} from '../../common/js/util';
   import Validator from '../../validator';
   import axios from 'axios';
   import config from 'config';
+  import Store from '../../common/js/store';
 
   export default {
     beforeRouteEnter (to, from, next) {
@@ -182,7 +182,7 @@
         this.$refs['form'].validate((valid) => {
           if (valid) {
             console.log(this.data);
-            this.$store.state.pointData = this.data;
+            Store.set('pointData', this.data);
             this.$router.push('/main/memberredpoint/reviewpoint?type=create');
           } else {
             this.$message.error('请核对信息是否完整');

@@ -26,9 +26,8 @@ let code = {
 switch (env) {
   case 'development':
     // host = 'http://172.100.108.145:9099';
-    // host = 'http://172.100.107.131:9099';
-    // host = 'http://172.100.101.107:9091';
-    host = 'http://172.100.111.45:9099' // http://172.100.107.33:9099
+    // host = 'http://172.100.111.45:9099'
+    host = 'https://sh.qa.qfpay.net'
     ohost = 'http://172.100.111.45:6200'
     // host = 'http://172.100.108.174:9099';
     break

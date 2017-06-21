@@ -21,7 +21,7 @@
           </ul>
         </transition>
       </li>
-      <li v-if="this.role.single"><a href="official_setting.html" class="sidebar-nav__item">智慧餐厅</a></li>
+      <li v-if="this.role.single"><a href="/wxofficial/setting" class="sidebar-nav__item">智慧餐厅</a></li>
     </ul>
     <!--<div class="copyright_wrapper">
       <span class="copyright-text">Copyright</span>
@@ -168,7 +168,7 @@
                 pathname: 'transctl'
               }, {
                 val: '门店管理',
-                pathname: 'chainmanage'
+                pathname: 'singlemanage'
               }
             ];
             break;
