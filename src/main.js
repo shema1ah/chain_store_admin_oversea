@@ -5,12 +5,13 @@ import 'src/filters'
 import store from './store'
 import App from './App'
 import router from './router'
-import { Select, Option, TableColumn, Table, Button, Pagination, Dropdown, DropdownItem, DropdownMenu, Loading, DatePicker, Input, Message, Form, FormItem, Radio, RadioGroup, RadioButton, Dialog, Col, MessageBox, Row, CheckboxGroup, Checkbox, Rate, Tooltip } from 'element-ui'
+import { Tree, Select, Option, TableColumn, Table, Button, Pagination, Dropdown, DropdownItem, DropdownMenu, Loading, DatePicker, Input, Message, Form, FormItem, Radio, RadioGroup, RadioButton, Dialog, Col, MessageBox, Row, CheckboxGroup, Checkbox, Rate, Tooltip } from 'element-ui'
 import 'reset.css'
 import 'assets/scss/common.scss'
 import axios from 'axios'
 import config from 'src/config'
 
+Vue.use(Tree)
 Vue.use(Select)
 Vue.use(Table)
 Vue.use(Option)
