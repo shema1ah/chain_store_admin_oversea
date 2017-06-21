@@ -11,18 +11,18 @@
       </div>
       <div class="panel-body">
         <div class="public-info">
-          <img src="http://near.m1img.com/op_upload/155/14943204650.png" alt="头像">
+          <img :src="publicAvatar" alt="头像">
           <span>名称
-            <strong>李宗哲</strong>
+            <strong>{{publicInfo.nick_name}}</strong>
           </span>
           <span>ID（微信号）
-            <strong>zongzhele</strong>
+            <strong>{{publicInfo.appid}}</strong>
           </span>
           <span>公众号类型
-            <strong>服务号</strong>
+            <strong>{{publicInfo.service_type_str}}</strong>
           </span>
           <span>认证类型
-            <strong>已认证</strong>
+            <strong>{{publicInfo.verify_type_str}}</strong>
           </span>
         </div>
         <div class="operation">
@@ -41,35 +41,42 @@
         <ul class="copy-list" id="copy-list">
           <li>
             <span @click="selectext($event)">点餐链接</span>
-            <p>https://o.qfpay.com/dc/?/#!/merchant/12031/</p>
+            <p>https://o.qfpay.com/dc/?/#!/merchant/{{uid}}</p>
             <button @click="copylink($event)" type="button" class="el-button el-button--text">
               <img src="./img/ic_copy.png" alt="icon">复制链接
             </button>
           </li>
           <li>
             <span @click="selectext($event)">外卖链接</span>
-            <p>https://o.qfpay.com/dc/?/#!/merchant/12032/</p>
+            <p>https://o.qfpay.com/dc/take-out.html?/#!/merchant/{{uid}}</p>
             <button @click="copylink($event)" type="button" class="el-button el-button--text">
               <img src="./img/ic_copy.png" alt="icon">复制链接
             </button>
           </li>
           <li>
             <span @click="selectext($event)">订单链接</span>
-            <p>https://o.qfpay.com/dc/?/#!/merchant/12033/</p>
+            <p>https://o.qfpay.com/dc/order-list.html?mchnt_id={{uid}}</p>
             <button @click="copylink($event)" type="button" class="el-button el-button--text">
               <img src="./img/ic_copy.png" alt="icon">复制链接
             </button>
           </li>
           <li>
             <span @click="selectext($event)">集点链接</span>
-            <p>https://o.qfpay.com/dc/?/#!/merchant/12034/</p>
+            <p>http://m.haojin.in/v2/app.html?mchnt_id={{uid}}#!/card</p>
             <button @click="copylink($event)" type="button" class="el-button el-button--text">
               <img src="./img/ic_copy.png" alt="icon">复制链接
             </button>
           </li>
           <li>
             <span @click="selectext($event)">红包链接</span>
-            <p>https://o.qfpay.com/dc/?/#!/merchant/12035/</p>
+            <p>http://m.haojin.in/v2/app.html?mchnt_id={{uid}}#!/coupon</p>
+            <button @click="copylink($event)" type="button" class="el-button el-button--text">
+              <img src="./img/ic_copy.png" alt="icon">复制链接
+            </button>
+          </li>
+          <li>
+            <span @click="selectext($event)">储值链接</span>
+            <p>https://o2.qfpay.com/prepaid/v1/page/c/usercenter/merchant.html?h={{hashid}}</p>
             <button @click="copylink($event)" type="button" class="el-button el-button--text">
               <img src="./img/ic_copy.png" alt="icon">复制链接
             </button>
@@ -80,13 +87,15 @@
     <el-dialog title="请勾选需要授权的分店" v-model="dialogVisible" size="tiny">
       <el-form>
         <el-checkbox-group v-model="checkedStores" @change="handleCheckedStoresChange">
-          <el-checkbox v-for="store in stores" :label="store" :key="store">{{store}}</el-checkbox>
+          <el-checkbox v-for="store in stores" :label="store.userid">
+            {{store.shop_name}}
+          </el-checkbox>
         </el-checkbox-group>
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange" class="check-all">全选</el-checkbox>
         <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+        <el-button type="primary" @click="authPublics">确 定</el-button>
       </span>
     </el-dialog>
 
@@ -94,18 +103,120 @@
 </template>
 
 <script>
-  const storeOptions = ['三里屯店', '望京店', '大屯店', '北苑店'];
+  import axios from 'axios'
+  import config from 'config'
   export default {
     data() {
       return {
+        publicInfo: {},
+        publicAvatar: '',
+        hashid: '',
+        uid: '',
+        stores: [],
         dialogVisible: false,
         checkAll: true,
-        checkedStores: ['三里屯店', '大屯店'],
-        stores: storeOptions,
+        checkedStores: [],
+        storeUids: [],
         isIndeterminate: true
       };
     },
+    created() {
+      this.fetchPublicInfo()
+      this.fetchMerchantInfo()
+      this.fetchSubMerchants()
+    },
     methods: {
+      fetchPublicInfo () {
+        axios.post(`${config.host}/wxofficial/setting`)
+          .then((res) => {
+            let data = res.data
+            if (data.respcd === config.code.OK) {
+              this.publicInfo = data.data.applist[0]
+              this.publicAvatar = data.data.applist[0].head_img
+            } else {
+              this.$message.error(data.respmsg)
+            }
+          })
+          .catch(() => {
+            this.$message.error('获取连锁店铺失败')
+          })
+      },
+      fetchMerchantInfo () {
+        axios.get(`${config.host}/merchant/userinfo`)
+          .then((res) => {
+            let data = res.data
+            if (data.respcd === config.code.OK) {
+              this.hashid = data.data.hashid
+              this.uid = data.data.uid
+            } else {
+              this.$message.error(data.respmsg)
+            }
+          })
+          .catch(() => {
+            this.$message.error('获取商户信息失败')
+          })
+      },
+      fetchSubMerchants() {
+        axios.get(`${config.host}/submerchant/auth/info`)
+          .then((res) => {
+            let data = res.data
+            if (data.respcd === config.code.OK) {
+              let stores = data.data
+              this.stores = stores
+              for (let i = 0; i < stores.length; i++) {
+                this.storeUids.push(stores[i].userid)
+                if (stores[i].is_bind === 1) {
+                  this.checkedStores.push(stores[i].userid)
+                }
+              }
+            } else {
+              this.$message.error(data.respmsg)
+            }
+          })
+          .catch(() => {
+            this.$message.error('获取连锁店铺失败')
+          })
+      },
+      authPublics() {
+        let storeUids = this.storeUids
+        let checkedUids = this.checkedStores
+        let uncheckedUids = []
+        for (let i = 0; i < storeUids.length; i++) {
+          if (checkedUids.indexOf(storeUids[i]) === -1) {
+            uncheckedUids.push(storeUids[i])
+          }
+        }
+
+        axios.post(`${config.host}/submerchant/auth/operator`, {
+          bind_userids: checkedUids.toString(),
+          unbind_userids: uncheckedUids.toString()
+        }).then((res) => {
+            let data = res.data
+            if (data.respcd === config.code.OK) {
+              this.dialogVisible = false
+            } else {
+              this.$message.error(data.respmsg)
+            }
+          })
+          .catch(() => {
+            this.$message.error('获取连锁店铺失败')
+          })
+      },
+      handleCheckAllChange(event) {
+        this.checkedStores = event.target.checked ? this.storeUids : [];
+        this.isIndeterminate = false;
+      },
+      handleCheckedStoresChange(value) {
+        let checkedCount = value.length;
+        this.checkAll = checkedCount === this.stores.length;
+        this.isIndeterminate = checkedCount > 0 && checkedCount < this.stores.length;
+      },
+      showDialog() {
+        console.log('showDialog');
+        console.log(this.storeUids)
+        console.log(this.checkedStores)
+        this.dialogVisible = true;
+      },
       confirm() {
         this.$confirm('请确认是否要解除总账户公众号?', '提示', {
           confirmButtonText: '确定',
@@ -119,10 +230,6 @@
         }).catch(() => {
         });
       },
-      showDialog() {
-        console.log('showDialog');
-        this.dialogVisible = true;
-      },
       selectext(e) {
         console.log(e);
         console.log(e.target.nextElementSibling);
@@ -134,15 +241,6 @@
         console.log(e.target.previousElementSibling);
         window.getSelection().selectAllChildren(e.target.previousElementSibling);
         document.execCommand('copy');
-      },
-      handleCheckAllChange(event) {
-        this.checkedStores = event.target.checked ? storeOptions : [];
-        this.isIndeterminate = false;
-      },
-      handleCheckedStoresChange(value) {
-        let checkedCount = value.length;
-        this.checkAll = checkedCount === this.stores.length;
-        this.isIndeterminate = checkedCount > 0 && checkedCount < this.stores.length;
       }
     }
   };
@@ -151,11 +249,14 @@
 <style lang="scss">
   .public-info {
     display: flex;
-    padding:0 10% 0 5%;
+    padding:20px 10% 0 5%;
+    max-width: 1000px;
     justify-content: space-between;
     align-items: center;
     img {
       width: 15%;
+      max-width: 180px;
+      border-radius: 100%;
     }
     span {
       color: #98989E;
@@ -169,7 +270,7 @@
     }
   }
   .operation {
-    padding-left: 18%;
+    padding-left: 22%;
     padding-bottom: 30px;
     button {
       margin-right: 20px;
