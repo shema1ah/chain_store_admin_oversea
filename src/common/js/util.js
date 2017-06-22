@@ -113,36 +113,166 @@ const getRole = (data) => {
     type: 'chain',
     haiwai: false,
     single: false
-  };
-  if(data.country !== 'CN') {
-    role.type = 'haiwai';
-    role.haiwai = true;
+  }
+  if (data.country !== 'CN') {
+    role.type = 'haiwai'
+    role.haiwai = true
 
-    if(data.cate === 'submerchant') {
-      role.type = 'haiwai_single';
-      role.single = true;
+    if (data.cate === 'submerchant') {
+      role.type = 'haiwai_single'
+      role.single = true
     }
-  }else {
-    if(data.cate === 'submerchant') {
-      role.type = 'single';
-      role.single = true;
+  } else {
+    if (data.cate === 'submerchant') {
+      role.type = 'single'
+      role.single = true
     }
   }
-  return role;
+  return role
 }
 
 const getCookie = (sName) => {
-  var aCookie = document.cookie.split( ";");
+  var aCookie = document.cookie.split(';')
 
   for (let sCookie of aCookie) {
-    var aCrumb = sCookie.split( "=");
+    var aCrumb = sCookie.split('=')
     if (sName == aCrumb[0].replace(/(^\s*)|(\s*$)/g, '')) {
-      return (aCrumb[1]);
+      return (aCrumb[1])
     }
   }
-  return null;
+  return null
 }
+function GetVerifyBit (id) {
+  var result
+  var nNum = +(id.charAt(0) * 7 + id.charAt(1) * 9 + id.charAt(2) * 10 + id.charAt(3) * 5 + id.charAt(4) * 8 + id.charAt(5) * 4 + id.charAt(6) * 2 + id.charAt(7) * 1 + id.charAt(8) * 6 + id.charAt(9) * 3 + id.charAt(10) * 7 + id.charAt(11) * 9 + id.charAt(12) * 10 + id.charAt(13) * 5 + id.charAt(14) * 8 + id.charAt(15) * 4 + id.charAt(16) * 2)
+  nNum = nNum % 11
+  switch (nNum) {
+    case 0:
+      result = '1'
+      break
+    case 1:
+      result = '0'
+      break
+    case 2:
+      result = 'X'
+      break
+    case 3:
+      result = '9'
+      break
+    case 4:
+      result = '8'
+      break
+    case 5:
+      result = '7'
+      break
+    case 6:
+      result = '6'
+      break
+    case 7:
+      result = '5'
+      break
+    case 8:
+      result = '4'
+      break
+    case 9:
+      result = '3'
+      break
+    case 10:
+      result = '2'
+      break
+  }
+  return result
+}
+const cardValid = (card) => {
+  var aCity = {
+    11: '北京',
+    12: '天津',
+    13: '河北',
+    14: '山西',
+    15: '内蒙古',
+    21: '辽宁',
+    22: '吉林',
+    23: '黑龙江',
+    31: '上海',
+    32: '江苏',
+    33: '浙江',
+    34: '安徽',
+    35: '福建',
+    36: '江西',
+    37: '山东',
+    41: '河南',
+    42: '湖北',
+    43: '湖南',
+    44: '广东',
+    45: '广西',
+    46: '海南',
+    50: '重庆',
+    51: '四川',
+    52: '贵州',
+    53: '云南',
+    54: '西藏',
+    61: '陕西',
+    62: '甘肃',
+    63: '青海',
+    64: '宁夏',
+    65: '新疆',
+    71: '台湾',
+    81: '香港',
+    82: '澳门',
+    91: '国外'
+  }
+  var iSum = 0
+  var strIDno = card
+// alert(strIDno.substring(0, 6));
+  var idCardLength = strIDno.length
+  if (!/^\d{17}(\d|x)$/i.test(strIDno) && !/^\d{15}$/i.test(strIDno)) { return 1 } // 非法身份证号
 
+  if (aCity[parseInt(strIDno.substr(0, 2))] == null) { return 2 }// 非法地区
+
+// 15位身份证转换为18位
+  if (idCardLength == 15) {
+    sBirthday = '19' + strIDno.substr(6, 2) + '-' +
+      Number(strIDno.substr(8, 2)) + '-' +
+      Number(strIDno.substr(10, 2))
+    var d = new Date(sBirthday.replace(/-/g, '/'))
+    var dd = d.getFullYear().toString() + '-' + (d.getMonth() + 1) + '-' +
+      d.getDate()
+    if (sBirthday != dd) { return 3 } // 非法生日
+    strIDno = strIDno.substring(0, 6) + '19' + strIDno.substring(6, 15)
+    strIDno = strIDno + GetVerifyBit(strIDno)
+  }
+
+// 判断是否大于2078年，小于1900年
+  var nowDate = new Date()
+  var nowYear = nowDate.getFullYear()
+  var oldYear = nowYear - 150
+  var year = strIDno.substring(6, 10)
+  if (year < oldYear || year > nowYear) { return 3 }// 非法生日
+
+// 18位身份证处理
+
+// 在后面的运算中x相当于数字10,所以转换成a
+  strIDno = strIDno.replace(/x$/i, 'a')
+
+  var sBirthday = strIDno.substr(6, 4) + '-' + Number(strIDno.substr(10, 2)) +
+    '-' + Number(strIDno.substr(12, 2))
+  d = new Date(sBirthday.replace(/-/g, '/'))
+  if (sBirthday != (d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d
+      .getDate())) { return 3 } // 非法生日
+// 身份证编码规范验证
+  for (var i = 17; i >= 0; i--) { iSum += (Math.pow(2, i) % 11) * parseInt(strIDno.charAt(17 - i), 11) }
+  if (iSum % 11 != 1) { return 1 }// 非法身份证号
+
+// 判断是否屏蔽身份证
+  var words = ['11111119111111111', '12121219121212121', '123456789087654321']
+
+  for (var k = 0; k < words.length; k++) {
+    if (strIDno.indexOf(words[k]) != -1) {
+      return 1
+    }
+  }
+  return 0
+}
 module.exports = {
   formatObj,
   formatDate,
@@ -150,5 +280,6 @@ module.exports = {
   deepClone,
   getParams,
   getRole,
-  getCookie
+  getCookie,
+  cardValid
 }
