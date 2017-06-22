@@ -1,10 +1,44 @@
 <template>
-  <div class="warpper">
+  <!-- 未绑定总账户公众号 -->
+  <div class="warpper" v-if="wechatNotAuth">
+    <div class="banner_wrapper">
+      <p>您还没有关联您的微信账号，请关联您的微信账号以便我们能为您提供更多服务。</p>
+    </div>
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-select-group">
+          <span class="panel-header__desc">绑定微信公众号</span>
+        </div>
+      </div>
+      <div class="panel-body" style="padding-bottom:25px">
+        <ul class="steps">
+          <li>
+            <strong><span>Step</span>1</strong>
+            <img src="./img/step1.jpg" alt="step1">
+            <p>使用绑定的个人微信号扫描</p>
+          </li>
+          <li>
+            <strong><span>Step</span>2</strong>
+            <img src="./img/step2.jpg" alt="step1">
+            <p>公众号管理员授权确认</p>
+          </li>
+          <li>
+            <strong><span>Step</span>3</strong>
+            <img src="./img/step3.jpg" alt="step1">
+            <p>授权成功，运营公众号！</p>
+          </li>
+        </ul>
+        <button @click="goWechatAuth" class="el-button el-button--primary btn-add" type="button">免费添加微信公众号</button>
+      </div>
+    </div>
+  </div>
+  <!-- 已绑定总账户公众号 -->
+  <div class="warpper" v-else>
     <div class="banner_wrapper">
       <div class="banner-breadcrumb"><span>已授权公众号</span></div>
     </div>
     <div class="panel">
-      <div class="panel-header panel-header__fix">
+      <div class="panel-header">
         <div class="panel-select-group">
           <span class="panel-header__desc">公众号基本信息</span>
         </div>
@@ -98,8 +132,8 @@
         <el-button type="primary" @click="authPublics">确 定</el-button>
       </span>
     </el-dialog>
-
   </div>
+</main>
 </template>
 
 <script>
@@ -108,6 +142,7 @@
   export default {
     data() {
       return {
+        wechatNotAuth: true,
         publicInfo: {},
         publicAvatar: '',
         hashid: '',
@@ -131,8 +166,13 @@
           .then((res) => {
             let data = res.data
             if (data.respcd === config.code.OK) {
-              this.publicInfo = data.data.applist[0]
-              this.publicAvatar = data.data.applist[0].head_img
+              if (data.data.offical_status === false) {
+                this.wechatNotAuth = true
+              } else {
+                this.wechatNotAuth = false
+                this.publicInfo = data.data.applist[0]
+                this.publicAvatar = data.data.applist[0].head_img
+              }
             } else {
               this.$message.error(data.respmsg)
             }
@@ -140,6 +180,9 @@
           .catch(() => {
             this.$message.error('获取连锁店铺失败')
           })
+      },
+      goWechatAuth () {
+        window.location.href = 'https://wxmp.qfpay.com/v1/wxthird/auth_url?userid=' + this.uid + '&redirect_url=' + window.location.href
       },
       fetchMerchantInfo () {
         axios.get(`${config.host}/merchant/userinfo`)
@@ -202,19 +245,30 @@
             this.$message.error('获取连锁店铺失败')
           })
       },
+      unbindPublic() {
+        axios.post(`${config.host}/bigmerchant/unbind`)
+        .then((res) => {
+          let data = res.data
+          if (data.respcd === config.code.OK) {
+            this.wechatNotAuth = true
+          } else {
+            this.$message.error(data.respmsg)
+          }
+        })
+        .catch(() => {
+          this.$message.error('总账户解除绑定失败')
+        })
+      },
       handleCheckAllChange(event) {
-        this.checkedStores = event.target.checked ? this.storeUids : [];
+        this.checkedStores = event.target.checked ? this.storeUids : []
         this.isIndeterminate = false;
       },
       handleCheckedStoresChange(value) {
-        let checkedCount = value.length;
-        this.checkAll = checkedCount === this.stores.length;
-        this.isIndeterminate = checkedCount > 0 && checkedCount < this.stores.length;
+        let checkedCount = value.length
+        this.checkAll = checkedCount === this.stores.length
+        this.isIndeterminate = checkedCount > 0 && checkedCount < this.stores.length
       },
       showDialog() {
-        console.log('showDialog');
-        console.log(this.storeUids)
-        console.log(this.checkedStores)
         this.dialogVisible = true;
       },
       confirm() {
@@ -223,30 +277,58 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          this.$message({
-            type: 'success',
-            message: '解除成功!'
-          });
+          this.unbindPublic()
         }).catch(() => {
         });
       },
       selectext(e) {
-        console.log(e);
-        console.log(e.target.nextElementSibling);
-        window.getSelection().selectAllChildren(e.target.nextElementSibling);
+        window.getSelection().selectAllChildren(e.target.nextElementSibling)
       },
       copylink(e) {
-        console.log('copylink');
-        console.log(e);
-        console.log(e.target.previousElementSibling);
-        window.getSelection().selectAllChildren(e.target.previousElementSibling);
-        document.execCommand('copy');
+        window.getSelection().selectAllChildren(e.target.previousElementSibling)
+        document.execCommand('copy')
       }
     }
   };
 </script>
 
 <style lang="scss">
+  // 未绑定
+  .steps {
+    padding-left: 60px;
+    li {
+      padding-top: 30px;
+      display: inline-block;
+      width: 32%;
+      padding-right:60px;
+      box-sizing: border-box;
+      strong {
+        font-size: 34px;
+        span {
+          margin-right: 6px;
+          color: #a7a9ae;
+          font-size: 17px;
+        }
+      }
+      img {
+        width: 100%;
+        margin: 20px 0;
+        vertical-align: bottom;
+      }
+      p {
+        text-align: center;
+        font-size: 17px;
+      }
+    }
+  }
+  .btn-add{
+    display: block;
+    width: 369px;
+    height: 60px;
+    margin: 64px auto 0 auto;
+    font-size: 20px;
+  }
+  // 已绑定
   .public-info {
     display: flex;
     padding:20px 10% 0 5%;
