@@ -44,10 +44,10 @@
           <el-table-column
             label="交易金额">
             <template scope="scope">
-              <div class="table-title">{{ scope.row.total_amt }}元</div>
-              <div class="table-content">实收{{ scope.row.txamt }}元</div>
-              <div v-show="scope.row.mchnt_coupon" class="table-content">商家红包{{ scope.row.mchnt_coupon }}元</div>
-              <div v-show="scope.row.hj_coupon" class="table-content">平台补贴{{ scope.row.hj_coupon }}元</div>
+              <!-- <div class="table-title">{{}}元</div> -->
+              <div class="table-content">实收{{ scope.row.txamt | formatCurrency }}元</div>
+              <div v-show="scope.row.mchnt_coupon" class="table-content">商家红包{{ scope.row.mchnt_coupon | formatCurrency }}元</div>
+              <div v-show="scope.row.coupon_amt > 0" class="table-content">平台补贴{{ scope.row.coupon_amt | formatCurrency }}元</div>
             </template>
           </el-table-column>
           <el-table-column
@@ -81,26 +81,8 @@
       this.fetchData()
     },
     methods: {
-      // fetchLocalData() {
-      //   let data = localData
-      //   if (data.respcd === config.code.OK) {
-      //     let tradeskey = data.data.tradelist.head
-      //     let tradesvalue = data.data.tradelist.body
-      //     for (let key in tradesvalue) {
-      //       let tradesObject = {}
-      //       for (let variable in tradeskey) {
-      //         tradesObject[tradeskey[variable]] = tradesvalue[key][variable]
-      //       }
-      //       console.log(tradesObject)
-      //       this.trades.push(tradesObject)
-      //     }
-      //     console.log(this.trades)
-      //   } else {
-      //     this.$message.error(data.respmsg)
-      //   }
-      // },
       fetchData() {
-        axios.get('https://o2.qa.qfpay.net/trade/v1/tradelist?busicd=000000,700000,800101,800107,800108,800201,800207,800208,800401,800407,800408,800501,800507,800508,800601,800607,800608&start=1&len=10&respcd=0000&fix=1&stat=0')
+        axios.get(`${config.o2host}/trade/v1/tradelist?busicd=000000,700000,800101,800107,800108,800201,800207,800208,800401,800407,800408,800501,800507,800508,800601,800607,800608&start=1&len=10&respcd=0000&fix=1&stat=0`)
         .then((res) => {
           let data = res.data
           if (data.respcd === config.code.OK) {
@@ -110,11 +92,14 @@
               let tradesObject = {}
               for (let variable in tradeskey) {
                 tradesObject[tradeskey[variable]] = tradesvalue[key][variable]
+                // note key 是json string 只提取有用的 mchnt_coupon
+                if (tradeskey[variable] === 'note') {
+                  let noteObject = JSON.parse(tradesObject['note'])
+                  tradesObject['mchnt_coupon'] = noteObject.mchnt_coupon
+                }
               }
-              console.log(tradesObject)
               this.trades.push(tradesObject)
             }
-            console.log(this.trades)
           } else {
             this.$message.error(data.respmsg)
           }
@@ -125,5 +110,7 @@
 </script>
 
 <style lang="scss">
-
+  .table-title {
+    font-size: 16px;
+  }
 </style>
