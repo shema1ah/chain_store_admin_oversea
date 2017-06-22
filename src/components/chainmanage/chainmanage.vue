@@ -385,25 +385,20 @@
           if(!this.iconShow && valid) {
             this.iconShow = true;
 
-            let src, obj;
+            let src;
             if(this.type === 'single') {
               src = 'big-submchnt';
-              obj = {
-                sub_username: this.userName
-              };
             }else if(this.type === 'chain') {
               src = 'mchnt';
-              obj = {
-                username: this.userName
-              };
             }
-            axios.post(`${config.ohost}/mchnt/user/reset_pwd`, Object.assign({
+            axios.post(`${config.ohost}/mchnt/user/reset_pwd`, {
               mobile: this.shop.mobile,
               password: this.form.pass,
               mode: 'change',
+              username: this.userName,
               src: src,
               format: 'cors'
-            }, obj)).then((res) => {
+            }).then((res) => {
               let data = res.data;
               if (data.respcd === config.code.OK) {
                 this.$message({

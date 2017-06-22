@@ -60,6 +60,9 @@
                 val: '首页概览',
                 pathname: 'index'
               }, {
+                val: '今日收款',
+                pathname: 'todaytrade'
+              }, {
                 val: '会员功能',
                 sub: [{
                   val: '会员管理',
@@ -159,9 +162,6 @@
               {
                 val: '首页概览',
                 pathname: 'index'
-              }, {
-                val: '今日收款',
-                pathname: 'todaytrade'
               }, {
                 val: '会员功能',
                 sub: [{
