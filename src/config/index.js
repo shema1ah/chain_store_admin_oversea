@@ -3,18 +3,21 @@ const dev = process.env.NODE_ENV === 'development'
 
 // 生产配置
 let host = '';
-let ohost = 'https://o.qfpay.com/';
+let ohost = 'https://o.qfpay.com/'
+let o2host = 'https://o2.qfpay.com/'
 
 // 测试配置
 if (test) {
   host = ''
   ohost = 'https://o.qa.qfpay.net/'
+  o2host = 'https://o2.qa.qfpay.net/'
 }
 
 // 本地配置
 if (dev) {
   host = '';
-  ohost = 'http://172.100.107.33:2002';
+  ohost = 'http://172.100.107.33:2002'
+  o2host = 'https://o2.qa.qfpay.net/'
 }
 
 module.exports = {
