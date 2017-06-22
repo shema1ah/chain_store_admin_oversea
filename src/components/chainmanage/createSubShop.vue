@@ -141,8 +141,11 @@
               <el-col :span="2">
                 <el-button type="text">放弃创建</el-button>
               </el-col>
-              <el-col :span="6">
-                <el-button>下一步</el-button>
+              <el-col :span="5">
+                <el-button type="primary" style="width:155px;">下一步</el-button>
+              </el-col>
+              <el-col :span="10">
+                注：会员在集点满额兑换礼品后，将自动重新集点
               </el-col>
             </el-form-item>
             <div style="width:100%;padding-bottom:2px;"></div>
