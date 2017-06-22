@@ -6,6 +6,7 @@ import register from 'components/register/register'
 import main from 'components/main/main'
 import billctl from 'components/billctl/billctl'
 import index from 'components/index/index'
+import todaytrade from 'components/todaytrade/todaytrade'
 import chainmanage from 'components/chainmanage/chainmanage'
 import createsubshop from 'components/chainmanage/createSubShop'
 import routerhub from 'components/chainmanage/routerHub'
@@ -29,6 +30,7 @@ import createstorage from 'components/createstorage/createstorage'
 import reviewstorage from 'components/reviewstorage/reviewstorage'
 import alterstorage from 'components/alterstorage/alterstorage'
 import membersto from 'components/membersto/membersto'
+import publicauth from 'components/publicauth/publicauth';
 
 Vue.use(Router)
 
@@ -59,6 +61,10 @@ export default new Router({
         {
           path: 'index',
           component: index
+        },
+        {
+          path: 'todaytrade',
+          component: todaytrade
         },
         {
           path: 'memberctl',
@@ -183,6 +189,10 @@ export default new Router({
         {
           path: 'singlemanage',
           component: singlemanage
+        },
+        {
+          path: 'publicauth',
+          component: publicauth
         }
       ]
     }

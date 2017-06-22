@@ -82,6 +82,10 @@
                 pathname: 'billctl'
               },
               {
+                val: '公众号授权',
+                pathname: 'publicauth'
+              },
+              {
                 val: '门店管理',
                 pathname: 'chainmanage'
               }
@@ -151,6 +155,9 @@
               {
                 val: '首页概览',
                 pathname: 'index'
+              }, {
+                val: '今日收款',
+                pathname: 'todaytrade'
               }, {
                 val: '会员功能',
                 sub: [{
