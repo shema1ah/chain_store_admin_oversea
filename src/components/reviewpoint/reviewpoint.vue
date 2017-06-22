@@ -65,11 +65,12 @@
   import axios from 'axios';
   import config from 'config';
   import {getParams} from '../../common/js/util';
+  import Store from '../../common/js/store';
 
   export default {
     beforeRouteEnter (to, from, next) {
       next((vm) => {
-        vm.data = vm.$store.state.pointData;
+        vm.data = Store.get('pointData');
         let list = vm.$store.state.shopData.list;
         vm.shopList = vm.getshopList(list);
       });
@@ -80,9 +81,6 @@
         data: {},
         shopList: []
       };
-    },
-    computed: {
-
     },
     methods: {
       backToEdit() {

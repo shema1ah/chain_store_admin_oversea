@@ -120,7 +120,7 @@
   export default {
     data() {
       return {
-        role: Store.get('role').single || {},
+        role: Store.get('role') || {},
         pageSize: 10,
         currentPage: 0,
         nameValue: '',

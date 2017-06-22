@@ -9,10 +9,5 @@
       "styleLibraryName": "~theme"
     }
   ]]],
-  "comments": false,
-  "env": {
-    "test": {
-      "plugins": [ "istanbul" ]
-    }
-  }
+  "comments": false
 }

@@ -244,7 +244,7 @@
     },
     data() {
       return {
-        role: Store.get('role').single || {},
+        role: Store.get('role') || {},
         pageSize: 10,
         packetType: 0,
         effectList: ['当日生效', '次日生效'],

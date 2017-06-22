@@ -118,16 +118,29 @@ const getRole = (data) => {
     role.type = 'haiwai';
     role.haiwai = true;
 
-    if(data.rate === 'submerchant') {
+    if(data.cate === 'submerchant') {
       role.type = 'haiwai_single';
       role.single = true;
     }
   }else {
-    if(data.rate === 'submerchant') {
+    if(data.cate === 'submerchant') {
       role.type = 'single';
+      role.single = true;
     }
   }
   return role;
+}
+
+const getCookie = (sName) => {
+  var aCookie = document.cookie.split( ";");
+
+  for (let sCookie of aCookie) {
+    var aCrumb = sCookie.split( "=");
+    if (sName == aCrumb[0].replace(/(^\s*)|(\s*$)/g, '')) {
+      return (aCrumb[1]);
+    }
+  }
+  return null;
 }
 
 module.exports = {
@@ -136,5 +149,6 @@ module.exports = {
   isEmptyObject,
   deepClone,
   getParams,
-  getRole
+  getRole,
+  getCookie
 }

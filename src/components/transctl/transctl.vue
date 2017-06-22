@@ -219,7 +219,7 @@
         }
       };
       return {
-        role: {},
+        role: Store.get('role') || {},
         pageSize: 10,
         status: false,
         loading: false,
@@ -300,7 +300,6 @@
       }
     },
     created() {
-      this.role = Store.get('role');
       this.loading = true;
       axios.get(`${config.host}/merchant/trade/info`, {
         params: this.basicParams

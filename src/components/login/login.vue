@@ -27,9 +27,8 @@
 <script>
   import axios from 'axios';
   import config from 'config';
-  import { getRole } from '../../common/js/util';
+  import { getRole, getCookie } from '../../common/js/util';
   import Store from '../../common/js/store';
-
   export default {
     data() {
       return {
@@ -48,6 +47,14 @@
         }
       };
     },
+
+    created() {
+      // cookie存在跳转首页
+      if(getCookie('sessionid')) {
+       this.$router.push('/main/index');
+       }
+    },
+
     methods: {
       // 登录
       login() {
@@ -60,6 +67,7 @@
               let data = res.data;
               if(data.respcd === config.code.OK) {
                 let val = getRole(data.data) || '';
+                this.$store.state.role = val;
                 Store.set('role', val);
                 this.$router.push('/main/index')
               } else {

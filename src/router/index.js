@@ -9,7 +9,7 @@ import index from 'components/index/index'
 import todaytrade from 'components/todaytrade/todaytrade'
 import chainmanage from 'components/chainmanage/chainmanage'
 import createsubshop from 'components/chainmanage/createSubShop'
-// import routerhub from 'components/chainmanage/routerHub'
+import routerhub from 'components/chainmanage/routerHub'
 import singlemanage from 'components/singlemanage/singlemanage'
 import transctl from 'components/transctl/transctl'
 import memberctl from 'components/memberctl/memberctl'
@@ -30,6 +30,7 @@ import createstorage from 'components/createstorage/createstorage'
 import reviewstorage from 'components/reviewstorage/reviewstorage'
 import alterstorage from 'components/alterstorage/alterstorage'
 import membersto from 'components/membersto/membersto'
+import publicauth from 'components/publicauth/publicauth';
 
 Vue.use(Router)
 
@@ -173,12 +174,14 @@ export default new Router({
         },
         {
           path: 'chainmanage',
-          name: '',
-          component: chainmanage,
+          component: routerhub,
           children: [
             {
+              path: '',
+              component: chainmanage
+            },
+            {
               path: 'createsubshop',
-              name: 'createsubshop',
               component: createsubshop
             }
           ]
@@ -188,8 +191,8 @@ export default new Router({
           component: singlemanage
         },
         {
-          path: 'createsubshop',
-          component: createsubshop
+          path: 'publicauth',
+          component: publicauth
         }
       ]
     }

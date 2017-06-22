@@ -1,15 +1,15 @@
 <template>
-    <div>
-        <transition>
-            <keep-alive>
-                     <router-view name="createsubshop"></router-view>
-            </keep-alive>
-        </transition>
-    </div>
+  <router-view :shop="shop">
+    <!--<router-view name="createsubshop"></router-view> -->
+  </router-view>
 </template>
 <script>
     export default {
-
+      props: {
+        shop: {
+          type: Object
+        }
+      }
     };
 </script>
 

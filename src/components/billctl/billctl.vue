@@ -96,7 +96,7 @@
       };
 
       return {
-        role: Store.get('role').single || {},
+        role: Store.get('role') || {},
         defaultDateRange: defaultDateRange,
         form: {
           dateRangeValue: defaultDateRange,

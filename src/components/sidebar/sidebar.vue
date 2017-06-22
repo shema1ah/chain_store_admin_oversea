@@ -21,7 +21,7 @@
           </ul>
         </transition>
       </li>
-      <li v-if="this.role.single"><a href="official_setting.html" class="sidebar-nav__item">智慧餐厅</a></li>
+      <li v-if="this.role.single"><a href="/wxofficial/setting" class="sidebar-nav__item">智慧餐厅</a></li>
     </ul>
     <!--<div class="copyright_wrapper">
       <span class="copyright-text">Copyright</span>
@@ -35,7 +35,7 @@
   export default {
     data() {
       return {
-        role: {},
+        role: Store.get('role') || {},
         navs: [],
         isShow: true,
         isRotate: false
@@ -53,8 +53,6 @@
 
       // 根据角色左侧菜单初始化
       getPath() {
-        this.role = Store.get('role') || {};
-        console.log(Store.get('role'), 1111);
         switch (this.role.type) {
           case 'chain':
             this.navs = [
@@ -85,6 +83,10 @@
               }, {
                 val: '账单管理',
                 pathname: 'billctl'
+              },
+              {
+                val: '公众号授权',
+                pathname: 'publicauth'
               },
               {
                 val: '门店管理',
@@ -173,7 +175,7 @@
                 pathname: 'transctl'
               }, {
                 val: '门店管理',
-                pathname: 'chainmanage'
+                pathname: 'singlemanage'
               }
             ];
             break;
