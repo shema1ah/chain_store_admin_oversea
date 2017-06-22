@@ -21,7 +21,10 @@
 .el-input__inner {
   border: 1px solid #c2c2c2;
   &::-webkit-input-placeholder {
-    color: #c2c2c2;
+    color: #A7A9AE;
+  }
+  &::-moz-placeholder {
+    color: #A7A9AE;
   }
 }
 

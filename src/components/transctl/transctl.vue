@@ -30,8 +30,8 @@
               </el-form-item>
             </div>
           </div>
-          <div class="panel-select-group" v-show="!role.single">
-            <div class="panel-select__wrapper">
+          <div class="panel-select-group">
+            <div class="panel-select__wrapper" v-show="!role.single">
               <span class="panel-select__desc">店铺名称</span>
               <el-form-item prop="selectShopUid">
                 <el-select v-model="form.selectShopUid" placeholder="全部" size="small" @change="getOperators(form.selectShopUid)">

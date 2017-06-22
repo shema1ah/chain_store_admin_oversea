@@ -55,7 +55,7 @@
       let repassValid = (rule, val, cb) => {
         if(val === '') {
           cb('请输入确认新密码');
-        } else if(this.form.pass && this.form.pass !== val) {
+        } else if(this.form.password && this.form.password !== val) {
           cb('新密码与确认密码不一致');
         } else {
           console.log(val);
