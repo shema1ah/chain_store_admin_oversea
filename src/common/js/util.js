@@ -123,7 +123,8 @@ const getRole = (data) => {
       role.single = true
     }
   } else {
-    if (data.cate === 'submerchant') {
+    // bigmerchant:大商户 submerchant:子商户 merchant:商户
+    if (data.cate !== 'bigmerchant') {
       role.type = 'single'
       role.single = true
     }
