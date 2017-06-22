@@ -185,7 +185,7 @@
         </div>
     </el-dialog>
 
-    <el-dialog title="关联分店" v-model="visible" class="mydialog"  @close="handleClose('associate_form')">
+    <el-dialog title="关联分店" :visible.sync="visible" class="mydialog"  @close="handleClose('associate_form')">
       <el-form :model="associate_form" :rules="formrules" ref="associate_form">
         <div class="desc">
           <p>请输入您的分店信息，以做关联。</p>
@@ -245,10 +245,10 @@
           cb();
         }
       };
-      let tagValid = (rule, val, cb) => {
+//      let tagValid = (rule, val, cb) => {
 //          alert(val);
-          console.log(val)
-      };
+//          console.log(val)
+//      };
       let primeAccountPwdValid = (rule, val, cb) => {
           if(val === '') {
               cb('请输入总账户密码');
@@ -285,7 +285,6 @@
         },
         checkTagRules: {
           tag: [
-            { validator: tagValid },
             { max: 20, min: 0, message: '请输入二十以内的文字或字母' }
           ]
         },
