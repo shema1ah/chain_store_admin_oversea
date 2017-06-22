@@ -10,21 +10,18 @@
       <div class="panel-header">
         <div class="panel-select-group panel-select-group__justify">
           <span class="panel-header__desc">实时交易</span>
-          <span style="padding-right:30px">每2s自动刷新</span>
+          <span style="padding-right:30px">每5s自动刷新</span>
         </div>
       </div>
       <div class="panel-body">
         <el-table
+          v-loading="loading"
           :data="trades"
-          style="width: 100%"
           row-class-name="el-table__row_fix"
-          v-loading="loading">
+          class="trade-table">
           <el-table-column
+            prop="shopname"
             label="店铺名称/ID">
-            <template scope="scope">
-              <div>{{ scope.row.username }}</div>
-              <div>{{ scope.row.userid }}</div>
-            </template>
           </el-table-column>
           <el-table-column
             prop="opuid"
@@ -62,8 +59,10 @@
           </el-table-column>
         </el-table>
       </div>
+      <footer class="view-more">
+        <router-link to="/main/transctl">查看更多 &gt;&gt;</router-link>
+      </footer>
     </div>
-
   </div>
 </template>
 
@@ -72,9 +71,11 @@
   import config from 'config'
   // export '../../mock/data.json'
   export default {
+    props: ['shop'],
     data() {
       return {
-        trades: []
+        trades: [],
+        loading: false
       }
     },
     created() {
@@ -82,6 +83,8 @@
     },
     methods: {
       fetchData() {
+        this.loading = true
+        this.trades = []
         axios.get(`${config.o2host}/trade/v1/tradelist?busicd=000000,700000,800101,800107,800108,800201,800207,800208,800401,800407,800408,800501,800507,800508,800601,800607,800608&start=1&len=10&respcd=0000&fix=1&stat=0`)
         .then((res) => {
           let data = res.data
@@ -97,13 +100,19 @@
                   let noteObject = JSON.parse(tradesObject['note'])
                   tradesObject['mchnt_coupon'] = noteObject.mchnt_coupon
                 }
+                if (tradeskey[variable] === 'opuid') {
+                  tradesObject['opuid'] = '000' + tradesObject['opuid']
+                }
+                tradesObject['shopname'] = this.shop.shopname
               }
               this.trades.push(tradesObject)
             }
+            this.loading = false
           } else {
             this.$message.error(data.respmsg)
           }
         })
+        setTimeout(this.fetchData, 5000)
       }
     }
   }
@@ -112,5 +121,21 @@
 <style lang="scss">
   .table-title {
     font-size: 16px;
+  }
+  .trade-table {
+    width:100%;
+    min-height:661px;
+  }
+  .view-more {
+    text-align: right;
+    line-height: 50px;
+    padding-right: 30px;
+    a {
+      color: #FE9B20;
+      font-size: 17px;
+      &:hover {
+        text-decoration: underline; 
+      }
+    }
   }
 </style>
