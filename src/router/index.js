@@ -30,6 +30,7 @@ import createstorage from 'components/createstorage/createstorage'
 import reviewstorage from 'components/reviewstorage/reviewstorage'
 import alterstorage from 'components/alterstorage/alterstorage'
 import membersto from 'components/membersto/membersto'
+import publicauth from 'components/publicauth/publicauth';
 
 Vue.use(Router)
 
@@ -188,6 +189,10 @@ export default new Router({
         {
           path: 'singlemanage',
           component: singlemanage
+        },
+        {
+          path: 'publicauth',
+          component: publicauth
         }
       ]
     }
