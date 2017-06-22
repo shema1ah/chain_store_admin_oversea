@@ -385,20 +385,25 @@
           if(!this.iconShow && valid) {
             this.iconShow = true;
 
-            let src;
+            let src, obj;
             if(this.type === 'single') {
               src = 'big-submchnt';
+              obj = {
+                sub_username: this.userName
+              };
             }else if(this.type === 'chain') {
               src = 'mchnt';
+              obj = {
+                username: this.userName
+              };
             }
-            axios.post(`${config.ohost}/mchnt/user/reset_pwd`, {
+            axios.post(`${config.ohost}/mchnt/user/reset_pwd`, Object.assign({
               mobile: this.shop.mobile,
               password: this.form.pass,
               mode: 'change',
-              username: this.userName,
               src: src,
               format: 'cors'
-            }).then((res) => {
+            }, obj)).then((res) => {
               let data = res.data;
               if (data.respcd === config.code.OK) {
                 this.$message({
@@ -408,7 +413,7 @@
                 this.showChangePass = false;
 
                 if(this.type === 'chain') {
-                  this.$router.push('/login');
+                  this.$router.push('/');
                 }
               } else {
                 this.$message.error(data.respmsg);
