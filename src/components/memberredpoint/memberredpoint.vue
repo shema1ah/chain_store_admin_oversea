@@ -85,7 +85,7 @@
           layout="total, sizes, prev, pager, next, jumper"
           :page-size="pageSize"
           @size-change="handleSizeChange"
-          :total="collectData.count"
+          :total="+collectData.count"
           @current-change="currentChange"
           :current-page="currentpage">>
         </el-pagination>
@@ -263,7 +263,7 @@
           confirmButtonText: '确定',
           cancelButtonText: '关闭'
         }).then(() => {
-          axios.post(`${config.ohost}/mchnt/mis/card/close_actv`, {
+          axios.post(`${config.ohost}/mchnt/card/close_actv`, {
             id: id,
             format: 'cors'
           }).then((res) => {

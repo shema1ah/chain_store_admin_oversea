@@ -64,7 +64,7 @@
 <script>
   import axios from 'axios';
   import config from 'config';
-  import {getParams} from '../../common/js/util';
+  import { getParams } from '../../common/js/util';
   import Store from '../../common/js/store';
 
   export default {
@@ -119,7 +119,7 @@
               if(data.respcd === config.code.OK) {
                 this.$message({
                   type: 'success',
-                  message: '创建储值活动成功'
+                  message: getParams("type") === "create" ? '创建储值活动成功' : '修改储值活动成功'
                 });
                 this.$router.push('/main/memberredpoint');
               } else {

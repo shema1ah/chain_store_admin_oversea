@@ -119,6 +119,10 @@
                 pathname: 'billctl'
               },
               {
+                val: '公众号授权',
+                pathname: 'publicauth'
+              },
+              {
                 val: '门店管理',
                 pathname: 'singlemanage'
               }

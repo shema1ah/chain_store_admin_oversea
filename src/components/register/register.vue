@@ -92,7 +92,8 @@
             { validator: phoneValid, trigger: 'blur' }
           ],
           username: [
-            { required: true, message: '请输入注册账号' }
+            { required: true, message: '请输入注册账号' },
+            { validator: phoneValid, trigger: 'blur' }
           ],
           code: [
             { required: true, message: '请输入验证码' }
