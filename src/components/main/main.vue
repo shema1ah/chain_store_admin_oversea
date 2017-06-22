@@ -59,8 +59,6 @@ export default {
     sidebar
   },
   created() {
-    this.$store.dispatch('getShopList');
-    this.$store.dispatch('getMemberTotal');
     this.getData();
   },
   methods: {
@@ -92,6 +90,9 @@ export default {
               let val = getRole(data.data);
               Store.set('role', val);
             }
+
+            this.$store.dispatch('getShopList');
+            this.$store.dispatch('getMemberTotal');
 
             this.shop = {
               shopname: data.data.shopname,

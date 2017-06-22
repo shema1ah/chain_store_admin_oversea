@@ -178,6 +178,11 @@
             min-width="210"
             label="流水号">
           </el-table-column>
+          <el-table-column min-width="150" label="操作">
+            <template scope="scope">
+              <el-button type="text" size="small" class="el-button__fix" @click="revoke(scope.row)">撤销</el-button>
+            </template>
+          </el-table-column>
         </el-table>
       </div>
       <div class="pagination_wrapper" v-if="transData.num >= 10">
@@ -318,6 +323,38 @@
     },
 
     methods: {
+      // 撤销操作
+      revoke(data) {
+        this.$confirm('确认取消此订单吗?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '关闭'
+        }).then(() => {
+          let params = {
+            format: 'cors',
+            txamt: data.txamt,
+            txdtm: data.sysdtm.formatDate('yyyy-MM-dd HH:mm:ss'),
+            syssn: data.syssn
+          };
+          axios.post(`${config.payHost}/trade/v1/refund`, params).then((res) => {
+            let data = res.data;
+            if (data.respcd === config.code.OK) {
+              this.$message({
+                type: 'success',
+                message: '撤销成功'
+              });
+
+              this.getTransData();
+            } else {
+              this.$message.error(data.respmsg);
+            }
+          }).catch(() => {
+            this.$message.error("撤销成功失败");
+          });
+        }).catch(() => {
+          console.log("取消");
+        })
+      },
+
       // 选择时间
       changeTime(value) {
         if(value) {
@@ -375,6 +412,7 @@
           }
         });
       },
+
       operaChange(opuid) {
         this.basicParams.opuid = opuid;
       },
@@ -397,6 +435,7 @@
           this.$message.error('获取操作员信息失败');
         });
       },
+
       currentChange(current) {
         this.currentPage = current;
         console.log(current);
@@ -410,6 +449,7 @@
         this.status = true;
         this.$refs['form'].resetFields();
       },
+
       handleSizeChange(size) {
         this.loading = true;
         this.pageSize = size;

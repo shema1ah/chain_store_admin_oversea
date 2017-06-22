@@ -64,6 +64,7 @@
 <script>
   import axios from 'axios';
   import config from 'config';
+  import qs from 'qs';
   import { getParams } from '../../common/js/util';
   import Store from '../../common/js/store';
 
@@ -109,11 +110,14 @@
           }else {
             params = "actv_change";
           }
-          axios.post(`${config.ohost}/mchnt/card/v1/${params}`, Object.assign(this.data, {
+          axios.post(`${config.ohost}/mchnt/card/v1/${params}`, qs.stringify(Object.assign(this.data, {
             mchnt_id_list: this.data.mchnt_id_list.join(","),
             format: 'cors'
-          }))
-            .then((res) => {
+          })), {
+              headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+              }
+          }).then((res) => {
               this.loading = false;
               let data = res.data;
               if(data.respcd === config.code.OK) {

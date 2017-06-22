@@ -6,12 +6,10 @@
         <i class="icon-right_arrow"></i>
         <span>会员集点</span>
       </div>
-      <router-link to="/main/memberredpoint/createpoint">
-        <div class="banner-btn">
-          <i class="icon-create"></i>
-          <span class="banner-btn__desc">新建集点</span>
-        </div>
-      </router-link>
+      <div class="banner-btn" @click="creatPoint">
+        <i class="icon-create"></i>
+        <span class="banner-btn__desc">新建集点</span>
+      </div>
     </div>
     <div class="panel">
       <div class="panel-header">
@@ -161,6 +159,7 @@
     data() {
       return {
         role: Store.get('role') || {},
+        isCreat: false,
         collectData: [],
         isShowDetail: false,
         pageSize: 10,
@@ -289,6 +288,45 @@
       editActivity(data) {
         Store.set('pointData', data);
         this.$router.push("/main/memberredpoint/editpoint");
+      },
+
+      // 新建集点，判断是否可以创建
+      creatPoint() {
+        if(this.role.single) {
+          if(this.getCurrentShop()) {
+            this.$message.error('当前有活动正在进行，请终止后再创建');
+          }else {
+            this.$router.push("/main/memberredpoint/createpoint");
+          }
+        }else {
+          this.$router.push("/main/memberredpoint/createpoint");
+        }
+      },
+
+      // 格式化店铺列表
+      formatData(list) {
+        for(let i of list) {
+            if(i.state == 0) {
+                return true;
+            }
+         }
+         return false;
+      },
+
+      // 获取店铺列表信息
+      getCurrentShop() {
+        axios.get(`${config.host}/merchant/card/active_state`).then((res) => {
+          let data = res.data;
+          if (data.respcd === config.code.OK) {
+            this.formatData(data.data);
+          } else {
+            this.$message.error(data.respmsg);
+            return false;
+          }
+        }).catch(() => {
+          this.$message.error('获取店铺数据失败!');
+          return false;
+        });
       },
 
       // 展示详情
