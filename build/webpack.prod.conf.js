@@ -9,6 +9,10 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin')
 var OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 
 var env = config.build.env
+var env = process.env.NODE_ENV === 'test'
+  ? require('../config/test.env')
+  : config.build.env
+console.log(env)
 
 var webpackConfig = merge(baseWebpackConfig, {
   module: {
