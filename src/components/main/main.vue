@@ -86,10 +86,8 @@ export default {
           let data = res.data;
           if(data.respcd === config.code.OK) {
             // 本地调试或者刷新页面时设置role
-            if(!Store.get('role')) {
-              let val = getRole(data.data);
-              Store.set('role', val);
-            }
+            let val = getRole(data.data);
+            Store.set('role', val);
 
             this.$store.dispatch('getShopList');
             this.$store.dispatch('getMemberTotal');

@@ -132,7 +132,7 @@ const getRole = (data) => {
   }
 
   // 是否展示智慧餐厅
-  if(data.diancan_display === "1") {
+  if(data.diancan_display === 1) {
     role.diancan = true;
   }
 

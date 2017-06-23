@@ -178,7 +178,7 @@
             min-width="210"
             label="流水号">
           </el-table-column>
-          <el-table-column min-width="150" label="操作">
+          <el-table-column min-width="100" label="操作">
             <template scope="scope">
               <el-button type="text" size="small" class="el-button__fix" @click="revoke(scope.row)">撤销</el-button>
             </template>
@@ -334,6 +334,7 @@
             txamt: (data.txamt) * 100,
             txdtm: formatDate(data.sysdtm, 'yyyy-MM-dd HH:mm:ss'),
             syssn: data.syssn,
+            out_trade_no: "",
             udid: 'bigmerchant'
           };
           axios.post(`${config.payHost}/trade/v1/refund`, qs.stringify(params), {

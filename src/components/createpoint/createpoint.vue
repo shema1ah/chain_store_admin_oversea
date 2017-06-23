@@ -52,7 +52,7 @@
               <el-date-picker v-model="form.expire_time" type="date" placeholder="请选结束时间" size="small" :editable="false" :clearable="false">
               </el-date-picker>
             </el-form-item>
-            <el-form-item prop="mchnt_id_list" label="适用门店" v-show="!role.single">
+            <el-form-item prop="mchnt_id_list" label="适用门店">
               <el-select v-model="form.mchnt_id_list" placeholder="请选择门店" multiple filterable size="small">
                 <el-option v-for="shop in shopData" :label="shop.shopname" :key="shop.uid" :value="shop.uid" :disabled="shop.state == 0">
                 </el-option>
@@ -117,7 +117,6 @@
       };
 
       return {
-        role: Store.get("role") || {},
         textList: ['1点', '2点', '3点', '4点', '5点', '6点', '7点', '8点', '9点', '10点'],
         checked: false,
         shopData: [],
