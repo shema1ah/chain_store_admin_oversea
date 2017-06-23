@@ -331,11 +331,16 @@
         }).then(() => {
           let params = {
             format: 'cors',
-            txamt: data.txamt,
-            txdtm: data.sysdtm.formatDate('yyyy-MM-dd HH:mm:ss'),
-            syssn: data.syssn
+            txamt: (data.txamt) * 100,
+            txdtm: formatDate(data.sysdtm, 'yyyy-MM-dd HH:mm:ss'),
+            syssn: data.syssn,
+            udid: 'bigmerchant'
           };
-          axios.post(`${config.payHost}/trade/v1/refund`, params).then((res) => {
+          axios.post(`${config.payHost}/trade/v1/refund`, qs.stringify(params), {
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded'
+            }
+          }).then((res) => {
             let data = res.data;
             if (data.respcd === config.code.OK) {
               this.$message({
@@ -345,7 +350,7 @@
 
               this.getTransData();
             } else {
-              this.$message.error(data.respmsg);
+              this.$message.error(data.resperr);
             }
           }).catch(() => {
             this.$message.error("撤销成功失败");

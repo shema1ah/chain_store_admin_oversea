@@ -16,8 +16,10 @@ if (test) {
 }
 // 本地配置
 if (dev) {
-  host = 'http://172.100.111.45:9099';
-  ohost = 'http://172.100.111.45:6200';
+  // host = 'http://172.100.111.45:9099';
+  host = 'http://172.100.101.107:9091';
+  // ohost = 'http://172.100.111.45:6200';
+  ohost = 'https://o.qa.qfpay.net';
   o2host = 'https://o2.qa.qfpay.net'
   payHost = 'https://openapi.qa.qfpay.net'
 }

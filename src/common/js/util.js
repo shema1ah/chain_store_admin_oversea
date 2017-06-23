@@ -112,7 +112,8 @@ const getRole = (data) => {
   let role = {
     type: 'chain',
     haiwai: false,
-    single: false
+    single: false,
+    diancan: false
   }
   if (data.country !== 'CN') {
     role.type = 'haiwai'
@@ -129,6 +130,12 @@ const getRole = (data) => {
       role.single = true
     }
   }
+
+  //是否展示智慧餐厅
+  if(data.diancan_display === "1") {
+    role.diancan = true;
+  }
+
   return role
 }
 

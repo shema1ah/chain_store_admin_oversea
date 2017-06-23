@@ -4,12 +4,11 @@
       <div class="head">商户管理后台</div>
       <el-form :model="form" :rules="formrules" ref="form">
         <el-form-item prop="username" class="username">
-          <el-input v-model="form.username" size="small" type="text" placeholder="注册账号"></el-input>
+          <el-input v-model.trim="form.username" size="small" type="text" placeholder="注册账号"></el-input>
         </el-form-item>
         <el-form-item prop="password" class="password">
-          <el-input v-model="form.password" size="small" type="password" placeholder="6位以上"></el-input>
+          <el-input v-model.trim="form.password" size="small" type="password" placeholder="6位以上"></el-input>
         </el-form-item>
-
         <div class="panel-header-btn panel-header-btn__fill" @click="login">
           <span class="el-icon-loading" v-if="loading"></span>
           <span v-else>登录</span>

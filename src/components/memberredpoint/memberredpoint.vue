@@ -40,7 +40,7 @@
           </el-table-column>
           <el-table-column label="集点条件" min-width="150">
             <template scope="scope">
-              <span>支付满{{ scope.row.obtain_amt }}元可集一点</span>
+              <span>支付满{{ (scope.row.obtain_amt)/100 }}元可集一点</span>
             </template>
           </el-table-column>
           <el-table-column label="礼品详情" min-width="100">
@@ -51,10 +51,16 @@
           <el-table-column prop="status_chn" label="状态">
           </el-table-column>
           <el-table-column prop="in_person_no" label="参与人数">
+            <template scope="scope">
+              <span>{{ scope.row.in_person_no || 0 }}</span>
+            </template>
           </el-table-column>
           <el-table-column prop="exchange_num" label="已兑换">
           </el-table-column>
           <el-table-column prop="total_amt" label="刺激收益">
+            <template scope="scope">
+              <span>{{ (scope.row.total_amt)/100 || 0 }}元</span>
+            </template>
           </el-table-column>
           <el-table-column prop="who_create" label="活动来源" min-width="140">
           </el-table-column>
@@ -98,7 +104,7 @@
       <el-row>
         <el-col :span="4" class="title">集点条件</el-col>
         <el-col :span="20" class="desc">
-          支付满<span class="orange">{{ detailData.obtain_amt }}元</span>可集一点
+          支付满<span class="orange">{{ (detailData.obtain_amt)/100 }}元</span>可集一点
           <span v-if="detailData.obtain_limit == 0" style="font-size: 14px;" class="orange">/一次付款可集多点</span>
         </el-col>
       </el-row>
@@ -108,7 +114,7 @@
       </el-row>
       <el-row>
         <el-col :span="4" class="title">礼品价格</el-col>
-        <el-col :span="20" class="desc">{{ detailData.goods_amt }}元</el-col>
+        <el-col :span="20" class="desc">{{ (detailData.goods_amt)/100 }}元</el-col>
       </el-row>
       <el-row>
         <el-col :span="4" class="title">活动时间</el-col>
@@ -267,7 +273,7 @@
           confirmButtonText: '确定',
           cancelButtonText: '关闭'
         }).then(() => {
-          axios.post(`${config.ohost}/mchnt/card/close_actv`, {
+          axios.post(`${config.ohost}/mchnt/card/v1/actv_close`, {
             id: id,
             format: 'cors'
           }).then((res) => {
@@ -291,7 +297,10 @@
 
       // 编辑活动
       editActivity(data) {
-        Store.set('pointData', data);
+        Store.set('pointData', Object.assign(data, {
+          obtain_amt: (data.obtain_amt) / 100,
+          goods_amt: (data.goods_amt) / 100
+        }));
         this.$router.push("/main/memberredpoint/editpoint");
       },
 

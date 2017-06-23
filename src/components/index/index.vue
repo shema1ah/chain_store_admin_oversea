@@ -184,17 +184,17 @@
           })
       },
       openDetail(type) {
-        let pathname = ''
+        let pathname = '';
         switch (type) {
           case 'coupon':
-            pathname = 'memberredpacket'
-            break
+            pathname = 'memberredpacket';
+            break;
           case 'card':
-            pathname = 'memberredpoint'
-            break
+            pathname = 'memberredpoint';
+            break;
           case 'storage':
-            pathname = 'memberstorage'
-            break
+            pathname = 'memberstorage';
+            break;
           default:
             break
         }

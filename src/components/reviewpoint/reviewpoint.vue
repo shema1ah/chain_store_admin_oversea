@@ -110,7 +110,10 @@
           }else {
             params = "actv_change";
           }
-          axios.post(`${config.ohost}/mchnt/card/v1/${params}`, qs.stringify(Object.assign(this.data, {
+
+          axios.post(`${config.ohost}/mchnt/card/v1/${params}`, qs.stringify(Object.assign({}, this.data, {
+            obtain_amt: (this.data.obtain_amt) * 100,
+            goods_amt: (this.data.goods_amt) * 100,
             mchnt_id_list: this.data.mchnt_id_list.join(","),
             format: 'cors'
           })), {

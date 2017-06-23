@@ -11,7 +11,7 @@
       <el-date-picker v-model="form.expire_time" type="date" :editable="false" placeholder="请选结束时间" size="small" :clearable="false">
       </el-date-picker>
     </el-form-item>
-    <el-form-item label="适用门店" prop="sub_mchnt_list">
+    <el-form-item label="适用门店" prop="sub_mchnt_list" v-show="!role.single">
       <el-select v-model="form.sub_mchnt_list" placeholder="请选择门店" multiple size="small">
         <el-option
           v-for="shop in shopList"
@@ -96,6 +96,7 @@
 <script>
   import {formatDate} from '../../common/js/util';
   import Validator from '../../validator';
+  import Store from '../../common/js/store';
 
   export default {
     data() {
@@ -149,6 +150,7 @@
       };
 
       return {
+        role: Store.get('role') || {},
         packetValue: 0,
         form: {
           act_name: '',
