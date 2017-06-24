@@ -49,7 +49,7 @@
 
     created() {
       // cookie存在跳转首页
-      if(getCookie('sessionid')) {
+      if(getCookie('sessionid') && !Store.get("flag")) {
        this.$router.push('/main/index');
        }
     },
@@ -68,6 +68,7 @@
                 let val = getRole(data.data) || '';
                 this.$store.state.role = val;
                 Store.set('role', val);
+                Store.set('flag', false);
                 this.$router.push('/main/index')
               } else {
                 this.$message.error(data.resperr);

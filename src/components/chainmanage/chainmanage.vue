@@ -474,7 +474,9 @@
                 this.showChangePass = false;
 
                 if(this.type === 'chain') {
-                  this.$router.push('/');
+                  // 清除本地cookie
+                  document.cookie = "sessionid=''; expires=" + new Date(0).toUTCString();
+                  this.$router.push('/login');
                 }
               } else {
                 this.$message.error(data.respmsg);

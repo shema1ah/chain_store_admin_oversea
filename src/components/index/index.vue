@@ -53,7 +53,7 @@
       </div>
     </div>
 
-    <div class="data-show">
+    <div class="data-show" v-if="!role.haiwai">
       <h2>活动运营数据统计</h2>
       <div class="content">
         <div class="item" v-for="activity in activitys">
@@ -138,9 +138,11 @@
 <script>
   import axios from 'axios'
   import config from 'config'
+  import Store from '../../common/js/store'
   export default {
     data() {
       return {
+        role: Store.get("role") || {},
         info: {},
         activitys: []
       };

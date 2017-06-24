@@ -10,6 +10,7 @@ import 'reset.css'
 import 'assets/scss/common.scss'
 import axios from 'axios'
 import config from 'src/config'
+import Store from 'common/js/store'
 
 Vue.use(Tree)
 Vue.use(Upload)
@@ -47,11 +48,17 @@ Vue.use(Tooltip)
   return Promise.reject(err);
 }); */
 
+if (process.env.NODE_ENV !== 'development') {
+  // 允许跨域请求
+  axios.defaults.withCredentials = true
+}
+
 axios.interceptors.response.use((res) => {
   let data = res.data
   if (data.respcd === config.code.SESSIONERR) {
     // 清除本地cookie
     document.cookie = "sessionid=''; expires=" + new Date(0).toUTCString()
+    Store.set('flag', true);
 
     location.href = `/`
   } else {
