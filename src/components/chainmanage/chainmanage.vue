@@ -474,9 +474,7 @@
                 this.showChangePass = false;
 
                 if(this.type === 'chain') {
-                  // 清除本地cookie
-                  document.cookie = "sessionid=''; expires=" + new Date(0).toUTCString();
-                  this.$router.push('/login');
+                  this.logout();
                 }
               } else {
                 this.$message.error(data.respmsg);
@@ -487,6 +485,24 @@
               this.iconShow = false;
             });
           }
+        });
+      },
+
+      // 退出登录
+      logout() {
+        axios.get(`${config.host}/merchant/signout`)
+          .then((res) => {
+            let data = res.data;
+            if (data.respcd === config.code.OK) {
+              // 清除本地cookie
+              document.cookie = "sessionid=''; expires=" + new Date(0).toUTCString();
+
+              this.$router.push("/login");
+            } else {
+              this.$message.error(data.respmsg);
+            }
+          }).catch(() => {
+          this.$message.error('请求失败');
         });
       },
 

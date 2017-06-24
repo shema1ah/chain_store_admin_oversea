@@ -180,7 +180,7 @@
           </el-table-column>
           <el-table-column min-width="100" label="操作">
             <template scope="scope">
-              <el-button type="text" size="small" class="el-button__fix" @click="revoke(scope.row)">撤销</el-button>
+              <el-button type="text" size="small" :disabled="new Date(scope.row.sysdtm).toDateString() !== new Date().toDateString()" class="el-button__fix" @click="revoke(scope.row)">撤销</el-button>
             </template>
           </el-table-column>
         </el-table>
