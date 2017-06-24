@@ -185,7 +185,7 @@
         window.location.href = 'https://wxmp.qfpay.com/v1/wxthird/auth_url?userid=' + this.uid + '&redirect_url=' + window.location.href
       },
       fetchMerchantInfo () {
-        axios.get(`${config.host}/merchant/userinfo`)
+        axios.get(`${config.host}/merchant/ids`)
           .then((res) => {
             let data = res.data
             if (data.respcd === config.code.OK) {
