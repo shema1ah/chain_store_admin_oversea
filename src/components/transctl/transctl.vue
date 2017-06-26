@@ -178,9 +178,9 @@
             min-width="210"
             label="流水号">
           </el-table-column>
-          <el-table-column min-width="100" label="操作">
+          <el-table-column min-width="100" label="操作" v-if="role.single">
             <template scope="scope">
-              <el-button type="text" size="small" :disabled="new Date(scope.row.sysdtm).toDateString() !== new Date().toDateString()" class="el-button__fix" @click="revoke(scope.row)">撤销</el-button>
+              <el-button type="text" size="small" :disabled="new Date(scope.row.sysdtm).toDateString() !== new Date().toDateString() || scope.row.cancel !== 0 || scope.row.status !== 1" class="el-button__fix" @click="revoke(scope.row)">撤销</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -209,6 +209,8 @@
 
   const typeLists = ['wxpay', 'alipay', 'jdpay', 'qqpay', 'card'];
   const otherLists = ['prepaid_recharge', 'prepaid', 'coupon', 'cancel'];
+
+  // cancel 0未撤销 1撤销 status  0:交易中 1:交易成功 2:交易失败 3:交易超时
 
   export default {
     data() {

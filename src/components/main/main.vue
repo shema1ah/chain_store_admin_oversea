@@ -31,14 +31,7 @@ import sidebar from '../../components/sidebar/sidebar.vue';
 export default {
   data() {
     return {
-//      iconShow: false,
-//      visible: false,
-      shop: {
-        shopname: '',
-        bankaccount: '',
-        uid: ''
-      },
-
+      shop: {},
       formrules: {
         account: [
           { required: true, message: '请输入分店登录手机号!' }
@@ -92,11 +85,7 @@ export default {
             this.$store.dispatch('getShopList');
             this.$store.dispatch('getMemberTotal');
 
-            this.shop = {
-              shopname: data.data.shopname,
-              mobile: data.data.mobile,
-              uid: data.data.uid
-            };
+            this.shop = data.data || {};
             if(data.data.cate === 'submerchant') {
                 Object.assign(this.shop, {
                   address: data.data.address,

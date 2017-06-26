@@ -44,7 +44,7 @@
           </div>
           <div class="info">
             <div class="info__title" style="visibility: hidden">银行名称</div>
-            <div class="info__desc">{{shop.bankname}}</div>
+            <div class="info__desc">{{ shop.bankname }}</div>
           </div>
           <el-button type="primary" class="edit-pwd-btn" @click.native="changePass(shop.mobile)">修改密码</el-button>
           <a href="http://www.baidu.com" class="el-button el-button--default download-shop-code">下载店铺收款码</a>
