@@ -51,7 +51,7 @@
 
             <el-form-item label="店铺地址" prop="location">
               <el-input v-model="shopInfo.location" icon="caret-bottom" size="small" type="text" placeholder="点击右侧按钮打开地图" auto-complete="off" class="sub-account-item-info"></el-input>
-              <!--<el-button @click="showMap" type="primary" size="small">地图定位</el-button>-->
+              <!--<span @click="showMap" type="primary" size="small" class="btn-map">地图定位</span>-->
             </el-form-item>
 
             <el-form-item label="详细门牌号" prop="address" style="margin-bottom: 0;">
@@ -188,9 +188,7 @@
           </el-form>
           </div>
         </div>
-
       </div>
-
 
     <!-- 上传图片页-->
     <div class="panel" v-show="!infoPage">
@@ -384,7 +382,9 @@
         </div>
       </div>
     </div>
-    <div id="geolocation" v-show="isShowMap"></div>
+    <el-dialog v-show="isShowMap"   :modal="true" id="geolocation_shop" :modal-append-to-body="false" slot="`<span id='close-geo'>X</span>`">
+
+    </el-dialog>
   </div>
 
 </template>
@@ -398,11 +398,13 @@
   import config from 'config';
   import ElFormItem from "../../../node_modules/element-ui/packages/form/src/form-item";
   import ElDialog from "../../../node_modules/element-ui/packages/dialog/src/component";
+  import ElSlPanel from "../../../node_modules/element-ui/packages/color-picker/src/components/sv-panel";
   const AMap = window.AMap;
   var map = null;
 
 export default {
   components: {
+    ElSlPanel,
     ElDialog,
     ElFormItem,
     ElButton,
@@ -705,7 +707,7 @@ export default {
     showMap(e) {
 //      if(this.isShowMap) return;
 //      this.isShowMap = true;
-      map = new AMap.Map('geolocation');
+      map = new AMap.Map('geolocation_shop');
       map.plugin('AMap.Geolocation', () => {
         let geolocation = new AMap.Geolocation({
           enableHighAccuracy: true, // 是否使用高精度定位，默认:true
@@ -725,15 +727,15 @@ export default {
         AMap.event.addListener(geolocation, 'complete', this.onLocationComplete); // 返回定位信息
         AMap.event.addListener(geolocation, 'error', this.onLocationError);       // 返回定位出错信息
       });
-      AMap.plugin('AMap.PlaceSearch', () => {
-        AMap.PlaceSearch({
-          pageSize: 10,
-          map: map,
-          autoFitView: true,
-          renderStyle: 'newpc',
-          panel: 'searchPlace'
-        })
-      })
+//      AMap.plugin('AMap.PlaceSearch', () => {
+//        AMap.PlaceSearch({
+//          pageSize: 10,
+//          map: map,
+//          autoFitView: true,
+//          renderStyle: 'newpc',
+//          panel: 'searchPlace'
+//        })
+//      })
 
 //      let marker = new AMap.Marker({
 //        position: [116.480983, 39.989628], // marker所在的位置
@@ -883,13 +885,14 @@ export default {
           if('el-tree-node'.indexOf(e.target.className) == -1) {
             if(_self.shopInfo.isShowTree) this.shopInfo.isShowTree = false;
           }
-          if(_self.isShowMap && 'geolocation'.indexOf(e.target.id) > -1) {
-              e.stopPropagation();
-              return false;
-          }
-          if(_self.isShowMap && 'v-modal'.indexOf(e.target.className) > -1) {
-            this.isShowMap = false;
-          }
+//          if(_self.isShowMap && e.target.parentElement.className.indexOf('amap') > -1) {
+//              e.stopPropagation();
+//              return false;
+//          }
+//          if(_self.isShowMap && e.target.className !== 'btn-map' && e.currentTarget.nodeName === '#document') {
+//            _self.isShowMap = false;
+//            map && map.destroy();
+//          }
       }, false)
   }
 }
@@ -904,6 +907,19 @@ export default {
     /*opacity: 0.5;*/
     /*background: #000;*/
   /*}*/
+  .btn-map {
+    display:inline-block;;
+    width:66px;
+    height:30px;
+    line-height: 30px;
+    margin-left:10px;
+    border-radius: 4px;
+    border: 1px solid #fe9b20;
+    text-align: center;
+    font-size: 14px;
+    color:#fe9b20;
+    cursor:pointer;
+  }
   .panel-body {
     padding:0;
     .sub_info_wrapper {
@@ -960,8 +976,8 @@ export default {
       }
     }
   }
-  #geolocation {
-    display: block;
+  #geolocation_shop {
+    /*display: block;*/
     width: 660px;
     height: 420px;
     top: 50% !important;
@@ -970,7 +986,16 @@ export default {
     margin-top: -210px !important;
     overflow: hidden !important;
     position: fixed !important;
-    opacity: 1;
+    #close-geo {
+      width:16px;
+      height:16px;
+      line-height: 16px;
+      z-index:9999;
+      position:absolute;
+      top:6px;
+      right:8px;
+    }
+    /*opacity: 1;*/
   }
   /*.map-dialog {*/
     /*width:660px;*/

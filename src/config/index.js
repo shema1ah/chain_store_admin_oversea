@@ -6,6 +6,7 @@ let host = '';
 let ohost = 'https://o.qfpay.com';
 let payHost = 'https://openapi.qfpay.com'
 let imgUpload = 'https://o2.qfpay.com';
+let o2host = 'https://o2.qa.qfpay.com';
 
 // 测试配置
 if (test) {
