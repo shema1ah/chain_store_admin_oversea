@@ -4,7 +4,6 @@ const dev = process.env.NODE_ENV === 'development'
 // 生产配置
 let host = '';
 let ohost = 'https://o.qfpay.com';
-let o2host = 'https://o2.qfpay.com'
 let payHost = 'https://openapi.qfpay.com'
 let imgUpload = 'https://o2.qfpay.com';
 let o2host = 'https://o2.qfpay.com';
@@ -15,16 +14,16 @@ if (test) {
   ohost = 'https://o.qa.qfpay.net'
   o2host = 'https://o2.qa.qfpay.net'
   payHost = 'https://openapi.qa.qfpay.net'
-  imgUpload = 'https://o2.qfpay.com';
+  imgUpload = 'http://172.100.111.45:8080';
 }
 // 本地配置
 if (dev) {
-  // host = 'http://172.100.111.45:9099';
+  host = 'http://172.100.111.45:9099';
   // host = 'http://172.100.101.107:9091';
-  host = 'https://sh.qa.qfpay.net';
+  // host = 'https://sh.qa.qfpay.net';
   // ohost = 'http://172.100.111.45:6200';
-  ohost = 'https://o.qa.qfpay.net';
-  // ohost = 'http://172.100.111.45:6200';
+  // ohost = 'https://o.qa.qfpay.net';
+  ohost = 'http://172.100.111.45:6200';
   o2host = 'https://o2.qa.qfpay.net'
   payHost = 'https://openapi.qa.qfpay.net';
   imgUpload = 'http://172.100.111.45:8080'
