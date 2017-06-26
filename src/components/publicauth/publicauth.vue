@@ -157,8 +157,6 @@
     },
     created() {
       this.fetchPublicInfo()
-      this.fetchMerchantInfo()
-      this.fetchSubMerchants()
     },
     methods: {
       fetchPublicInfo () {
@@ -170,6 +168,8 @@
                 this.wechatNotAuth = true
               } else {
                 this.wechatNotAuth = false
+                this.fetchMerchantIds()
+                this.fetchSubMerchants()
                 this.publicInfo = data.data.applist[0]
                 this.publicAvatar = data.data.applist[0].head_img
               }
@@ -184,7 +184,7 @@
       goWechatAuth () {
         window.location.href = 'https://wxmp.qfpay.com/v1/wxthird/auth_url?userid=' + this.uid + '&redirect_url=' + window.location.href
       },
-      fetchMerchantInfo () {
+      fetchMerchantIds () {
         axios.get(`${config.host}/merchant/ids`)
           .then((res) => {
             let data = res.data

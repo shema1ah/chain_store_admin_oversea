@@ -53,7 +53,7 @@
       </div>
     </div>
 
-    <div class="data-show">
+    <div class="data-show" v-if="activitys.length !== 0">
       <h2>活动运营数据统计</h2>
       <div class="content">
         <div class="item" v-for="activity in activitys">
