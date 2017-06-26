@@ -1,5 +1,5 @@
 <template>
-  <div class="index">
+  <div class="index" v-loading="loading1 || loading2" element-loading-text="拼命加载中">
     <div class="banner_wrapper">
       <div class="banner-breadcrumb">
         <span>首页</span>
@@ -53,7 +53,7 @@
       </div>
     </div>
 
-    <div class="data-show" v-if="activitys.length !== 0">
+    <div class="data-show" v-if="!role.haiwai">
       <h2>活动运营数据统计</h2>
       <div class="content">
         <div class="item" v-for="activity in activitys">
@@ -138,9 +138,13 @@
 <script>
   import axios from 'axios'
   import config from 'config'
+  import Store from '../../common/js/store'
   export default {
     data() {
       return {
+        loading1: false,
+        loading2: false,
+        role: Store.get("role") || {},
         info: {},
         activitys: []
       };
@@ -156,8 +160,10 @@
     },
     methods: {
       fetchDashboardData() {
+        this.loading1 = true;
         axios.get(`${config.host}/merchant/dashboard/stats`)
           .then((res) => {
+            this.loading1 = false;
             let data = res.data
             if(data.respcd === config.code.OK) {
               this.info = data.data
@@ -166,12 +172,15 @@
             }
           })
           .catch(() => {
+            this.loading1 = false;
             this.$message.error('网络错误!')
           });
       },
       fetchActivityData() {
+        this.loading2 = true;
         axios.get(`${config.host}/merchant/homeview`)
           .then((res) => {
+            this.loading2 = false;
             let data = res.data
             if(data.respcd === config.code.OK) {
               this.activitys = data.data.result
@@ -180,21 +189,22 @@
             }
           })
           .catch(() => {
+            this.loading2 = false;
             this.$message.error('网络错误!')
           })
       },
       openDetail(type) {
-        let pathname = ''
+        let pathname = '';
         switch (type) {
           case 'coupon':
-            pathname = 'memberredpacket'
-            break
+            pathname = 'memberredpacket';
+            break;
           case 'card':
-            pathname = 'memberredpoint'
-            break
+            pathname = 'memberredpoint';
+            break;
           case 'storage':
-            pathname = 'memberstorage'
-            break
+            pathname = 'memberstorage';
+            break;
           default:
             break
         }

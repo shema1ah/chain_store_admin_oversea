@@ -4,7 +4,7 @@
       <span>{{ member_total || 0 }}</span>
       <span>人</span>
     </el-form-item>
-    <el-form-item label="适用门店" prop="sub_mchnt_list">
+    <el-form-item label="适用门店" prop="sub_mchnt_list" v-show="!role.single">
       <el-select v-model="form.sub_mchnt_list" placeholder="请选择门店" multiple size="small"
                  ref="selectShops">
         <el-option v-for="shop in shopList" :label="shop.shop_name" :key="shop.uid" :value="shop.uid">
@@ -42,6 +42,7 @@
 
   import {formatDate} from '../../common/js/util';
   import Validator from '../../validator';
+  import Store from '../../common/js/store';
 
   export default {
 
@@ -62,6 +63,7 @@
       };
 
       return {
+        role: Store.get('role') || {},
         form: {
           singleValue: '',
           limit_amt: '',

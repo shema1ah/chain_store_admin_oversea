@@ -4,6 +4,8 @@ const dev = process.env.NODE_ENV === 'development'
 // 生产配置
 let host = '';
 let ohost = 'https://o.qfpay.com'
+let payHost = 'https://openapi.qfpay.com'
+let imgUpload = 'https://o2.qfpay.com'
 let o2host = 'https://o2.qfpay.com'
 
 // 测试配置
@@ -11,19 +13,24 @@ if (test) {
   host = ''
   ohost = 'https://o.qa.qfpay.net'
   o2host = 'https://o2.qa.qfpay.net'
+  payHost = 'https://openapi.qa.qfpay.net'
+  imgUpload = 'http://172.100.111.45:8080'
 }
-
 // 本地配置
 if (dev) {
   host = 'api'
-  ohost = 'http://172.100.107.33:2002'
+  ohost = 'http://172.100.111.45:6200'
   o2host = 'https://o2.qa.qfpay.net'
+  payHost = 'https://openapi.qa.qfpay.net'
+  imgUpload = 'http://172.100.111.45:8080'
 }
 
 module.exports = {
   host,
   ohost,
   o2host,
+  payHost,
+  imgUpload,
   code: {
     OK: '0000', // 成功
     DBERR: '2000', // 数据库查询错误
@@ -43,10 +50,5 @@ module.exports = {
     UNKOWNERR: '2400', // 未知错误
     VERIFYCODE: '1001', //    验证码不正确
     REGISTERERR: '1000' //    注册失败
-  },
-  /**
-   * 常量 key
-   */
-  STORE_CART: 'STORE_CART_v2'  // 购物车
-  // OPENID: 'diancan_openid_' + appid
+  }
 }

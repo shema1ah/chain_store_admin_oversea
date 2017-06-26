@@ -21,7 +21,7 @@
           </ul>
         </transition>
       </li>
-      <li v-if="this.role.single"><a href="/wxofficial/setting" class="sidebar-nav__item">智慧餐厅</a></li>
+      <li v-if="this.role.diancan"><a href="/wxofficial/setting" class="sidebar-nav__item">智慧餐厅</a></li>
     </ul>
     <!--<div class="copyright_wrapper">
       <span class="copyright-text">Copyright</span>
@@ -60,9 +60,6 @@
                 val: '首页概览',
                 pathname: 'index'
               }, {
-                val: '今日收款',
-                pathname: 'todaytrade'
-              }, {
                 val: '会员功能',
                 sub: [{
                   val: '会员管理',
@@ -100,6 +97,9 @@
                 val: '首页概览',
                 pathname: 'index'
               }, {
+                val: '今日收款',
+                pathname: 'todaytrade'
+              }, {
                 val: '会员功能',
                 sub: [{
                   val: '会员管理',
@@ -120,6 +120,10 @@
               }, {
                 val: '账单管理',
                 pathname: 'billctl'
+              },
+              {
+                val: '公众号授权',
+                pathname: 'publicauth'
               },
               {
                 val: '门店管理',

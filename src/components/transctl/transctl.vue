@@ -30,8 +30,8 @@
               </el-form-item>
             </div>
           </div>
-          <div class="panel-select-group" v-show="!role.single">
-            <div class="panel-select__wrapper">
+          <div class="panel-select-group">
+            <div class="panel-select__wrapper" v-show="!role.single">
               <span class="panel-select__desc">店铺名称</span>
               <el-form-item prop="selectShopUid">
                 <el-select v-model="form.selectShopUid" placeholder="全部" size="small" @change="getOperators(form.selectShopUid)">
@@ -178,6 +178,11 @@
             min-width="210"
             label="流水号">
           </el-table-column>
+          <el-table-column min-width="100" label="操作" v-if="role.single">
+            <template scope="scope">
+              <el-button type="text" size="small" :disabled="new Date(scope.row.sysdtm).toDateString() !== new Date().toDateString() || scope.row.cancel !== 0 || scope.row.status !== 1" class="el-button__fix" @click="revoke(scope.row)">撤销</el-button>
+            </template>
+          </el-table-column>
         </el-table>
       </div>
       <div class="pagination_wrapper" v-if="transData.num >= 10">
@@ -204,6 +209,8 @@
 
   const typeLists = ['wxpay', 'alipay', 'jdpay', 'qqpay', 'card'];
   const otherLists = ['prepaid_recharge', 'prepaid', 'coupon', 'cancel'];
+
+  // cancel 0未撤销 1撤销 status  0:交易中 1:交易成功 2:交易失败 3:交易超时
 
   export default {
     data() {
@@ -244,7 +251,7 @@
         ],
         form: {
           selectShopUid: '',
-          orderno: '',
+          orderno: null,
           dateRangeValue: defaultDateRange,
           operaValue: '',
           checkAll1: true,
@@ -318,6 +325,44 @@
     },
 
     methods: {
+      // 撤销操作
+      revoke(data) {
+        this.$confirm('确认取消此订单吗?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '关闭'
+        }).then(() => {
+          let params = {
+            format: 'cors',
+            txamt: (data.txamt) * 100,
+            txdtm: formatDate(data.sysdtm, 'yyyy-MM-dd HH:mm:ss'),
+            syssn: data.syssn,
+            out_trade_no: "",
+            udid: 'bigmerchant'
+          };
+          axios.post(`${config.payHost}/trade/v1/refund`, qs.stringify(params), {
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded'
+            }
+          }).then((res) => {
+            let data = res.data;
+            if (data.respcd === config.code.OK) {
+              this.$message({
+                type: 'success',
+                message: '撤销成功'
+              });
+
+              this.getTransData();
+            } else {
+              this.$message.error(data.resperr);
+            }
+          }).catch(() => {
+            this.$message.error("撤销失败");
+          });
+        }).catch(() => {
+          console.log("取消");
+        })
+      },
+
       // 选择时间
       changeTime(value) {
         if(value) {
@@ -375,6 +420,7 @@
           }
         });
       },
+
       operaChange(opuid) {
         this.basicParams.opuid = opuid;
       },
@@ -397,6 +443,7 @@
           this.$message.error('获取操作员信息失败');
         });
       },
+
       currentChange(current) {
         this.currentPage = current;
         console.log(current);
@@ -410,8 +457,8 @@
         this.status = true;
         this.$refs['form'].resetFields();
       },
+
       handleSizeChange(size) {
-        this.loading = true;
         this.pageSize = size;
         this.basicParams.page = 1;
         this.getTransData({which: 1});

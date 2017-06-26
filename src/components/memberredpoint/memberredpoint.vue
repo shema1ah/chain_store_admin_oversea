@@ -6,12 +6,10 @@
         <i class="icon-right_arrow"></i>
         <span>会员集点</span>
       </div>
-      <router-link to="/main/memberredpoint/createpoint">
-        <div class="banner-btn">
-          <i class="icon-create"></i>
-          <span class="banner-btn__desc">新建集点</span>
-        </div>
-      </router-link>
+      <div class="banner-btn" @click="creatPoint">
+        <i class="icon-create"></i>
+        <span class="banner-btn__desc">新建集点</span>
+      </div>
     </div>
     <div class="panel">
       <div class="panel-header">
@@ -42,7 +40,7 @@
           </el-table-column>
           <el-table-column label="集点条件" min-width="150">
             <template scope="scope">
-              <span>支付满{{ scope.row.obtain_amt }}元可集一点</span>
+              <span>支付满{{ (scope.row.obtain_amt)/100 }}元可集一点</span>
             </template>
           </el-table-column>
           <el-table-column label="礼品详情" min-width="100">
@@ -53,10 +51,16 @@
           <el-table-column prop="status_chn" label="状态">
           </el-table-column>
           <el-table-column prop="in_person_no" label="参与人数">
+            <template scope="scope">
+              <span>{{ scope.row.in_person_no || 0 }}</span>
+            </template>
           </el-table-column>
           <el-table-column prop="exchange_num" label="已兑换">
           </el-table-column>
           <el-table-column prop="total_amt" label="刺激收益">
+            <template scope="scope">
+              <span>{{ (scope.row.total_amt)/100 || 0 }}元</span>
+            </template>
           </el-table-column>
           <el-table-column prop="who_create" label="活动来源" min-width="140">
           </el-table-column>
@@ -70,7 +74,7 @@
                 <el-dropdown-menu slot="dropdown" class="el-dropdown-menu__fix collect">
                   <el-dropdown-item class="el-dropdown-item__fix" :disabled="scope.row.state==2 || scope.row.state ==3" @click.native="editActivity(scope.row)">修改活动</el-dropdown-item>
                   <el-dropdown-item class="el-dropdown-item__fix" :disabled="scope.row.state==2 || scope.row.state ==3" @click.native="stopActivity(scope.row.id)">停止活动</el-dropdown-item>
-                  <a href="scope.row.promotion_url" @click="downLoad(scope.row.id)">
+                  <a :href=scope.row.promotion_url download>
                     <el-dropdown-item command=3 class="el-dropdown-item__fix">下载宣传物料</el-dropdown-item>
                   </a>
                 </el-dropdown-menu>
@@ -85,7 +89,7 @@
           layout="total, sizes, prev, pager, next, jumper"
           :page-size="pageSize"
           @size-change="handleSizeChange"
-          :total="collectData.count"
+          :total="+collectData.count"
           @current-change="currentChange"
           :current-page="currentpage">>
         </el-pagination>
@@ -100,7 +104,7 @@
       <el-row>
         <el-col :span="4" class="title">集点条件</el-col>
         <el-col :span="20" class="desc">
-          支付满<span class="orange">{{ detailData.obtain_amt }}元</span>可集一点
+          支付满<span class="orange">{{ (detailData.obtain_amt)/100 }}元</span>可集一点
           <span v-if="detailData.obtain_limit == 0" style="font-size: 14px;" class="orange">/一次付款可集多点</span>
         </el-col>
       </el-row>
@@ -110,7 +114,7 @@
       </el-row>
       <el-row>
         <el-col :span="4" class="title">礼品价格</el-col>
-        <el-col :span="20" class="desc">{{ detailData.goods_amt }}元</el-col>
+        <el-col :span="20" class="desc">{{ (detailData.goods_amt)/100 }}元</el-col>
       </el-row>
       <el-row>
         <el-col :span="4" class="title">活动时间</el-col>
@@ -161,6 +165,7 @@
     data() {
       return {
         role: Store.get('role') || {},
+        isCreat: false,
         collectData: [],
         isShowDetail: false,
         pageSize: 10,
@@ -202,6 +207,7 @@
           curpage: this.currentpage
         };
       },
+
       shopData() {
         return this.$store.state.shopData;
       }
@@ -263,7 +269,7 @@
           confirmButtonText: '确定',
           cancelButtonText: '关闭'
         }).then(() => {
-          axios.post(`${config.ohost}/mchnt/mis/card/close_actv`, {
+          axios.post(`${config.ohost}/mchnt/card/v1/actv_close`, {
             id: id,
             format: 'cors'
           }).then((res) => {
@@ -287,8 +293,50 @@
 
       // 编辑活动
       editActivity(data) {
-        Store.set('pointData', data);
+        Store.set('pointData', Object.assign(data, {
+          obtain_amt: (data.obtain_amt) / 100,
+          goods_amt: (data.goods_amt) / 100
+        }));
         this.$router.push("/main/memberredpoint/editpoint");
+      },
+
+      // 新建集点，判断是否可以创建
+      creatPoint() {
+        if(this.role.single) {
+          if(this.getCurrentShop()) {
+            this.$message.error('当前有活动正在进行，请终止后再创建');
+          }else {
+            this.$router.push("/main/memberredpoint/createpoint");
+          }
+        }else {
+          this.$router.push("/main/memberredpoint/createpoint");
+        }
+      },
+
+      // 格式化店铺列表
+      formatData(list) {
+        for(let i of list) {
+            if(i.state == 0) {
+                return true;
+            }
+         }
+         return false;
+      },
+
+      // 获取店铺列表信息
+      getCurrentShop() {
+        axios.get(`${config.host}/merchant/card/active_state`).then((res) => {
+          let data = res.data;
+          if (data.respcd === config.code.OK) {
+            this.formatData(data.data);
+          } else {
+            this.$message.error(data.respmsg);
+            return false;
+          }
+        }).catch(() => {
+          this.$message.error('获取店铺数据失败!');
+          return false;
+        });
       },
 
       // 展示详情

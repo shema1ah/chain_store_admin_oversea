@@ -44,10 +44,10 @@
           </div>
           <div class="info">
             <div class="info__title" style="visibility: hidden">银行名称</div>
-            <div class="info__desc">{{shop.bankname}}</div>
+            <div class="info__desc">{{ shop.bankname }}</div>
           </div>
-          <el-button type="primary" class="edit-pwd-btn" @click.native="changePass('single', shop.mobile)">修改密码</el-button>
-          <a href="http://www.baidu.com" class="el-button el-button--default download-shop-code">下载店铺收款码</a>
+          <el-button type="primary" class="edit-pwd-btn" @click.native="changePass(shop.mobile)">修改密码</el-button>
+          <a :href="downHref" download class="el-button el-button--default download-shop-code">下载店铺收款码</a>
         </div>
       </div>
     </div>
@@ -80,6 +80,7 @@
   import ElButton from "../../../node_modules/element-ui/packages/button/src/button";
   import axios from 'axios';
   import config from 'config';
+
   export default {
     components: {ElButton},
     data() {
@@ -93,6 +94,7 @@
           cb();
         }
       };
+
       let repassValid = (rule, val, cb) => {
         if(val === '') {
           cb('请输入确认新密码');
@@ -107,10 +109,8 @@
         loading: false,
         iconShow: false,
         showChangePass: false,
-        type: '',
         userName: '',
         form: {
-          name: '',
           pass: '',
           repass: ''
         },
@@ -126,6 +126,13 @@
         }
       };
     },
+
+    computed: {
+      downHref() {
+          return `${config.host}/merchant/qrcode?userid=${this.shop.uid}`;
+      }
+    },
+
     props: {
       shop: {
         type: Object
@@ -133,29 +140,41 @@
     },
 
     methods: {
-      changePass(type, name) {
-        this.type = type;
+      changePass(name) {
         this.userName = name;
         this.showChangePass = true;
       },
+
+      // 退出登录
+      logout() {
+        axios.get(`${config.host}/merchant/signout`)
+          .then((res) => {
+            let data = res.data;
+            if (data.respcd === config.code.OK) {
+              // 清除本地cookie
+              document.cookie = "sessionid=''; expires=" + new Date(0).toUTCString();
+
+              this.$router.push("/login");
+            } else {
+              this.$message.error(data.respmsg);
+            }
+          }).catch(() => {
+          this.$message.error('请求失败');
+        });
+      },
+
       // 修改密码提交
       submit() {
         this.$refs['form'].validate((valid) => {
           if(!this.iconShow && valid) {
             this.iconShow = true;
 
-            let src;
-            if(this.type === 'chain') {
-              src = 'big-submchnt';
-            }else {
-              src = 'mchnt';
-            }
             axios.post(`${config.ohost}/mchnt/user/reset_pwd`, {
               mobile: this.shop.mobile,
               password: this.form.pass,
               mode: 'change',
               username: this.userName,
-              src: src
+              src: 'mchnt'
             }).then((res) => {
               let data = res.data;
               if (data.respcd === config.code.OK) {
@@ -164,21 +183,20 @@
                   message: '修改成功!'
                 });
                 this.showChangePass = false;
+                this.logout();
 
-                if(this.type === 'chain') {
-                  this.$router.push('/login');
-                }
               } else {
                 this.$message.error(data.respmsg);
               }
               this.iconShow = false;
             }).catch(() => {
-              this.$message.error('请求失败!');
               this.iconShow = false;
+              this.$message.error('请求失败!');
             });
           }
         });
       },
+
       // 关闭弹出层,清除表单
       handleClose() {
         setTimeout(() => {
@@ -186,6 +204,7 @@
           this.form.repass = '';
         }, 200);
       }
+
     }
   };
 </script>

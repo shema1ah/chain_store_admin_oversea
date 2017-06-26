@@ -1,5 +1,5 @@
 <template>
-  <div class="register">
+  <div class="registerb">
     <div class="head">商户管理后台</div>
     <el-form :model="form" :rules="formrules" ref="form">
       <el-form-item label="手机号" prop="username" v-if="isRegister">
@@ -12,20 +12,23 @@
         <el-form-item label="验证码" prop="code">
           <el-input v-model="form.code" size="small" type="number" placeholder="请输入验证码"></el-input>
         </el-form-item>
-        <el-button v-if="isSendCode" type="primary" class="panel-header-btn panel-header-btn__fill" @click="getCode">获取验证码</el-button>
+        <el-button v-if="isSendCode" type="primary" class="panel-header-btn panel-header-btn__fill" @click="getCode">
+          <span class="el-icon-loading" v-if="isSending"></span>
+          <span v-else>获取验证码</span>
+        </el-button>
         <div v-else class="panel-header-btn panel-header-btn__fill send">{{ buttonCotent }}</div>
       </div>
       <el-form-item label="输入新密码" prop="password">
-        <el-input v-model="form.password" size="small" type="password" placeholder="请输入新密码"></el-input>
+        <el-input v-model.trim="form.password" size="small" type="password" placeholder="请输入新密码"></el-input>
       </el-form-item>
       <el-form-item label="确认新密码" prop="repass">
-        <el-input v-model="form.repass" size="small" type="password" placeholder="请输入确认新密码"></el-input>
+        <el-input v-model.trim="form.repass" size="small" type="password" placeholder="请输入确认新密码"></el-input>
       </el-form-item>
       <el-form-item label="商户名称" prop="shopname" v-if="isRegister">
         <el-input v-model.trim="form.shopname" size="small" type="text" placeholder="请输入商户名称"></el-input>
       </el-form-item>
       <el-form-item label="推荐人手机号" prop="saleman_mobile" v-if="isRegister">
-        <el-input v-model="form.saleman_mobile" size="small" type="number" placeholder="请输入推荐人手机号"></el-input>
+        <el-input v-model.trim="form.saleman_mobile" size="small" type="number" placeholder="请输入推荐人手机号"></el-input>
       </el-form-item>
       <div class="panel-header-btn panel-header-btn__fill" @click="submit">
         <span class="el-icon-loading" v-if="iconShow"></span>
@@ -55,7 +58,7 @@
       let repassValid = (rule, val, cb) => {
         if(val === '') {
           cb('请输入确认新密码');
-        } else if(this.form.pass && this.form.pass !== val) {
+        } else if(this.form.password && this.form.password !== val) {
           cb('新密码与确认密码不一致');
         } else {
           console.log(val);
@@ -75,6 +78,7 @@
       return {
         isRegister: false,
         isSendCode: true,
+        isSending: false,
         iconShow: false,
         buttonCotent: '',
         form: {
@@ -92,7 +96,8 @@
             { validator: phoneValid, trigger: 'blur' }
           ],
           username: [
-            { required: true, message: '请输入注册账号' }
+            { required: true, message: '请输入注册账号' },
+            { validator: phoneValid, trigger: 'blur' }
           ],
           code: [
             { required: true, message: '请输入验证码' }
@@ -126,8 +131,8 @@
       getCode() {
         let type = this.isRegister ? 'username' : 'mobile';
         this.$refs['form'].validateField(type, (valid) => {
-          if(valid === '' && this.isSendCode) {
-            this.isSendCode = false;
+          if(valid === '' && !this.isSending) {
+            this.isSending = true;
 
             axios.get(`${config.ohost}/mchnt/smscode/send`, {
               params: {
@@ -138,14 +143,19 @@
             }).then((res) => {
               let data = res.data;
               if (data.respcd === config.code.OK) {
+                this.isSendCode = false;
+                this.isSending = false;
+
                 this.startTimer();
               } else {
                 this.$message.error(data.respmsg);
                 this.isSendCode = true;
+                this.isSending = false;
               }
             }).catch(() => {
               this.$message.error('请求失败!');
               this.isSendCode = true;
+              this.isSending = false;
             });
           }
         });
@@ -227,7 +237,7 @@
 </script>
 
 <style lang="scss">
-.register {
+.registerb {
   height: 100%;
   background: url('./img/bg.png') no-repeat 20px bottom;
 
@@ -261,6 +271,7 @@
     }
     .el-form-item__content {
       width: 100%;
+      line-height: 1;
     }
   }
   .panel-header-btn {

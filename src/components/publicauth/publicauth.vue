@@ -60,8 +60,11 @@
           </span>
         </div>
         <div class="operation">
-          <button type="button" @click="showDialog" class="el-button el-button--primary">分店授权管理</button>
-          <button type="button" @click="confirm" class="el-button el-button--default">解除总账户授权</button>
+          <button type="button" @click="showDialog" v-if="!role.single" class="el-button el-button--primary">分店授权管理</button>
+          <button type="button" @click="confirm"  class="el-button el-button--default">
+            <span v-if="!role.single">解除总账户授权</span>
+            <span v-else>解除账户授权</span>
+          </button>
         </div>
       </div>
     </div>
@@ -133,15 +136,17 @@
       </span>
     </el-dialog>
   </div>
-</main>
 </template>
 
 <script>
   import axios from 'axios'
   import config from 'config'
+  import Store from '../../common/js/store'
+
   export default {
     data() {
       return {
+        role: Store.get("role") || {},
         wechatNotAuth: true,
         publicInfo: {},
         publicAvatar: '',

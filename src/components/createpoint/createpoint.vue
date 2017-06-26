@@ -109,7 +109,6 @@
       };
 
       let ptValid = (rule, val, cb) => {
-        console.log(val, 11111);
         if(!val) {
           cb('请输入目标集点');
         } else {
@@ -136,14 +135,15 @@
           ],
           obtain_amt: [
             { required: true, message: '请输入集点条件' },
-            { validator: Validator.dateValidator }
+            { validator: Validator.pointValidator }
           ],
           goods_name: [
-            { required: true, message: '请输入礼品名称' }
+            { required: true, message: '请输入礼品名称' },
+            { max: 8, message: '最多输入8个字符' }
           ],
           goods_amt: [
             { required: true, message: '请输入礼品价格' },
-            { validator: Validator.dateValidator }
+            { validator: Validator.pointValidator }
           ],
           start_time: [
             { validator: startValid }
@@ -226,7 +226,7 @@
       .el-form-item__content {
         display: inline-block;
         background: rgba(254, 155, 32,0.1);
-        padding: 10px;
+        padding: 10px 20px 10px 10px;
 
         .el-checkbox {
           margin: 0;

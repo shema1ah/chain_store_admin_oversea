@@ -32,6 +32,16 @@ let dateValidator = (rule, val, cb) => {
   }
 }
 
+let pointValidator = (rule, val, cb) => {
+  if(regInit(val)) {
+    cb('请输入正整数')
+  }else if (val <= 0 || val > 999) {
+    cb('请输入0-1000的值')
+  } else {
+    cb()
+  }
+}
+
 const regSingle = (val) => {
   if ((val + '').indexOf('-') > -1) {
     return true
@@ -105,7 +115,7 @@ let mobileValid = (rule, val, cb) => {
 }
 
 let Validator = {
-  totalAmt, obtainAmtValidator, singleValueValidator, couponNumValidator, amtMinValid, stoAmtValid, mobileValid, dateValidator
+  totalAmt, obtainAmtValidator, singleValueValidator, couponNumValidator, amtMinValid, stoAmtValid, mobileValid, dateValidator, pointValidator
 }
 
 export default Validator

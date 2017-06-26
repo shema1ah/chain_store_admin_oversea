@@ -12,6 +12,7 @@
           single: false
         };
         Store.set('role', role);
+        Store.set('flag', false);
       }
     }
   };

@@ -5,13 +5,15 @@ import 'src/filters'
 import store from './store'
 import App from './App'
 import router from './router'
-import { Tree, Select, Option, TableColumn, Table, Button, Pagination, Dropdown, DropdownItem, DropdownMenu, Loading, DatePicker, Input, Message, Form, FormItem, Radio, RadioGroup, RadioButton, Dialog, Col, MessageBox, Row, CheckboxGroup, Checkbox, Rate, Tooltip } from 'element-ui'
+import { Tree, Upload, Select, Option, TableColumn, Table, Button, Pagination, Dropdown, DropdownItem, DropdownMenu, Loading, DatePicker, Input, Message, Form, FormItem, Radio, RadioGroup, RadioButton, Dialog, Col, MessageBox, Row, CheckboxGroup, Checkbox, Rate, Tooltip } from 'element-ui'
 import 'reset.css'
 import 'assets/scss/common.scss'
 import axios from 'axios'
 import config from 'src/config'
+import Store from 'common/js/store'
 
 Vue.use(Tree)
+Vue.use(Upload)
 Vue.use(Select)
 Vue.use(Table)
 Vue.use(Option)
@@ -46,11 +48,17 @@ Vue.use(Tooltip)
   return Promise.reject(err);
 }); */
 
+if (process.env.NODE_ENV !== 'development') {
+  // 允许跨域请求
+  axios.defaults.withCredentials = true
+}
+
 axios.interceptors.response.use((res) => {
   let data = res.data
   if (data.respcd === config.code.SESSIONERR) {
     // 清除本地cookie
-    document.cookie = "sessionid=''; expires=" + new Date(0).toUTCString();
+    document.cookie = "sessionid=''; expires=" + new Date(0).toUTCString()
+    Store.set('flag', true);
 
     location.href = `/`
   } else {
