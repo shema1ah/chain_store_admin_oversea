@@ -516,13 +516,16 @@ export default {
           ],
           bankmobile: [
             { required: true, message: '请输入开户银行预留手机号', trigger: 'blur' },
-            { validator: (rule, val, cb) => {
-              if(/\d/g.test(val)) {
-                cb();
-              }else {
-                cb('手机号必须是数字')
+            {validator: (rule, val, cb) => {
+                if (/!\d/g.test(val)) {
+                  cb('手机号必须是数字');
+                } else if (!/^1[3578][01379]\d{8}$|^1[34578][01256]\d{8}$|^(134[012345678]\d{7}|1[34578][012356789]\d{8})$/.test(val)) {
+                  cb('必须输入合法手机号')
+                } else {
+                  cb();
+                }
               }
-            }}
+            }
           ],
           bankcity: [
             { required: true, message: '请选择开户地' }
@@ -632,7 +635,7 @@ export default {
     },
     preSignUp() { // 预注册
       this.$refs['shop_info'].validate((valid) => {
-        if(!valid) {
+        if(valid) {
           if(this.shopInfo.userid) {
             this.infoPage = !this.infoPage;
           } else {
