@@ -180,7 +180,7 @@
           </el-table-column>
           <el-table-column min-width="100" label="操作" v-if="role.single">
             <template scope="scope">
-              <el-button type="text" size="small" :disabled="new Date(scope.row.sysdtm).toDateString() !== new Date().toDateString() || scope.row.cancel !== 0 || scope.row.status !== 1" class="el-button__fix" @click="revoke(scope.row)">撤销</el-button>
+              <el-button type="text" size="small" :disabled="new Date(scope.row.sysdtm).toDateString() !== new Date().toDateString() || scope.row.cancel !== 0 || scope.row.status !== 1" class="el-button__fix" @click="confirm(scope.row)">撤销</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -326,38 +326,42 @@
 
     methods: {
       // 撤销操作
-      revoke(data) {
+      revoke(val) {
+        let params = {
+          format: 'cors',
+          txamt: (val.txamt) * 100,
+          txdtm: formatDate(val.sysdtm, 'yyyy-MM-dd HH:mm:ss'),
+          syssn: val.syssn,
+          out_trade_no: "",
+          udid: 'bigmerchant'
+        };
+        axios.post(`${config.payHost}/trade/v1/refund`, qs.stringify(params), {
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          }
+        }).then((res) => {
+          let data = res.data;
+          if (data.respcd === config.code.OK) {
+            this.$message({
+              type: 'success',
+              message: '撤销成功'
+            });
+            this.getTransData();
+          } else {
+            this.$message.error(data.resperr);
+          }
+        }).catch((res) => {
+          this.$message.error("撤销失败");
+        });
+      },
+
+      // 确认弹框
+      confirm(val) {
         this.$confirm('确认取消此订单吗?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '关闭'
         }).then(() => {
-          let params = {
-            format: 'cors',
-            txamt: (data.txamt) * 100,
-            txdtm: formatDate(data.sysdtm, 'yyyy-MM-dd HH:mm:ss'),
-            syssn: data.syssn,
-            out_trade_no: "",
-            udid: 'bigmerchant'
-          };
-          axios.post(`${config.payHost}/trade/v1/refund`, qs.stringify(params), {
-            headers: {
-              'Content-Type': 'application/x-www-form-urlencoded'
-            }
-          }).then((res) => {
-            let data = res.data;
-            if (data.respcd === config.code.OK) {
-              this.$message({
-                type: 'success',
-                message: '撤销成功'
-              });
-
-              this.getTransData();
-            } else {
-              this.$message.error(data.resperr);
-            }
-          }).catch(() => {
-            this.$message.error("撤销失败");
-          });
+            this.revoke(val);
         }).catch(() => {
           console.log("取消");
         })
@@ -415,8 +419,6 @@
               this.loading = false;
               this.$message.error('获取交易数据失败');
             });
-          } else {
-            this.$message.error('请核对流水号');
           }
         });
       },
