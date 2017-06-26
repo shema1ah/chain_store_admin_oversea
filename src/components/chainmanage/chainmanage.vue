@@ -95,7 +95,7 @@
       </div>
       <div class="pagination_wrapper" v-if="pageShopData.count >= 10">
         <el-pagination
-          layout="prev, pager, next"
+          layout="total, sizes, prev, pager, next, jumper"
           :total="pageShopData.count"
           :page-size="10"
           @current-change="currentChange"
@@ -358,10 +358,7 @@
         this.showEditSubShopNum = false;
       },
       updateShopTag(shop) {
-          let _tag = shop.tag.trim();
-          if(_tag.length === 0) {
-            return;
-          }
+          let _tag = shop.tag;
           if(_tag.length > 20) {
               this.$message.error('请输入二十以内的文字或字母');
               return;

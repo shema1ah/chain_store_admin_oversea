@@ -50,7 +50,7 @@
             <el-input v-model="shopInfo.city_id"  type="hidden"  auto-complete="off" class="hidden" ref="city_id"></el-input>
 
             <el-form-item label="店铺地址" prop="location">
-              <el-input v-model="shopInfo.location" icon="caret-bottom" size="small" type="text" placeholder="点击右侧按钮打开地图" auto-complete="off" class="sub-account-item-info"></el-input>
+              <el-input v-model="shopInfo.location" size="small" type="text" placeholder="点击右侧按钮打开地图" auto-complete="off" class="sub-account-item-info"></el-input>
               <!--<span @click="showMap" type="primary" size="small" class="btn-map">地图定位</span>-->
             </el-form-item>
 
@@ -412,13 +412,20 @@ export default {
     ElForm},
   data() {
       let idValid = (rule, val, cb) => {
-          if(!cardValid(val)) {
+          if(!cardValid(val.trim())) {
               console.log('身份证验证成功');
               cb();
           }else {
               cb('请输入合法身份证号')
           }
       };
+      let isEmpty = (rule, val, cb) => {
+          if(!val.trim()) {
+              cb('只输入空格无效')
+          }else {
+              cb();
+          }
+      }
       return {
          btnLocked: false,
          isShowMap: false,
@@ -480,16 +487,22 @@ export default {
         },
         page1_rules: {
           password: [
-            { required: true, message: '请输入分店登录密码', trigger: 'blur' }
+            { required: true, message: '请输入分店登录密码', trigger: 'blur' },
+            { validator: isEmpty }
           ],
           shopname: [
-            { required: true, message: '请输入分店名称', trigger: 'blur' }
+            { required: true, message: '请输入分店名称', trigger: 'blur' },
+            { validator: isEmpty }
           ],
           shoptype_name: [
             { required: true, message: '请选择经营类型' }
           ],
           location: [
             { required: true, message: '请从地图中定位店铺地址或手动填写' }
+          ],
+          address: [
+            { required: true, message: '请从地图中定位店铺地址或手动填写' },
+            { validator: isEmpty }
           ],
           idnumber: [
             { required: true, message: '请输入身份证号', trigger: 'blur' },
@@ -502,7 +515,8 @@ export default {
             { required: true, message: '请选择失效年月日' }
           ],
           bankuser: [
-            { required: true, message: '请输入开户名', trigger: 'blur' }
+            { required: true, message: '请输入开户名', trigger: 'blur' },
+            { validator: isEmpty }
           ],
           bankaccount: [
             { required: true, message: '请输入银行卡号', trigger: 'blur' },
@@ -667,6 +681,7 @@ export default {
 
     },
     signUp() { // 最终提交
+      var _this = this;
       this.$refs['upload_info'].validate((valid) => {
           if(valid) {
             this.btnLocked = true;
@@ -689,22 +704,34 @@ export default {
               location: this.shopInfo.location,
               address: this.shopInfo.address,
               provinceid: this.shopInfo.provinceid,
+              shopphoto: this.shopInfo.shopphoto_name,
+              goodsphoto: this.shopInfo.goodsphoto_name,
+              idcardfront: this.shopInfo.idcardfront_name,
+              idcardback: this.shopInfo.idcardback_name,
+              idcardinhand: this.shopInfo.idcardinhand_name,
+              mode: 'bigmchnt',
               format: 'cors'
             }).then((res) => {
+                debugger;
+              _this.btnLocked = false;
               let data = res.data;
               if(data.respcd === config.code.OK) {
-                  this.$refs['upload_info'].resetFields();
-                  this.$refs['shop_info'].resetFields();
-                  this.this.$message.info('注册成功！')
-                  this.$router.push('/main/chainmanage');
+                _this.$refs['upload_info'].resetFields();
+                _this.$refs['shop_info'].resetFields();
+                _this.$message({
+                  type: 'success',
+                  message: '注册成功!'
+                });
+                _this.$router.go(-1);
               } else {
-                this.$message.error(data.resperr);
+                _this.$message.error(data.resperr);
+                _this.btnLocked = false;
               }
-              this.btnLocked = false;
+
             })
               .catch((e) => {
-                this.$message.error(e);
-                this.btnLocked = false;
+                _this.$message.error(e);
+                _this.btnLocked = false;
               });
           }
       })
@@ -910,7 +937,7 @@ export default {
   }
 }
 </script>
-<style lang="scss" scoped="true">
+<style lang="scss">
   /*.v-model {*/
     /*position: fixed;*/
     /*left: 0;*/
@@ -966,13 +993,9 @@ export default {
           }
           .sub-account-item-info-long {
             width: 410px;
+            line-height: 44px;
           }
           .el-form-item__content {
-            line-height:16px !important;
-            /*.sub-account-item-info-long {*/
-              /*font-size: 14px;*/
-              /*color: #8a8c92;*/
-            /*}*/
             .el-col {
               .el-date-editor.el-input.el-date-editor--date {
                 .el-picker-panel.el-date-picker.adjustPoper {
