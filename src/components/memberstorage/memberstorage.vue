@@ -112,7 +112,8 @@
           <el-col :span="7" class="title">储值规则</el-col>
           <el-col :span="17" class="desc">
             <div class="desc-item" v-for="rule in detailData.activity_info.rules">
-              储值{{ rule.pay_amt | formatCurrency }}送{{ rule.present_amt | formatCurrency }}元
+              <span v-if="rule.title">{{ rule.title }}</span>
+              <span v-else>储值{{ rule.pay_amt | formatCurrency }}送{{ rule.present_amt | formatCurrency }}元</span>
             </div>
           </el-col>
         </el-row>
