@@ -399,6 +399,7 @@
   import ElFormItem from "../../../node_modules/element-ui/packages/form/src/form-item";
   import ElDialog from "../../../node_modules/element-ui/packages/dialog/src/component";
   const AMap = window.AMap;
+  var map = null;
 
 export default {
   components: {
@@ -440,7 +441,7 @@ export default {
            bankaccount: '', // 银行卡号
            bankmobile: '', // 预留手机号
            bankprovince: '', // 支行所属省份
-           bankcode: '', // 联行号
+           bankcode: '', // 支行联行号
            bankcity: '', // 支行所属城市
            provinceid: '', // 高德地图返回的六位区位码
            province: '', // 所在省
@@ -523,7 +524,14 @@ export default {
           ],
           bankcity: [
             { required: true, message: '请选择开户地' }
+          ],
+          headbankid: [
+            { required: true, message: '请选择开户总行' }
+          ],
+          bankcode: [
+            { required: true, message: '请选择开户支行' }
           ]
+
         },
         page2_rules: {
           shopphoto_url: [
@@ -622,7 +630,7 @@ export default {
     },
     preSignUp() { // 预注册
       this.$refs['shop_info'].validate((valid) => {
-        if(valid) {
+        if(!valid) {
           if(this.shopInfo.userid) {
             this.infoPage = !this.infoPage;
           } else {
@@ -697,7 +705,7 @@ export default {
     showMap(e) {
 //      if(this.isShowMap) return;
 //      this.isShowMap = true;
-      let map = new AMap.Map('geolocation');
+      map = new AMap.Map('geolocation');
       map.plugin('AMap.Geolocation', () => {
         let geolocation = new AMap.Geolocation({
           enableHighAccuracy: true, // 是否使用高精度定位，默认:true
