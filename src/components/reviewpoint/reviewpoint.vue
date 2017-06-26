@@ -126,7 +126,7 @@
               if(data.respcd === config.code.OK) {
                 this.$message({
                   type: 'success',
-                  message: getParams("type") === "create" ? '创建储值活动成功' : '修改储值活动成功'
+                  message: getParams("type") === "create" ? '创建集点活动成功' : '修改集点活动成功'
                 });
                 this.$router.push('/main/memberredpoint');
               } else {
@@ -135,7 +135,7 @@
             })
             .catch(() => {
               this.loading = false;
-              this.$message.error('创建储值活动失败');
+              this.$message.error('创建集点活动失败');
             });
         }
       }

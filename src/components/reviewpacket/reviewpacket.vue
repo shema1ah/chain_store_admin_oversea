@@ -244,7 +244,7 @@
           if (data.respcd === config.code.OK) {
             this.$message({
               type: 'success',
-              message: '创建成功'
+              message: '创建红包活动成功'
             });
             this.$router.push('/main/memberredpacket');
           } else {
@@ -253,7 +253,7 @@
         })
         .catch(() => {
           this.iconShow = false;
-          this.$message.error('创建失败');
+          this.$message.error('创建红包活动失败');
         });
       }
     }

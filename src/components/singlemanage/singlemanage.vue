@@ -47,7 +47,7 @@
             <div class="info__desc">{{ shop.bankname }}</div>
           </div>
           <el-button type="primary" class="edit-pwd-btn" @click.native="changePass(shop.mobile)">修改密码</el-button>
-          <a href="http://www.baidu.com" class="el-button el-button--default download-shop-code">下载店铺收款码</a>
+          <a :href="downHref" download class="el-button el-button--default download-shop-code">下载店铺收款码</a>
         </div>
       </div>
     </div>
@@ -126,6 +126,13 @@
         }
       };
     },
+
+    computed: {
+      downHref() {
+          return `${config.host}/merchant/qrcode?userid=${this.shop.uid}`;
+      }
+    },
+
     props: {
       shop: {
         type: Object
@@ -189,6 +196,7 @@
           }
         });
       },
+
       // 关闭弹出层,清除表单
       handleClose() {
         setTimeout(() => {
@@ -196,6 +204,7 @@
           this.form.repass = '';
         }, 200);
       }
+
     }
   };
 </script>
