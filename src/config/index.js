@@ -15,7 +15,7 @@ if (test) {
 
 // 本地配置
 if (dev) {
-  host = 'https://sh.qa.qfpay.net'
+  host = 'api'
   ohost = 'http://172.100.107.33:2002'
   o2host = 'https://o2.qa.qfpay.net'
 }
