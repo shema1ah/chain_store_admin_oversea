@@ -14,17 +14,17 @@
         <ul class="steps">
           <li>
             <strong><span>Step</span>1</strong>
-            <img src="./img/step1.jpg" alt="step1">
+            <img src="./img/step1.jpeg" alt="step1">
             <p>使用绑定的个人微信号扫描</p>
           </li>
           <li>
             <strong><span>Step</span>2</strong>
-            <img src="./img/step2.jpg" alt="step1">
+            <img src="./img/step2.jpeg" alt="step1">
             <p>公众号管理员授权确认</p>
           </li>
           <li>
             <strong><span>Step</span>3</strong>
-            <img src="./img/step3.jpg" alt="step1">
+            <img src="./img/step3.jpeg" alt="step1">
             <p>授权成功，运营公众号！</p>
           </li>
         </ul>
