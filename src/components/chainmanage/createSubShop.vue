@@ -638,7 +638,8 @@ export default {
           } else {
             this.btnLocked = true;
             axios.post(`${config.ohost}/mchnt/user/pre_signup`, {
-              mode: 'bigmchnt'
+              mode: 'bigmchnt',
+              format: 'cors'
             }).then((res) => {
               let data = res.data;
               if(data.respcd === config.code.OK) {
@@ -684,7 +685,8 @@ export default {
               city: this.shopInfo.city,
               location: this.shopInfo.location,
               address: this.shopInfo.address,
-              provinceid: this.shopInfo.provinceid
+              provinceid: this.shopInfo.provinceid,
+              format: 'cors'
             }).then((res) => {
               let data = res.data;
               if(data.respcd === config.code.OK) {
@@ -766,7 +768,8 @@ export default {
       if(!this.shopInfo.bankaccount.length) return;
       axios.get(`${config.ohost}/mchnt/tool/cardsinfo`, {
         params: {
-          q: this.shopInfo.bankaccount
+          q: this.shopInfo.bankaccount,
+          format: 'cors'
         }
       })
         .then((res) => {
@@ -786,7 +789,8 @@ export default {
     getBankLocation() {
       axios.get(`${config.ohost}/mchnt/tool/cities`, {
         params: {
-          area_no: this.shopInfo.adcode
+          area_no: this.shopInfo.adcode,
+          format: 'cors'
         }
       })
         .then((res) => {
@@ -809,7 +813,11 @@ export default {
         });
     },
     switchBankLocation(option) { // 切换开户地 获取开户行总行
-      axios.get(`${config.ohost}/mchnt/tool/headbanks`)
+      axios.get(`${config.ohost}/mchnt/tool/headbanks`, {
+        params: {
+            format: 'cors'
+        }
+      })
         .then((res) => {
           let data = res.data;
           if(data.respcd === config.code.OK) {
@@ -828,7 +836,8 @@ export default {
       axios.get(`${config.ohost}/mchnt/tool/branchbanks`, {
         params: {
           cityid: this.shopInfo.city_id,
-          headbankid: value
+          headbankid: value,
+          format: 'cors'
         }
       })
         .then((res) => {
@@ -851,7 +860,8 @@ export default {
     getOperationType() { // 获取经营类型 传0
       axios.get(`${config.ohost}/mchnt/tool/shoptypes`, {
         params: {
-          pid: 0
+          pid: 0,
+          format: 'cors'
         }
       })
         .then((res) => {
