@@ -47,11 +47,11 @@
 
             <el-input v-model="shopInfo.city"  type="hidden"  auto-complete="off" class="hidden" ref="city"></el-input>
 
-            <el-input v-model="shopInfo.city_no"  type="hidden"  auto-complete="off" class="hidden" ref="city_no"></el-input>
+            <el-input v-model="shopInfo.city_id"  type="hidden"  auto-complete="off" class="hidden" ref="city_id"></el-input>
 
             <el-form-item label="店铺地址" prop="location">
               <el-input v-model="shopInfo.location" icon="caret-bottom" size="small" type="text" placeholder="点击右侧按钮打开地图" auto-complete="off" class="sub-account-item-info"></el-input>
-              <el-button @click="showMap" type="primary" size="small">地图定位</el-button>
+              <!--<el-button @click="showMap" type="primary" size="small">地图定位</el-button>-->
             </el-form-item>
 
             <el-form-item label="详细门牌号" prop="address" style="margin-bottom: 0;">
@@ -64,7 +64,7 @@
               </div>
             </el-form-item>
 
-            <el-form-item label="店内联系电话" prop="landline">
+            <el-form-item label="店内联系电话">
               <el-input v-model="shopInfo.landline" size="small" type="text" placeholder="请输入顾客可联系的电话" auto-complete="off" class="sub-account-item-info"></el-input><span style="color:#8a8c92;">（选填）</span>
             </el-form-item>
 
@@ -88,6 +88,9 @@
                   type="date"
                   placeholder="生效年月日"
                   align="center"
+                  popper-class="adjustPoper"
+                  format="yyyy-MM-dd"
+                  @change="pickerStartChange"
                 >
                 </el-date-picker>
               </el-col>
@@ -98,6 +101,9 @@
                   type="date"
                   placeholder="失效年月日"
                   align="center"
+                  popper-class="adjustPoper"
+                  format="yyyy-MM-dd"
+                  @change="pickerEndChange"
                 >
                 </el-date-picker>
               </el-col>
@@ -113,29 +119,55 @@
             </el-form-item>
 
             <el-form-item label="银行卡号" prop="bankaccount">
-              <el-input v-model="shopInfo.bankaccount" size="small" type="text" placeholder="请输入" auto-complete="off" class="sub-account-item-info"></el-input>
+              <el-input v-model="shopInfo.bankaccount" size="small" type="text" placeholder="请输入" auto-complete="off" class="sub-account-item-info" @blur="getCardsInfo"></el-input>
             </el-form-item>
 
             <el-form-item label="预留手机号" prop="bankmobile">
               <el-input v-model="shopInfo.bankmobile" size="small" type="text" placeholder="请输入" auto-complete="off" class="sub-account-item-info"></el-input>
             </el-form-item>
 
-            <el-form-item label="开户地" prop="banklocation">
-              <el-input v-model="shopInfo.banklocation" icon="caret-bottom" size="small" type="text" placeholder="请选择" auto-complete="off" class="sub-account-item-info"></el-input>
+            <el-form-item label="开户地" prop="bankcity">
+              <!--<el-input v-model="shopInfo.banklocation" icon="caret-bottom" size="small" type="text" placeholder="请选择" auto-complete="off" class="sub-account-item-info"></el-input>-->
+              <el-select v-model="shopInfo.bankcity" placeholder="请选择" icon="caret-bottom" class="sub-account-item-info" @change="switchBankLocation">
+                <el-option
+                  v-for="city in shopInfo.bankCitys"
+                  :key="city.city_no"
+                  :label="city.city_name"
+                  :value="city.city_name">
+                </el-option>
+              </el-select>
             </el-form-item>
 
             <el-input v-model="shopInfo.bankprovince"  type="hidden"  auto-complete="off" class="hidden" ref="bankprovince"></el-input>
             <el-input v-model="shopInfo.bankcity"  type="hidden"  auto-complete="off" class="hidden" ref="bankcity"></el-input>
+            <el-input v-model="shopInfo.adcode"  type="hidden"  auto-complete="off" class="hidden" ref="adcode"></el-input>
 
-            <el-form-item label="开户行" prop="bankname" style="margin-bottom: 0;">
-              <el-input v-model="shopInfo.bankname" icon="caret-bottom" size="small" type="text" placeholder="请选择" auto-complete="off" class="sub-account-item-info"></el-input>
+            <el-form-item label="开户总行" prop="headbankid">
+              <el-select v-model="shopInfo.headbankid" placeholder="请选择" icon="caret-bottom" class="sub-account-item-info" @change="switchHeadBank">
+                <el-option
+                  v-for="hbank in shopInfo.headbanks"
+                  :key="hbank.headbankid"
+                  :label="hbank.headbankname"
+                  :value="hbank.headbankid">
+                </el-option>
+              </el-select>
             </el-form-item>
 
-            <el-input v-model="shopInfo.headbankname"  type="hidden"  auto-complete="off" class="hidden" ref="headbankname"></el-input>
+            <el-form-item label="开户支行" prop="bankcode" style="margin-bottom: 0;">
+              <el-select v-model="shopInfo.bankcode" placeholder="请选择" icon="caret-bottom" class="sub-account-item-info" @change="switchBranchBank">
+                <el-option
+                  v-for="bbank in shopInfo.branchBanks"
+                  :label="bbank && bbank.name"
+                  :value="bbank && bbank.code">
+                </el-option>
+              </el-select>
+            </el-form-item>
+
+            <!--<el-input v-model="shopInfo.area_id"  type="hidden"  auto-complete="off" class="hidden" ref="headbankname"></el-input>-->
 
             <el-form-item label="" class="sub-item-tip">
               <div  class="sub-account-item-info-long">
-                * 查询此银行卡的开户行请拨打：95588
+                * 查询此银行卡的开户行请拨打：<span v-model="shopInfo.csphone">{{shopInfo.csphone || '95588'}}</span>
               </div>
             </el-form-item>
 
@@ -169,7 +201,7 @@
       </div>
       <div class="panel-body">
         <div class="sub_info_wrapper" >
-          <el-form :model="shopInfo" label-position="left" :rules="page1_rules" ref="upload_info">
+          <el-form :model="shopInfo" label-position="left" :rules="page2_rules" ref="upload_info">
             <el-form-item label=""></el-form-item>
             <div class="panel-select-group">
               <i class="divider-icon"></i>
@@ -184,6 +216,7 @@
                   :show-file-list="false"
                   :before-upload="beforeAvatarUpload"
                   :on-success="avatarSuccess"
+                  :on-error="avatarFailed"
                   :data="{
                     category: 1,
                     source: 1,
@@ -218,6 +251,7 @@
                   :show-file-list="false"
                   :before-upload="beforeAvatarUpload"
                   :on-success="avatarSuccess"
+                  :on-error="avatarFailed"
                   :data="{
                     category: 1,
                     source: 1,
@@ -251,6 +285,7 @@
                   :show-file-list="false"
                   :before-upload="beforeAvatarUpload"
                   :on-success="avatarSuccess"
+                  :on-error="avatarFailed"
                   :data="{
                     category: 1,
                     source: 1,
@@ -279,6 +314,7 @@
                   :show-file-list="false"
                   :before-upload="beforeAvatarUpload"
                   :on-success="avatarSuccess"
+                  :on-error="avatarFailed"
                   :data="{
                     category: 1,
                     source: 1,
@@ -307,6 +343,7 @@
                   :show-file-list="false"
                   :before-upload="beforeAvatarUpload"
                   :on-success="avatarSuccess"
+                  :on-error="avatarFailed"
                   :data="{
                     category: 1,
                     source: 1,
@@ -336,7 +373,7 @@
                 <el-button type="primary" style="width:155px;" @click="backToPrePage">返回上一页</el-button>
               </el-col>
               <el-col :span="4">
-                <el-button type="primary" style="width:155px;" @click="signUp">确认提交</el-button>
+                <el-button type="success" style="width:155px;" @click="signUp" :disabled="btnLocked">确认提交</el-button>
               </el-col>
               <el-col :span="10">
                 注：会员在集点满额兑换礼品后，将自动重新集点
@@ -347,9 +384,7 @@
         </div>
       </div>
     </div>
-    <el-dialog class="map-dialog" id="geolocation" :visible.sync="isShowMap" style="width:660px;height:420px">
-    </el-dialog>
-
+    <div id="geolocation" v-show="isShowMap"></div>
   </div>
 
 </template>
@@ -362,10 +397,12 @@
   import axios from 'axios';
   import config from 'config';
   import ElFormItem from "../../../node_modules/element-ui/packages/form/src/form-item";
+  import ElDialog from "../../../node_modules/element-ui/packages/dialog/src/component";
   const AMap = window.AMap;
 
 export default {
   components: {
+    ElDialog,
     ElFormItem,
     ElButton,
     ElInput,
@@ -382,7 +419,7 @@ export default {
       return {
          btnLocked: false,
          isShowMap: false,
-         infoPage: false, // 子商户信息填写页
+         infoPage: true, // 子商户信息填写页
          uploadInterface: `${config.imgUpload}/util/v1/uploadfile`, // 上传接口
          shopInfo: {
            password: '', // 密码
@@ -393,7 +430,7 @@ export default {
            isShowTree: false, // 是否显示经营类型树状结构
            longitude: -1, // 经度
            latitude: -1, // 纬度
-           city_no: 0, //  城市代号
+           city_id: '', //  城市代号
            location: '', // 店铺地址
            address: '', // 详细门牌号
            idnumber: '', // 店主身份证号
@@ -405,13 +442,15 @@ export default {
            bankprovince: '', // 支行所属省份
            bankcode: '', // 联行号
            bankcity: '', // 支行所属城市
-           banklocation: '',
            provinceid: '', // 高德地图返回的六位区位码
            province: '', // 所在省
+           area_id: '',  // 所在省id
            city: '', // 所在市
+           adcode: '',
+           csphone: '', // 客服电话
+           headbankid: '', // 开户行总行名称
            headbankname: '', // 开户行总行名称
            bankname: '', // 开户行支行名称
-           bank: '', // 开户行 （headbankname+bankname）
            userid: '', // 预注册时返回 用于上传图片用
            username: '', // 预注册时返回 用于上传图片用
            shopphoto_url: '', // 经营场所/经营场所外景照片url
@@ -424,7 +463,12 @@ export default {
            idcardback_name: '',
            idcardinhand_url: '', // 手持身份证合照url
            idcardinhand_name: '',
-           shop_types: [] // 树状结构数据 异步返回，初始为空数组
+           shop_types: [], // 树状结构数据 异步返回，初始为空数组
+           bankCitys: [],
+           headbanks: [
+           ], // 开户行总行数据
+           branchBanks: [
+           ] // 开户行支行数据
          },
         defaultProps: {
           children: 'shoptypes',
@@ -444,9 +488,6 @@ export default {
           location: [
             { required: true, message: '请从地图中定位店铺地址或手动填写' }
           ],
-          username: [
-            { required: true, message: '请输入店主姓名', trigger: 'blur' }
-          ],
           idnumber: [
             { required: true, message: '请输入身份证号', trigger: 'blur' },
             { validator: idValid }
@@ -461,21 +502,61 @@ export default {
             { required: true, message: '请输入开户名', trigger: 'blur' }
           ],
           bankaccount: [
-            { required: true, message: '请输入银行卡号', trigger: 'blur' }
+            { required: true, message: '请输入银行卡号', trigger: 'blur' },
+            { validator: (rule, val, cb) => {
+                if(/\d/g.test(+val)) {
+                    cb();
+                }else {
+                    cb('银行卡号必须是数字')
+                }
+            }}
           ],
           bankmobile: [
-            { required: true, message: '请输入开户银行预留手机号', trigger: 'blur' }
+            { required: true, message: '请输入开户银行预留手机号', trigger: 'blur' },
+            { validator: (rule, val, cb) => {
+              if(/\d/g.test(val)) {
+                cb();
+              }else {
+                cb('手机号必须是数字')
+              }
+            }}
           ],
-          banklocation: [
+          bankcity: [
             { required: true, message: '请选择开户地' }
           ]
+        },
+        page2_rules: {
+          shopphoto_url: [
+            { required: true, message: '请上传经营场所外景照片' }
+          ],
+          goodsphoto_url: [
+            { required: true, message: '请上传经营场所内景照片' }
+          ],
+          idcardfront_url: [
+            { required: true, message: '请上传法人身份证正面照片' }
+          ],
+          idcardback_url: [
+            { required: true, message: '请上传法人身份证背面照片' }
+          ],
+          idcardinhand_url: [
+            { required: true, message: '请上传手持身份证合照' }
+          ]
         }
+
       }
     },
   created() {
       this.getOperationType();
+      this.showMap();
   },
+
   methods: {
+    pickerStartChange(op) {
+      this.shopInfo.idstatdate = op;
+    },
+    pickerEndChange(op) {
+      this.shopInfo.idenddate = op;
+    },
     beforeAvatarUpload(file) {
         console.log('beforeAvatarUpload', file);
       const isRightImgType = file.type === 'image/jpeg' || file.type === 'image/png';
@@ -540,7 +621,6 @@ export default {
       this.infoPage = !this.infoPage;
     },
     preSignUp() { // 预注册
-      debugger;
       this.$refs['shop_info'].validate((valid) => {
         if(valid) {
           if(this.shopInfo.userid) {
@@ -572,28 +652,191 @@ export default {
       })
 
     },
-    signUp() {},
+    signUp() { // 最终提交
+      this.$refs['upload_info'].validate((valid) => {
+          if(valid) {
+            this.btnLocked = true;
+            axios.post(`${config.ohost}/mchnt/user/signup`, {
+              username: this.shopInfo.username,
+              password: this.shopInfo.password,
+              bankuser: this.shopInfo.bankuser,
+              idnumber: this.shopInfo.idnumber,
+              bankprovince: this.shopInfo.bankprovince,
+              bankcity: this.shopInfo.bankcity,
+              bankname: this.shopInfo.bankname,
+              headbankname: this.shopInfo.headbankname,
+              bankcode: this.shopInfo.bankcode,
+              bankaccount: this.shopInfo.bankaccount,
+              bankmobile: this.shopInfo.bankmobile,
+              shopname: this.shopInfo.shopname,
+              shoptype_id: this.shopInfo.shoptype_id + '',
+              province: this.shopInfo.province,
+              city: this.shopInfo.city,
+              location: this.shopInfo.location,
+              address: this.shopInfo.address,
+              provinceid: this.shopInfo.provinceid
+            }).then((res) => {
+              let data = res.data;
+              if(data.respcd === config.code.OK) {
+                  this.$refs['upload_info'].resetFields();
+                  this.$refs['shop_info'].resetFields();
+                  this.this.$message.info('注册成功！')
+                  this.$router.push('/main/chainmanage');
+              } else {
+                this.$message.error(data.resperr);
+              }
+              this.btnLocked = false;
+            })
+              .catch((e) => {
+                this.$message.error(e);
+                this.btnLocked = false;
+              });
+          }
+      })
+    },
     showMap(e) {
-      if(this.isShowMap) return;
-      this.isShowMap = true;
-      e.stopPropagation();
+//      if(this.isShowMap) return;
+//      this.isShowMap = true;
       let map = new AMap.Map('geolocation');
-      map.setZoom(10);
-      map.setCenter([116.39, 39.9]);
-      map.plugin(["AMap.ToolBar", "AMap.Autocomplete", "AMap.PlaceSearch"], function() {
-          let tool = new AMap.ToolBar();
-          AMap.Autocomplete({
-            datatype: 'all'
-          });
-          AMap.PlaceSearch();
-          map.addControl(tool);
+      map.plugin('AMap.Geolocation', () => {
+        let geolocation = new AMap.Geolocation({
+          enableHighAccuracy: true, // 是否使用高精度定位，默认:true
+          timeout: 10000,           // 超过10秒后停止定位，默认：无穷大
+          maximumAge: 0,            // 定位结果缓存0毫秒，默认：0
+          convert: true,            // 自动偏移坐标，偏移后的坐标为高德坐标，默认：true
+          showButton: true,         // 显示定位按钮，默认：true
+          buttonPosition: 'LB',     // 定位按钮停靠位置，默认：'LB'，左下角
+          buttonOffset: new AMap.Pixel(10, 20), // 定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
+          showMarker: true,        // 定位成功后在定位到的位置显示点标记，默认：true
+          showCircle: true,        // 定位成功后用圆圈表示定位精度范围，默认：true
+          panToLocation: true,     // 定位成功后将定位到的位置作为地图中心点，默认：true
+          zoomToAccuracy: true      // 定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
+        });
+        map.addControl(geolocation);
+        geolocation.getCurrentPosition();
+        AMap.event.addListener(geolocation, 'complete', this.onLocationComplete); // 返回定位信息
+        AMap.event.addListener(geolocation, 'error', this.onLocationError);       // 返回定位出错信息
       });
-      let marker = new AMap.Marker({
-        position: [116.480983, 39.989628], // marker所在的位置
-        map: map // 创建时直接赋予map属性
-      });
-      marker.setMap(map);
+      AMap.plugin('AMap.PlaceSearch', () => {
+        AMap.PlaceSearch({
+          pageSize: 10,
+          map: map,
+          autoFitView: true,
+          renderStyle: 'newpc',
+          panel: 'searchPlace'
+        })
+      })
 
+//      let marker = new AMap.Marker({
+//        position: [116.480983, 39.989628], // marker所在的位置
+//        map: map // 创建时直接赋予map属性
+//      });
+//      marker.setMap(map);
+
+    },
+    onLocationError() {},
+    onLocationComplete(loc) {
+        console.log(loc)
+        let _adcode = loc.addressComponent.adcode;
+        let _province = loc.addressComponent.province;
+        let _city = loc.addressComponent.city;
+        this.shopInfo.adcode = this.shopInfo.provinceid = _adcode || '';
+        this.shopInfo.province = _province;
+        if(_city === '') {
+          this.shopInfo.city = _province;
+        }
+        this.shopInfo.longitude = loc.position.lng;
+        this.shopInfo.latitude = loc.position.lat;
+        this.shopInfo.location = loc.formattedAddress;
+        if(_adcode) {
+          this.getBankLocation();
+        }
+    },
+    getCardsInfo() { // 获取银行卡信息
+      if(!this.shopInfo.bankaccount.length) return;
+      axios.get(`${config.ohost}/mchnt/tool/cardsinfo`, {
+        params: {
+          q: this.shopInfo.bankaccount
+        }
+      })
+        .then((res) => {
+          let data = res.data;
+          if(data.respcd === config.code.OK) {
+              if(data.data.records.length) {
+                this.shopInfo.csphone = data.data.records[0].csphone
+              }
+          } else {
+            this.$message.error(data.resperr);
+          }
+        })
+        .catch((e) => {
+          this.$message.error(e);
+        });
+    },
+    getBankLocation() {
+      axios.get(`${config.ohost}/mchnt/tool/cities`, {
+        params: {
+          area_no: this.shopInfo.adcode
+        }
+      })
+        .then((res) => {
+          let data = res.data;
+          if(data.respcd === config.code.OK) {
+            console.log('获取开户地成功')
+            this.shopInfo.bankCitys = data.data.cities; // 支行所在市数组
+            this.shopInfo.bankprovince = data.data.area_name; // 支行所在省
+            this.shopInfo.area_id = data.data.area_id; // 支行所在省id
+            if(data.data.cities.length) {
+              this.shopInfo.bankcity = data.data.cities[0].city_name;
+              this.shopInfo.city_id = data.data.cities[0].city_no;
+            }
+          } else {
+            this.$message.error(data.resperr);
+          }
+        })
+        .catch((e) => {
+          this.$message.error(e);
+        });
+    },
+    switchBankLocation(option) { // 切换开户地 获取开户行总行
+      axios.get(`${config.ohost}/mchnt/tool/headbanks`)
+        .then((res) => {
+          let data = res.data;
+          if(data.respcd === config.code.OK) {
+            console.log('获取获取银行总行成功');
+            this.shopInfo.headbanks = data.data.records;
+          } else {
+            this.$message.error(data.resperr);
+          }
+        })
+        .catch((e) => {
+          this.$message.error(e);
+        });
+    },
+    switchHeadBank(value, label) {
+      this.shopInfo.headbankname = label;
+      axios.get(`${config.ohost}/mchnt/tool/branchbanks`, {
+        params: {
+          cityid: this.shopInfo.city_id,
+          headbankid: value
+        }
+      })
+        .then((res) => {
+          let data = res.data;
+          if(data.respcd === config.code.OK) {
+            console.log('获取获取银行支行成功');
+            this.shopInfo.branchBanks = data.data.records;
+          } else {
+            this.$message.error(data.resperr);
+          }
+        })
+        .catch((e) => {
+          this.$message.error(e);
+        });
+    },
+    switchBranchBank(value, label) {
+      this.shopInfo.bankname = label;
+      console.log('所有设置完毕：', this.shopInfo);
     },
     getOperationType() { // 获取经营类型 传0
       axios.get(`${config.ohost}/mchnt/tool/shoptypes`, {
@@ -632,14 +875,27 @@ export default {
           if('el-tree-node'.indexOf(e.target.className) == -1) {
             if(_self.shopInfo.isShowTree) this.shopInfo.isShowTree = false;
           }
-          if(_self.isShowMap) {
-            _self.isShowMap = false;
+          if(_self.isShowMap && 'geolocation'.indexOf(e.target.id) > -1) {
+              e.stopPropagation();
+              return false;
+          }
+          if(_self.isShowMap && 'v-modal'.indexOf(e.target.className) > -1) {
+            this.isShowMap = false;
           }
       }, false)
   }
 }
 </script>
-<style lang="scss" scoped>
+<style lang="scss" scoped="true">
+  /*.v-model {*/
+    /*position: fixed;*/
+    /*left: 0;*/
+    /*top: 0;*/
+    /*width: 100%;*/
+    /*height: 100%;*/
+    /*opacity: 0.5;*/
+    /*background: #000;*/
+  /*}*/
   .panel-body {
     padding:0;
     .sub_info_wrapper {
@@ -648,7 +904,7 @@ export default {
         color: #8a8c92;
         height: 16px;
         line-height: 16px;
-        padding: 0px 0 20px 30px;
+        padding: 10px 0 20px 30px;
       }
       padding: 20px 0 0 0px;
       .divider-icon {
@@ -669,15 +925,23 @@ export default {
           margin: 20px 0 20px 30px;
           .sub-account-item-info {
             width: 240px;
+            cursor: pointer;
           }
           .sub-account-item-info-long {
             width: 410px;
           }
           .el-form-item__content {
             line-height:16px !important;
-            .sub-account-item-info-long {
-              font-size: 14px;
-              color: #8a8c92;
+            /*.sub-account-item-info-long {*/
+              /*font-size: 14px;*/
+              /*color: #8a8c92;*/
+            /*}*/
+            .el-col {
+              .el-date-editor.el-input.el-date-editor--date {
+                .el-picker-panel.el-date-picker.adjustPoper {
+                  min-width: 254px !important;
+                }
+              }
             }
           }
         }
@@ -688,7 +952,8 @@ export default {
       }
     }
   }
-  .map-dialog.el-dialog__wrapper {
+  #geolocation {
+    display: block;
     width: 660px;
     height: 420px;
     top: 50% !important;
@@ -697,14 +962,27 @@ export default {
     margin-top: -210px !important;
     overflow: hidden !important;
     position: fixed !important;
+    opacity: 1;
   }
-  .el-message-box {
-    .el-message-box__title {
-      .el-message-box__headerbtn {
-        visibility: hidden !important;
-      }
-    }
-  }
+  /*.map-dialog {*/
+    /*width:660px;*/
+    /*height:420px;*/
+    /*.el-dialog__header {*/
+      /*padding:0;*/
+    /*}*/
+    /*.el-dialog__body {*/
+      /*padding:0;*/
+      /*width:660px;*/
+      /*height:420px;*/
+    /*}*/
+  /*}*/
+    /*.el-message-box {*/
+      /*.el-message-box__title {*/
+        /*.el-message-box__headerbtn {*/
+          /*visibility: hidden !important;*/
+        /*}*/
+      /*}*/
+    /*}*/
   .avatar {
     width: 240px;
     height: 180px;
@@ -736,4 +1014,8 @@ export default {
     }
 
   }
+  .el-date-editor .el-picker-panel {
+    min-width: 254px !important;
+  }
+
 </style>

@@ -160,10 +160,10 @@
       </div>
     </el-dialog>
 
-    <el-dialog title="编辑分店编号" :visible.sync="showEditSubShopNum" class="mydialog" custom-class="edit-sub-tag" @close="refreshSubShopData">
-      <el-form :rules="checkTagRules" ref="form-edit-subshop-num" label-position="left">
-        <div class="desc" style="text-align: center">编辑后，输入框失去焦点会自动提交新编号</div>
-        <el-form-item v-for="(shop, index) in shopData.list" v-if="index !== 0" prop="shop.tag">
+    <el-dialog title="编辑分店编号" :visible.sync="showEditSubShopNum" class="mydialog" custom-class="" @close="refreshSubShopData">
+      <el-form ref="form-edit-subshop-num" label-position="left" class="edit-sub-tag">
+        <div class="desc" style="text-align: center"></div>
+        <el-form-item v-for="(shop, index) in shopData.list" v-if="index !== 0">
           <el-tooltip placement="bottom" :content="shop.shop_name" class="subshoptip">
             <label>{{shop.shop_name}}</label>
           </el-tooltip>
@@ -228,7 +228,7 @@
   import ElButton from "../../../node_modules/element-ui/packages/button/src/button";
   import ElForm from "../../../node_modules/element-ui/packages/form/src/form";
   const hasSpetialChar = function (str) {
-    if (!/^[\u4E00-\u9FA5\uf900-\ufa2d\u3001\u3002\u3008-\u301B\u2013\u2014\u2018\u2019\u201C\u201D\uFF01\uFF08\uFF09\uFF0C\uFF0E\uFF1A\uFF1B\uFF1F\u0020-\u007F]+$/.test(str)) {
+    if (!/^[\u4E00-\u9FA5\uf900-\ufa2d\u3001\u3002\u3008-\u301B\u2013\u2014\u2018\u2019\u201C\u201D\uFF01\uFF08\uFF09\uFF0C\uFF0E\uFF1A\uFF1B\uFF1F\u0020-\u007F]*$/.test(str)) {
         return 1;
     }
   }
@@ -358,7 +358,10 @@
         this.showEditSubShopNum = false;
       },
       updateShopTag(shop) {
-          let _tag = shop.tag;
+          let _tag = shop.tag.trim();
+          if(_tag.length === 0) {
+            return;
+          }
           if(_tag.length > 20) {
               this.$message.error('请输入二十以内的文字或字母');
               return;
@@ -682,6 +685,12 @@
       text-overflow: ellipsis;
       white-space: nowrap;
     }
-
+    .edit-sub-tag {
+      height:420px;
+      overflow-y: auto;
+    }
+    .mydialog .el-dialog__body {
+      padding: 0 !important;
+    }
   }
 </style>
