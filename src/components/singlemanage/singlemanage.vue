@@ -190,8 +190,8 @@
               }
               this.iconShow = false;
             }).catch(() => {
-              this.$message.error('请求失败!');
               this.iconShow = false;
+              this.$message.error('请求失败!');
             });
           }
         });

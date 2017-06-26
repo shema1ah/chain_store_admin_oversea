@@ -251,7 +251,7 @@
         ],
         form: {
           selectShopUid: '',
-          orderno: '',
+          orderno: null,
           dateRangeValue: defaultDateRange,
           operaValue: '',
           checkAll1: true,
@@ -356,7 +356,7 @@
               this.$message.error(data.resperr);
             }
           }).catch(() => {
-            this.$message.error("撤销成功失败");
+            this.$message.error("撤销失败");
           });
         }).catch(() => {
           console.log("取消");
@@ -459,7 +459,6 @@
       },
 
       handleSizeChange(size) {
-        this.loading = true;
         this.pageSize = size;
         this.basicParams.page = 1;
         this.getTransData({which: 1});

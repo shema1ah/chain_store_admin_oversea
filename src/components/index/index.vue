@@ -1,5 +1,5 @@
 <template>
-  <div class="index">
+  <div class="index" v-loading="loading1 || loading2" element-loading-text="拼命加载中">
     <div class="banner_wrapper">
       <div class="banner-breadcrumb">
         <span>首页</span>
@@ -142,6 +142,8 @@
   export default {
     data() {
       return {
+        loading1: false,
+        loading2: false,
         role: Store.get("role") || {},
         info: {},
         activitys: []
@@ -158,8 +160,10 @@
     },
     methods: {
       fetchDashboardData() {
+        this.loading1 = true;
         axios.get(`${config.host}/merchant/dashboard/stats`)
           .then((res) => {
+            this.loading1 = false;
             let data = res.data
             if(data.respcd === config.code.OK) {
               this.info = data.data
@@ -168,12 +172,15 @@
             }
           })
           .catch(() => {
+            this.loading1 = false;
             this.$message.error('网络错误!')
           });
       },
       fetchActivityData() {
+        this.loading2 = true;
         axios.get(`${config.host}/merchant/homeview`)
           .then((res) => {
+            this.loading2 = false;
             let data = res.data
             if(data.respcd === config.code.OK) {
               this.activitys = data.data.result
@@ -182,6 +189,7 @@
             }
           })
           .catch(() => {
+            this.loading2 = false;
             this.$message.error('网络错误!')
           })
       },
