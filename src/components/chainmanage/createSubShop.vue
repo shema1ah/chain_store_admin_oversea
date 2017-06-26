@@ -703,8 +703,8 @@ export default {
       })
     },
     showMap(e) {
-      if(this.isShowMap) return;
-      this.isShowMap = true;
+//      if(this.isShowMap) return;
+//      this.isShowMap = true;
       map = new AMap.Map('geolocation');
       map.plugin('AMap.Geolocation', () => {
         let geolocation = new AMap.Geolocation({
