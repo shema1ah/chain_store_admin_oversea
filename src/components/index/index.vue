@@ -55,7 +55,7 @@
 
     <div class="data-show" v-if="!role.haiwai">
       <h2>活动运营数据统计</h2>
-      <div class="content">
+      <div class="content" v-if="activitys.length > 0">
         <div class="item" v-for="activity in activitys">
           <div @click="openDetail('coupon')" v-if="activity.type === 'coupon'">
             <h3><i></i>进行中的活动：红包</h3>
@@ -81,7 +81,7 @@
               </li>
             </ul>
           </div>
-          <div @click="openDetail('card')" v-if="activity.type === 'card'">
+          <div @click="openDetail('card')" v-else-if="activity.type === 'card'">
             <h3><i class="collect"></i>进行中的活动：集点</h3>
             <div class="title">
               <i class="icon collect"></i>
@@ -131,6 +131,7 @@
           </ul>
         </div> -->
       </div>
+      <div class="no-content" v-else>暂无活动</div>
     </div>
   </div>
 </template>
