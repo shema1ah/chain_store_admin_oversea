@@ -432,16 +432,14 @@
           params: {
             userid: uid
           }
-        })
-        .then((res) => {
+        }).then((res) => {
           let data = res.data;
           if(data.respcd === config.code.OK) {
             this.operaList = data.data;
           } else {
             this.$message.error(data.resperr);
           }
-        })
-        .catch(() => {
+        }).catch(() => {
           this.$message.error('获取操作员信息失败');
         });
       },

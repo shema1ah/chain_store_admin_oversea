@@ -99,7 +99,7 @@
     </div>
     <el-dialog v-if="detailData.activity_info" v-model="isShowDetail" class="detail_dialog" title="储值活动详情">
       <template>
-        <el-row class="mb-5">
+        <el-row class="mb-5" v-if="!role.single">
           <el-col :span="7" class="title">适用门店</el-col>
           <el-col :span="17" class="desc">
             <div>
@@ -112,8 +112,7 @@
           <el-col :span="7" class="title">储值规则</el-col>
           <el-col :span="17" class="desc">
             <div class="desc-item" v-for="rule in detailData.activity_info.rules">
-              <span v-if="rule.title">{{ rule.title }}</span>
-              <span v-else>储值{{ rule.pay_amt | formatCurrency }}送{{ rule.present_amt | formatCurrency }}元</span>
+              <span>储值{{ rule.pay_amt | formatCurrency }}送{{ rule.present_amt | formatCurrency }}元</span>
             </div>
           </el-col>
         </el-row>
@@ -165,6 +164,7 @@
     data() {
       return {
         pending: false,
+        role: Store.get('role') || {},
         storageDict: ['未开始', '进行中', '已结束', '已终止'],
         stateOptions: [
           {

@@ -52,8 +52,10 @@
               <el-date-picker v-model="form.expire_time" type="date" placeholder="请选结束时间" size="small" :editable="false" :clearable="false">
               </el-date-picker>
             </el-form-item>
-            <el-form-item prop="mchnt_id_list" label="适用门店">
+            <el-form-item prop="mchnt_id_list" label="适用门店" v-if="!role.single">
               <el-select v-model="form.mchnt_id_list" placeholder="请选择门店" multiple filterable size="small">
+                <el-option label="全部" value="">
+                </el-option>
                 <el-option v-for="shop in checkList" :label="shop.shopname" :key="shop.uid" :value="shop.uid">
                 </el-option>
                 <el-option v-for="shop in shopData" :label="shop.shopname" :key="shop.uid" :value="shop.uid" :disabled="shop.state == 0">
@@ -94,7 +96,7 @@
             goods_amt: +pData.goods_amt,
             start_time: new Date(pData.start_time),
             expire_time: new Date(pData.expire_time),
-            mchnt_id_list: []
+            mchnt_id_list: ['']
           };
           vm.id = pData.id;
           vm.checked = pData.obtain_limit == 0;
@@ -136,6 +138,7 @@
       return {
         textList: ['1点', '2点', '3点', '4点', '5点', '6点', '7点', '8点', '9点', '10点'],
         shopData: [],
+        role: Store.get('role') || {},
         checkList: [],
         id: null,
         checked: false,
@@ -191,6 +194,18 @@
         };
       }
     },
+    watch: {
+      'form.mchnt_id_list': function (val, oldval) {
+        if(val.length > oldval.length) {
+          if(val.indexOf('') > 0) {
+            this.form.mchnt_id_list = [''];
+          }else if(oldval.indexOf('') > -1) {
+            this.form.mchnt_id_list.shift();
+          }
+        }
+      }
+    },
+
     methods: {
       // 放弃创建
       cancelCreat() {
@@ -199,7 +214,7 @@
 
       // 进入页面格式化数据
       formatData(data) {
-        let checklist = (Store.get('pointData') || {}).apply_shops;
+        let checklist = (Store.get('pointData') || {}).apply_shops || [];
         let alllist = data;
         let checkList = [];
         let list = [];
@@ -219,16 +234,24 @@
             list.push(val);
           }
         }
+
         this.shopData = list;
         this.checkList = checkList;
-        this.form.mchnt_id_list = valueList;
+        this.form = Object.assign(this.form, {
+          mchnt_id_list: valueList
+        })
       },
 
       // 提交预览
       preview() {
         this.$refs['form'].validate((valid) => {
           if (valid) {
-            console.log(this.data);
+            if(this.form.mchnt_id_list[0] === '') {
+              let param = this.form.mchnt_id_list.concat(this.checkList);
+              this.data = Object.assign(this.data, {
+                mchnt_id_list: param
+              })
+            }
             Store.set('pointData', this.data);
             this.$router.push("/main/memberredpoint/reviewpoint?type=edit");
           } else {
@@ -243,11 +266,10 @@
           let data = res.data;
           if (data.respcd === config.code.OK) {
             this.formatData(data.data);
+            Store.set('shopStateList', data.data || []);
           } else {
             this.$message.error(data.respmsg);
           }
-        }).catch(() => {
-          this.$message.error('获取店铺数据失败!');
         });
       }
     }

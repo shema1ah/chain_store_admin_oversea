@@ -196,6 +196,7 @@
 <style lang="scss" rel="stylesheet/scss">
 
   .sidebar {
+    overflow-y: scroll;
     position: fixed;
     width: 220px;
     height: 100%;

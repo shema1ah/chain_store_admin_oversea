@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="top_content">
     <sidebar></sidebar>
     <div class="main">
       <div class="header">
@@ -86,18 +86,7 @@ export default {
             this.$store.dispatch('getMemberTotal');
 
             this.shop = data.data || {};
-            if(data.data.cate === 'submerchant') {
-                Object.assign(this.shop, {
-                  address: data.data.address,
-                  bankaccount: data.data.bankaccount,
-                  headbankname: data.data.headbankname, // 总行名称
-                  bankname: data.data.bankname, // 支行名称
-                  bankuser: data.data.bankuser, // 持卡人
-                  telephone: data.data.telephone, // 手机号
-                  cate: data.data.cate, // 商户分类
-                  country: data.data.country // 国家地区
-                })
-            }
+
           } else {
             this.$message.error(data.respmsg);
           }
@@ -113,11 +102,15 @@ export default {
 <style lang="scss">
   @import "../../assets/scss/dialog.scss";
 
+  .top_content {
+    display: flex;
+  }
   .responsive_img {
     max-width: 100%;
     height: auto;
   }
   .main {
+    flex: 1;
     padding-left: 220px;
     min-height: 100%;
     @at-root .header {

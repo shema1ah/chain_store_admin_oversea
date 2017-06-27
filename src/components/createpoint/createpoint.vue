@@ -52,8 +52,9 @@
               <el-date-picker v-model="form.expire_time" type="date" placeholder="请选结束时间" size="small" :editable="false" :clearable="false">
               </el-date-picker>
             </el-form-item>
-            <el-form-item prop="mchnt_id_list" label="适用门店">
+            <el-form-item prop="mchnt_id_list" label="适用门店" v-if="!role.single">
               <el-select v-model="form.mchnt_id_list" placeholder="请选择门店" multiple filterable size="small">
+                <el-option label="全部" value=""></el-option>
                 <el-option v-for="shop in shopData" :label="shop.shopname" :key="shop.uid" :value="shop.uid" :disabled="shop.state == 0">
                 </el-option>
               </el-select>
@@ -119,6 +120,7 @@
       return {
         textList: ['1点', '2点', '3点', '4点', '5点', '6点', '7点', '8点', '9点', '10点'],
         checked: false,
+        role: Store.get('role') || {},
         shopData: [],
         form: {
           exchange_pt: null,
@@ -127,7 +129,7 @@
           goods_amt: '',
           start_time: '',
           expire_time: '',
-          mchnt_id_list: []
+          mchnt_id_list: ['']
         },
         formrules: {
           exchange_pt: [
@@ -171,6 +173,19 @@
         };
       }
     },
+
+    watch: {
+      'form.mchnt_id_list': function (val, oldval) {
+        if(val.length > oldval.length) {
+          if(val.indexOf('') > 0) {
+            this.form.mchnt_id_list = [''];
+          }else if(oldval.indexOf('') > -1) {
+            this.form.mchnt_id_list.shift();
+          }
+        }
+      }
+    },
+
     methods: {
       // 放弃创建
       cancelCreat() {
@@ -195,7 +210,8 @@
         axios.get(`${config.host}/merchant/card/active_state`).then((res) => {
           let data = res.data;
           if (data.respcd === config.code.OK) {
-            this.shopData = data.data;
+            this.shopData = data.data || [];
+            Store.set('shopStateList', this.shopData);
           } else {
             this.$message.error(data.respmsg);
           }

@@ -21,7 +21,7 @@
               </el-option>
             </el-select>
           </div>
-          <div class="panel-select__wrapper" v-show="!role.single">
+          <div class="panel-select__wrapper" v-if="!role.single">
             <span class="panel-select__desc">店铺名称</span>
             <el-select v-model="nameValue" placeholder="全部" size="small" @change="nameChange">
               <el-option v-for="shop in shopData.list" :label="shop.shop_name" :value="shop.uid">
@@ -279,6 +279,12 @@
                 type: 'success',
                 message: '集点活动停止成功'
               });
+
+              this.currentpage = 1;
+              this.pageSize = 10;
+              this.nameValue = '';
+              this.stateValue = '';
+
               this.getData();
             } else {
               this.$message.error(data.respmsg);
