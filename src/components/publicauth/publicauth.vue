@@ -14,17 +14,17 @@
         <ul class="steps">
           <li>
             <strong><span>Step</span>1</strong>
-            <img src="./img/step1.jpg" alt="step1">
+            <img src="./img/step1.jpeg" alt="step1">
             <p>使用绑定的个人微信号扫描</p>
           </li>
           <li>
             <strong><span>Step</span>2</strong>
-            <img src="./img/step2.jpg" alt="step1">
+            <img src="./img/step2.jpeg" alt="step1">
             <p>公众号管理员授权确认</p>
           </li>
           <li>
             <strong><span>Step</span>3</strong>
-            <img src="./img/step3.jpg" alt="step1">
+            <img src="./img/step3.jpeg" alt="step1">
             <p>授权成功，运营公众号！</p>
           </li>
         </ul>
@@ -45,7 +45,7 @@
       </div>
       <div class="panel-body">
         <div class="public-info">
-          <img :src="publicAvatar" alt="头像">
+          <img :src="publicAvatar" alt="头像" />
           <span>名称
             <strong>{{publicInfo.nick_name}}</strong>
           </span>
@@ -62,8 +62,7 @@
         <div class="operation">
           <button type="button" @click="showDialog" v-if="!role.single" class="el-button el-button--primary">分店授权管理</button>
           <button type="button" @click="confirm"  class="el-button el-button--default">
-            <span v-if="!role.single">解除总账户授权</span>
-            <span v-else>解除账户授权</span>
+            {{role.single ? '解除账户授权' : '解除总账户授权'}}
           </button>
         </div>
       </div>
@@ -76,16 +75,23 @@
       </div>
       <div class="panel-body">
         <ul class="copy-list" id="copy-list">
-          <li>
+          <li v-if="role.single">
             <span @click="selectext($event)">点餐链接</span>
             <p>https://o.qfpay.com/dc/?/#!/merchant/{{uid}}</p>
             <button @click="copylink($event)" type="button" class="el-button el-button--text">
               <img src="./img/ic_copy.png" alt="icon">复制链接
             </button>
           </li>
-          <li>
+          <li v-if="role.single">
             <span @click="selectext($event)">外卖链接</span>
             <p>https://o.qfpay.com/dc/take-out.html?/#!/merchant/{{uid}}</p>
+            <button @click="copylink($event)" type="button" class="el-button el-button--text">
+              <img src="./img/ic_copy.png" alt="icon">复制链接
+            </button>
+          </li>
+          <li v-else>
+            <span @click="selectext($event)">外卖链接</span>
+            <p>https://o.qfpay.com/dc/store-list.html?/#!/merchant/{{uid}}</p>
             <button @click="copylink($event)" type="button" class="el-button el-button--text">
               <img src="./img/ic_copy.png" alt="icon">复制链接
             </button>
@@ -114,6 +120,13 @@
           <li>
             <span @click="selectext($event)">储值链接</span>
             <p>https://o2.qfpay.com/prepaid/v1/page/c/usercenter/merchant.html?h={{hashid}}</p>
+            <button @click="copylink($event)" type="button" class="el-button el-button--text">
+              <img src="./img/ic_copy.png" alt="icon">复制链接
+            </button>
+          </li>
+          <li>
+            <span @click="selectext($event)">会员中心</span>
+            <p>http://m.haojin.in/v2/app.html#!/member</p>
             <button @click="copylink($event)" type="button" class="el-button el-button--text">
               <img src="./img/ic_copy.png" alt="icon">复制链接
             </button>
@@ -147,7 +160,7 @@
     data() {
       return {
         role: Store.get("role") || {},
-        wechatNotAuth: true,
+        wechatNotAuth: false,
         publicInfo: {},
         publicAvatar: '',
         hashid: '',
@@ -158,9 +171,10 @@
         checkedStores: [],
         storeUids: [],
         isIndeterminate: true
-      };
+      }
     },
     created() {
+      this.fetchMerchantIds()
       this.fetchPublicInfo()
     },
     methods: {
@@ -173,8 +187,9 @@
                 this.wechatNotAuth = true
               } else {
                 this.wechatNotAuth = false
-                this.fetchMerchantIds()
-                this.fetchSubMerchants()
+                if (!this.role.single) {
+                  this.fetchSubMerchants()
+                }
                 this.publicInfo = data.data.applist[0]
                 this.publicAvatar = data.data.applist[0].head_img
               }
@@ -183,11 +198,15 @@
             }
           })
           .catch(() => {
-            this.$message.error('获取连锁店铺失败')
+            this.$message.error('获取公众号信息失败')
           })
       },
       goWechatAuth () {
-        window.location.href = 'https://wxmp.qfpay.com/v1/wxthird/auth_url?userid=' + this.uid + '&redirect_url=' + window.location.href
+        if (process.env.NODE_ENV === 'production') {
+          window.location.href = 'https://wxmp.qfpay.com/v1/wxthird/auth_url?userid=' + this.uid + '&redirect_url=' + window.location.href
+        } else {
+          window.location.href = 'https://wxmp.qa.qfpay.net/v1/wxthird/auth_url?userid=' + this.uid + '&redirect_url=' + window.location.href
+        }
       },
       fetchMerchantIds () {
         axios.get(`${config.host}/merchant/ids`)
@@ -201,7 +220,7 @@
             }
           })
           .catch(() => {
-            this.$message.error('获取商户信息失败')
+            this.$message.error('获取商户id信息失败')
           })
       },
       fetchSubMerchants() {
@@ -247,21 +266,25 @@
             }
           })
           .catch(() => {
-            this.$message.error('获取连锁店铺失败')
+            this.$message.error('授权失败')
           })
       },
       unbindPublic() {
-        axios.post(`${config.host}/bigmerchant/unbind`)
+        axios.post(`${config.host}/merchant/auth/unbind`)
         .then((res) => {
           let data = res.data
           if (data.respcd === config.code.OK) {
             this.wechatNotAuth = true
+            this.$message({
+              type: 'success',
+              message: '解除成功'
+            })
           } else {
             this.$message.error(data.respmsg)
           }
         })
         .catch(() => {
-          this.$message.error('总账户解除绑定失败')
+          this.$message.error('解除失败')
         })
       },
       handleCheckAllChange(event) {
@@ -277,14 +300,15 @@
         this.dialogVisible = true;
       },
       confirm() {
-        this.$confirm('请确认是否要解除总账户公众号?', '提示', {
+        let tipText = this.role.single ? '请确认是否要解除账户授权?' : '请确认是否要解除总账户公众号?'
+        this.$confirm(tipText, '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
           this.unbindPublic()
         }).catch(() => {
-        });
+        })
       },
       selectext(e) {
         window.getSelection().selectAllChildren(e.target.nextElementSibling)
@@ -389,6 +413,12 @@
         vertical-align: text-bottom;
       }
     }
+  }
+  .el-checkbox {
+    margin:0 15px 10px 0;
+  }
+  .el-checkbox + .el-checkbox {
+    margin-left: 0;
   }
   .el-dialog__footer{
     border-top: 1px solid #E7EAEC;
