@@ -7,6 +7,7 @@ let ohost = 'https://o.qfpay.com';
 let payHost = 'https://openapi.qfpay.com'
 let imgUpload = 'https://o2.qfpay.com';
 let o2host = 'https://o2.qfpay.com';
+let mapURL = 'https://m.amap.com/picker/?key=27b775b49fad2aa4080f588d1a2ad94c';
 
 // 测试配置
 if (test) {
@@ -15,14 +16,16 @@ if (test) {
   o2host = 'https://o2.qa.qfpay.net'
   payHost = 'https://openapi.qa.qfpay.net'
   imgUpload = 'https://172.100.111.45:8080';
+  mapURL = 'https://m.amap.com/picker/?key=7b416a85298e95a1b66950b0f4223b7b';
 }
 // 本地配置
 if (dev) {
-  host = 'api'
-  ohost = 'https://o.qa.qfpay.net';
+  host = 'http://172.100.111.45:9099' // http://172.100.111.45:8080 api
+  ohost = 'http://172.100.111.45:6200'; // https://o.qa.qfpay.net
   o2host = 'https://o2.qa.qfpay.net'
   payHost = 'https://openapi.qa.qfpay.net';
-  imgUpload = 'http://172.100.111.45:8080'
+  imgUpload = 'http://172.100.111.45:8080';
+  mapURL = 'http://m.amap.com/picker/?key=27b775b49fad2aa4080f588d1a2ad94c';
 }
 
 module.exports = {
@@ -31,6 +34,7 @@ module.exports = {
   o2host,
   payHost,
   imgUpload,
+  mapURL,
   code: {
     OK: '0000', // 成功
     DBERR: '2000', // 数据库查询错误
