@@ -155,6 +155,7 @@
   import axios from 'axios'
   import config from 'config'
   import Store from '../../common/js/store'
+  import avatar from './img/avatar.png'
 
   export default {
     data() {
@@ -162,7 +163,7 @@
         role: Store.get("role") || {},
         wechatNotAuth: false,
         publicInfo: {},
-        publicAvatar: '',
+        publicAvatar: avatar,
         hashid: '',
         uid: '',
         stores: [],

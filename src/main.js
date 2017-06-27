@@ -48,10 +48,8 @@ Vue.use(Tooltip)
   return Promise.reject(err);
 }); */
 
-if (process.env.NODE_ENV !== 'development') {
-  // 允许跨域请求
-  axios.defaults.withCredentials = true
-}
+// 允许跨域请求
+axios.defaults.withCredentials = true
 
 axios.interceptors.response.use((res) => {
   let data = res.data

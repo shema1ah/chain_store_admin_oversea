@@ -21,10 +21,12 @@ let filters = {
   },
 
   tradeStatus (cancel) {
-    if (cancel === 0) {
-      return '交易取消'
-    } else {
+    console.log(cancel)
+    console.log(parseInt(cancel))
+    if (parseInt(cancel) === 0) {
       return '交易成功'
+    } else {
+      return '交易取消'
     }
   },
 
