@@ -50,7 +50,7 @@
             <el-input v-model="shopInfo.city_id"  type="hidden"  auto-complete="off" class="hidden" ref="city_id"></el-input>
 
             <el-form-item label="店铺地址" prop="location">
-              <el-input v-model="shopInfo.location" icon="caret-bottom" size="small" type="text" placeholder="点击右侧按钮打开地图" auto-complete="off" class="sub-account-item-info"></el-input>
+              <el-input v-model="shopInfo.location" size="small" type="text" placeholder="点击右侧按钮打开地图" auto-complete="off" class="sub-account-item-info"></el-input>
               <!--<span @click="showMap" type="primary" size="small" class="btn-map">地图定位</span>-->
             </el-form-item>
 
@@ -59,7 +59,7 @@
             </el-form-item>
 
             <el-form-item label="" class="sub-item-tip">
-              <div  class="sub-account-item-info-long" style="line-height: 16px;">
+              <div  class="sub-account-item-info-long" style="line-height: 16px;padding-top:15px;">
                 * 例：A座 底商1002号（如定位地址不够精确，请将店铺的地址一 并填写在详细地址栏中）
               </div>
             </el-form-item>
@@ -81,32 +81,32 @@
               <el-input v-model="shopInfo.idnumber" size="small" type="text" placeholder="请输入" auto-complete="off" class="sub-account-item-info"></el-input>
             </el-form-item>
 
-            <el-form-item label="证件有效期" prop="idstatdate">
-              <el-col :span="5">
-                <el-date-picker
-                  v-model="shopInfo.idstatdate"
-                  type="date"
-                  placeholder="生效年月日"
-                  align="center"
-                  popper-class="adjustPoper"
-                  format="yyyy-MM-dd"
-                  @change="pickerStartChange"
-                >
-                </el-date-picker>
-              </el-col>
-              <el-col :span="1" align="center">至</el-col>
-              <el-col :span="5">
-                <el-date-picker
-                  v-model="shopInfo.idenddate"
-                  type="date"
-                  placeholder="失效年月日"
-                  align="center"
-                  popper-class="adjustPoper"
-                  format="yyyy-MM-dd"
-                  @change="pickerEndChange"
-                >
-                </el-date-picker>
-              </el-col>
+            <el-form-item label="证件有效期" prop="idstatdate" style="display:inline-block;width:200px;">
+              <el-date-picker
+                v-model="shopInfo.idstatdate"
+                type="date"
+                placeholder="生效年月日"
+                align="center"
+                popper-class="adjustPoper"
+                format="yyyy-MM-dd"
+                @change="pickerStartChange"
+              >
+              </el-date-picker>
+            </el-form-item>
+
+            <el-form-item style="width:20px;display:inline-block;color:#262424;">至</el-form-item>
+
+            <el-form-item style="display:inline-block;width:200px;" prop="idenddate">
+              <el-date-picker
+                v-model="shopInfo.idenddate"
+                type="date"
+                placeholder="失效年月日"
+                align="center"
+                popper-class="adjustPoper"
+                format="yyyy-MM-dd"
+                @change="pickerEndChange"
+              >
+              </el-date-picker>
             </el-form-item>
 
             <div class="panel-select-group">
@@ -173,9 +173,9 @@
 
             <div class="divider"></div>
 
-            <el-form-item style="margin-left:0">
+            <el-form-item style="margin-left:10px">
               <el-col :span="2">
-                <el-button type="text" @click="cancelCreateSubShop('shop_info')">放弃创建</el-button>
+                <el-button type="text" @click="cancelCreateSubShop('shop_info')" style="text-decoration: underline">放弃创建</el-button>
               </el-col>
               <el-col :span="5">
                 <el-button type="primary" style="width:155px;" @click="preSignUp" :disabled="btnLocked">下一步</el-button>
@@ -221,7 +221,10 @@
                     tag: 'shopphoto',
                     userid: shopInfo.userid
                 }">
-                  <img v-if="shopInfo.shopphoto_url" :src="shopInfo.shopphoto_url" class="avatar">
+                  <div v-if="shopInfo.shopphoto_url" class="avatar-wrap">
+                    <img  :src="shopInfo.shopphoto_url" class="avatar"> <!-- /static/img/example3.jpg   -->
+                    <i class="img-tip">重新上传</i>
+                  </div>
                   <div v-else class="avatar-uploader-wrap">
                     <i class="avatar-uploader-icon el-icon-plus"></i>
                     <div class="avatar-desc">点击添加图片</div>
@@ -256,7 +259,10 @@
                     tag: 'goodsphoto',
                     userid: shopInfo.userid
                 }">
-                  <img v-if="shopInfo.goodsphoto_url" :src="shopInfo.goodsphoto_url" class="avatar">
+                  <div v-if="shopInfo.goodsphoto_url" class="avatar-wrap">
+                    <img  :src="shopInfo.goodsphoto_url" class="avatar">
+                    <i class="img-tip">重新上传</i>
+                  </div>
                   <div v-else class="avatar-uploader-wrap">
                     <i class="avatar-uploader-icon el-icon-plus"></i>
                     <div class="avatar-desc">点击添加图片</div>
@@ -290,7 +296,10 @@
                     tag: 'idcardfront',
                     userid: shopInfo.userid
                 }">
-                  <img v-if="shopInfo.idcardfront_url" :src="shopInfo.idcardfront_url" class="avatar">
+                  <div v-if="shopInfo.idcardfront_url" class="avatar-wrap">
+                    <img  :src="shopInfo.idcardfront_url" class="avatar">
+                    <i class="img-tip">重新上传></i>
+                  </div>
                   <div v-else class="avatar-uploader-wrap">
                     <i class="avatar-uploader-icon el-icon-plus"></i>
                     <div class="avatar-desc">点击添加图片</div>
@@ -319,7 +328,10 @@
                     tag: 'idcardback',
                     userid: shopInfo.userid
                 }">
-                  <img v-if="shopInfo.idcardback_url" :src="shopInfo.idcardback_url" class="avatar">
+                  <div v-if="shopInfo.idcardback_url" class="avatar-wrap">
+                    <img  :src="shopInfo.idcardback_url" class="avatar">
+                    <i class="img-tip">重新上传></i>
+                  </div>
                   <div v-else class="avatar-uploader-wrap">
                     <i class="avatar-uploader-icon el-icon-plus"></i>
                     <div class="avatar-desc">点击添加图片</div>
@@ -348,7 +360,10 @@
                     tag: 'idcardinhand',
                     userid: shopInfo.userid
                 }">
-                  <img v-if="shopInfo.idcardinhand_url" :src="shopInfo.idcardinhand_url" class="avatar">
+                  <div v-if="shopInfo.idcardinhand_url" class="avatar-wrap">
+                    <img  :src="shopInfo.idcardinhand_url" class="avatar">
+                    <i class="img-tip">重新上传</i>
+                  </div>
                   <div v-else class="avatar-uploader-wrap">
                     <i class="avatar-uploader-icon el-icon-plus"></i>
                     <div class="avatar-desc">点击添加图片</div>
@@ -382,8 +397,21 @@
         </div>
       </div>
     </div>
-    <el-dialog v-show="isShowMap"   :modal="true" id="geolocation_shop" :modal-append-to-body="false" slot="`<span id='close-geo'>X</span>`">
+    <el-dialog v-show="isShowMap"   :modal="true" id="geolocation_shop" :modal-append-to-body="false" slot="`<span id='close-geo'>X</span>`"></el-dialog>
 
+    <el-dialog :visible.sync="isShowCommitDone" :modal="true"  class="mydialog">
+      <el-form :model="shopInfo">
+        <el-form-item class="done-icon">
+          <i class="el-icon-check OK"></i>
+          <span class="done-text">分店创建成功！</span>
+        </el-form-item>
+        <el-form-item class="done-desc">分店帐号：{{shopInfo.shopAccout}}</el-form-item>
+        <div class="divider" style="margin-bottom:20px"></div>
+        <el-form-item  class="dialog-footer">
+          <el-button @click="backToShopManagement" class="backToSMBtn">门店管理</el-button>
+          <el-button @click="continueToCreateSubShop" type="success">继续创建分店</el-button>
+        </el-form-item>
+      </el-form>
     </el-dialog>
   </div>
 
@@ -399,11 +427,14 @@
   import ElFormItem from "../../../node_modules/element-ui/packages/form/src/form-item";
   import ElDialog from "../../../node_modules/element-ui/packages/dialog/src/component";
   import ElSlPanel from "../../../node_modules/element-ui/packages/color-picker/src/components/sv-panel";
+  import ElIcon from "../../../node_modules/element-ui/packages/icon/src/icon";
+  import qs from 'qs';
   const AMap = window.AMap;
   var map = null;
 
 export default {
   components: {
+    ElIcon,
     ElSlPanel,
     ElDialog,
     ElFormItem,
@@ -412,19 +443,28 @@ export default {
     ElForm},
   data() {
       let idValid = (rule, val, cb) => {
-          if(!cardValid(val)) {
+          if(!cardValid(val.trim())) {
               console.log('身份证验证成功');
               cb();
           }else {
               cb('请输入合法身份证号')
           }
       };
+      let isEmpty = (rule, val, cb) => {
+          if(!val.trim()) {
+              cb('只输入空格无效')
+          }else {
+              cb();
+          }
+      }
       return {
+         isShowCommitDone: false,
          btnLocked: false,
          isShowMap: false,
          infoPage: true, // 子商户信息填写页
          uploadInterface: `${config.imgUpload}/util/v1/uploadfile`, // 上传接口
          shopInfo: {
+           shopAccout: '',
            password: '', // 密码
            shopname: '', // 分店名称
            landline: '', // 顾客可联系的电话
@@ -480,10 +520,12 @@ export default {
         },
         page1_rules: {
           password: [
-            { required: true, message: '请输入分店登录密码', trigger: 'blur' }
+            { required: true, message: '请输入分店登录密码', trigger: 'blur' },
+            { validator: isEmpty }
           ],
           shopname: [
-            { required: true, message: '请输入分店名称', trigger: 'blur' }
+            { required: true, message: '请输入分店名称', trigger: 'blur' },
+            { validator: isEmpty }
           ],
           shoptype_name: [
             { required: true, message: '请选择经营类型' }
@@ -491,18 +533,26 @@ export default {
           location: [
             { required: true, message: '请从地图中定位店铺地址或手动填写' }
           ],
+          address: [
+            { required: true, message: '请从填写详细门牌号' },
+            { validator: isEmpty }
+          ],
           idnumber: [
             { required: true, message: '请输入身份证号', trigger: 'blur' },
             { validator: idValid }
           ],
           idstatdate: [
             { required: true, message: '请选择生效年月日' }
+//            { validator: function(rule, val, cb) {
+//                console.log('enddate:', val, this)
+//            }}
           ],
           idenddate: [
             { required: true, message: '请选择失效年月日' }
           ],
           bankuser: [
-            { required: true, message: '请输入开户名', trigger: 'blur' }
+            { required: true, message: '请输入开户名', trigger: 'blur' },
+            { validator: isEmpty }
           ],
           bankaccount: [
             { required: true, message: '请输入银行卡号', trigger: 'blur' },
@@ -517,7 +567,7 @@ export default {
           bankmobile: [
             { required: true, message: '请输入开户银行预留手机号', trigger: 'blur' },
             {validator: (rule, val, cb) => {
-                if (/!\d/g.test(val)) {
+                if (/!\d/g.test(+val)) {
                   cb('手机号必须是数字');
                 } else if (!/^1[3578][01379]\d{8}$|^1[34578][01256]\d{8}$|^(134[012345678]\d{7}|1[34578][012356789]\d{8})$/.test(val)) {
                   cb('必须输入合法手机号')
@@ -564,6 +614,17 @@ export default {
   },
 
   methods: {
+    backToShopManagement() {
+      this.$refs['upload_info'].resetFields();
+      this.$refs['shop_info'].resetFields();
+      this.$router.push('/main/chainmanage');
+    },
+    continueToCreateSubShop() {
+      this.$refs['upload_info'].resetFields();
+      this.$refs['shop_info'].resetFields();
+      this.backToPrePage();
+      this.isShowCommitDone = false;
+    },
     pickerStartChange(op) {
       this.shopInfo.idstatdate = op;
     },
@@ -667,10 +728,11 @@ export default {
 
     },
     signUp() { // 最终提交
+      var _this = this;
       this.$refs['upload_info'].validate((valid) => {
           if(valid) {
             this.btnLocked = true;
-            axios.post(`${config.ohost}/mchnt/user/signup`, {
+            axios.post(`${config.ohost}/mchnt/user/signup`, qs.stringify({
               username: this.shopInfo.username,
               password: this.shopInfo.password,
               bankuser: this.shopInfo.bankuser,
@@ -689,22 +751,31 @@ export default {
               location: this.shopInfo.location,
               address: this.shopInfo.address,
               provinceid: this.shopInfo.provinceid,
+              shopphoto: this.shopInfo.shopphoto_name,
+              goodsphoto: this.shopInfo.goodsphoto_name,
+              idcardfront: this.shopInfo.idcardfront_name,
+              idcardback: this.shopInfo.idcardback_name,
+              idcardinhand: this.shopInfo.idcardinhand_name,
+              mode: 'bigmchnt',
               format: 'cors'
+            }), {
+              headers: {
+                'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+              }
             }).then((res) => {
+              _this.btnLocked = false;
               let data = res.data;
               if(data.respcd === config.code.OK) {
-                  this.$refs['upload_info'].resetFields();
-                  this.$refs['shop_info'].resetFields();
-                  this.this.$message.info('注册成功！')
-                  this.$router.push('/main/chainmanage');
+                _this.shopInfo.shopAccout = data.data.mobile;
+                _this.isShowCommitDone = true;
               } else {
-                this.$message.error(data.resperr);
+                _this.$message.error(data.resperr);
               }
-              this.btnLocked = false;
+
             })
               .catch((e) => {
-                this.$message.error(e);
-                this.btnLocked = false;
+                _this.$message.error(e);
+                _this.btnLocked = false;
               });
           }
       })
@@ -910,16 +981,40 @@ export default {
   }
 }
 </script>
-<style lang="scss" scoped="true">
-  /*.v-model {*/
-    /*position: fixed;*/
-    /*left: 0;*/
-    /*top: 0;*/
-    /*width: 100%;*/
-    /*height: 100%;*/
-    /*opacity: 0.5;*/
-    /*background: #000;*/
-  /*}*/
+<style lang="scss">
+  .backToSMBtn {
+    color:#fe9b20;
+    border:1px solid #fe9b20;
+    margin-left: 180px;
+  }
+  .done-icon {
+    height: 46px;
+    text-align: center;
+    line-height: 46px;
+    .OK {
+      width: 36px;
+      height: 36px;
+      line-height: 40px;
+      border-radius: 50%;
+      border: 3px solid #7ed321;
+      font-size: 24px;
+      text-align: center;
+      color: #7ed321;
+    }
+    span.done-text {
+      font-size: 26px;
+      color: #262424;
+      padding-left:10px;
+      display:inline-block;
+    }
+  }
+  .done-desc {
+    text-align: center;
+    font-size:17px;
+    color:#262424;
+  }
+
+
   .btn-map {
     display:inline-block;;
     width:66px;
@@ -966,13 +1061,9 @@ export default {
           }
           .sub-account-item-info-long {
             width: 410px;
+            line-height: 44px;
           }
           .el-form-item__content {
-            line-height:16px !important;
-            /*.sub-account-item-info-long {*/
-              /*font-size: 14px;*/
-              /*color: #8a8c92;*/
-            /*}*/
             .el-col {
               .el-date-editor.el-input.el-date-editor--date {
                 .el-picker-panel.el-date-picker.adjustPoper {
@@ -1029,11 +1120,39 @@ export default {
         /*}*/
       /*}*/
     /*}*/
-  .avatar {
-    width: 240px;
-    height: 180px;
-    display: block;
+  .avatar-wrap {
+    posistion: relative !important;
+    .avatar {
+      width: 240px;
+      height: 180px;
+      display: block;
+    }
+    .img-tip {
+      width: 240px;
+      height: 46px;
+      line-height: 46px;
+      position: absolute;
+      bottom: 13px;
+      left:0;
+      color: #ffffff;
+      text-align: center;
+      background-color: rgba(138,140,146,0.5);
+      display: none;
+    }
+    &:hover .img-tip {
+      display: block;
+      /*animation: growUp .5s ease;*/
+      -webkit-animation-name: growUp;
+      -webkit-animation-duration: 500ms;
+      -webkit-animation-iteration-count: 1;
+      -webkit-animation-timing-function: ease-in-out;
+    }
+    @-webkit-keyframes growUp {
+      0%   { height: 0px; }
+      100%   { height: 46px; }
+    }
   }
+
   .avatar-uploader-wrap {
     width:240px;
     height:144px;
