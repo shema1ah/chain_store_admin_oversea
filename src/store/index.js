@@ -24,7 +24,7 @@ const store = new Vuex.Store({
       state.storageData = payload.storageData
     },
     getPageShopData (state, payload) {
-      state.pageShopData = payload.pageShopData
+      state.pageShopData = payload.pageShopData;
     },
     getShopList (state, payload) {
       payload.shopData.list.unshift({shop_name: '全部', uid: ''})
@@ -74,7 +74,7 @@ const store = new Vuex.Store({
     },
     getPageShopData ({ commit }, payload) {
       axios.get(`${config.host}/merchant/sub/list`, {
-        params: Object.assign({}, {start: 0, len: 10}, payload && payload.params)
+        params: Object.assign({}, {start: 0, len: 10}, payload)
       })
       .then((res) => {
         let data = res.data

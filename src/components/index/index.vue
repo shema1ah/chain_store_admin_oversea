@@ -77,7 +77,7 @@
               </li>
               <li>
                 <strong>刺激消费数</strong>
-                <span><em>{{activity.total_amt}}</em>个</span>
+                <span><em>{{activity.total_amt | formatCurrency}}</em>元</span>
               </li>
             </ul>
           </div>
@@ -102,6 +102,30 @@
               <li>
                 <strong>兑换数</strong>
                 <span><em>{{activity.exchange_num}}</em>份</span>
+              </li>
+            </ul>
+          </div>
+          <div @click="openDetail('storage')" v-if="activity.type === 'prepaid'">
+            <h3><i class="store"></i>进行中的活动：储值</h3>
+            <div class="title">
+              <i class="icon store"></i>
+              <span>
+                <strong>{{activity.title}}</strong>
+                活动已进行{{activity.going_days}}天
+              </span>
+            </div>
+            <ul>
+              <li>
+                <strong>今日储值</strong>
+                <span><em>{{activity.today_total_pay_amt | formatCurrency}}</em>元</span>
+              </li>
+              <li>
+                <strong>储值会员</strong>
+                <span><em>{{activity.user_num}}</em>位</span>
+              </li>
+              <li>
+                <strong>储值金额</strong>
+                <span><em>{{activity.total_txamt | formatCurrency}}</em>元</span>
               </li>
             </ul>
           </div>
@@ -183,7 +207,7 @@
           .then((res) => {
             this.loading2 = false;
             let data = res.data
-            if(data.respcd === config.code.OK) {
+            if (data.respcd === config.code.OK) {
               this.activitys = data.data.result
             } else {
               this.$message.error(data.respmsg)
