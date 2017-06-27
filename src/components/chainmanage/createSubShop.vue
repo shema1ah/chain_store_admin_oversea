@@ -59,7 +59,7 @@
             </el-form-item>
 
             <el-form-item label="" class="sub-item-tip">
-              <div  class="sub-account-item-info-long" style="line-height: 16px;">
+              <div  class="sub-account-item-info-long" style="line-height: 16px;padding-top:15px;">
                 * 例：A座 底商1002号（如定位地址不够精确，请将店铺的地址一 并填写在详细地址栏中）
               </div>
             </el-form-item>
@@ -81,32 +81,32 @@
               <el-input v-model="shopInfo.idnumber" size="small" type="text" placeholder="请输入" auto-complete="off" class="sub-account-item-info"></el-input>
             </el-form-item>
 
-            <el-form-item label="证件有效期" prop="idstatdate">
-              <el-col :span="5">
-                <el-date-picker
-                  v-model="shopInfo.idstatdate"
-                  type="date"
-                  placeholder="生效年月日"
-                  align="center"
-                  popper-class="adjustPoper"
-                  format="yyyy-MM-dd"
-                  @change="pickerStartChange"
-                >
-                </el-date-picker>
-              </el-col>
-              <el-col :span="1" align="center">至</el-col>
-              <el-col :span="5">
-                <el-date-picker
-                  v-model="shopInfo.idenddate"
-                  type="date"
-                  placeholder="失效年月日"
-                  align="center"
-                  popper-class="adjustPoper"
-                  format="yyyy-MM-dd"
-                  @change="pickerEndChange"
-                >
-                </el-date-picker>
-              </el-col>
+            <el-form-item label="证件有效期" prop="idstatdate" style="display:inline-block;width:200px;">
+              <el-date-picker
+                v-model="shopInfo.idstatdate"
+                type="date"
+                placeholder="生效年月日"
+                align="center"
+                popper-class="adjustPoper"
+                format="yyyy-MM-dd"
+                @change="pickerStartChange"
+              >
+              </el-date-picker>
+            </el-form-item>
+
+            <el-form-item style="width:20px;display:inline-block;color:#262424;">至</el-form-item>
+
+            <el-form-item style="display:inline-block;width:200px;" prop="idenddate">
+              <el-date-picker
+                v-model="shopInfo.idenddate"
+                type="date"
+                placeholder="失效年月日"
+                align="center"
+                popper-class="adjustPoper"
+                format="yyyy-MM-dd"
+                @change="pickerEndChange"
+              >
+              </el-date-picker>
             </el-form-item>
 
             <div class="panel-select-group">
@@ -173,9 +173,9 @@
 
             <div class="divider"></div>
 
-            <el-form-item style="margin-left:0">
+            <el-form-item style="margin-left:10px">
               <el-col :span="2">
-                <el-button type="text" @click="cancelCreateSubShop('shop_info')">放弃创建</el-button>
+                <el-button type="text" @click="cancelCreateSubShop('shop_info')" style="text-decoration: underline">放弃创建</el-button>
               </el-col>
               <el-col :span="5">
                 <el-button type="primary" style="width:155px;" @click="preSignUp" :disabled="btnLocked">下一步</el-button>
@@ -221,7 +221,10 @@
                     tag: 'shopphoto',
                     userid: shopInfo.userid
                 }">
-                  <img v-if="shopInfo.shopphoto_url" :src="shopInfo.shopphoto_url" class="avatar">
+                  <div v-if="shopInfo.shopphoto_url" class="avatar-wrap">
+                    <img  :src="shopInfo.shopphoto_url" class="avatar"> <!-- /static/img/example3.jpg   -->
+                    <i class="img-tip">重新上传></i>
+                  </div>
                   <div v-else class="avatar-uploader-wrap">
                     <i class="avatar-uploader-icon el-icon-plus"></i>
                     <div class="avatar-desc">点击添加图片</div>
@@ -256,7 +259,10 @@
                     tag: 'goodsphoto',
                     userid: shopInfo.userid
                 }">
-                  <img v-if="shopInfo.goodsphoto_url" :src="shopInfo.goodsphoto_url" class="avatar">
+                  <div v-if="shopInfo.goodsphoto_url" class="avatar-wrap">
+                    <img  :src="shopInfo.goodsphoto_url" class="avatar">
+                    <i class="img-tip">重新上传</i>
+                  </div>
                   <div v-else class="avatar-uploader-wrap">
                     <i class="avatar-uploader-icon el-icon-plus"></i>
                     <div class="avatar-desc">点击添加图片</div>
@@ -290,7 +296,10 @@
                     tag: 'idcardfront',
                     userid: shopInfo.userid
                 }">
-                  <img v-if="shopInfo.idcardfront_url" :src="shopInfo.idcardfront_url" class="avatar">
+                  <div v-if="shopInfo.idcardfront_url" class="avatar-wrap">
+                    <img  :src="shopInfo.idcardfront_url" class="avatar">
+                    <i class="img-tip">重新上传></i>
+                  </div>
                   <div v-else class="avatar-uploader-wrap">
                     <i class="avatar-uploader-icon el-icon-plus"></i>
                     <div class="avatar-desc">点击添加图片</div>
@@ -319,7 +328,10 @@
                     tag: 'idcardback',
                     userid: shopInfo.userid
                 }">
-                  <img v-if="shopInfo.idcardback_url" :src="shopInfo.idcardback_url" class="avatar">
+                  <div v-if="shopInfo.idcardback_url" class="avatar-wrap">
+                    <img  :src="shopInfo.idcardback_url" class="avatar">
+                    <i class="img-tip">重新上传></i>
+                  </div>
                   <div v-else class="avatar-uploader-wrap">
                     <i class="avatar-uploader-icon el-icon-plus"></i>
                     <div class="avatar-desc">点击添加图片</div>
@@ -348,7 +360,10 @@
                     tag: 'idcardinhand',
                     userid: shopInfo.userid
                 }">
-                  <img v-if="shopInfo.idcardinhand_url" :src="shopInfo.idcardinhand_url" class="avatar">
+                  <div v-if="shopInfo.idcardinhand_url" class="avatar-wrap">
+                    <img  :src="shopInfo.idcardinhand_url" class="avatar">
+                    <i class="img-tip">重新上传</i>
+                  </div>
                   <div v-else class="avatar-uploader-wrap">
                     <i class="avatar-uploader-icon el-icon-plus"></i>
                     <div class="avatar-desc">点击添加图片</div>
@@ -429,7 +444,7 @@ export default {
       return {
          btnLocked: false,
          isShowMap: false,
-         infoPage: true, // 子商户信息填写页
+         infoPage: false, // 子商户信息填写页
          uploadInterface: `${config.imgUpload}/util/v1/uploadfile`, // 上传接口
          shopInfo: {
            password: '', // 密码
@@ -501,7 +516,7 @@ export default {
             { required: true, message: '请从地图中定位店铺地址或手动填写' }
           ],
           address: [
-            { required: true, message: '请从地图中定位店铺地址或手动填写' },
+            { required: true, message: '请从填写详细门牌号' },
             { validator: isEmpty }
           ],
           idnumber: [
@@ -509,7 +524,10 @@ export default {
             { validator: idValid }
           ],
           idstatdate: [
-            { required: true, message: '请选择生效年月日' }
+            { required: true, message: '请选择生效年月日' },
+            { validator: function(rule, val, cb) {
+                console.log('enddate:', val, this)
+            }}
           ],
           idenddate: [
             { required: true, message: '请选择失效年月日' }
@@ -531,7 +549,7 @@ export default {
           bankmobile: [
             { required: true, message: '请输入开户银行预留手机号', trigger: 'blur' },
             {validator: (rule, val, cb) => {
-                if (/!\d/g.test(val)) {
+                if (/!\d/g.test(+val)) {
                   cb('手机号必须是数字');
                 } else if (!/^1[3578][01379]\d{8}$|^1[34578][01256]\d{8}$|^(134[012345678]\d{7}|1[34578][012356789]\d{8})$/.test(val)) {
                   cb('必须输入合法手机号')
@@ -711,8 +729,11 @@ export default {
               idcardinhand: this.shopInfo.idcardinhand_name,
               mode: 'bigmchnt',
               format: 'cors'
+            }, {
+              headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+              }
             }).then((res) => {
-                debugger;
               _this.btnLocked = false;
               let data = res.data;
               if(data.respcd === config.code.OK) {
@@ -1052,11 +1073,38 @@ export default {
         /*}*/
       /*}*/
     /*}*/
-  .avatar {
-    width: 240px;
-    height: 180px;
-    display: block;
+  .avatar-wrap {
+    posistion: relative;
+    .avatar {
+      width: 240px;
+      height: 180px;
+      display: block;
+    }
+    .img-tip {
+      width: 240px;
+      height: 0px;
+      line-height: 46px;
+      position: absolute;
+      bottom: 13px;
+      left:0;
+      color: #ffffff;
+      text-align: center;
+      background-color: rgba(138,140,146,0.5);
+    }
+    &:hover .img-tip {
+      height: 46px;
+      /*animation: growUp .5s ease;*/
+      -webkit-animation-name: growUp;
+      -webkit-animation-duration: 500ms;
+      -webkit-animation-iteration-count: 1;
+      -webkit-animation-timing-function: ease-in-out;
+    }
+    @-webkit-keyframes growUp {
+      0%   { height: 0px; }
+      100%   { height: 46px; }
+    }
   }
+
   .avatar-uploader-wrap {
     width:240px;
     height:144px;

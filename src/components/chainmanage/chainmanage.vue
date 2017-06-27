@@ -95,7 +95,7 @@
       </div>
       <div class="pagination_wrapper" v-if="pageShopData.count >= 10">
         <el-pagination
-          layout="total, sizes, prev, pager, next, jumper"
+          layout="total, prev, pager, next, jumper"
           :total="pageShopData.count"
           :page-size="10"
           @current-change="currentChange"
@@ -506,18 +506,19 @@
         });
       },
 
-      currentChange(current) {
-//        this.$store.dispatch({
-//          type: 'getPageShopData',
-//          start: currentPage - 1
-//        });
-        if (!current && this.currentpage !== 1) {
-          this.currentpage = 1;
-          return;
-        }
-        if (current) {
-          this.currentpage = current;
-        }
+      currentChange(currentPage) {
+        this.$store.dispatch({
+          type: 'getPageShopData',
+          start: currentPage - 1,
+          len: 10
+        });
+//        if (!currentPage && this.currentpage !== 1) {
+//          this.currentpage = 1;
+//          return;
+//        }
+//        if (currentPage) {
+//          this.currentpage = currentPage;
+//        }
       },
 
       associate() {
