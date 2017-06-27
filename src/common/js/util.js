@@ -139,6 +139,17 @@ const getRole = (data) => {
   return role
 }
 
+const formatData = (arg1, arg2) => {
+  let m = 0;
+  let s1 = arg1.toString();
+  let s2 = arg2.toString();
+
+  try{ m += s1.split(".")[1].length }catch(e) {}
+  try{ m += s2.split(".")[1].length }catch(e) {}
+
+  return Number(s1.replace(".", "")) * Number(s2.replace(".", "")) / Math.pow(10, m)
+}
+
 const getCookie = (sName) => {
   var aCookie = document.cookie.split(';')
 
@@ -313,6 +324,7 @@ module.exports = {
   deepClone,
   getParams,
   getRole,
+  formatData,
   getCookie,
   cardValid,
   mobileValid
