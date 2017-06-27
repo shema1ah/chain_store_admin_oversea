@@ -397,8 +397,21 @@
         </div>
       </div>
     </div>
-    <el-dialog v-show="isShowMap"   :modal="true" id="geolocation_shop" :modal-append-to-body="false" slot="`<span id='close-geo'>X</span>`">
+    <el-dialog v-show="isShowMap"   :modal="true" id="geolocation_shop" :modal-append-to-body="false" slot="`<span id='close-geo'>X</span>`"></el-dialog>
 
+    <el-dialog :visible.sync="isShowCommitDone" :modal="true"  class="mydialog">
+      <el-form :model="shopInfo">
+        <el-form-item class="done-icon">
+          <i class="el-icon-check OK"></i>
+          <span class="done-text">分店创建成功！</span>
+        </el-form-item>
+        <el-form-item class="done-desc">分店帐号：{{shopInfo.shopAccout}}</el-form-item>
+        <div class="divider" style="margin-bottom:20px"></div>
+        <el-form-item  class="dialog-footer">
+          <el-button @click="backToShopManagement" class="backToSMBtn">门店管理</el-button>
+          <el-button @click="continueToCreateSubShop" type="success">继续创建分店</el-button>
+        </el-form-item>
+      </el-form>
     </el-dialog>
   </div>
 
@@ -414,11 +427,14 @@
   import ElFormItem from "../../../node_modules/element-ui/packages/form/src/form-item";
   import ElDialog from "../../../node_modules/element-ui/packages/dialog/src/component";
   import ElSlPanel from "../../../node_modules/element-ui/packages/color-picker/src/components/sv-panel";
+  import ElIcon from "../../../node_modules/element-ui/packages/icon/src/icon";
+  import qs from 'qs';
   const AMap = window.AMap;
   var map = null;
 
 export default {
   components: {
+    ElIcon,
     ElSlPanel,
     ElDialog,
     ElFormItem,
@@ -442,11 +458,13 @@ export default {
           }
       }
       return {
+         isShowCommitDone: false,
          btnLocked: false,
          isShowMap: false,
-         infoPage: false, // 子商户信息填写页
+         infoPage: true, // 子商户信息填写页
          uploadInterface: `${config.imgUpload}/util/v1/uploadfile`, // 上传接口
          shopInfo: {
+           shopAccout: '',
            password: '', // 密码
            shopname: '', // 分店名称
            landline: '', // 顾客可联系的电话
@@ -524,10 +542,10 @@ export default {
             { validator: idValid }
           ],
           idstatdate: [
-            { required: true, message: '请选择生效年月日' },
-            { validator: function(rule, val, cb) {
-                console.log('enddate:', val, this)
-            }}
+            { required: true, message: '请选择生效年月日' }
+//            { validator: function(rule, val, cb) {
+//                console.log('enddate:', val, this)
+//            }}
           ],
           idenddate: [
             { required: true, message: '请选择失效年月日' }
@@ -596,6 +614,17 @@ export default {
   },
 
   methods: {
+    backToShopManagement() {
+      this.$refs['upload_info'].resetFields();
+      this.$refs['shop_info'].resetFields();
+      this.$router.push('/main/chainmanage');
+    },
+    continueToCreateSubShop() {
+      this.$refs['upload_info'].resetFields();
+      this.$refs['shop_info'].resetFields();
+      this.backToPrePage();
+      this.isShowCommitDone = false;
+    },
     pickerStartChange(op) {
       this.shopInfo.idstatdate = op;
     },
@@ -703,7 +732,7 @@ export default {
       this.$refs['upload_info'].validate((valid) => {
           if(valid) {
             this.btnLocked = true;
-            axios.post(`${config.ohost}/mchnt/user/signup`, {
+            axios.post(`${config.ohost}/mchnt/user/signup`, qs.stringify({
               username: this.shopInfo.username,
               password: this.shopInfo.password,
               bankuser: this.shopInfo.bankuser,
@@ -729,24 +758,18 @@ export default {
               idcardinhand: this.shopInfo.idcardinhand_name,
               mode: 'bigmchnt',
               format: 'cors'
-            }, {
+            }), {
               headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
+                'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
               }
             }).then((res) => {
               _this.btnLocked = false;
               let data = res.data;
               if(data.respcd === config.code.OK) {
-                _this.$refs['upload_info'].resetFields();
-                _this.$refs['shop_info'].resetFields();
-                _this.$message({
-                  type: 'success',
-                  message: '注册成功!'
-                });
-                _this.$router.go(-1);
+                _this.shopInfo.shopAccout = data.data.mobile;
+                _this.isShowCommitDone = true;
               } else {
                 _this.$message.error(data.resperr);
-                _this.btnLocked = false;
               }
 
             })
@@ -959,15 +982,39 @@ export default {
 }
 </script>
 <style lang="scss">
-  /*.v-model {*/
-    /*position: fixed;*/
-    /*left: 0;*/
-    /*top: 0;*/
-    /*width: 100%;*/
-    /*height: 100%;*/
-    /*opacity: 0.5;*/
-    /*background: #000;*/
-  /*}*/
+  .backToSMBtn {
+    color:#fe9b20;
+    border:1px solid #fe9b20;
+    margin-left: 180px;
+  }
+  .done-icon {
+    height: 46px;
+    text-align: center;
+    line-height: 46px;
+    .OK {
+      width: 36px;
+      height: 36px;
+      line-height: 40px;
+      border-radius: 50%;
+      border: 3px solid #7ed321;
+      font-size: 24px;
+      text-align: center;
+      color: #7ed321;
+    }
+    span.done-text {
+      font-size: 26px;
+      color: #262424;
+      padding-left:10px;
+      display:inline-block;
+    }
+  }
+  .done-desc {
+    text-align: center;
+    font-size:17px;
+    color:#262424;
+  }
+
+
   .btn-map {
     display:inline-block;;
     width:66px;
