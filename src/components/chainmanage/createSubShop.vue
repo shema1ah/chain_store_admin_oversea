@@ -223,7 +223,7 @@
                 }">
                   <div v-if="shopInfo.shopphoto_url" class="avatar-wrap">
                     <img  :src="shopInfo.shopphoto_url" class="avatar"> <!-- /static/img/example3.jpg   -->
-                    <i class="img-tip">重新上传></i>
+                    <i class="img-tip">重新上传</i>
                   </div>
                   <div v-else class="avatar-uploader-wrap">
                     <i class="avatar-uploader-icon el-icon-plus"></i>
@@ -1074,7 +1074,7 @@ export default {
       /*}*/
     /*}*/
   .avatar-wrap {
-    posistion: relative;
+    posistion: relative !important;
     .avatar {
       width: 240px;
       height: 180px;
@@ -1082,7 +1082,7 @@ export default {
     }
     .img-tip {
       width: 240px;
-      height: 0px;
+      height: 46px;
       line-height: 46px;
       position: absolute;
       bottom: 13px;
@@ -1090,9 +1090,10 @@ export default {
       color: #ffffff;
       text-align: center;
       background-color: rgba(138,140,146,0.5);
+      display: none;
     }
     &:hover .img-tip {
-      height: 46px;
+      display: block;
       /*animation: growUp .5s ease;*/
       -webkit-animation-name: growUp;
       -webkit-animation-duration: 500ms;
