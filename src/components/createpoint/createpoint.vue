@@ -54,7 +54,7 @@
             </el-form-item>
             <el-form-item prop="mchnt_id_list" label="适用门店" v-if="!role.single">
               <el-select v-model="form.mchnt_id_list" placeholder="请选择门店" multiple filterable size="small">
-                <el-option label="全部" value=""></el-option>
+                <el-option label="全部" value="" :disabled="state"></el-option>
                 <el-option v-for="shop in shopData" :label="shop.shopname" :key="shop.uid" :value="shop.uid" :disabled="shop.state == 0">
                 </el-option>
               </el-select>
@@ -122,6 +122,7 @@
         checked: false,
         role: Store.get('role') || {},
         shopData: [],
+        state: true,
         form: {
           exchange_pt: null,
           obtain_amt: null,
@@ -129,7 +130,7 @@
           goods_amt: '',
           start_time: '',
           expire_time: '',
-          mchnt_id_list: ['']
+          mchnt_id_list: []
         },
         formrules: {
           exchange_pt: [
@@ -212,6 +213,12 @@
           if (data.respcd === config.code.OK) {
             this.shopData = data.data || [];
             Store.set('shopStateList', this.shopData);
+
+            for(let val of this.shopData) {
+                if(val.state === '1') {
+                    this.state = false;
+                }
+            }
           } else {
             this.$message.error(data.respmsg);
           }

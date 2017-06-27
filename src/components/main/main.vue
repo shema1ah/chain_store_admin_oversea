@@ -1,5 +1,5 @@
 <template>
-  <div class="top_content">
+  <div class="top_content" v-loading="loading" element-loading-text="拼命加载中">
     <sidebar></sidebar>
     <div class="main">
       <div class="header">
@@ -31,6 +31,7 @@ import sidebar from '../../components/sidebar/sidebar.vue';
 export default {
   data() {
     return {
+      loading: false,
       shop: {},
       formrules: {
         account: [
@@ -57,9 +58,11 @@ export default {
   methods: {
     // 退出登录
     logout() {
+      this.loading = true;
       axios.get(`${config.host}/merchant/signout`)
       .then((res) => {
         let data = res.data;
+        this.loading = false;
         if (data.respcd === config.code.OK) {
           // 清除本地cookie
           document.cookie = "sessionid=''; expires=" + new Date(0).toUTCString();
@@ -69,6 +72,7 @@ export default {
           this.$message.error(data.respmsg);
         }
       }).catch(() => {
+        this.loading = false;
         this.$message.error('请求失败');
       });
     },

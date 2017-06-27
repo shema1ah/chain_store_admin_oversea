@@ -128,8 +128,8 @@
             <el-dropdown>
               <span class="el-dropdown-link"><img src="./img/download.png" alt="下载"></span>
               <el-dropdown-menu slot="dropdown">
-                <a :href="detailHref" download><el-dropdown-item command=1 class="download_detail">下载交易明细</el-dropdown-item></a>
-                <a :href="collectionHref" download><el-dropdown-item command=2 class="download_detail">下载交易汇总</el-dropdown-item></a>
+                <a :href="detailHref" download><el-dropdown-item command=1>下载交易明细</el-dropdown-item></a>
+                <a :href="collectionHref" download><el-dropdown-item command=2>下载交易汇总</el-dropdown-item></a>
               </el-dropdown-menu>
             </el-dropdown>
           </div>

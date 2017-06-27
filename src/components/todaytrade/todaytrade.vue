@@ -2,14 +2,14 @@
   <div class="content">
     <div class="banner_wrapper">
       <div class="banner-breadcrumb">
-        <span>今日收款</span>
+        <span>实时收款</span>
       </div>
     </div>
 
     <div class="panel">
       <div class="panel-header">
         <div class="panel-select-group panel-select-group__justify">
-          <span class="panel-header__desc">实时交易</span>
+          <span class="panel-header__desc">流水列表</span>
           <span style="padding-right:30px">每5s自动刷新</span>
         </div>
       </div>

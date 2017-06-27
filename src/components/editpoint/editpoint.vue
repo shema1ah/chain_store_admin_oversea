@@ -96,7 +96,7 @@
             goods_amt: +pData.goods_amt,
             start_time: new Date(pData.start_time),
             expire_time: new Date(pData.expire_time),
-            mchnt_id_list: ['']
+            mchnt_id_list: []
           };
           vm.id = pData.id;
           vm.checked = pData.obtain_limit == 0;
@@ -214,7 +214,7 @@
 
       // 进入页面格式化数据
       formatData(data) {
-        let checklist = (Store.get('pointData') || {}).apply_shops || [];
+        let checklist = [];
         let alllist = data;
         let checkList = [];
         let list = [];
@@ -222,11 +222,23 @@
         for(let val of alllist) {
           let flag = false;
 
-          for(let index of checklist) {
-            if(val.uid == index.uid) {
-              checkList.push(val);
-              valueList.push(val.uid);
-              flag = true;
+          if((Store.get('pointData') || {}).apply_shops) {
+            checklist = (Store.get('pointData') || {}).apply_shops;
+            for(let index of checklist) {
+              if(val.uid == index.uid) {
+                checkList.push(val);
+                valueList.push(val.uid);
+                flag = true;
+              }
+            }
+          }else {
+            checklist = (Store.get('pointData') || {}).mchnt_id_list;
+            for(let index of checklist) {
+              if(val.uid == index) {
+                checkList.push(val);
+                valueList.push(val.uid);
+                flag = true;
+              }
             }
           }
 

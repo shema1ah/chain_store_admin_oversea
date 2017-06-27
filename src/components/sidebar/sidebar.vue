@@ -97,7 +97,7 @@
                 val: '首页概览',
                 pathname: 'index'
               }, {
-                val: '今日收款',
+                val: '实时收款',
                 pathname: 'todaytrade'
               }, {
                 val: '会员功能',
