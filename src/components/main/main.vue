@@ -105,16 +105,11 @@ export default {
 
 <style lang="scss">
   @import "../../assets/scss/dialog.scss";
-
-  .top_content {
-    display: flex;
-  }
   .responsive_img {
     max-width: 100%;
     height: auto;
   }
   .main {
-    flex: 1;
     padding-left: 220px;
     min-height: 100%;
     @at-root .header {

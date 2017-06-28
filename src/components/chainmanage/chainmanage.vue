@@ -453,7 +453,7 @@
         this.$refs[formName].resetFields();
       },
 
-      // 大商户修改自己的密码提交
+      // 大商户修改密码提交
       submit() {
         this.$refs['form'].validate((valid) => {
           if (!this.iconShow && valid) {
