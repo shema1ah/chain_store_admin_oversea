@@ -146,7 +146,7 @@
         </el-col>
       </el-row>
     </el-dialog>
-    <el-dialog title="修改密码" :visible.sync="showChangePass" @close="handleClose('form')" custom-class="mydialog pass"
+    <el-dialog title="修改密码" :visible.sync="showChangePass" @close="handleClose('form')" custom-class="mydialog"
                top="20%" :show-close="false">
       <el-form :model="form" :rules="formrules" ref="form">
         <el-form-item label="登录账号">
@@ -453,7 +453,7 @@
         this.$refs[formName].resetFields();
       },
 
-      // 大商户修改密码提交
+      // 大商户修改自己的密码提交
       submit() {
         this.$refs['form'].validate((valid) => {
           if (!this.iconShow && valid) {
@@ -614,9 +614,7 @@
     color: #FE9B20;
     float:left;
   }
-  .mydialog {
-    padding: 0 20px;
-  }
+
   .panel-header__fix {
     padding-right: 15px;
     line-height:50px;
