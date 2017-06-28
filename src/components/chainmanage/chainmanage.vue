@@ -170,7 +170,9 @@
 
     <el-dialog title="编辑分店编号" :visible.sync="showEditSubShopNum" class="mydialog" custom-class="" @close="refreshSubShopData">
       <el-form ref="form-edit-subshop-num" label-position="left" class="edit-sub-tag">
-        <div class="desc" style="text-align: center"></div>
+        <div class="desc" style="text-align: left">
+          分店编号设置成功后将会显示在下载的交易明细和交易汇总中。
+        </div>
         <el-form-item v-for="(shop, index) in shopData.list" v-if="index !== 0">
           <el-tooltip placement="bottom" :content="shop.shop_name" class="subshoptip">
             <label>{{shop.shop_name}}</label>
