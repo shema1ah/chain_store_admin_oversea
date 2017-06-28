@@ -458,8 +458,8 @@
   import ElSlPanel from "../../../node_modules/element-ui/packages/color-picker/src/components/sv-panel";
   import ElIcon from "../../../node_modules/element-ui/packages/icon/src/icon";
   import qs from 'qs';
-  //  const AMap = window.AMap;
-  //  var map = null;
+    const AMap = window.AMap;
+    var map = null;
 
   export default {
     components: {
@@ -642,9 +642,33 @@
     },
     created() {
       this.getOperationType();
-
+      this.initMapAPI();
     },
     methods: {
+        initMapAPI() {
+          if(this.isShowMap) return;
+
+          map = new AMap.Map('geolocation');
+          map.plugin('AMap.Geolocation', () => {
+            let geolocation = new AMap.Geolocation({
+              enableHighAccuracy: true, // 是否使用高精度定位，默认:true
+              timeout: 10000,           // 超过10秒后停止定位，默认：无穷大
+              maximumAge: 0,            // 定位结果缓存0毫秒，默认：0
+              convert: true,            // 自动偏移坐标，偏移后的坐标为高德坐标，默认：true
+              showButton: true,         // 显示定位按钮，默认：true
+              buttonPosition: 'LB',     // 定位按钮停靠位置，默认：'LB'，左下角
+              buttonOffset: new AMap.Pixel(10, 20), // 定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
+              showMarker: true,        // 定位成功后在定位到的位置显示点标记，默认：true
+              showCircle: true,        // 定位成功后用圆圈表示定位精度范围，默认：true
+              panToLocation: true,     // 定位成功后将定位到的位置作为地图中心点，默认：true
+              zoomToAccuracy: true      // 定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
+            });
+            map.addControl(geolocation);
+            geolocation.getCurrentPosition();
+            AMap.event.addListener(geolocation, 'complete', this.onLocationComplete); // 返回定位信息
+            AMap.event.addListener(geolocation, 'error', this.onLocationError);       // 返回定位出错信息
+          });
+        },
       hideMapDialog() {
         this.isShowMap = false;
 //        document.getElementById('miframe').style.display = 'none';
@@ -656,9 +680,7 @@
       showMap(e) {
         if (this.isShowMap) return;
         this.isShowMap = true;
-
         this.mapComponentURL = `${config.mapURL}`;
-
         this.initIframe();
       },
       initIframe() {
@@ -680,25 +702,11 @@
           console.log(e)
           console.log(e.data);
           _self.shopInfo.location = e.data.address || e.data.name;
-
-//          let _adcode = loc.addressComponent.adcode;
-//          let _province = loc.addressComponent.province;
-//          let _city = loc.addressComponent.city;
-//          this.shopInfo.adcode = this.shopInfo.provinceid = _adcode || '';
-//          this.shopInfo.province = _province;
-//          if (_city === '') {
-//            this.shopInfo.city = _province;
-//          }
-//          this.shopInfo.longitude = loc.position.lng;
-//          this.shopInfo.latitude = loc.position.lat;
-//          this.shopInfo.location = loc.formattedAddress;
-//          if (_adcode) {
-//            this.getBankLocation();
-//          }
         }
 
         window.addEventListener('message', getMessageFromRemote, false);
       },
+
       backToShopManagement() {
         this.$refs['upload_info'].resetFields();
         this.$refs['shop_info'].resetFields();
@@ -785,32 +793,33 @@
             if(Date.parse(this.shopInfo.idstatdate + 'T00:00:00') > Date.parse(this.shopInfo.idenddate + 'T00:00:00') > 0) {
                 this.$message.error('证件生效期不能晚于证件失效期，请重新选择');
                 return;
-            }
-            console.log('预注册就此打住');
-            if (this.shopInfo.userid) {
-              this.infoPage = !this.infoPage;
-            } else {
-              this.btnLocked = true;
-              axios.post(`${config.ohost}/mchnt/user/pre_signup`, {
-                mode: 'bigmchnt',
-                format: 'cors'
-              }).then((res) => {
-                let data = res.data;
-                if (data.respcd === config.code.OK) {
-                  this.shopInfo.userid = data.data.userid;
-                  this.shopInfo.username = data.data.username;
-                  this.infoPage = !this.infoPage;
-                  console.log(this.shopInfo);
-                } else {
-                  this.$message.error(data.resperr);
-                }
-                this.btnLocked = false;
-              })
-                .catch((e) => {
-                  this.$message.error(e);
+            }else {
+              if (this.shopInfo.userid) {
+                this.infoPage = !this.infoPage;
+              } else {
+                this.btnLocked = true;
+                axios.post(`${config.ohost}/mchnt/user/pre_signup`, {
+                  mode: 'bigmchnt',
+                  format: 'cors'
+                }).then((res) => {
+                  let data = res.data;
+                  if (data.respcd === config.code.OK) {
+                    this.shopInfo.userid = data.data.userid;
+                    this.shopInfo.username = data.data.username;
+                    this.infoPage = !this.infoPage;
+                    console.log(this.shopInfo);
+                  } else {
+                    this.$message.error(data.resperr);
+                  }
                   this.btnLocked = false;
-                });
+                })
+                  .catch((e) => {
+                    this.$message.error(e);
+                    this.btnLocked = false;
+                  });
+              }
             }
+
           } else {
             this.$message.error('您还有部分账户信息未填写')
           }
