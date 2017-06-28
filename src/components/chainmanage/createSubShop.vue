@@ -12,13 +12,14 @@
       </div>
     </div>
     <!-- 信息填写页-->
+
     <div class="panel" v-show="infoPage">
       <div class="panel-header panel-header__fix">
         <div class="panel-select-group panel-select-group__justify">
           <span class="panel-header__desc">分店账户信息设置</span>
         </div>
       </div>
-      <div class="panel-body">
+      <div class="csup-panel-body">
         <div class="sub_info_wrapper">
           <el-form :model="shopInfo" label-width="96px" label-position="left" :rules="page1_rules" ref="shop_info">
             <el-form-item label="分店登录密码" prop="password">
@@ -26,7 +27,7 @@
                         auto-complete="off" class="sub-account-item-info"></el-input>
             </el-form-item>
 
-            <div class="panel-select-group">
+            <div class="panel-select-group fix-unique">
               <i class="divider-icon"></i>
               <span class="panel-header__desc">店铺基本信息</span>
             </div>
@@ -85,7 +86,7 @@
               <span style="color:#8a8c92;">（选填）</span>
             </el-form-item>
 
-            <div class="panel-select-group">
+            <div class="panel-select-group fix-unique">
               <i class="divider-icon"></i>
               <span class="panel-header__desc">商户基础信息</span>
             </div>
@@ -132,7 +133,7 @@
               </el-date-picker>
             </el-form-item>
 
-            <div class="panel-select-group">
+            <div class="panel-select-group fix-unique">
               <i class="divider-icon"></i>
               <span class="panel-header__desc">绑定银行卡信息</span>
             </div>
@@ -221,6 +222,7 @@
       </div>
     </div>
 
+
     <!-- 上传图片页-->
     <div class="panel" v-show="!infoPage">
       <div class="panel-header panel-header__fix">
@@ -228,11 +230,11 @@
           <span class="panel-header__desc">图片凭证信息</span>
         </div>
       </div>
-      <div class="panel-body">
+      <div class="csup-panel-body">
         <div class="sub_info_wrapper">
           <el-form :model="shopInfo" label-position="left" :rules="page2_rules" ref="upload_info">
             <el-form-item label=""></el-form-item>
-            <div class="panel-select-group">
+            <div class="panel-select-group fix-unique">
               <i class="divider-icon"></i>
               <span class="panel-header__desc">店铺门头图片</span>
             </div>
@@ -270,7 +272,7 @@
 
             <div class="image_info">* 请上传真实的店铺照片，请保证画面清晰，完整拍摄到店铺门头名称及店内陈设情况店铺门头图片。</div>
 
-            <div class="panel-select-group">
+            <div class="panel-select-group fix-unique">
               <i class="divider-icon"></i>
               <span class="panel-header__desc">店内陈设图片</span>
             </div>
@@ -307,7 +309,7 @@
             </el-form-item>
             <div class="image_info">* 需露出门店环境的全景，如：服务时的场景、超市货架全景、餐厅全景等。</div>
 
-            <div class="panel-select-group">
+            <div class="panel-select-group fix-unique">
               <i class="divider-icon"></i>
               <span class="panel-header__desc">身份证图片</span>
             </div>
@@ -490,7 +492,7 @@
         isShowCommitDone: false,
         btnLocked: false,
         isShowMap: false,
-        infoPage: true, // 子商户信息填写页
+        infoPage: false, // 子商户信息填写页
         uploadInterface: `${config.imgUpload}/util/v1/uploadfile`, // 上传接口
         shopInfo: {
           shopAccout: '',
@@ -1032,129 +1034,87 @@
   }
 </script>
 <style lang="scss">
-  .backToSMBtn {
-    color: #fe9b20;
-    border: 1px solid #fe9b20;
-    margin-left: 180px;
-  }
 
-  .done-icon {
-    height: 46px;
-    text-align: center;
-    line-height: 46px;
-    .OK {
-      width: 36px;
-      height: 36px;
-      line-height: 40px;
-      border-radius: 50%;
-      border: 3px solid #7ed321;
-      font-size: 24px;
-      text-align: center;
-      color: #7ed321;
-    }
-    span.done-text {
-      font-size: 26px;
-      color: #262424;
-      padding-left: 10px;
-      display: inline-block;
-    }
-  }
-
-  .done-desc {
-    text-align: center;
-    font-size: 17px;
-    color: #262424;
-  }
-
-  .btn-map {
-    display: inline-block;;
-    width: 66px;
-    height: 30px;
-    line-height: 30px;
-    margin-left: 10px;
-    border-radius: 4px;
-    border: 1px solid #fe9b20;
-    text-align: center;
-    font-size: 14px;
-    color: #fe9b20;
-    cursor: pointer;
-  }
-
-  .panel-body {
-    padding: 0;
-    .sub_info_wrapper {
-      .image_info {
-        font-size: 14px;
-        color: #8a8c92;
-        height: 16px;
-        line-height: 16px;
-        padding: 10px 0 20px 30px;
-      }
-      padding: 20px 0 0 0px;
-      .divider-icon {
-        width: 6px;
-        height: 28px;
-        background-color: #fe9b20;
-        display: inline-block;
-        border-radius: 0 30px 30px 0;
-      }
-      .panel-header__desc {
-        padding-left: 14px;
-      }
-      .el-form {
-        .hidden {
-          display: none;
-        }
-        .el-form-item {
-          margin: 20px 0 20px 30px;
-          .sub-account-item-info {
-            width: 240px;
-            cursor: pointer;
+      .csup-panel-body {
+        padding: 0;
+        .sub_info_wrapper {
+          .image_info {
+            font-size: 14px;
+            color: #8a8c92;
+            height: 16px;
+            line-height: 16px;
+            padding: 10px 0 20px 30px;
           }
-          .sub-account-item-info-long {
-            width: 410px;
-            line-height: 44px;
+          padding: 20px 0 0 0px;
+          .divider-icon {
+            width: 6px;
+            height: 28px;
+            background-color: #fe9b20;
+            display: inline-block;
+            border-radius: 0 30px 30px 0;
           }
-          .el-form-item__content {
-            .el-col {
-              .el-date-editor.el-input.el-date-editor--date {
-                .el-picker-panel.el-date-picker.adjustPoper {
-                  min-width: 254px !important;
+          .panel-header__desc {
+            padding-left: 14px;
+          }
+          .el-form {
+            .panel-select-group.fix-unique {
+              justify-content: flex-start !important;
+            }
+            .hidden {
+              display: none;
+            }
+            .el-form-item {
+              margin: 20px 0 20px 30px;
+              .sub-account-item-info {
+                width: 240px;
+                cursor: pointer;
+              }
+              .sub-account-item-info-long {
+                width: 410px;
+                line-height: 44px;
+              }
+              .el-form-item__content {
+                .el-col {
+                  .el-date-editor.el-input.el-date-editor--date {
+                    .el-picker-panel.el-date-picker.adjustPoper {
+                      min-width: 254px !important;
+                    }
+                  }
                 }
               }
             }
+            .el-form-item.sub-item-tip {
+              margin-top: 0;
+            }
+
           }
         }
-        .el-form-item.sub-item-tip {
-          margin-top: 0;
-        }
-
       }
+
+
+    #miframe {
+      width: 660px;
+      height: 520px;
+      display: none;
+      top: 50% !important;
+      left: 50% !important;
+      margin-left: -330px !important;
+      margin-top: -210px !important;
+      overflow: hidden !important;
+      position: fixed !important;
+      z-index: 999;
+      background-color: #ffffff;
     }
-  }
-  #miframe {
-    width: 660px;
-    height: 520px;
-    display: none;
-    top: 50% !important;
-    left: 50% !important;
-    margin-left: -330px !important;
-    margin-top: -210px !important;
-    overflow: hidden !important;
-    position: fixed !important;
-    z-index: 999;
-    background-color: #ffffff;
-  }
-  #geolocation_mask {
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    overflow: hidden !important;
-    position: fixed !important;
-    z-index:9;
-    background-color:rgba(0,0,0,0.5);
-    /*#close-geo {*/
+    #geolocation_mask {
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      overflow: hidden !important;
+      position: fixed !important;
+      z-index:9;
+      background-color:rgba(0,0,0,0.5);
+      /*#close-geo {*/
       /*width: 16px;*/
       /*height: 16px;*/
       /*line-height: 16px;*/
@@ -1162,94 +1122,141 @@
       /*position: absolute;*/
       /*top: 6px;*/
       /*right: 8px;*/
+      /*}*/
+    }
+
+    /*.map-dialog {*/
+    /*width:660px;*/
+    /*height:420px;*/
+    /*.el-dialog__header {*/
+    /*padding:0;*/
     /*}*/
-  }
-
-  /*.map-dialog {*/
-  /*width:660px;*/
-  /*height:420px;*/
-  /*.el-dialog__header {*/
-  /*padding:0;*/
-  /*}*/
-  /*.el-dialog__body {*/
-  /*padding:0;*/
-  /*width:660px;*/
-  /*height:420px;*/
-  /*}*/
-  /*}*/
-  /*.el-message-box {*/
-  /*.el-message-box__title {*/
-  /*.el-message-box__headerbtn {*/
-  /*visibility: hidden !important;*/
-  /*}*/
-  /*}*/
-  /*}*/
-  .avatar-wrap {
-    posistion: relative !important;
-    .avatar {
-      width: 240px;
-      height: 180px;
-      display: block;
+    /*.el-dialog__body {*/
+    /*padding:0;*/
+    /*width:660px;*/
+    /*height:420px;*/
+    /*}*/
+    /*}*/
+    /*.el-message-box {*/
+    /*.el-message-box__title {*/
+    /*.el-message-box__headerbtn {*/
+    /*visibility: hidden !important;*/
+    /*}*/
+    /*}*/
+    /*}*/
+    .backToSMBtn {
+      color: #fe9b20;
+      border: 1px solid #fe9b20;
+      margin-left: 180px;
     }
-    .img-tip {
-      width: 240px;
+
+    .done-icon {
       height: 46px;
+      text-align: center;
       line-height: 46px;
-      position: absolute;
-      bottom: 13px;
-      left: 0;
-      color: #ffffff;
-      text-align: center;
-      background-color: rgba(138, 140, 146, 0.5);
-      display: none;
-    }
-    &:hover .img-tip {
-      display: block;
-      /*animation: growUp .5s ease;*/
-      -webkit-animation-name: growUp;
-      -webkit-animation-duration: 500ms;
-      -webkit-animation-iteration-count: 1;
-      -webkit-animation-timing-function: ease-in-out;
-    }
-    @-webkit-keyframes growUp {
-      0% {
-        height: 0px;
+      .OK {
+        width: 36px;
+        height: 36px;
+        line-height: 40px;
+        border-radius: 50%;
+        border: 3px solid #7ed321;
+        font-size: 24px;
+        text-align: center;
+        color: #7ed321;
       }
-      100% {
-        height: 46px;
+      span.done-text {
+        font-size: 26px;
+        color: #262424;
+        padding-left: 10px;
+        display: inline-block;
       }
     }
-  }
 
-  .avatar-uploader-wrap {
-    width: 240px;
-    height: 144px;
-    background-color: #f2f2f2;
-    text-align: center;
-    padding-top: 37px;
-    .avatar-uploader-icon {
-      width: 50px;
-      height: 50px;
-      display: inline-block;
-      border-radius: 50%;
-      line-height: 50px;
+    .done-desc {
       text-align: center;
-      border: 1px dashed #c2c2c2;
-      color: #c2c2c2;
-      font-size: 20px;
+      font-size: 17px;
+      color: #262424;
     }
-    .avatar-desc {
+
+    .btn-map {
+      display: inline-block;;
+      width: 66px;
+      height: 30px;
+      line-height: 30px;
+      margin-left: 10px;
+      border-radius: 4px;
+      border: 1px solid #fe9b20;
+      text-align: center;
       font-size: 14px;
-      color: #8a8c92;
+      color: #fe9b20;
+      cursor: pointer;
     }
-    .avatar-tip {
-      color: #bdbdbd;
+    .avatar-wrap {
+      posistion: relative !important;
+      .avatar {
+        width: 240px;
+        height: 180px;
+        display: block;
+      }
+      .img-tip {
+        width: 240px;
+        height: 46px;
+        line-height: 46px;
+        position: absolute;
+        bottom: 13px;
+        left: 0;
+        color: #ffffff;
+        text-align: center;
+        background-color: rgba(138, 140, 146, 0.5);
+        display: none;
+      }
+      &:hover .img-tip {
+        display: block;
+        /*animation: growUp .5s ease;*/
+        -webkit-animation-name: growUp;
+        -webkit-animation-duration: 500ms;
+        -webkit-animation-iteration-count: 1;
+        -webkit-animation-timing-function: ease-in-out;
+      }
+      @-webkit-keyframes growUp {
+        0% {
+          height: 0px;
+        }
+        100% {
+          height: 46px;
+        }
+      }
     }
 
-  }
+    .avatar-uploader-wrap {
+      width: 240px;
+      height: 144px;
+      background-color: #f2f2f2;
+      text-align: center;
+      padding-top: 37px;
+      .avatar-uploader-icon {
+        width: 50px;
+        height: 50px;
+        display: inline-block;
+        border-radius: 50%;
+        line-height: 50px;
+        text-align: center;
+        border: 1px dashed #c2c2c2;
+        color: #c2c2c2;
+        font-size: 20px;
+      }
+      .avatar-desc {
+        font-size: 14px;
+        color: #8a8c92;
+      }
+      .avatar-tip {
+        color: #bdbdbd;
+      }
 
-  .el-date-editor .el-picker-panel {
-    min-width: 254px !important;
-  }
+    }
+
+    .el-date-editor .el-picker-panel {
+      min-width: 254px !important;
+    }
 
 </style>

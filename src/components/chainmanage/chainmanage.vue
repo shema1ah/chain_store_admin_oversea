@@ -608,13 +608,15 @@
   };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   .panel-header__desc {
     font-size: 18px;
     color: #FE9B20;
     float:left;
   }
-
+  .mydialog {
+    padding: 0 20px;
+  }
   .panel-header__fix {
     padding-right: 15px;
     line-height:50px;
@@ -626,9 +628,9 @@
   .panel-select-group__justify {
     justify-content: space-between;
   }
-  .el-form-item__content:last-child {
-    margin-left: 32px !important;
-  }
+  /*.el-form-item__content:last-child {*/
+    /*margin-left: 32px !important;*/
+  /*}*/
   .info_wrapper {
     padding: 20px 0px 30px 10px;
     @at-root .info {
