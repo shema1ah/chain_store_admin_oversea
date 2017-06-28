@@ -198,7 +198,7 @@
       <div class="table_placeholder" v-else></div>
     </div>
 
-    <el-dialog title="提示" :visible.sync="showConfirm" custom-class="mydialog pass" top="20%"
+    <el-dialog title="提示" :visible.sync="showConfirm" custom-class="mydialog" top="20%"
                :show-close="false" @close="handleClose">
       <div style="margin-bottom: 20px;">若要撤销交易，请输入账户登录密码以确认操作</div>
       <el-form :model="formpwd" :rules="pwdrules" ref="formpwd">
@@ -356,7 +356,7 @@
 
       // 关闭弹出层
       handleClose() {
-          this.formpwd.pwd = '';
+        this.$refs['formpwd'].resetFields();
       },
 
       // 撤销操作

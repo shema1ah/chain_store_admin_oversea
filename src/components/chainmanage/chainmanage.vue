@@ -1,5 +1,5 @@
-<template class="main">
-  <div class="index">
+<template>
+  <div class="chain">
     <div class="banner_wrapper">
       <div class="banner-breadcrumb">
         <span>门店管理</span>
@@ -11,7 +11,7 @@
         <div class="panel-select-group panel-select-group__justify">
           <span class="panel-header__desc">基本信息</span>
           <!--<div class="panel-header-btn" @click="changePass('chain', shop.mobile)"></div>-->
-          <el-button type="primary" class="panel-header-btn" :plain="true" @click="changePass('chain', shop.mobile)">修改密码</el-button>
+          <div type="primary" class="panel-header-btn" :plain="true" @click="changePass('chain', shop.mobile)">修改密码</div>
         </div>
       </div>
       <div class="panel-body">
@@ -674,12 +674,9 @@
       color: black;
     }
   }
-  .main {
+  .chain {
     .panel-header-btn {
       width: 150px;
-      line-height:15px;
-      border: 1px solid #fe9b20;
-      color: #fe9b20;
     }
     .panel-edit-btn__subshopnum {
       width: 155px;

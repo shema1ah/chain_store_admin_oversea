@@ -58,7 +58,7 @@
       </div>
     </div>
 
-    <el-dialog title="修改密码" :visible.sync="showChangePass" @close="handleClose" custom-class="mydialog pass" top="20%" :show-close="false">
+    <el-dialog title="修改密码" :visible.sync="showChangePass" @close="handleClose" custom-class="mydialog" top="20%" :show-close="false">
       <el-form :model="form" :rules="formrules" ref="form">
         <el-form-item label="登录账号">
           <div>{{ userName }}</div>
@@ -277,15 +277,6 @@
   .single {
     .panel-header-btn {
       width: 155px;
-    }
-    .pass {
-      width: 420px;
-      .el-dialog__header {
-        text-align: center;
-      }
-      .el-form-item__label {
-        width: 90px;
-      }
     }
   }
 </style>
