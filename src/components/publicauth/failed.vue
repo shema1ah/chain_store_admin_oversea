@@ -26,7 +26,7 @@
             <p>检查公众号是否服务号<br/>只有出现在微信首页的是服务号<br/>被折叠在订阅号里的不是</p>
           </li>
         </ul>
-        <button @click="goWechatAuth" class="el-button el-button--primary btn-add" type="button">
+        <button @click="goWechatAuth" :disabled="isDisabled" class="el-button el-button--primary btn-add" type="button">
           重新添加微信公众号
         </button>
       </div>
@@ -41,13 +41,29 @@
   export default {
     data() {
       return {
-        uid: ''
+        uid: '',
+        isDisabled: 'disabled'
       }
     },
     created() {
-      this.uid = localStorage.getItem('uid')
+      this.fetchMerchantIds()
     },
     methods: {
+      fetchMerchantIds () {
+        axios.get(`${config.host}/merchant/ids`)
+          .then((res) => {
+            let data = res.data
+            if (data.respcd === config.code.OK) {
+              this.uid = data.data.uid
+              this.isDisabled = false
+            } else {
+              this.$message.error(data.respmsg)
+            }
+          })
+          .catch(() => {
+            this.$message.error('获取商户id信息失败')
+          })
+      },
       goWechatAuth () {
         let tempPage = process.env.NODE_ENV === 'production' ? 'https://wxmp.qfpay.com' : 'https://wxmp.qa.qfpay.net'
         let origin = window.location.origin
@@ -104,11 +120,16 @@
       }
     }
   }
-  .btn-add{
+  .btn-add {
     display: block;
     width: 369px;
     height: 60px;
     margin: 64px auto 0 auto;
     font-size: 20px;
+    &:disabled {
+      background-color: #A7A9AE;
+      cursor: default;
+      border: none;
+    }
   }
 </style>
