@@ -21,8 +21,14 @@ const getParams = (key) => {
   return result ? decodeURIComponent(result[2]) : ''
 }
 
+// QQ safari时间乱码
+const setformateDate = (date) => {
+  return date.replace(/-/g, "/")
+}
+
 // 日期格式化
 const formatDate = (parDate, formatStr) => {
+
   let date = new Date(parDate)
   /*
    函数：填充0字符
@@ -324,6 +330,7 @@ module.exports = {
   deepClone,
   getParams,
   getRole,
+  setformateDate,
   formatData,
   getCookie,
   cardValid,

@@ -21,7 +21,7 @@
             <span class="info-title">红包类型</span>
             <span class="info-desc"><span class="highlight ml-0">{{ data.act_type_label }}</span></span>
           </p>
-          <p class="review-info">
+          <p class="review-info" v-if="!role.single">
             <span class="info-title">适用门店</span>
             <span class="info-desc"><span class="highlight ml-0">{{ shopNameList }}</span></span>
           </p>
@@ -61,7 +61,7 @@
             <span class="info-title">红包类型</span>
             <span class="info-desc"><span class="highlight ml-0">{{ data.act_type_label }}</span></span>
           </p>
-          <p class="review-info">
+          <p class="review-info" v-if="!role.single">
             <span class="info-title">适用门店</span>
             <span class="info-desc"><span class="highlight ml-0">{{ shopNameList }}</span></span>
           </p>
@@ -115,7 +115,7 @@
             <span class="info-title">红包类型</span>
             <span class="info-desc"><span class="highlight ml-0">{{ data.act_type_label }}</span></span>
           </p>
-          <p class="review-info">
+          <p class="review-info" v-if="!role.single">
             <span class="info-title">适用门店</span>
             <span class="info-desc"><span class="highlight ml-0">{{ shopNameList }}</span></span>
           </p>
@@ -187,6 +187,7 @@
     data() {
       return {
         data: {},
+        role: Store.get('role') || {},
         iconShow: false,
         effectList: ['即刻生效', '次日生效']
       };

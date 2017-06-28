@@ -1,5 +1,5 @@
-<template class="main">
-  <div class="index">
+<template>
+  <div class="single">
     <div class="banner_wrapper">
       <div class="banner-breadcrumb">
         <span>门店管理</span>
@@ -46,13 +46,19 @@
             <div class="info__title" style="visibility: hidden">银行名称</div>
             <div class="info__desc">{{ shop.bankname }}</div>
           </div>
-          <el-button type="primary" class="edit-pwd-btn" @click.native="changePass(shop.mobile)">修改密码</el-button>
-          <a :href="downHref" download class="el-button el-button--default download-shop-code">下载店铺收款码</a>
+          <div class="panel-btn-group__wrapper">
+            <div class="panel-header-btn panel-header-btn__fill" @click="changePass(shop.mobile)">修改密码</div>
+            <a :href="downHref" download>
+              <div class="panel-header-btn">
+                <span>下载店铺收款码</span>
+              </div>
+            </a>
+          </div>
         </div>
       </div>
     </div>
 
-    <el-dialog title="修改密码" :visible.sync="showChangePass" @close="handleClose" custom-class="mydialog pass" top="20%" :show-close="false">
+    <el-dialog title="修改密码" :visible.sync="showChangePass" @close="handleClose" custom-class="mydialog" top="20%" :show-close="false">
       <el-form :model="form" :rules="formrules" ref="form">
         <el-form-item label="登录账号">
           <div>{{ userName }}</div>
@@ -268,24 +274,9 @@
       color: black;
     }
   }
-  .main {
-    .download-shop-code {
-      color: #FE9B20;
-      border-color: #FE9B20;
-      margin-left: 20px !important;
+  .single {
+    .panel-header-btn {
       width: 155px;
-    }
-    .edit-pwd-btn {
-      width: 155px;
-    }
-    .pass {
-      width: 420px;
-      .el-dialog__header {
-        text-align: center;
-      }
-      .el-form-item__label {
-        width: 90px;
-      }
     }
   }
 </style>

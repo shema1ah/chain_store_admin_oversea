@@ -40,7 +40,7 @@
           </el-table-column>
           <el-table-column label="集点条件" min-width="150">
             <template scope="scope">
-              <span>支付满{{ scope.row.obtain_amt | formatCurrency }}元可集一点</span>
+              <span>支付满{{ scope.row.obtain_amt | formatNumber }}元可集一点</span>
             </template>
           </el-table-column>
           <el-table-column label="礼品详情" min-width="100">
@@ -59,7 +59,7 @@
           </el-table-column>
           <el-table-column prop="total_amt" label="刺激收益">
             <template scope="scope">
-              <span>{{ scope.row.total_amt | formatCurrency }}元</span>
+              <span>{{ scope.row.total_amt | formatNumber }}元</span>
             </template>
           </el-table-column>
           <el-table-column prop="who_create" label="活动来源" min-width="140">
@@ -72,8 +72,8 @@
                   更多<i class="el-icon-caret-bottom el-icon--right"></i>
                 </span>
                 <el-dropdown-menu slot="dropdown" class="el-dropdown-menu__fix collect">
-                  <el-dropdown-item class="el-dropdown-item__fix" :disabled="scope.row.state==2 || scope.row.state ==3" @click.native="editActivity(scope.row)">修改活动</el-dropdown-item>
-                  <el-dropdown-item class="el-dropdown-item__fix" :disabled="scope.row.state==2 || scope.row.state ==3" @click.native="stopActivity(scope.row.id)">停止活动</el-dropdown-item>
+                  <el-dropdown-item class="el-dropdown-item__fix" :disabled="scope.row.can_operate == 1 || scope.row.state == 2 || scope.row.state == 3" @click.native="editActivity(scope.row)">修改活动</el-dropdown-item>
+                  <el-dropdown-item class="el-dropdown-item__fix" :disabled="scope.row.can_operate == 1 || scope.row.state == 2 || scope.row.state == 3" @click.native="stopActivity(scope.row.id)">停止活动</el-dropdown-item>
                   <a :href=scope.row.promotion_url download>
                     <el-dropdown-item command=3 class="el-dropdown-item__fix">下载宣传物料</el-dropdown-item>
                   </a>
@@ -104,7 +104,7 @@
       <el-row>
         <el-col :span="4" class="title">集点条件</el-col>
         <el-col :span="20" class="desc">
-          支付满<span class="orange">{{ detailData.obtain_amt | formatCurrency }}元</span>可集一点
+          支付满<span class="orange">{{ detailData.obtain_amt | formatNumber }}元</span>可集一点
           <span v-if="detailData.obtain_limit == 0" style="font-size: 14px;" class="orange">/一次付款可集多点</span>
         </el-col>
       </el-row>
@@ -114,7 +114,7 @@
       </el-row>
       <el-row>
         <el-col :span="4" class="title">礼品价格</el-col>
-        <el-col :span="20" class="desc">{{ detailData.goods_amt | formatCurrency }}元</el-col>
+        <el-col :span="20" class="desc">{{ detailData.goods_amt | formatNumber }}元</el-col>
       </el-row>
       <el-row>
         <el-col :span="4" class="title">活动时间</el-col>

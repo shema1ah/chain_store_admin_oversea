@@ -65,7 +65,7 @@
   import axios from 'axios';
   import config from 'config';
   import qs from 'qs';
-  import { getParams, getData } from '../../common/js/util';
+  import { getParams, formatData } from '../../common/js/util';
   import Store from '../../common/js/store';
 
   export default {
@@ -128,8 +128,8 @@
               param.push(v.uid)
           }
           axios.post(`${config.ohost}/mchnt/card/v1/${params}`, qs.stringify(Object.assign({}, this.data, {
-            obtain_amt: getData(this.data.obtain_amt, 100),
-            goods_amt: getData(this.data.goods_amt, 100),
+            obtain_amt: formatData(this.data.obtain_amt, 100),
+            goods_amt: formatData(this.data.goods_amt, 100),
             mchnt_id_list: param.join(','),
             format: 'cors'
           })), {

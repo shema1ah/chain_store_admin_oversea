@@ -85,7 +85,7 @@
           <el-col :span="8" class="title">红包类型</el-col>
           <el-col :span="16" class="desc">{{ detailData.type_str }}</el-col>
         </el-row>
-        <el-row>
+        <el-row v-if="!role.single">
           <el-col :span="8" class="title">适用门店</el-col>
           <el-col :span="16" class="desc">
             <span v-for="(shop,index) in detailData.effect_sub_merchant">{{ shop.shopname }}{{ index < detailData.effect_sub_merchant.length - 1?"、":"" }}</span>
@@ -120,7 +120,7 @@
           <el-col :span="8" class="title">红包类型</el-col>
           <el-col :span="16" class="desc">{{ detailData.type_str }}</el-col>
         </el-row>
-        <el-row>
+        <el-row v-if="!role.single">
           <el-col :span="8" class="title">适用门店</el-col>
           <el-col :span="16" class="desc">
             <span v-for="(shop,index) in detailData.effect_sub_merchant">{{ shop.shopname }}{{ index < detailData.effect_sub_merchant.length - 1?"、":"" }}</span>
@@ -170,7 +170,7 @@
           <el-col :span="8" class="title">红包类型</el-col>
           <el-col :span="16" class="desc">{{ detailData.type_str }}</el-col>
         </el-row>
-        <el-row>
+        <el-row v-if="!role.single">
           <el-col :span="8" class="title">适用门店</el-col>
           <el-col :span="16" class="desc">
             <span v-for="(shop,index) in detailData.effect_sub_merchant">{{ shop.shopname }}{{ index < detailData.effect_sub_merchant.length - 1?"、":"" }}</span>
@@ -218,7 +218,7 @@
 <script>
   import axios from 'axios';
   import config from 'config';
-  import {formatDate} from '../../common/js/util';
+  import { formatDate, setformateDate } from '../../common/js/util';
   import Store from '../../common/js/store';
 
   export default {
@@ -349,11 +349,13 @@
           console.log("取消");
       });
       },
+
       showDetail(scope) {
         let actName = scope.row.title;
-        let createTime = scope.row.create_time;
+        let createTime = setformateDate(scope.row.create_time);
         let date = new Date(createTime);
         date.setDate(date.getDate() + 1);
+
         let notifyTime = formatDate(date) + ' 11:00:00';
 
         axios.get(`${config.host}/merchant/activity/info`, {

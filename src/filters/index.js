@@ -11,6 +11,15 @@ let filters = {
     return (number / 100).toFixed(2)
   },
 
+  formatNumber (string) {
+    if(!string) {
+      return 0
+    }else if(parseInt(string) === 0) {
+      return 0
+    }
+    return (string / 100).toFixed(2)
+  },
+
   removeHMS (time) {
     return time.split(' ')[0]
   },

@@ -60,10 +60,10 @@
           </span>
         </div>
         <div class="operation">
-          <button type="button" @click="showDialog" v-if="!role.single" class="el-button el-button--primary">分店授权管理</button>
-          <button type="button" @click="confirm"  class="el-button el-button--default">
-            {{role.single ? '解除账户授权' : '解除总账户授权'}}
-          </button>
+          <div class="panel-header-btn panel-header-btn__fill" @click="showDialog" v-if="!role.single">分店授权管理</div>
+          <div class="panel-header-btn" @click="confirm">
+              {{role.single ? '解除账户授权' : '解除总账户授权'}}
+          </div>
         </div>
       </div>
     </div>
@@ -381,9 +381,10 @@
   }
   .operation {
     padding-left: 22%;
-    padding-bottom: 30px;
-    button {
-      margin-right: 20px;
+    padding-bottom: 50px;
+
+    .panel-header-btn {
+      width: 150px;
     }
   }
   .copy-list {

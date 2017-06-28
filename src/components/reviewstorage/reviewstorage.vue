@@ -17,7 +17,7 @@
       </div>
       <div class="panel-body">
         <div class="review-info__wrapper">
-          <div class="review-info flex">
+          <div class="review-info flex" v-if="!role.single">
             <span class="info-title">适用门店</span>
             <div class="info-desc__wrapper">
               <div class="info-desc">
@@ -38,7 +38,7 @@
             <span class="info-title">储值规则</span>
             <div class="info-desc__wrapper">
               <div class="info-desc">
-                <div v-for="rule in data.rules">储值<span class="highlight">{{ rule.pay_amt | addZero }}</span>元送<span class="highlight">{{ rule.present_amt | addZero }}</span>元</span>
+                <div v-for="rule in data.rules">储值<span class="highlight">{{ rule.pay_amt | addZero }}</span>元送<span class="highlight">{{ rule.present_amt | addZero }}</span>元
                 </div>
                 <!-- <div class="info-desc remark mt-20">备注：红包费用由商户承担</div> -->
               </div>
@@ -80,6 +80,7 @@
     },
     data() {
       return {
+        role: Store.get('role') || {},
         iconShow: false,
         data: {}
       };
