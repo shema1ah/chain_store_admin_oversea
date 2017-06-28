@@ -16,7 +16,7 @@
         <div class="bottom">
           <router-link :to="{ name: 'forget'}" class="forget">忘记密码?</router-link>
           <span>|</span>
-          <router-link :to="{ name: 'register'}" class="register">新用户注册</router-link>
+          <router-link :to="{ name: 'register'}" class="register">我要注册连锁店管理账号</router-link>
         </div>
       </el-form>
     </div>

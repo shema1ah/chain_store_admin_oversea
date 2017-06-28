@@ -174,7 +174,8 @@
               password: this.form.pass,
               mode: 'change',
               username: this.userName,
-              src: 'mchnt'
+              src: 'mchnt',
+              format: 'cors'
             }).then((res) => {
               let data = res.data;
               if (data.respcd === config.code.OK) {

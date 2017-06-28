@@ -21,7 +21,7 @@
               </el-option>
             </el-select>
           </div>
-          <div class="panel-select__wrapper" v-show="!role.single">
+          <div class="panel-select__wrapper" v-if="!role.single">
             <span class="panel-select__desc">店铺名称</span>
             <el-select v-model="nameValue" placeholder="全部" size="small" @change="nameChange">
               <el-option v-for="shop in shopData.list" :label="shop.shop_name" :value="shop.uid">
@@ -40,7 +40,7 @@
           </el-table-column>
           <el-table-column label="集点条件" min-width="150">
             <template scope="scope">
-              <span>支付满{{ (scope.row.obtain_amt)/100 }}元可集一点</span>
+              <span>支付满{{ scope.row.obtain_amt | formatCurrency }}元可集一点</span>
             </template>
           </el-table-column>
           <el-table-column label="礼品详情" min-width="100">
@@ -59,7 +59,7 @@
           </el-table-column>
           <el-table-column prop="total_amt" label="刺激收益">
             <template scope="scope">
-              <span>{{ (scope.row.total_amt)/100 || 0 }}元</span>
+              <span>{{ scope.row.total_amt | formatCurrency }}元</span>
             </template>
           </el-table-column>
           <el-table-column prop="who_create" label="活动来源" min-width="140">
@@ -104,7 +104,7 @@
       <el-row>
         <el-col :span="4" class="title">集点条件</el-col>
         <el-col :span="20" class="desc">
-          支付满<span class="orange">{{ (detailData.obtain_amt)/100 }}元</span>可集一点
+          支付满<span class="orange">{{ detailData.obtain_amt | formatCurrency }}元</span>可集一点
           <span v-if="detailData.obtain_limit == 0" style="font-size: 14px;" class="orange">/一次付款可集多点</span>
         </el-col>
       </el-row>
@@ -114,7 +114,7 @@
       </el-row>
       <el-row>
         <el-col :span="4" class="title">礼品价格</el-col>
-        <el-col :span="20" class="desc">{{ (detailData.goods_amt)/100 }}元</el-col>
+        <el-col :span="20" class="desc">{{ detailData.goods_amt | formatCurrency }}元</el-col>
       </el-row>
       <el-row>
         <el-col :span="4" class="title">活动时间</el-col>
@@ -279,6 +279,12 @@
                 type: 'success',
                 message: '集点活动停止成功'
               });
+
+              this.currentpage = 1;
+              this.pageSize = 10;
+              this.nameValue = '';
+              this.stateValue = '';
+
               this.getData();
             } else {
               this.$message.error(data.respmsg);

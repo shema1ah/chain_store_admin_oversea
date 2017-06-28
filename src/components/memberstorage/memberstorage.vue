@@ -76,7 +76,7 @@
                   更多<i class="el-icon-caret-bottom el-icon--right"></i>
                 </span>
                 <el-dropdown-menu slot="dropdown" class="el-dropdown-menu__fix">
-                  <el-dropdown-item class="el-dropdown-item__fix" @click.native="changeStorage(scope.row, scope.$index)" :disabled="scope.row.activity_status.status === 2 || scope.row.activity_status.status === 3">修改活动</el-dropdown-item>
+                  <el-dropdown-item class="el-dropdown-item__fix" @click.native="changeStorage(scope.row.activity_info.activity_id)" :disabled="scope.row.activity_status.status === 2 || scope.row.activity_status.status === 3">修改活动</el-dropdown-item>
                   <el-dropdown-item class="el-dropdown-item__fix" :disabled="scope.row.activity_status.status === 2 || scope.row.activity_status.status === 3" @click.native="cancelStorage(scope.row.activity_info.activity_id)">终止活动</el-dropdown-item>
                 </el-dropdown-menu>
               </el-dropdown>
@@ -99,7 +99,7 @@
     </div>
     <el-dialog v-if="detailData.activity_info" v-model="isShowDetail" class="detail_dialog" title="储值活动详情">
       <template>
-        <el-row class="mb-5">
+        <el-row class="mb-5" v-if="!role.single">
           <el-col :span="7" class="title">适用门店</el-col>
           <el-col :span="17" class="desc">
             <div>
@@ -112,8 +112,7 @@
           <el-col :span="7" class="title">储值规则</el-col>
           <el-col :span="17" class="desc">
             <div class="desc-item" v-for="rule in detailData.activity_info.rules">
-              <span v-if="rule.title">{{ rule.title }}</span>
-              <span v-else>储值{{ rule.pay_amt | formatCurrency }}送{{ rule.present_amt | formatCurrency }}元</span>
+              <span>储值{{ rule.pay_amt | formatCurrency }}送{{ rule.present_amt | formatCurrency }}元</span>
             </div>
           </el-col>
         </el-row>
@@ -165,6 +164,7 @@
     data() {
       return {
         pending: false,
+        role: Store.get('role') || {},
         storageDict: ['未开始', '进行中', '已结束', '已终止'],
         stateOptions: [
           {
@@ -264,6 +264,7 @@
           console.log("取消");
         });
       },
+
       fixData(data) {
         data = deepClone(data);
         data.activity_info.rules.forEach((v) => {
@@ -272,12 +273,30 @@
         });
         return data;
       },
-      changeStorage(scope, index) {
-        let data = this.fixData(scope);
-        console.log(data);
-        Store.set('alterstoredata', data);
-        this.$router.push({name: 'alterstorage'});
+
+      // 编辑储值
+      changeStorage(id) {
+        this.loading = true;
+        axios.get(`${config.host}/merchant/prepaid/detail`, {
+          params: {
+            activity_id: id
+          }
+        }).then((res) => {
+            let data = res.data;
+            this.loading = false;
+            if(data.respcd === config.code.OK) {
+              Store.set('alterstoredata', data.data);
+              this.$router.push({name: 'alterstorage'});
+            } else {
+              this.$message.error(data.resperr);
+            }
+          })
+          .catch(() => {
+            this.loading = false;
+            this.$message.error('获取储值详情失败');
+          });
       },
+
       hasPending() {
         axios.get(`${config.host}/merchant/prepaid/list`)
         .then((res) => {
@@ -305,6 +324,7 @@
           this.$message.error('获取失败');
         });
       },
+
       getDetailData(id) {
         axios.get(`${config.host}/merchant/prepaid/detail`, {
           params: {
@@ -324,6 +344,7 @@
           this.$message.error('获取储值详情失败');
         });
       },
+
       createStorage() {
         this.hasPending();
       }

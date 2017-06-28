@@ -97,7 +97,7 @@
                 val: '首页概览',
                 pathname: 'index'
               }, {
-                val: '今日收款',
+                val: '实时收款',
                 pathname: 'todaytrade'
               }, {
                 val: '会员功能',
@@ -196,6 +196,7 @@
 <style lang="scss" rel="stylesheet/scss">
 
   .sidebar {
+    overflow-y: scroll;
     position: fixed;
     width: 220px;
     height: 100%;

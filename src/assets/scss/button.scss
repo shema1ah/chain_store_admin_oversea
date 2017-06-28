@@ -166,7 +166,6 @@
     background-color: #FE9B20;
   }
 }
-
 // 下拉框按钮样式
 .el-dropdown-menu__fix {
   padding: 0px;
@@ -222,5 +221,13 @@
     cursor: pointer;
     display: inline-block;
     box-sizing: border-box;
+  }
+}
+
+// 下拉 白色
+.el-dropdown-menu {
+  a {
+    background: transparent;
+    color: #262323;
   }
 }

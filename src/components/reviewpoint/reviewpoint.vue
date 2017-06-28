@@ -40,11 +40,11 @@
             <span class="info-title">活动时间</span>
             <span class="info-desc">{{ data.start_time }} - {{ data.expire_time }}</span>
           </div>
-          <div class="review-info flex">
+          <div class="review-info flex" v-if="!role.single">
             <span class="info-title">适用门店</span>
             <div class="info-desc__wrapper">
               <div class="info-desc">
-                <div><span v-for="(shop,index) in shopList">{{ shop }}{{ index < shopList.length - 1?"、":"" }}</span></div>
+                <div><span v-for="(shop,index) in shopList">{{ shop.shopname }}{{ index < shopList.length - 1?"、":"" }}</span></div>
               </div>
             </div>
           </div>
@@ -65,20 +65,21 @@
   import axios from 'axios';
   import config from 'config';
   import qs from 'qs';
-  import { getParams } from '../../common/js/util';
+  import { getParams, getData } from '../../common/js/util';
   import Store from '../../common/js/store';
 
   export default {
     beforeRouteEnter (to, from, next) {
       next((vm) => {
         vm.data = Store.get('pointData');
-        let list = vm.$store.state.shopData.list;
+        let list = Store.get('shopStateList');
         vm.shopList = vm.getshopList(list);
       });
     },
     data() {
       return {
         loading: false,
+        role: Store.get('role') || {},
         data: {},
         shopList: []
       };
@@ -91,13 +92,24 @@
       // 遍历选择的门店
       getshopList(list) {
         let lists = [];
-        for(let id of this.data.mchnt_id_list) {
-          for(let val of list) {
-            if(id == val.uid) {
-              lists.push(val.shop_name);
+        if(this.data.mchnt_id_list[0] === '') {
+            lists = this.data.mchnt_id_list;
+            lists.shift();
+          for(let states of list) {
+              if (states.state === '1') {
+                lists.push(states);
+              }
+          }
+        }else {
+          for(let id of this.data.mchnt_id_list) {
+            for(let val of list) {
+              if(id == val.uid) {
+                lists.push(val);
+              }
             }
           }
         }
+
         return lists;
       },
 
@@ -111,10 +123,14 @@
             params = "actv_change";
           }
 
+          let param = [];
+          for(let v of this.shopList) {
+              param.push(v.uid)
+          }
           axios.post(`${config.ohost}/mchnt/card/v1/${params}`, qs.stringify(Object.assign({}, this.data, {
-            obtain_amt: (this.data.obtain_amt) * 100,
-            goods_amt: (this.data.goods_amt) * 100,
-            mchnt_id_list: this.data.mchnt_id_list.join(","),
+            obtain_amt: getData(this.data.obtain_amt, 100),
+            goods_amt: getData(this.data.goods_amt, 100),
+            mchnt_id_list: param.join(','),
             format: 'cors'
           })), {
               headers: {

@@ -201,6 +201,7 @@
         return this.form.rulesData.length;
       }
     },
+
     methods: {
       cancelAlteration() {
         console.log(this.$refs['form']);

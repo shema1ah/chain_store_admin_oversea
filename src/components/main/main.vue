@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="top_content" v-loading="loading" element-loading-text="拼命加载中">
     <sidebar></sidebar>
     <div class="main">
       <div class="header">
@@ -31,6 +31,7 @@ import sidebar from '../../components/sidebar/sidebar.vue';
 export default {
   data() {
     return {
+      loading: false,
       shop: {},
       formrules: {
         account: [
@@ -57,9 +58,11 @@ export default {
   methods: {
     // 退出登录
     logout() {
+      this.loading = true;
       axios.get(`${config.host}/merchant/signout`)
       .then((res) => {
         let data = res.data;
+        this.loading = false;
         if (data.respcd === config.code.OK) {
           // 清除本地cookie
           document.cookie = "sessionid=''; expires=" + new Date(0).toUTCString();
@@ -69,6 +72,7 @@ export default {
           this.$message.error(data.respmsg);
         }
       }).catch(() => {
+        this.loading = false;
         this.$message.error('请求失败');
       });
     },
@@ -86,18 +90,7 @@ export default {
             this.$store.dispatch('getMemberTotal');
 
             this.shop = data.data || {};
-            if(data.data.cate === 'submerchant') {
-                Object.assign(this.shop, {
-                  address: data.data.address,
-                  bankaccount: data.data.bankaccount,
-                  headbankname: data.data.headbankname, // 总行名称
-                  bankname: data.data.bankname, // 支行名称
-                  bankuser: data.data.bankuser, // 持卡人
-                  telephone: data.data.telephone, // 手机号
-                  cate: data.data.cate, // 商户分类
-                  country: data.data.country // 国家地区
-                })
-            }
+
           } else {
             this.$message.error(data.respmsg);
           }
@@ -113,11 +106,15 @@ export default {
 <style lang="scss">
   @import "../../assets/scss/dialog.scss";
 
+  .top_content {
+    display: flex;
+  }
   .responsive_img {
     max-width: 100%;
     height: auto;
   }
   .main {
+    flex: 1;
     padding-left: 220px;
     min-height: 100%;
     @at-root .header {

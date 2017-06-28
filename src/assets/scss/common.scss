@@ -65,3 +65,15 @@ input[type="number"]{
   -webkit-appearance: none;
 }
 
+// 没有内容展示
+.no-content {
+  text-align: center;
+  font-size: 18px;
+  color:#8A8C92;
+  padding: 20px 0;
+}
+
+// loading状态提示
+.el-icon-loading{
+  margin-right: 0;
+}

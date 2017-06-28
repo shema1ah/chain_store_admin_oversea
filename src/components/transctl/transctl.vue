@@ -105,15 +105,15 @@
           <div class="num_total">
             <div class="num_wrapper">
               <p class="num-title">交易总金额</p>
-              <p class="num-desc">{{ transData.sucamt || 0 }} 元</p>
+              <p class="num-desc">{{ transData.sucamt | formatCurrency }} 元</p>
             </div>
             <div class="num_wrapper">
               <p class="num-title">交易实收</p>
-              <p class="num-desc">{{ transData.total_txamt || 0 }} 元</p>
+              <p class="num-desc">{{ transData.total_txamt | formatCurrency }} 元</p>
             </div>
             <div class="num_wrapper">
               <p class="num-title">红包优惠</p>
-              <p class="num-desc">{{ transData.coupon_amt || 0 }} 元</p>
+              <p class="num-desc">{{ transData.coupon_amt | formatCurrency }} 元</p>
             </div>
             <div class="num_wrapper">
               <p class="num-title">成功交易笔数</p>
@@ -128,8 +128,8 @@
             <el-dropdown>
               <span class="el-dropdown-link"><img src="./img/download.png" alt="下载"></span>
               <el-dropdown-menu slot="dropdown">
-                <a :href="detailHref" download><el-dropdown-item command=1 class="download_detail">下载交易明细</el-dropdown-item></a>
-                <a :href="collectionHref" download><el-dropdown-item command=2 class="download_detail">下载交易汇总</el-dropdown-item></a>
+                <a :href="detailHref" download><el-dropdown-item command=1>下载交易明细</el-dropdown-item></a>
+                <a :href="collectionHref" download><el-dropdown-item command=2>下载交易汇总</el-dropdown-item></a>
               </el-dropdown-menu>
             </el-dropdown>
           </div>
@@ -163,10 +163,10 @@
           <el-table-column
             label="交易金额">
             <template scope="scope">
-              <div class="table-title">{{ scope.row.total_amt }}元</div>
-              <div class="table-content">实收{{ scope.row.txamt }}元</div>
-              <div v-show="scope.row.mchnt_coupon" class="table-content">商家红包{{ scope.row.mchnt_coupon }}元</div>
-              <div v-show="scope.row.hj_coupon" class="table-content">平台补贴{{ scope.row.hj_coupon }}元</div>
+              <div class="table-title">{{ scope.row.total_amt | formatCurrency }}元</div>
+              <div class="table-content">实收{{ scope.row.txamt | formatCurrency }}元</div>
+              <div v-show="scope.row.mchnt_coupon" class="table-content">商家红包{{ scope.row.mchnt_coupon | formatCurrency }}元</div>
+              <div v-show="scope.row.hj_coupon" class="table-content">平台补贴{{ scope.row.hj_coupon | formatCurrency }}元</div>
             </template>
           </el-table-column>
           <el-table-column
@@ -180,7 +180,7 @@
           </el-table-column>
           <el-table-column min-width="100" label="操作" v-if="role.single">
             <template scope="scope">
-              <el-button type="text" size="small" :disabled="new Date(scope.row.sysdtm).toDateString() !== new Date().toDateString() || scope.row.cancel !== 0 || scope.row.status !== 1" class="el-button__fix" @click="revoke(scope.row)">撤销</el-button>
+              <el-button type="text" size="small" :disabled="new Date(scope.row.sysdtm).toDateString() !== new Date().toDateString() || scope.row.cancel !== 0 || scope.row.status !== 1" class="el-button__fix" @click="confirm(scope.row)">撤销</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -197,6 +197,23 @@
       </div>
       <div class="table_placeholder" v-else></div>
     </div>
+
+    <el-dialog title="提示" :visible.sync="showConfirm" custom-class="mydialog pass" top="20%"
+               :show-close="false" @close="handleClose">
+      <div style="margin-bottom: 20px;">若要撤销交易，请输入账户登录密码以确认操作</div>
+      <el-form :model="formpwd" :rules="pwdrules" ref="formpwd">
+        <el-form-item prop="pwd">
+          <el-input v-model="formpwd.pwd" placeholder="请输入账户密码" type="password"></el-input>
+        </el-form-item>
+
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <div @click="checkPwd" class="submit">
+          <span class="el-icon-loading" v-if="iconLoading"></span>
+          <span v-else>确认</span>
+        </div>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -227,6 +244,12 @@
       };
       return {
         role: Store.get('role') || {},
+        showConfirm: false,
+        checkValue: {},
+        formpwd: {
+          pwd: ''
+        },
+        iconLoading: false,
         pageSize: 10,
         status: false,
         loading: false,
@@ -267,6 +290,11 @@
           orderno: [
             { validator: checkOrderNo, trigger: 'change' }
           ]
+        },
+        pwdrules: {
+            pwd: [
+              { required: true, message: '请输入账户密码' }
+            ]
         }
       };
     },
@@ -325,42 +353,78 @@
     },
 
     methods: {
-      // 撤销操作
-      revoke(data) {
-        this.$confirm('确认取消此订单吗?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '关闭'
-        }).then(() => {
-          let params = {
-            format: 'cors',
-            txamt: (data.txamt) * 100,
-            txdtm: formatDate(data.sysdtm, 'yyyy-MM-dd HH:mm:ss'),
-            syssn: data.syssn,
-            out_trade_no: "",
-            udid: 'bigmerchant'
-          };
-          axios.post(`${config.payHost}/trade/v1/refund`, qs.stringify(params), {
-            headers: {
-              'Content-Type': 'application/x-www-form-urlencoded'
-            }
-          }).then((res) => {
-            let data = res.data;
-            if (data.respcd === config.code.OK) {
-              this.$message({
-                type: 'success',
-                message: '撤销成功'
-              });
 
-              this.getTransData();
-            } else {
-              this.$message.error(data.resperr);
-            }
-          }).catch(() => {
-            this.$message.error("撤销失败");
-          });
-        }).catch(() => {
-          console.log("取消");
+      // 关闭弹出层
+      handleClose() {
+          this.formpwd.pwd = '';
+      },
+
+      // 撤销操作
+      revoke() {
+        let val = this.checkValue;
+        let params = {
+          format: 'cors',
+          txamt: val.txamt,
+          txdtm: formatDate(val.sysdtm, 'yyyy-MM-dd HH:mm:ss'),
+          syssn: val.syssn,
+          out_trade_no: "",
+          udid: 'bigmerchant'
+        };
+        axios.post(`${config.payHost}/trade/v1/refund`, qs.stringify(params), {
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          }
+        }).then((res) => {
+          this.iconLoading = false;
+          let data = res.data;
+          if (data.respcd === config.code.OK) {
+            this.$message({
+              type: 'success',
+              message: '撤销成功'
+            });
+
+            this.showConfirm = false;
+
+            this.getTransData();
+
+          } else {
+            this.$message.error(data.resperr);
+          }
+        }).catch((res) => {
+          this.iconLoading = false;
+          this.$message.error("撤销失败");
+        });
+      },
+
+      // 验证密码
+      checkPwd() {
+        this.$refs['form'].validate((valid) => {
+          if (valid && !this.iconLoading) {
+            this.iconLoading = true;
+            axios.post(`${config.host}/merchant/validate_password`, {
+              password: this.formpwd.pwd,
+              format: 'cors'
+            }).then((res) => {
+              let data = res.data;
+              if (data.data.result === 'success') {
+                this.revoke();
+              } else {
+                this.iconLoading = false;
+                this.$message.error('密码不正确');
+              }
+            }).catch(() => {
+              this.iconLoading = false;
+              this.$message.error('请求失败');
+            })
+          }
+
         })
+      },
+
+      // 确认弹框
+      confirm(val) {
+        this.checkValue = val;
+        this.showConfirm = true;
       },
 
       // 选择时间
@@ -380,13 +444,16 @@
       handleCheckAllChange1(event) {
         this.form.type = event.target.checked ? [] : typeLists;
       },
+
       handleCheckedCitiesChange1(value) {
         let checkCount = value.length;
         this.form.checkAll1 = !(checkCount > 0);
       },
+
       handleCheckAllChange2(event) {
         this.form.other = event.target.checked ? [] : otherLists;
       },
+
       handleCheckedCitiesChange2(value) {
         let checkCount = value.length;
         this.form.checkAll2 = !(checkCount > 0);
@@ -395,7 +462,7 @@
       // 点击查询
       getTransData(params) {
         this.downHref = 'javascript:;';
-        if(params.which && this.$refs['page']) {
+        if(params && params.which && this.$refs['page']) {
           this.$refs['page'].internalCurrentPage = 1;
         }
         this.$refs['form'].validate((valid) => {
@@ -415,8 +482,6 @@
               this.loading = false;
               this.$message.error('获取交易数据失败');
             });
-          } else {
-            this.$message.error('请核对流水号');
           }
         });
       },
@@ -430,16 +495,14 @@
           params: {
             userid: uid
           }
-        })
-        .then((res) => {
+        }).then((res) => {
           let data = res.data;
           if(data.respcd === config.code.OK) {
             this.operaList = data.data;
           } else {
             this.$message.error(data.resperr);
           }
-        })
-        .catch(() => {
+        }).catch(() => {
           this.$message.error('获取操作员信息失败');
         });
       },
@@ -469,7 +532,6 @@
 
 <style lang="scss">
   // 采用BEM命名规则
-
   .banner_wrapper {
     display: flex;
     height: 66px;
@@ -630,9 +692,6 @@
           cursor: pointer;
         }
       }
-    }
-    .el-icon-loading{
-      margin-right: 0;
     }
   }
   .el-form-item {
