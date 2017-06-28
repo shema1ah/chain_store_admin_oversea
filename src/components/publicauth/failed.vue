@@ -41,27 +41,13 @@
   export default {
     data() {
       return {
-        wechatNotAuth: false
+        uid: ''
       }
     },
     created() {
-      this.fetchPublicInfo()
+      this.uid = localStorage.getItem('uid')
     },
     methods: {
-      fetchPublicInfo () {
-        axios.post(`${config.host}/wxofficial/setting`)
-          .then((res) => {
-            let data = res.data
-            if (data.respcd === config.code.OK) {
-
-            } else {
-              this.$message.error(data.respmsg)
-            }
-          })
-          .catch(() => {
-            this.$message.error('获取公众号信息失败')
-          })
-      },
       goWechatAuth () {
         let tempPage = process.env.NODE_ENV === 'production' ? 'https://wxmp.qfpay.com' : 'https://wxmp.qa.qfpay.net'
         let origin = window.location.origin

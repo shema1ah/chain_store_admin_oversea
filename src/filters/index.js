@@ -31,10 +31,13 @@ let filters = {
   },
 
   busicdText (busicd) {
-    if (busicd.indexOf('8002') !== -1) {
+    let frontNumber = busicd.substr(0, 4)
+    if (frontNumber === '8002') {
       return '微信收款'
-    } else if (busicd.indexOf('8001') !== -1) {
+    } else if (frontNumber === '8001') {
       return '支付宝收款'
+    } else if (frontNumber === '7000') {
+      return '储值收款'
     } else {
       return busicd
     }

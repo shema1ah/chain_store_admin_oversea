@@ -91,6 +91,7 @@ export default {
 
             this.shop = data.data || {};
 
+            Store.set('uid', this.shop.uid)
           } else {
             this.$message.error(data.respmsg);
           }
