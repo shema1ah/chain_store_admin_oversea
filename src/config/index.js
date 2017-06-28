@@ -7,8 +7,8 @@ let ohost = 'https://o.qfpay.com';
 let payHost = 'https://openapi.qfpay.com'
 let imgUpload = 'https://o2.qfpay.com';
 let o2host = 'https://o2.qfpay.com';
-let mapURL = 'https://m.amap.com/picker/?key=27b775b49fad2aa4080f588d1a2ad94c';
-let mapKey = '27b775b49fad2aa4080f588d1a2ad94c';
+let mapURL = 'https://m.amap.com/picker/?key=0500da1f6f0d37a6683b590aee534b8b';
+let mapKey = '0500da1f6f0d37a6683b590aee534b8b';
 
 // 测试配置
 if (test) {
@@ -27,8 +27,8 @@ if (dev) {
   o2host = 'https://o2.qa.qfpay.net'
   payHost = 'https://openapi.qa.qfpay.net';
   imgUpload = 'http://172.100.111.45:8080';
-  mapURL = 'http://m.amap.com/picker/?key=27b775b49fad2aa4080f588d1a2ad94c';
-  mapKey = '27b775b49fad2aa4080f588d1a2ad94c';
+  mapURL = 'http://m.amap.com/picker/?key=0500da1f6f0d37a6683b590aee534b8b';
+  mapKey = '0500da1f6f0d37a6683b590aee534b8b';
 }
 
 module.exports = {
