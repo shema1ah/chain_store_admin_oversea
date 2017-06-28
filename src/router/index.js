@@ -30,7 +30,8 @@ import createstorage from 'components/createstorage/createstorage'
 import reviewstorage from 'components/reviewstorage/reviewstorage'
 import alterstorage from 'components/alterstorage/alterstorage'
 import membersto from 'components/membersto/membersto'
-import publicauth from 'components/publicauth/publicauth';
+import publicauth from 'components/publicauth/publicauth'
+import failed from 'components/publicauth/failed'
 
 Vue.use(Router)
 
@@ -193,6 +194,10 @@ export default new Router({
         {
           path: 'publicauth',
           component: publicauth
+        },
+        {
+          path: 'authfailed',
+          component: failed
         }
       ]
     }

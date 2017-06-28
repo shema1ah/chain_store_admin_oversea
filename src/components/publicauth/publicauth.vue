@@ -14,17 +14,17 @@
         <ul class="steps">
           <li>
             <strong><span>Step</span>1</strong>
-            <img src="./img/step1.jpeg" alt="step1">
+            <img src="./img/step01.jpeg" alt="step1">
             <p>使用绑定的个人微信号扫描</p>
           </li>
           <li>
             <strong><span>Step</span>2</strong>
-            <img src="./img/step2.jpeg" alt="step1">
+            <img src="./img/step02.jpeg" alt="step1">
             <p>公众号管理员授权确认</p>
           </li>
           <li>
             <strong><span>Step</span>3</strong>
-            <img src="./img/step3.jpeg" alt="step1">
+            <img src="./img/step03.jpeg" alt="step1">
             <p>授权成功，运营公众号！</p>
           </li>
         </ul>
@@ -33,7 +33,7 @@
     </div>
   </div>
   <!-- 已绑定总账户公众号 -->
-  <div class="warpper" v-else>
+  <div class="warpper public-auth" v-else>
     <div class="banner_wrapper">
       <div class="banner-breadcrumb"><span>已授权公众号</span></div>
     </div>
@@ -203,11 +203,9 @@
           })
       },
       goWechatAuth () {
-        if (process.env.NODE_ENV === 'production') {
-          window.location.href = 'https://wxmp.qfpay.com/v1/wxthird/auth_url?userid=' + this.uid + '&redirect_url=' + window.location.href
-        } else {
-          window.location.href = 'https://wxmp.qa.qfpay.net/v1/wxthird/auth_url?userid=' + this.uid + '&redirect_url=' + window.location.href
-        }
+        let tempPage = process.env.NODE_ENV === 'production' ? 'https://wxmp.qfpay.com' : 'https://wxmp.qa.qfpay.net'
+        let origin = window.location.origin
+        window.location.href = `${tempPage}/v1/wxthird/auth_url?userid=${this.uid}&redirect_url=${origin}/redirect/main/publicauth`
       },
       fetchMerchantIds () {
         axios.get(`${config.host}/merchant/ids`)
@@ -322,7 +320,7 @@
   };
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
   // 未绑定
   .steps {
     padding-left: 60px;
@@ -415,18 +413,20 @@
       }
     }
   }
-  .el-checkbox {
-    margin:0 15px 10px 0;
-  }
-  .el-checkbox + .el-checkbox {
-    margin-left: 0;
-  }
-  .el-dialog__footer{
-    border-top: 1px solid #E7EAEC;
-    padding-top: 15px;
-  }
-  .check-all {
-    float: left;
-    margin-top: 9px;
+  .public-auth {
+    .el-checkbox {
+      margin:0 15px 10px 0;
+    }
+    .el-checkbox + .el-checkbox {
+      margin-left: 0;
+    }
+    .el-dialog__footer{
+      border-top: 1px solid #E7EAEC;
+      padding-top: 15px;
+    }
+    .check-all {
+      float: left;
+      margin-top: 9px;
+    }
   }
 </style>
