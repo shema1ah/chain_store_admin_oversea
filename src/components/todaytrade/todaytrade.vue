@@ -20,12 +20,8 @@
           row-class-name="el-table__row_fix"
           class="trade-table">
           <el-table-column
-            label="店铺名称/ID">
+            label="店铺名称">
             <template scope="scope">{{ shop.shopname }}</template>
-          </el-table-column>
-          <el-table-column
-            prop="opuid"
-            label="操作员">
           </el-table-column>
           <el-table-column
             prop="busicd"
@@ -41,10 +37,9 @@
           <el-table-column
             label="交易金额">
             <template scope="scope">
-              <!-- <div class="table-title">{{}}元</div> -->
-              <div class="table-content">实收{{ scope.row.txamt | formatCurrency }}元</div>
-              <div v-show="scope.row.mchnt_coupon" class="table-content">商家红包{{ scope.row.mchnt_coupon | formatCurrency }}元</div>
-              <div v-show="scope.row.coupon_amt > 0" class="table-content">平台补贴{{ scope.row.coupon_amt | formatCurrency }}元</div>
+              <p>实收{{ scope.row.txamt | formatCurrency }}元</p>
+              <p v-show="scope.row.couponamt">商家红包{{ scope.row.couponamt | formatCurrency }}元</p>
+              <p v-show="scope.row.mchnt_amt">平台补贴{{ scope.row.mchnt_amt | formatCurrency }}元</p>
             </template>
           </el-table-column>
           <el-table-column
@@ -106,10 +101,7 @@
                 // note key 是json string 只提取有用的 mchnt_coupon
                 if (tradeskey[variable] === 'note') {
                   let noteObject = JSON.parse(tradesObject['note'])
-                  tradesObject['mchnt_coupon'] = noteObject.mchnt_coupon
-                }
-                if (tradeskey[variable] === 'opuid') {
-                  tradesObject['opuid'] = '000' + tradesObject['opuid']
+                  tradesObject['couponamt'] = noteObject.coupon_amt || 0
                 }
               }
               this.trades.push(tradesObject)
