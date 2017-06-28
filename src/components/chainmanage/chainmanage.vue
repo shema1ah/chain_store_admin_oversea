@@ -168,7 +168,7 @@
       </div>
     </el-dialog>
 
-    <el-dialog title="编辑分店编号" :visible.sync="showEditSubShopNum" class="mydialog" custom-class="" @close="refreshSubShopData">
+    <el-dialog title="编辑分店编号" :visible.sync="showEditSubShopNum" class="mydialog" @close="refreshSubShopData">
       <el-form ref="form-edit-subshop-num" label-position="left" class="edit-sub-tag">
         <div class="desc" style="text-align: left">
           分店编号设置成功后将会显示在下载的交易明细和交易汇总中。
@@ -709,6 +709,7 @@
     .mydialog .el-dialog__body {
       padding: 0 !important;
     }
+
     .panel-header-btn__associate {
       float:right;
     }

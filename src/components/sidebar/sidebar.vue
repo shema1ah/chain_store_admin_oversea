@@ -1,7 +1,7 @@
 <template>
   <div class="sidebar">
     <div class="sidebar-logo__wrapper">
-      <!--<img src="./img/logo.png" height="72" width="74" alt="logo" class="sidebar-img" />-->
+      <img src="./img/logo.png" alt="logo" class="sidebar-img"/>
       <h1 class="sidebar-logo__title">商户管理后台</h1>
     </div>
     <ul>
@@ -202,7 +202,7 @@
     height: 100%;
     background-color: #2A2A2A;
     @at-root .sidebar-logo__wrapper {
-      margin: 100px auto 28px;
+      margin: 20px auto 28px;
       text-align: center;
     }
     @at-root .sidebar-img {
