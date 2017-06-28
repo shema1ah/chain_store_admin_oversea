@@ -10,7 +10,8 @@
       <div class="panel-header panel-header__fix">
         <div class="panel-select-group panel-select-group__justify">
           <span class="panel-header__desc">基本信息</span>
-          <div class="panel-header-btn" @click="changePass('chain', shop.mobile)">修改密码</div>
+          <!--<div class="panel-header-btn" @click="changePass('chain', shop.mobile)"></div>-->
+          <el-button type="primary" class="panel-header-btn" :plain="true" @click="changePass('chain', shop.mobile)">修改密码</el-button>
         </div>
       </div>
       <div class="panel-body">
@@ -30,24 +31,26 @@
     </div>
     <div class="panel">
       <div class="panel-header panel-header__fix">
-        <div class="panel-select-group panel-select-group__justify">
-          <span class="panel-header__desc">门店列表</span>
+        <div class="panel-select-group">
+          <span class="panel-header__desc">分店信息</span>
           <!-- <div class="panel-header-btn__associate" @click="associate">
             <i class="icon-create"></i>
             <span>关联分店</span>
           </div> -->
-          <el-button type="primary" class="panel-edit-btn__subshopnum" @click.native="editSubShopNum">编辑分店编号</el-button>
-          <el-dropdown :hide-on-click="true">
-            <div class="panel-header-btn__associate">
-              <i class="icon-create"></i>
-              <span>创建分店</span>
-            </div>
+          <div style="align-items: center;display: flex;">
+            <el-button type="primary" class="panel-edit-btn__subshopnum" @click.native="editSubShopNum" style="float:left;">编辑分店编号</el-button>
+            <el-dropdown :hide-on-click="true" style="margin-left:10px;">
+              <div class="panel-header-btn__associate">
+                <i class="icon-create"></i>
+                <span>创建分店</span>
+              </div>
 
-            <el-dropdown-menu slot="dropdown" style="width:155px;">
-              <el-dropdown-item @click.native="createShop">直接创建</el-dropdown-item>
-              <el-dropdown-item @click.native="associate">关联已有</el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown>
+              <el-dropdown-menu slot="dropdown" style="width:155px;">
+                <el-dropdown-item @click.native="createShop">直接创建</el-dropdown-item>
+                <el-dropdown-item @click.native="associate">关联已有</el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+          </div>
 
         </div>
       </div>
@@ -69,6 +72,11 @@
             prop="join_time"
             label="注册时间">
             <template scope="scope">{{ scope.row.join_time }}</template>
+          </el-table-column>
+          <el-table-column
+            prop="tag"
+            label="分店编号">
+            <template scope="scope">{{ scope.row.tag }}</template>
           </el-table-column>
           <el-table-column
             label="操作">
@@ -600,22 +608,29 @@
   };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
   .panel-header__desc {
     font-size: 18px;
     color: #FE9B20;
+    float:left;
   }
 
   .panel-header__fix {
     padding-right: 15px;
+    line-height:50px;
   }
-
+  .panel-select-group {
+    justify-content: space-between;
+    line-height: 50px;
+  }
   .panel-select-group__justify {
     justify-content: space-between;
   }
-
+  .el-form-item__content:last-child {
+    margin-left: 32px !important;
+  }
   .info_wrapper {
-    padding: 20px 0px 30px 5px;
+    padding: 20px 0px 30px 10px;
     @at-root .info {
       display: flex;
       height: 28px;
@@ -627,9 +642,11 @@
       @at-root .info__title {
         font-size: 20px;
         color: #262323;
+        width: 85px !important;
+        margin-right: 0 !important;
       }
       @at-root .info__sign {
-        margin: 0px 15px 0px 10px;
+        margin: 0px 10px 0px 0px;
       }
       @at-root .info__desc {
         font-size: 15px;
@@ -659,11 +676,14 @@
   }
   .main {
     .panel-header-btn {
-      width: 155px;
+      width: 150px;
+      line-height:15px;
+      border: 1px solid #fe9b20;
+      color: #fe9b20;
     }
     .panel-edit-btn__subshopnum {
       width: 155px;
-      margin-left: 674px;
+      /*margin-left: 60%;*/
     }
     .pass {
       width: 420px;
@@ -689,6 +709,9 @@
     }
     .mydialog .el-dialog__body {
       padding: 0 !important;
+    }
+    .panel-header-btn__associate {
+      float:right;
     }
   }
 </style>

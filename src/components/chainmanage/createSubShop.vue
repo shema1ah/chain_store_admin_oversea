@@ -2,7 +2,7 @@
   <div class="index">
     <div class="mydialog" v-show="isShowMap" id="geolocation_mask" @click="hideMapDialog"></div>
     <!--sandbox="allow-scripts allow-popups allow-forms allow-same-origin"-->
-    <iframe  id="miframe" v-show="isShowMap" :src="mapComponentURL" frameborder="0" scrolling="no" width="100%" height="100%"></iframe>
+    <iframe sandbox="allow-scripts allow-same-origin" id="miframe" v-show="isShowMap" :src="mapComponentURL" frameborder="0" scrolling="no" width="100%" height="100%"></iframe>
     <!-- 地图弹窗-->
     <div class="banner_wrapper">
       <div class="banner-breadcrumb">
@@ -102,6 +102,8 @@
 
             <el-form-item label="证件有效期" prop="idstatdate" style="display:inline-block;width:200px;">
               <el-date-picker
+                :editable="false"
+                :clearable="false"
                 v-model="shopInfo.idstatdate"
                 type="date"
                 placeholder="生效年月日"
@@ -117,6 +119,8 @@
 
             <el-form-item style="display:inline-block;width:200px;" prop="idenddate">
               <el-date-picker
+                :editable="false"
+                :clearable="false"
                 v-model="shopInfo.idenddate"
                 type="date"
                 placeholder="失效年月日"
@@ -201,7 +205,7 @@
 
             <div class="divider"></div>
 
-            <el-form-item style="margin-left:10px">
+            <el-form-item style="margin-left:10px !important;">
               <el-col :span="2">
                 <el-button type="text" @click="cancelCreateSubShop('shop_info')" style="text-decoration: underline">
                   放弃创建
@@ -669,15 +673,26 @@
           console.log('shoot to iframe....')
           cw.postMessage('hello', config.mapURL);
         };
-//        document.getElementById('miframe').unonload = function() {
-//            debugger;
-//            this.style.display = 'none';
-//        }
         let getMessageFromRemote = function(e) {
           window.removeEventListener('message', getMessageFromRemote, false);
           console.log(e)
           console.log(e.data);
           _self.shopInfo.location = e.data.address || e.data.name;
+
+//          let _adcode = loc.addressComponent.adcode;
+//          let _province = loc.addressComponent.province;
+//          let _city = loc.addressComponent.city;
+//          this.shopInfo.adcode = this.shopInfo.provinceid = _adcode || '';
+//          this.shopInfo.province = _province;
+//          if (_city === '') {
+//            this.shopInfo.city = _province;
+//          }
+//          this.shopInfo.longitude = loc.position.lng;
+//          this.shopInfo.latitude = loc.position.lat;
+//          this.shopInfo.location = loc.formattedAddress;
+//          if (_adcode) {
+//            this.getBankLocation();
+//          }
         }
 
         window.addEventListener('message', getMessageFromRemote, false);
@@ -765,6 +780,11 @@
       preSignUp() { // 预注册
         this.$refs['shop_info'].validate((valid) => {
           if (valid) {
+            if(Date.parse(this.shopInfo.idstatdate + 'T00:00:00') > Date.parse(this.shopInfo.idenddate + 'T00:00:00') > 0) {
+                this.$message.error('证件生效期不能晚于证件失效期，请重新选择');
+                return;
+            }
+            console.log('预注册就此打住');
             if (this.shopInfo.userid) {
               this.infoPage = !this.infoPage;
             } else {
@@ -1114,7 +1134,7 @@
   }
   #miframe {
     width: 660px;
-    height: 420px;
+    height: 520px;
     display: none;
     top: 50% !important;
     left: 50% !important;
