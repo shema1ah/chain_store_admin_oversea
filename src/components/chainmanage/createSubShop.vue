@@ -860,6 +860,8 @@
               idcardfront: this.shopInfo.idcardfront_name,
               idcardback: this.shopInfo.idcardback_name,
               idcardinhand: this.shopInfo.idcardinhand_name,
+              idstatdate: this.shopInfo.idstatdate,
+              idenddate: this.shopInfo.idenddate,
               mode: 'bigmchnt',
               format: 'cors'
             }), {
