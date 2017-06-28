@@ -115,34 +115,34 @@
     <el-dialog v-model="isShowDetail" class="detail_dialog" title="门店详情">
       <el-row>
         <el-col :span="6" class="title">登录账号</el-col>
-        <el-col :span="10" class="desc">{{ detailData['mobile'] }}</el-col>
+        <el-col :span="10" class="desc">{{ detailData.mobile }}</el-col>
       </el-row>
       <el-row class="">
         <el-col :span="6" class="title">店铺名称</el-col>
-        <el-col :span="10" class="desc">{{ detailData['shopname'] }}</el-col>
+        <el-col :span="10" class="desc">{{ detailData.shopname }}</el-col>
       </el-row>
       <el-row>
         <el-col :span="6" class="title">地址</el-col>
-        <el-col :span="10" class="desc">{{ detailData['address'] }}</el-col>
+        <el-col :span="10" class="desc">{{ detailData.address }}</el-col>
       </el-row>
 
       <el-row>
         <el-col :span="6" class="title">手机号</el-col>
-        <el-col :span="10" class="desc">{{ detailData['mobile'] }}</el-col>
+        <el-col :span="10" class="desc">{{ detailData.telephone || detailData.mobile }}</el-col>
       </el-row>
       <el-row>
         <el-col :span="6" class="title">持卡人</el-col>
-        <el-col :span="10" class="desc">{{ detailData['bankuser'] }}</el-col>
+        <el-col :span="10" class="desc">{{ detailData.bankuser }}</el-col>
       </el-row>
       <el-row>
         <el-col :span="6" class="title">银行账户</el-col>
-        <el-col :span="10" class="desc">{{ detailData['bankaccount'] }}</el-col>
+        <el-col :span="10" class="desc">{{ detailData.bankaccount }}</el-col>
       </el-row>
       <el-row>
         <el-col :span="6" class="title">银行名称</el-col>
         <el-col :span="14" class="desc">
-          <div>{{ detailData['headbankname'] }}</div>
-          <div>{{ detailData['bankname'] }}</div>
+          <div>{{ detailData.headbankname }}</div>
+          <div>{{ detailData.bankname }}</div>
         </el-col>
       </el-row>
     </el-dialog>

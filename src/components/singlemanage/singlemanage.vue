@@ -28,7 +28,7 @@
           </div>
           <div class="info">
             <div class="info__title">手机号</div>
-            <div class="info__desc">{{ shop.telephone }}</div>
+            <div class="info__desc">{{ shop.telephone || shop.mobile }}</div>
           </div>
           <div class="info">
             <div class="info__title">持卡人</div>
@@ -206,10 +206,7 @@
 
       // 关闭弹出层,清除表单
       handleClose() {
-        setTimeout(() => {
-          this.form.pass = '';
-          this.form.repass = '';
-        }, 200);
+        this.$refs['form'].resetFields();
       }
 
     }
@@ -259,21 +256,6 @@
     height: 50px;
   }
 
-  .detail_dialog {
-    .el-dialog {
-      width: 580px;
-    }
-    .el-dialog__title {
-      font-size: 20px;
-    }
-    .title {
-      font-size: 16px;
-      color: black;
-    }
-    .desc {
-      color: black;
-    }
-  }
   .single {
     .panel-header-btn {
       width: 155px;
