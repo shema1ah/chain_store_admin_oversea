@@ -18,7 +18,7 @@
       <div class="panel-body">
         <div class="myform_wrapper">
           <el-form :rules="formrules" :model="form" ref="form">
-            <el-form-item label="适用门店" v-show="!role.single">
+            <el-form-item label="适用门店" v-if="!role.single">
               <span v-for="shop in shopData">{{ shop.shop_name }}、</span>
               <div class="remark mt-0 lh-16">注：请确保以上门店均已开通储值服务，否则无法正常储值</div>
             </el-form-item>

@@ -5,8 +5,19 @@ let filters = {
   formatCurrency (number) {
     if (isNaN(number)) {
       return
+    } else if (number === 0) {
+      return 0
     }
     return (number / 100).toFixed(2)
+  },
+
+  formatNumber (string) {
+    if(!string) {
+      return 0
+    }else if(parseInt(string) === 0) {
+      return 0
+    }
+    return (string / 100).toFixed(2)
   },
 
   removeHMS (time) {

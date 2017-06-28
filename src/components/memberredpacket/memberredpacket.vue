@@ -85,7 +85,7 @@
           <el-col :span="8" class="title">红包类型</el-col>
           <el-col :span="16" class="desc">{{ detailData.type_str }}</el-col>
         </el-row>
-        <el-row>
+        <el-row v-if="!role.single">
           <el-col :span="8" class="title">适用门店</el-col>
           <el-col :span="16" class="desc">
             <span v-for="(shop,index) in detailData.effect_sub_merchant">{{ shop.shopname }}{{ index < detailData.effect_sub_merchant.length - 1?"、":"" }}</span>
@@ -120,7 +120,7 @@
           <el-col :span="8" class="title">红包类型</el-col>
           <el-col :span="16" class="desc">{{ detailData.type_str }}</el-col>
         </el-row>
-        <el-row>
+        <el-row v-if="!role.single">
           <el-col :span="8" class="title">适用门店</el-col>
           <el-col :span="16" class="desc">
             <span v-for="(shop,index) in detailData.effect_sub_merchant">{{ shop.shopname }}{{ index < detailData.effect_sub_merchant.length - 1?"、":"" }}</span>
@@ -170,7 +170,7 @@
           <el-col :span="8" class="title">红包类型</el-col>
           <el-col :span="16" class="desc">{{ detailData.type_str }}</el-col>
         </el-row>
-        <el-row>
+        <el-row v-if="!role.single">
           <el-col :span="8" class="title">适用门店</el-col>
           <el-col :span="16" class="desc">
             <span v-for="(shop,index) in detailData.effect_sub_merchant">{{ shop.shopname }}{{ index < detailData.effect_sub_merchant.length - 1?"、":"" }}</span>
@@ -349,6 +349,7 @@
           console.log("取消");
       });
       },
+
       showDetail(scope) {
         let actName = scope.row.title;
         let createTime = scope.row.create_time;

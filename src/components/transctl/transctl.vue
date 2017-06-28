@@ -105,15 +105,15 @@
           <div class="num_total">
             <div class="num_wrapper">
               <p class="num-title">交易总金额</p>
-              <p class="num-desc">{{ transData.sucamt | formatCurrency }} 元</p>
+              <p class="num-desc">{{ transData.sucamt | formatNumber }} 元</p>
             </div>
             <div class="num_wrapper">
               <p class="num-title">交易实收</p>
-              <p class="num-desc">{{ transData.total_txamt | formatCurrency }} 元</p>
+              <p class="num-desc">{{ transData.total_txamt | formatNumber }} 元</p>
             </div>
             <div class="num_wrapper">
               <p class="num-title">红包优惠</p>
-              <p class="num-desc">{{ transData.coupon_amt | formatCurrency }} 元</p>
+              <p class="num-desc">{{ transData.coupon_amt | formatNumber }} 元</p>
             </div>
             <div class="num_wrapper">
               <p class="num-title">成功交易笔数</p>
@@ -163,10 +163,10 @@
           <el-table-column
             label="交易金额">
             <template scope="scope">
-              <div class="table-title">{{ scope.row.total_amt | formatCurrency }}元</div>
-              <div class="table-content">实收{{ scope.row.txamt | formatCurrency }}元</div>
-              <div v-show="scope.row.mchnt_coupon" class="table-content">商家红包{{ scope.row.mchnt_coupon | formatCurrency }}元</div>
-              <div v-show="scope.row.hj_coupon" class="table-content">平台补贴{{ scope.row.hj_coupon | formatCurrency }}元</div>
+              <div class="table-title">{{ scope.row.total_amt | formatNumber }}元</div>
+              <div class="table-content">实收{{ scope.row.txamt | formatNumber }}元</div>
+              <div v-show="scope.row.mchnt_coupon" class="table-content">商家红包{{ scope.row.mchnt_coupon | formatNumber }}元</div>
+              <div v-show="scope.row.hj_coupon" class="table-content">平台补贴{{ scope.row.hj_coupon | formatNumber }}元</div>
             </template>
           </el-table-column>
           <el-table-column

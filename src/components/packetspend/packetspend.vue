@@ -11,7 +11,7 @@
       <el-date-picker v-model="form.expire_time" type="date" :editable="false" placeholder="请选结束时间" size="small" :clearable="false">
       </el-date-picker>
     </el-form-item>
-    <el-form-item label="适用门店" prop="sub_mchnt_list" v-show="!role.single">
+    <el-form-item label="适用门店" prop="sub_mchnt_list" v-if="!role.single">
       <el-select v-model="form.sub_mchnt_list" placeholder="请选择门店" multiple size="small">
         <el-option
           v-for="shop in shopList"

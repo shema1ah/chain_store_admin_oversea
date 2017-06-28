@@ -25,7 +25,7 @@
               </el-select>
             </el-form-item> -->
             <div v-if="state === 0">
-              <el-form-item label="适用门店" v-show="!role.single">
+              <el-form-item label="适用门店" v-if="!role.single">
                 <span>全部</span>
               </el-form-item>
               <el-form-item label="开始时间" prop="start_time">
@@ -59,7 +59,7 @@
               </el-form-item>
             </div>
             <div v-if="state === 1">
-              <el-form-item label="适用门店" v-show="!role.single">
+              <el-form-item label="适用门店" v-if="!role.single">
                 <span>全部</span>
               </el-form-item>
               <el-form-item label="开始时间" prop="start_time">
