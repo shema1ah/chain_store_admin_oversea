@@ -206,7 +206,7 @@
 
             <div class="divider"></div>
 
-            <el-form-item style="margin-left:10px !important;">
+            <el-form-item style="margin-left:-64px !important;">
               <el-col :span="2">
                 <el-button type="text" @click="cancelCreateSubShop('shop_info')" style="text-decoration: underline">
                   放弃创建
@@ -458,6 +458,7 @@
   import ElSlPanel from "../../../node_modules/element-ui/packages/color-picker/src/components/sv-panel";
   import ElIcon from "../../../node_modules/element-ui/packages/icon/src/icon";
   import qs from 'qs';
+  import Vue from 'vue';
     const AMap = window.AMap;
     var map = null;
 
@@ -684,26 +685,24 @@
         this.initIframe();
       },
       initIframe() {
-          var _self = this;
-          var iframe = null;
-//        document.getElementById('miframe').style.display = 'block';
+        var _self = this;
+        var iframe = null;
         iframe = document.getElementById('miframe');
 
-        var cw = iframe.contentWindow;
+//        var cw = iframe.contentWindow;
         document.getElementById('miframe').onload = null;
         document.getElementById('miframe').onload = function() {
           iframe.style.display = 'block';
           iframe.style.zIndex = 10;
           console.log('shoot to iframe....')
-          cw.postMessage('hello', config.mapURL);
+//          cw.postMessage('hello', config.mapURL);
         };
         let getMessageFromRemote = function(e) {
           window.removeEventListener('message', getMessageFromRemote, false);
           console.log(e)
           console.log(e.data);
-          _self.shopInfo.location = e.data.address || e.data.name;
+          _self.shopInfo.location = e.data.address + e.data.name;
         }
-
         window.addEventListener('message', getMessageFromRemote, false);
       },
 
@@ -790,12 +789,15 @@
       preSignUp() { // 预注册
         this.$refs['shop_info'].validate((valid) => {
           if (valid) {
-            if(Date.parse(this.shopInfo.idstatdate + 'T00:00:00') > Date.parse(this.shopInfo.idenddate + 'T00:00:00') > 0) {
+            if(Date.parse(this.shopInfo.idstatdate + 'T00:00:00') - Date.parse(this.shopInfo.idenddate + 'T00:00:00') > 0) {
                 this.$message.error('证件生效期不能晚于证件失效期，请重新选择');
                 return;
             }else {
               if (this.shopInfo.userid) {
                 this.infoPage = !this.infoPage;
+                Vue.nextTick(function () {
+                  document.querySelectorAll('.user_name')[0].scrollIntoView();
+                })
               } else {
                 this.btnLocked = true;
                 axios.post(`${config.ohost}/mchnt/user/pre_signup`, {
@@ -808,6 +810,9 @@
                     this.shopInfo.username = data.data.username;
                     this.infoPage = !this.infoPage;
                     console.log(this.shopInfo);
+                    Vue.nextTick(function () {
+                      document.querySelectorAll('.user_name')[0].scrollIntoView();
+                    })
                   } else {
                     this.$message.error(data.resperr);
                   }
@@ -855,6 +860,8 @@
               idcardfront: this.shopInfo.idcardfront_name,
               idcardback: this.shopInfo.idcardback_name,
               idcardinhand: this.shopInfo.idcardinhand_name,
+              idstatdate: this.shopInfo.idstatdate,
+              idenddate: this.shopInfo.idenddate,
               mode: 'bigmchnt',
               format: 'cors'
             }), {

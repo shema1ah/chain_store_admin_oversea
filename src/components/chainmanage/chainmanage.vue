@@ -115,34 +115,34 @@
     <el-dialog v-model="isShowDetail" class="detail_dialog" title="门店详情">
       <el-row>
         <el-col :span="6" class="title">登录账号</el-col>
-        <el-col :span="10" class="desc">{{ detailData['mobile'] }}</el-col>
+        <el-col :span="10" class="desc">{{ detailData.mobile }}</el-col>
       </el-row>
       <el-row class="">
         <el-col :span="6" class="title">店铺名称</el-col>
-        <el-col :span="10" class="desc">{{ detailData['shopname'] }}</el-col>
+        <el-col :span="10" class="desc">{{ detailData.shopname }}</el-col>
       </el-row>
       <el-row>
         <el-col :span="6" class="title">地址</el-col>
-        <el-col :span="10" class="desc">{{ detailData['address'] }}</el-col>
+        <el-col :span="10" class="desc">{{ detailData.address }}</el-col>
       </el-row>
 
       <el-row>
         <el-col :span="6" class="title">手机号</el-col>
-        <el-col :span="10" class="desc">{{ detailData['mobile'] }}</el-col>
+        <el-col :span="10" class="desc">{{ detailData.telephone || detailData.mobile }}</el-col>
       </el-row>
       <el-row>
         <el-col :span="6" class="title">持卡人</el-col>
-        <el-col :span="10" class="desc">{{ detailData['bankuser'] }}</el-col>
+        <el-col :span="10" class="desc">{{ detailData.bankuser }}</el-col>
       </el-row>
       <el-row>
         <el-col :span="6" class="title">银行账户</el-col>
-        <el-col :span="10" class="desc">{{ detailData['bankaccount'] }}</el-col>
+        <el-col :span="10" class="desc">{{ detailData.bankaccount }}</el-col>
       </el-row>
       <el-row>
         <el-col :span="6" class="title">银行名称</el-col>
         <el-col :span="14" class="desc">
-          <div>{{ detailData['headbankname'] }}</div>
-          <div>{{ detailData['bankname'] }}</div>
+          <div>{{ detailData.headbankname }}</div>
+          <div>{{ detailData.bankname }}</div>
         </el-col>
       </el-row>
     </el-dialog>
@@ -170,7 +170,9 @@
 
     <el-dialog title="编辑分店编号" :visible.sync="showEditSubShopNum" class="mydialog" custom-class="" @close="refreshSubShopData">
       <el-form ref="form-edit-subshop-num" label-position="left" class="edit-sub-tag">
-        <div class="desc" style="text-align: center"></div>
+        <div class="desc" style="text-align: left">
+          分店编号设置成功后将会显示在下载的交易明细和交易汇总中。
+        </div>
         <el-form-item v-for="(shop, index) in shopData.list" v-if="index !== 0">
           <el-tooltip placement="bottom" :content="shop.shop_name" class="subshoptip">
             <label>{{shop.shop_name}}</label>
