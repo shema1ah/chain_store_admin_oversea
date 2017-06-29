@@ -2,7 +2,7 @@
   <div class="index">
     <div class="mydialog" v-show="isShowMap" id="geolocation_mask" @click="hideMapDialog"></div>
     <!--sandbox="allow-scripts allow-popups allow-forms allow-same-origin"-->
-    <iframe sandbox="allow-scripts allow-same-origin" id="miframe" v-show="isShowMap" :src="mapComponentURL" frameborder="0" scrolling="no" width="100%" height="100%"></iframe>
+    <iframe sandbox="allow-scripts allow-popups allow-forms allow-same-origin" id="miframe" v-show="isShowMap" :src="mapComponentURL" frameborder="0" scrolling="no" width="100%" height="100%"></iframe>
     <!-- 地图弹窗-->
     <div class="banner_wrapper">
       <div class="banner-breadcrumb">
@@ -672,11 +672,11 @@
         },
       hideMapDialog() {
         this.isShowMap = false;
-//        document.getElementById('miframe').style.display = 'none';
         this.mapComponentURL = '';
         setTimeout(function() {
           document.getElementById('miframe').style.display = 'none';
-        }, 0)
+        }, 0);
+        window.removeEventListener('message', this.getMessageFromRemote);
       },
       showMap(e) {
         if (this.isShowMap) return;
@@ -685,27 +685,23 @@
         this.initIframe();
       },
       initIframe() {
-        var _self = this;
         var iframe = null;
         iframe = document.getElementById('miframe');
-
-//        var cw = iframe.contentWindow;
-        document.getElementById('miframe').onload = null;
-        document.getElementById('miframe').onload = function() {
+        var cw = iframe.contentWindow;
+        iframe.onload = null;
+        iframe.onload = function() {
           iframe.style.display = 'block';
           iframe.style.zIndex = 10;
-          console.log('shoot to iframe....')
-//          cw.postMessage('hello', config.mapURL);
+          cw.postMessage('hello', config.mapURL);
         };
-        let getMessageFromRemote = function(e) {
-          window.removeEventListener('message', getMessageFromRemote, false);
-          console.log(e)
-          console.log(e.data);
-          _self.shopInfo.location = e.data.address + e.data.name;
-        }
-        window.addEventListener('message', getMessageFromRemote, false);
+        window.addEventListener('message', this.getMessageFromRemote, false);
       },
-
+      getMessageFromRemote(e) {
+        if(e.data.name) {
+          console.log(e.data);
+          this.shopInfo.location = e.data.address + e.data.name;
+        }
+      },
       backToShopManagement() {
         this.$refs['upload_info'].resetFields();
         this.$refs['shop_info'].resetFields();
