@@ -501,14 +501,6 @@
         }
       };
 
-      let isEmpty = (rule, val, cb) => {
-        if (!val.trim()) {
-          cb('只输入空格无效')
-        } else {
-          cb();
-        }
-      };
-
       let nameValid = (rule, val, cb) => {
         if(!/^[\u4e00-\u9fa5A-Za-z\s]*$/.test(val)) {
           cb('请输入汉字或字母');
@@ -580,11 +572,10 @@
         page1_rules: {
           password: [
             {required: true, message: '请输入分店登录密码', trigger: 'blur'},
-            {validator: isEmpty}
+            {max: 20, min: 6, message: '请输入6~20位数字或字母', trigger: 'blur'}
           ],
           shopname: [
-            {required: true, message: '请输入分店名称', trigger: 'blur'},
-            {validator: isEmpty}
+            {required: true, message: '请输入分店名称', trigger: 'blur'}
           ],
           shoptype_name: [
             {required: true, message: '请选择经营类型'}
@@ -593,8 +584,7 @@
             {required: true, message: '请从地图中定位店铺地址或手动填写'}
           ],
           address: [
-            {required: true, message: '请从填写详细门牌号'},
-            {validator: isEmpty}
+            {required: true, message: '请从填写详细门牌号'}
           ],
           idnumber: [
             {required: true, message: '请输入身份证号', trigger: 'blur'},
@@ -608,7 +598,6 @@
           ],
           bankuser: [
             {required: true, message: '请输入开户名', trigger: 'blur'},
-            {validator: isEmpty},
             {validator: nameValid}
           ],
           bankaccount: [
