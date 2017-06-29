@@ -46,7 +46,7 @@ let filters = {
     } else if (frontNumber === '8001') {
       return '支付宝收款'
     } else if (frontNumber === '7000') {
-      return '储值收款'
+      return '储值消费'
     } else {
       return busicd
     }

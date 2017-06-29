@@ -37,9 +37,10 @@
           <el-table-column
             label="交易金额">
             <template scope="scope">
-              <p>实收{{ scope.row.txamt | formatCurrency }}元</p>
-              <p v-show="scope.row.couponamt">商家红包{{ scope.row.couponamt | formatCurrency }}元</p>
-              <p v-show="scope.row.mchnt_amt">平台补贴{{ scope.row.mchnt_amt | formatCurrency }}元</p>
+              <strong class="font-large">{{ scope.row.orig_amt || scope.row.txamt | formatCurrency }}元</strong>
+              <p class="font-small">实收{{ scope.row.txamt | formatCurrency }}元</p>
+              <p class="font-small" v-show="scope.row.merchanCouponAmt">商家红包{{ scope.row.merchanCouponAmt | formatCurrency }}元</p>
+              <p class="font-small" v-show="parseInt(scope.row.coupon_amt)">平台补贴{{ scope.row.coupon_amt | formatCurrency }}元</p>
             </template>
           </el-table-column>
           <el-table-column
@@ -101,7 +102,8 @@
                 // note key 是json string 只提取有用的 mchnt_coupon
                 if (tradeskey[variable] === 'note') {
                   let noteObject = JSON.parse(tradesObject['note'])
-                  tradesObject['couponamt'] = noteObject.coupon_amt || 0
+                  tradesObject['merchanCouponAmt'] = noteObject.coupon_amt || 0
+                  tradesObject['orig_amt'] = noteObject.orig_amt
                 }
               }
               this.trades.push(tradesObject)
@@ -124,9 +126,20 @@
   .table-title {
     font-size: 16px;
   }
+  .font-large {
+    font-size: 16px;
+    font-weight: 500;
+  }
+  .font-small {
+    font-size: 12px;
+    line-height: 1.5;
+  }
   .trade-table {
     width:100%;
     min-height:661px;
+    td {
+      padding: 6px 0;
+    }
   }
   .view-more {
     text-align: right;
