@@ -2,7 +2,7 @@
   <div class="index">
     <div class="mydialog" v-show="isShowMap" id="geolocation_mask" @click="hideMapDialog"></div>
     <!--sandbox="allow-scripts allow-popups allow-forms allow-same-origin"-->
-    <iframe sandbox="allow-scripts allow-same-origin" id="miframe" v-show="isShowMap" :src="mapComponentURL" frameborder="0" scrolling="no" width="100%" height="100%"></iframe>
+    <iframe sandbox="allow-scripts allow-popups allow-forms allow-same-origin" id="miframe" v-show="isShowMap" :src="mapComponentURL" frameborder="0" scrolling="no" width="100%" height="100%"></iframe>
     <!-- 地图弹窗-->
     <div class="banner_wrapper">
       <div class="banner-breadcrumb">
@@ -23,7 +23,7 @@
         <div class="sub_info_wrapper">
           <el-form :model="shopInfo" label-width="96px" label-position="left" :rules="page1_rules" ref="shop_info">
             <el-form-item label="分店登录密码" prop="password">
-              <el-input v-model="shopInfo.password" size="small" type="password" placeholder="请输入新密码"
+              <el-input v-model.trim="shopInfo.password" size="small" type="password" placeholder="请输入新密码"
                         auto-complete="off" class="sub-account-item-info"></el-input>
             </el-form-item>
 
@@ -33,7 +33,7 @@
             </div>
 
             <el-form-item label="分店名称" prop="shopname">
-              <el-input v-model="shopInfo.shopname" size="small" type="text" placeholder="请输入" auto-complete="off"
+              <el-input v-model.trim="shopInfo.shopname" size="small" type="text" placeholder="请输入" auto-complete="off"
                         class="sub-account-item-info"></el-input>
             </el-form-item>
 
@@ -64,13 +64,13 @@
                       ref="city_id"></el-input>
 
             <el-form-item label="店铺地址" prop="location">
-              <el-input v-model="shopInfo.location" size="small" type="text" placeholder="点击右侧按钮打开地图"
+              <el-input v-model.trim="shopInfo.location" size="small" type="text" placeholder="点击右侧按钮打开地图"
                         auto-complete="off" class="sub-account-item-info"></el-input>
-              <span @click="showMap" type="primary" size="small" class="btn-map">地图定位</span>
+              <span @click="showMap" type="primary" size="small" class="btn-map">地图定位店铺地址</span>
             </el-form-item>
 
             <el-form-item label="详细门牌号" prop="address" style="margin-bottom: 0;">
-              <el-input v-model="shopInfo.address" size="small" type="text" placeholder="" auto-complete="off"
+              <el-input v-model.trim="shopInfo.address" size="small" type="text" placeholder="" auto-complete="off"
                         class="sub-account-item-info-long"></el-input>
             </el-form-item>
 
@@ -81,7 +81,7 @@
             </el-form-item>
 
             <el-form-item label="店内联系电话">
-              <el-input v-model="shopInfo.landline" size="small" type="text" placeholder="请输入顾客可联系的电话"
+              <el-input v-model.trim="shopInfo.landline" size="small" type="text" placeholder="请输入顾客可联系的电话"
                         auto-complete="off" class="sub-account-item-info"></el-input>
               <span style="color:#8a8c92;">（选填）</span>
             </el-form-item>
@@ -92,12 +92,12 @@
             </div>
 
             <el-form-item label="店主姓名" prop="bankuser">
-              <el-input v-model="shopInfo.bankuser" size="small" type="text" placeholder="请与收款卡号开户名一致"
+              <el-input v-model.trim="shopInfo.bankuser" size="small" type="text" placeholder="请与收款卡号开户名一致"
                         auto-complete="off" class="sub-account-item-info"></el-input>
             </el-form-item>
 
             <el-form-item label="身份证号" prop="idnumber">
-              <el-input v-model="shopInfo.idnumber" size="small" type="text" placeholder="请输入" auto-complete="off"
+              <el-input v-model.trim="shopInfo.idnumber" size="small" type="text" placeholder="请输入" auto-complete="off"
                         class="sub-account-item-info"></el-input>
             </el-form-item>
 
@@ -109,16 +109,12 @@
                 type="date"
                 placeholder="生效年月日"
                 align="center"
-                popper-class="adjustPoper"
-                format="yyyy-MM-dd"
-                @change="pickerStartChange"
-              >
+                popper-class="adjustPoper">
               </el-date-picker>
             </el-form-item>
-
             <el-form-item style="width:20px;display:inline-block;color:#262424;">至</el-form-item>
 
-            <el-form-item style="display:inline-block;width:200px;" prop="idenddate">
+            <el-form-item style="display:inline-block;width:300px;" prop="idenddate">
               <el-date-picker
                 :editable="false"
                 :clearable="false"
@@ -126,10 +122,7 @@
                 type="date"
                 placeholder="失效年月日"
                 align="center"
-                popper-class="adjustPoper"
-                format="yyyy-MM-dd"
-                @change="pickerEndChange"
-              >
+                popper-class="adjustPoper">
               </el-date-picker>
             </el-form-item>
 
@@ -139,17 +132,17 @@
             </div>
 
             <el-form-item label="开户名" prop="bankuser">
-              <el-input v-model="shopInfo.bankuser" size="small" type="text" placeholder="请与店主姓名一致" auto-complete="off"
+              <el-input v-model.trim="shopInfo.bankuser" size="small" type="text" placeholder="请与店主姓名一致" auto-complete="off"
                         class="sub-account-item-info"></el-input>
             </el-form-item>
 
             <el-form-item label="银行卡号" prop="bankaccount">
-              <el-input v-model="shopInfo.bankaccount" size="small" type="text" placeholder="请输入" auto-complete="off"
+              <el-input v-model.trim="shopInfo.bankaccount" size="small" type="text" placeholder="请输入" auto-complete="off"
                         class="sub-account-item-info" @blur="getCardsInfo"></el-input>
             </el-form-item>
 
             <el-form-item label="预留手机号" prop="bankmobile">
-              <el-input v-model="shopInfo.bankmobile" size="small" type="text" placeholder="请输入" auto-complete="off"
+              <el-input v-model.trim="shopInfo.bankmobile" size="small" type="text" placeholder="请输入" auto-complete="off"
                         class="sub-account-item-info"></el-input>
             </el-form-item>
 
@@ -252,6 +245,7 @@
                     category: 1,
                     source: 1,
                     tag: 'shopphoto',
+                    format: 'cors',
                     userid: shopInfo.userid
                 }">
                   <div v-if="shopInfo.shopphoto_url" class="avatar-wrap">
@@ -290,6 +284,7 @@
                     category: 1,
                     source: 1,
                     tag: 'goodsphoto',
+                    format: 'cors',
                     userid: shopInfo.userid
                 }">
                   <div v-if="shopInfo.goodsphoto_url" class="avatar-wrap">
@@ -327,7 +322,8 @@
                     category: 1,
                     source: 1,
                     tag: 'idcardfront',
-                    userid: shopInfo.userid
+                    userid: shopInfo.userid,
+                    format: 'cors'
                 }">
                   <div v-if="shopInfo.idcardfront_url" class="avatar-wrap">
                     <img :src="shopInfo.idcardfront_url" class="avatar">
@@ -359,6 +355,7 @@
                     category: 1,
                     source: 1,
                     tag: 'idcardback',
+                    format: 'cors',
                     userid: shopInfo.userid
                 }">
                   <div v-if="shopInfo.idcardback_url" class="avatar-wrap">
@@ -391,6 +388,7 @@
                     category: 1,
                     source: 1,
                     tag: 'idcardinhand',
+                    format: 'cors',
                     userid: shopInfo.userid
                 }">
                   <div v-if="shopInfo.idcardinhand_url" class="avatar-wrap">
@@ -450,7 +448,7 @@
   import ElForm from "../../../node_modules/element-ui/packages/form/src/form";
   import ElInput from "../../../node_modules/element-ui/packages/input/src/input";
   import ElButton from "../../../node_modules/element-ui/packages/button/src/button";
-  import {cardValid} from "../../common/js/util";
+  import { cardValid, formatDate } from "../../common/js/util";
   import axios from 'axios';
   import config from 'config';
   import ElFormItem from "../../../node_modules/element-ui/packages/form/src/form-item";
@@ -481,13 +479,36 @@
           cb('请输入合法身份证号')
         }
       };
-      let isEmpty = (rule, val, cb) => {
-        if (!val.trim()) {
-          cb('只输入空格无效')
+
+      let expireValid = (rule, val, cb) => {
+        if(val === '') {
+          cb('请选择失效年月日');
+        } else if(this.shopInfo.idstatdate && val.getTime() < this.shopInfo.idstatdate.getTime()) {
+          cb('生效期不能晚于失效期');
         } else {
           cb();
         }
-      }
+      };
+
+      let startValid = (rule, val, cb) => {
+        if(val === '') {
+          cb('请选择生效年月日');
+        } else {
+          if(this.shopInfo.idenddate !== '') {
+            this.$refs['shop_info'].validateField('idenddate');
+          }
+          cb();
+        }
+      };
+
+      let nameValid = (rule, val, cb) => {
+        if(!/^[\u4e00-\u9fa5A-Za-z\s]*$/.test(val)) {
+          cb('请输入汉字或字母');
+        }else {
+          cb();
+        }
+      };
+
       return {
         mapComponentURL: '',
         isShowCommitDone: false,
@@ -551,11 +572,10 @@
         page1_rules: {
           password: [
             {required: true, message: '请输入分店登录密码', trigger: 'blur'},
-            {validator: isEmpty}
+            {max: 20, min: 6, message: '请输入6~20位数字或字母', trigger: 'blur'}
           ],
           shopname: [
-            {required: true, message: '请输入分店名称', trigger: 'blur'},
-            {validator: isEmpty}
+            {required: true, message: '请输入分店名称', trigger: 'blur'}
           ],
           shoptype_name: [
             {required: true, message: '请选择经营类型'}
@@ -564,25 +584,21 @@
             {required: true, message: '请从地图中定位店铺地址或手动填写'}
           ],
           address: [
-            {required: true, message: '请从填写详细门牌号'},
-            {validator: isEmpty}
+            {required: true, message: '请从填写详细门牌号'}
           ],
           idnumber: [
             {required: true, message: '请输入身份证号', trigger: 'blur'},
             {validator: idValid}
           ],
           idstatdate: [
-            {required: true, message: '请选择生效年月日'}
-//            { validator: function(rule, val, cb) {
-//                console.log('enddate:', val, this)
-//            }}
+            { validator: startValid }
           ],
           idenddate: [
-            {required: true, message: '请选择失效年月日'}
+            { validator: expireValid }
           ],
           bankuser: [
             {required: true, message: '请输入开户名', trigger: 'blur'},
-            {validator: isEmpty}
+            {validator: nameValid}
           ],
           bankaccount: [
             {required: true, message: '请输入银行卡号', trigger: 'blur'},
@@ -672,11 +688,11 @@
         },
       hideMapDialog() {
         this.isShowMap = false;
-//        document.getElementById('miframe').style.display = 'none';
         this.mapComponentURL = '';
         setTimeout(function() {
           document.getElementById('miframe').style.display = 'none';
-        }, 0)
+        }, 0);
+        window.removeEventListener('message', this.getMessageFromRemote);
       },
       showMap(e) {
         if (this.isShowMap) return;
@@ -685,27 +701,27 @@
         this.initIframe();
       },
       initIframe() {
-        var _self = this;
         var iframe = null;
         iframe = document.getElementById('miframe');
-
-//        var cw = iframe.contentWindow;
-        document.getElementById('miframe').onload = null;
-        document.getElementById('miframe').onload = function() {
+        var cw = iframe.contentWindow;
+        iframe.onload = null;
+        iframe.onload = function() {
           iframe.style.display = 'block';
           iframe.style.zIndex = 10;
-          console.log('shoot to iframe....')
-//          cw.postMessage('hello', config.mapURL);
+          cw.postMessage('hello', config.mapURL);
         };
-        let getMessageFromRemote = function(e) {
-          window.removeEventListener('message', getMessageFromRemote, false);
-          console.log(e)
-          console.log(e.data);
-          _self.shopInfo.location = e.data.address + e.data.name;
-        }
-        window.addEventListener('message', getMessageFromRemote, false);
+        window.addEventListener('message', this.getMessageFromRemote, false);
       },
-
+      getMessageFromRemote(e) {
+        if(e.data.name) {
+          console.log(e.data);
+          this.shopInfo.location = e.data.address + e.data.name;
+          this.$message({
+            type: 'success',
+            message: '您选择了新的店铺地址：' + this.shopInfo.location
+          });
+        }
+      },
       backToShopManagement() {
         this.$refs['upload_info'].resetFields();
         this.$refs['shop_info'].resetFields();
@@ -717,51 +733,19 @@
         this.backToPrePage();
         this.isShowCommitDone = false;
       },
-      pickerStartChange(op) {
-        this.shopInfo.idstatdate = op;
-      },
-      pickerEndChange(op) {
-        this.shopInfo.idenddate = op;
-      },
+
       beforeAvatarUpload(file) {
-        console.log('beforeAvatarUpload', file);
         const isRightImgType = file.type === 'image/jpeg' || file.type === 'image/png';
         if (!isRightImgType) {
           this.$message.error('上传头像图片只能是 JPG 或 PNG 格式!');
         }
         return isRightImgType;
       },
-      beginUploadImg(payload) { // 开始上传图片
-        axios.post(`${config.imgUpload}/util/v1/uploadfile`, {
-          category: payload.data.category,
-          source: payload.data.source,
-          tag: payload.data.tag,
-          file: payload,
-          userid: payload.data.userid,
-          format: 'cors'
-        }, {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        }).then((res) => {
-          let data = res.data;
-          if (data.respcd === config.code.OK) {
-            this.shopInfo[data.data.tag + '_url'] = data.data.url;
-            this.shopInfo[data.data.tag + '_name'] = data.data.name;
-            console.log(this.shopInfo);
-          } else {
-            this.$message.error(data.resperr);
-          }
-        }).catch((e) => {
-          this.$message.error(e);
-        });
-      },
       avatarSuccess(res, file) {
         let data = res.data;
         if (res.respcd === config.code.OK) {
           this.shopInfo[data.tag + '_url'] = data.url;
           this.shopInfo[data.tag + '_name'] = data.name;
-//        console.log(this.shopInfo, file);
         } else {
           this.$message.error(res.resperr);
         }
@@ -789,40 +773,33 @@
       preSignUp() { // 预注册
         this.$refs['shop_info'].validate((valid) => {
           if (valid) {
-            if(Date.parse(this.shopInfo.idstatdate + 'T00:00:00') - Date.parse(this.shopInfo.idenddate + 'T00:00:00') > 0) {
-                this.$message.error('证件生效期不能晚于证件失效期，请重新选择');
-                return;
-            }else {
-              if (this.shopInfo.userid) {
-                this.infoPage = !this.infoPage;
-                Vue.nextTick(function () {
-                  document.querySelectorAll('.user_name')[0].scrollIntoView();
-                })
-              } else {
-                this.btnLocked = true;
-                axios.post(`${config.ohost}/mchnt/user/pre_signup`, {
-                  mode: 'bigmchnt',
-                  format: 'cors'
-                }).then((res) => {
-                  let data = res.data;
-                  if (data.respcd === config.code.OK) {
-                    this.shopInfo.userid = data.data.userid;
-                    this.shopInfo.username = data.data.username;
-                    this.infoPage = !this.infoPage;
-                    console.log(this.shopInfo);
-                    Vue.nextTick(function () {
-                      document.querySelectorAll('.user_name')[0].scrollIntoView();
-                    })
-                  } else {
-                    this.$message.error(data.resperr);
-                  }
+            if (this.shopInfo.userid) {
+              this.infoPage = !this.infoPage;
+              Vue.nextTick(function () {
+                document.querySelectorAll('.user_name')[0].scrollIntoView();
+              })
+            } else {
+              this.btnLocked = true;
+              axios.post(`${config.ohost}/mchnt/user/pre_signup`, {
+                mode: 'bigmchnt',
+                format: 'cors'
+              }).then((res) => {
+                let data = res.data;
+                if (data.respcd === config.code.OK) {
+                  this.shopInfo.userid = data.data.userid;
+                  this.shopInfo.username = data.data.username;
+                  this.infoPage = !this.infoPage;
+                  Vue.nextTick(function () {
+                    document.querySelectorAll('.user_name')[0].scrollIntoView();
+                  })
+                } else {
+                  this.$message.error(data.resperr);
+                }
+                this.btnLocked = false;
+              }).catch((e) => {
+                  this.$message.error(e);
                   this.btnLocked = false;
-                })
-                  .catch((e) => {
-                    this.$message.error(e);
-                    this.btnLocked = false;
-                  });
-              }
+              });
             }
 
           } else {
@@ -860,8 +837,8 @@
               idcardfront: this.shopInfo.idcardfront_name,
               idcardback: this.shopInfo.idcardback_name,
               idcardinhand: this.shopInfo.idcardinhand_name,
-              idstatdate: this.shopInfo.idstatdate,
-              idenddate: this.shopInfo.idenddate,
+              idstatdate: formatDate(this.shopInfo.idstatdate),
+              idenddate: formatDate(this.shopInfo.idenddate),
               mode: 'bigmchnt',
               format: 'cors'
             }), {
@@ -1009,7 +986,6 @@
             let data = res.data;
             if (data.respcd === config.code.OK) {
               console.log('获取商户类型列表成功')
-              console.log('$$$$$$$$$$$$$$', data);
               this.shopInfo.shop_types = data.data.shop_types;
             } else {
               this.$message.error(data.resperr);
@@ -1027,7 +1003,6 @@
         console.log(node);
         this.shopInfo.shoptype_id = node.id;
         this.shopInfo.shoptype_name = node.name;
-        console.log(this.shopInfo);
       }
     },
     mounted() {
@@ -1196,7 +1171,7 @@
 
     .btn-map {
       display: inline-block;;
-      width: 66px;
+      width: 132px;
       height: 30px;
       line-height: 30px;
       margin-left: 10px;

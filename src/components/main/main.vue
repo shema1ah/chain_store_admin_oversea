@@ -85,7 +85,6 @@ export default {
             // 本地调试或者刷新页面时设置role
             let val = getRole(data.data);
             Store.set('role', val);
-            Store.set('uid', data.data.uid)
 
             this.$store.dispatch('getShopList');
             this.$store.dispatch('getMemberTotal');
