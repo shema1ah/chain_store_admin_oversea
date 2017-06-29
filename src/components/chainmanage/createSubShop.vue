@@ -38,9 +38,11 @@
             </el-form-item>
 
             <el-form-item label="经营类型" prop="shoptype_name">
-              <el-input id="op_type" icon="caret-bottom" v-model="shopInfo.shoptype_name" size="small" type="text"
-                        placeholder="请选择经营类型" auto-complete="off" class="sub-account-item-info"
-                        @click="showTreeComponent" readonly></el-input>
+              <el-input id="op_type" icon="caret-bottom" v-model="shopInfo.shoptype_name" size="small" type="select"
+                        placeholder="请选择经营类型"
+                        @click="showTreeComponent"
+                        readonly
+                         class="sub-account-item-info"></el-input>
               <el-tree id="op-type-tree" :data="shopInfo.shop_types" :props="defaultProps" @node-click="handleNodeClick"
                        v-show="shopInfo.isShowTree"
                        style="position:absolute;top:32px;z-index:9;width:238px;overflow-y:auto;height:320px;"></el-tree>
@@ -234,7 +236,9 @@
 
             <el-form-item style="margin-bottom:0">
               <el-col :span="8">
-                <el-upload
+                <el-upload ref="shopphoto"
+                  v-loading="shopphotoloading"
+                  :on-progress="startAvatarUpload"
                   class="avatar-uploader"
                   :action="uploadInterface"
                   :show-file-list="false"
@@ -274,6 +278,8 @@
             <el-form-item style="margin-bottom:0">
               <el-col :span="8">
                 <el-upload
+                  v-loading="goodsphotoloading"
+                  :on-progress="startAvatarUpload"
                   class="avatar-uploader"
                   :action="uploadInterface"
                   :show-file-list="false"
@@ -312,6 +318,8 @@
             <el-form-item style="margin-bottom:0">
               <el-col :span="8">
                 <el-upload
+                  v-loading="idcardfrontloading"
+                  :on-progress="startAvatarUpload"
                   class="avatar-uploader"
                   :action="uploadInterface"
                   :show-file-list="false"
@@ -345,6 +353,8 @@
             <el-form-item style="margin-bottom:0">
               <el-col :span="8">
                 <el-upload
+                  v-loading="idcardbackloading"
+                  :on-progress="startAvatarUpload"
                   class="avatar-uploader"
                   :action="uploadInterface"
                   :show-file-list="false"
@@ -378,6 +388,8 @@
             <el-form-item style="margin-bottom:0">
               <el-col :span="8">
                 <el-upload
+                  v-loading="idcardinhandloading"
+                  :on-progress="startAvatarUpload"
                   class="avatar-uploader"
                   :action="uploadInterface"
                   :show-file-list="false"
@@ -427,7 +439,12 @@
     </div>
 
     <!-- 最后提交后的跳转弹窗-->
-    <el-dialog :visible.sync="isShowCommitDone" :modal="true" class="mydialog">
+    <el-dialog :visible.sync="isShowCommitDone"
+               :modal="true"
+               :close-on-click-modal="false"
+               :close-on-press-escape="false"
+               :show-close="false"
+               class="mydialog">
       <el-form :model="shopInfo">
         <el-form-item class="done-icon">
           <i class="el-icon-check OK"></i>
@@ -445,6 +462,7 @@
 </template>
 
 <script>
+  /* eslint-disable */
   import ElForm from "../../../node_modules/element-ui/packages/form/src/form";
   import ElInput from "../../../node_modules/element-ui/packages/input/src/input";
   import ElButton from "../../../node_modules/element-ui/packages/button/src/button";
@@ -510,6 +528,11 @@
       };
 
       return {
+        shopphotoloading: false,
+        goodsphotoloading: false,
+        idcardfrontloading: false,
+        idcardbackloading: false,
+        idcardinhandloading: false,
         mapComponentURL: '',
         isShowCommitDone: false,
         btnLocked: false,
@@ -662,6 +685,9 @@
       this.initMapAPI();
     },
     methods: {
+      startAvatarUpload(event, file, fileList) {
+          this[file['__ob__'].dep.subs[0].vm.data.tag + 'loading'] = true;
+      },
         initMapAPI() {
           if(this.isShowMap) return;
 
@@ -697,7 +723,7 @@
       showMap(e) {
         if (this.isShowMap) return;
         this.isShowMap = true;
-        this.mapComponentURL = `${config.mapURL}`;
+        this.mapComponentURL = `${config.mapURL}?center=${this.shopInfo.longitude},${this.shopInfo.latitude}&key=${config.mapKey}`
         this.initIframe();
       },
       initIframe() {
@@ -720,6 +746,7 @@
             type: 'success',
             message: '您选择了新的店铺地址：' + this.shopInfo.location
           });
+          this.hideMapDialog();
         }
       },
       backToShopManagement() {
@@ -749,6 +776,7 @@
         } else {
           this.$message.error(res.resperr);
         }
+        this[file['__ob__'].dep.subs[0].vm.data.tag + 'loading'] = false;
       },
       avatarFailed(err, file) {
         this.$message.error(err);
@@ -1007,9 +1035,13 @@
     },
     mounted() {
       var _self = this;
-      document.addEventListener('click', (e) => {
-        if ('el-tree-node'.indexOf(e.target.className) == -1) {
+      document.addEventListener('click', (evt) => {
+        if ('el-tree-node'.indexOf(evt.target.className) == -1) {
           if (_self.shopInfo.isShowTree) this.shopInfo.isShowTree = false;
+        }
+        if(evt.target.parentElement.id === 'op_type' && evt.target.className.indexOf('el-input__icon el-icon-caret-bottom') === -1) {
+          evt.preventDefault();
+          _self.showTreeComponent(evt);
         }
 //          if(_self.isShowMap && e.target.parentElement.className.indexOf('amap') > -1) {
 //              e.stopPropagation();
@@ -1025,7 +1057,11 @@
   }
 </script>
 <style lang="scss">
-
+      .avatar-uploader {
+        .el-loading-spinner {
+          width:68% !important;
+        }
+      }
       .csup-panel-body {
         padding: 0;
         .sub_info_wrapper {
