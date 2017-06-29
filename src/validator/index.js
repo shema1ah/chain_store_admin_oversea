@@ -94,10 +94,8 @@ let totalAmt = (rule, val, cb) => {
 let stoAmtValid = (rule, val, cb) => {
   if (val === '') {
     cb('请输入储值规则')
-  } else if (regSingle(val)) {
-    cb('请输入正数')
-  } else if (!(/^\d+(\.\d{1,2})?$/.test(val))) {
-    cb('小数点后只能有两位')
+  } else if (regInit(val)) {
+    cb('请输入正整数')
   } else {
     cb()
   }

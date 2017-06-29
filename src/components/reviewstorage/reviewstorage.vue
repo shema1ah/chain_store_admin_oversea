@@ -69,7 +69,7 @@
 <script>
   import axios from 'axios';
   import config from 'config';
-  import {deepClone} from '../../common/js/util';
+  import { deepClone, formatData } from '../../common/js/util';
   import Store from '../../common/js/store';
 
   export default {
@@ -99,8 +99,8 @@
       fixData() {
         var data = deepClone(this.data);
         data.rules.forEach((v) => {
-          v.pay_amt *= 100;
-          v.present_amt *= 100;
+          v.pay_amt = formatData(v.pay_amt, 100);
+          v.present_amt = formatData(v.present_amt, 100);
         });
         return data;
       },
