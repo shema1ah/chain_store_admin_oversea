@@ -4,7 +4,7 @@
       <img src="./img/logo.png" alt="logo" class="sidebar-img"/>
       <h1 class="sidebar-logo__title">商户管理后台</h1>
     </div>
-    <ul>
+    <ul class="left-nav">
       <li v-for="nav in navs" :class="{'dark': $route.fullPath.indexOf('member') != -1 && nav.sub}">
         <router-link class="sidebar-nav__item" v-if="nav.pathname" :to="router('main/' + nav.pathname)">{{ nav.val }}</router-link>
         <a v-else class="sidebar-nav__item" @click="toggle">
@@ -193,7 +193,7 @@
     }
   };
 </script>
-<style lang="scss" rel="stylesheet/scss">
+<style lang="scss">
 
   .sidebar {
     overflow-y: scroll;
@@ -252,6 +252,9 @@
         transform-origin: center center;
         transition: .3s cubic-bezier(.33,.48,.74,.86);
       }
+    }
+    .left-nav {
+      padding-bottom: 50px;
     }
   }
   .icon-down_arrow__rotate {

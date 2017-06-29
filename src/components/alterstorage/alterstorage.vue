@@ -40,11 +40,11 @@
                 <div class="storage-item" v-for="(item, index) in form.rulesData">
                   <span>储值</span>
                   <el-form-item :prop="'pay_amt' + index">
-                    <el-input size="small" v-model.number="form.rulesData[index].pay_amt" @change="bindPayAmtValue(index)"></el-input>
+                    <el-input size="small" v-model.number="item.pay_amt" @change="bindPayAmtValue(index)"></el-input>
                   </el-form-item>
                   <span>元送</span>
                   <el-form-item :prop="'present_amt' + index">
-                    <el-input size="small" v-model.number="form.rulesData[index].present_amt" @change="bindPresentAmtValue(index)"></el-input>
+                    <el-input size="small" v-model.number="item.present_amt" @change="bindPresentAmtValue(index)"></el-input>
                   </el-form-item>
                   <span>元</span>
                   <el-button size="small" @click="addRule" :disabled="len === 4" v-if="index === 0" class="ml-15" type="primary" :plain="true">增加规则</el-button>
@@ -111,25 +111,22 @@
   import Store from '../../common/js/store';
 
   export default {
+    beforeRouteEnter (to, from, next) {
+      next((vm) => {
+        let alterData = Store.get('alterstoredata');
+        let info = alterData.activity_info;
 
-    data() {
-      let expireValid = (rule, val, cb) => {
-        if(val === '') {
-          cb('请选择活动结束时间');
-        } else if(val.getTime() < this.form.start_time.getTime()) {
-          cb('活动结束时间必须大于开始时间');
-        } else {
-          cb();
-        }
-      };
-      let alterData = Store.get('alterstoredata');
-      let info = alterData.activity_info;
-      let rules = alterData.activity_info.rules;
-      let state = alterData.activity_status.status;
-      return {
-        role: Store.get("role") || {},
-        state: state,
-        form: {
+        let rules = alterData.activity_info.rules;
+        rules.forEach((v) => {
+          v.pay_amt = v.pay_amt / 100;
+          v.present_amt = v.present_amt / 100;
+        });
+
+        let state = alterData.activity_status.status;
+
+        vm.state = state;
+
+        vm.form = {
           start_time: new Date(info.start_time),
           end_time: new Date(info.end_time),
           mobile: info.mch_mobile,
@@ -144,6 +141,25 @@
           present_amt3: rules[3] ? rules[3].present_amt : '',
           rulesData: rules,
           id: alterData.activity_info.activity_id
+        };
+      });
+    },
+
+    data() {
+      let expireValid = (rule, val, cb) => {
+        if(val === '') {
+          cb('请选择活动结束时间');
+        } else if(val.getTime() < this.form.start_time.getTime()) {
+          cb('活动结束时间必须大于开始时间');
+        } else {
+          cb();
+        }
+      };
+
+      return {
+        role: Store.get("role") || {},
+        state: null,
+        form: {
         },
         formrules: {
           start_time: [
