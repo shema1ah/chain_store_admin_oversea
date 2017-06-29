@@ -284,7 +284,7 @@
           other: []
         },
         currentPage: 1,
-        operaList: {},
+        operaList: [],
         transData: {},
         formrules: {
           orderno: [
@@ -298,6 +298,12 @@
         }
       };
     },
+    props: {
+      shop: {
+        type: Object
+      }
+    },
+
     computed: {
       detailHref() {
         let detailParmas = Object.assign({}, this.basicParams, {isdownload: true});
@@ -326,6 +332,7 @@
         };
       }
     },
+
     watch: {
       'form.dateRangeValue': function(val) {
         if(!this.status) {
@@ -334,7 +341,14 @@
         this.status = false;
       }
     },
+
     created() {
+      // 子商户查询其操作员
+      if(this.role.single) {
+        this.form.selectShopUid = this.shop.uid;
+        this.getOperators(this.shop.uid);
+      }
+
       this.loading = true;
       axios.get(`${config.host}/merchant/trade/info`, {
         params: this.basicParams
@@ -489,6 +503,8 @@
       operaChange(opuid) {
         this.basicParams.opuid = opuid;
       },
+
+      // 查询操作员列表
       getOperators(uid) {
         this.form.operaValue = '';
         axios.get(`${config.host}/merchant/sub/opusers`, {

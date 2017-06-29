@@ -40,6 +40,7 @@ let filters = {
   },
 
   busicdText (busicd) {
+    let frontStr = busicd.substring(0, 4)
     switch (frontStr) {
       case '8002':
         return '微信收款'

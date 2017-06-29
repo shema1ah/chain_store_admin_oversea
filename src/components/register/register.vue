@@ -40,6 +40,7 @@
 
 <script>
   import axios from 'axios';
+  import qs from 'qs';
   import config from 'config';
 
   export default {
@@ -211,7 +212,11 @@
               };
               val = "reset_pwd";
             }
-            axios.post(`${config.ohost}/mchnt/user/${val}`, params).then((res) => {
+            axios.post(`${config.ohost}/mchnt/user/${val}`, qs.stringify(params), {
+              headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+              }
+            }).then((res) => {
               let data = res.data;
               if (data.respcd === config.code.OK) {
                 this.$message({

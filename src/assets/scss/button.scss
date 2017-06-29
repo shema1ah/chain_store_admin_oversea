@@ -185,7 +185,7 @@
 
 // 打分自定义样式
 .myRate {
-  .el-rate-off {
+  .el-rate-off, .el-icon-star-on:before {
     border: 1px solid #FE9B20;
     width: 18px;
     height: 18px;
@@ -195,6 +195,11 @@
     cursor: pointer;
     display: inline-block;
     box-sizing: border-box;
+  }
+
+  .el-icon-star-on:before {
+    content: '';
+    cursor: not-allowed;
   }
 
   .el-rate {
@@ -222,6 +227,7 @@
     display: inline-block;
     box-sizing: border-box;
   }
+
 }
 
 // 下拉 白色
