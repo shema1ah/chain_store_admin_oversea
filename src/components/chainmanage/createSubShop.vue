@@ -109,16 +109,12 @@
                 type="date"
                 placeholder="生效年月日"
                 align="center"
-                popper-class="adjustPoper"
-                format="yyyy-MM-dd"
-                @change="pickerStartChange"
-              >
+                popper-class="adjustPoper">
               </el-date-picker>
             </el-form-item>
-
             <el-form-item style="width:20px;display:inline-block;color:#262424;">至</el-form-item>
 
-            <el-form-item style="display:inline-block;width:200px;" prop="idenddate">
+            <el-form-item style="display:inline-block;width:300px;" prop="idenddate">
               <el-date-picker
                 :editable="false"
                 :clearable="false"
@@ -126,10 +122,7 @@
                 type="date"
                 placeholder="失效年月日"
                 align="center"
-                popper-class="adjustPoper"
-                format="yyyy-MM-dd"
-                @change="pickerEndChange"
-              >
+                popper-class="adjustPoper">
               </el-date-picker>
             </el-form-item>
 
@@ -450,7 +443,7 @@
   import ElForm from "../../../node_modules/element-ui/packages/form/src/form";
   import ElInput from "../../../node_modules/element-ui/packages/input/src/input";
   import ElButton from "../../../node_modules/element-ui/packages/button/src/button";
-  import {cardValid} from "../../common/js/util";
+  import { cardValid, formatDate } from "../../common/js/util";
   import axios from 'axios';
   import config from 'config';
   import ElFormItem from "../../../node_modules/element-ui/packages/form/src/form-item";
@@ -481,13 +474,36 @@
           cb('请输入合法身份证号')
         }
       };
+
+      let expireValid = (rule, val, cb) => {
+        if(val === '') {
+          cb('请选择失效年月日');
+        } else if(this.shopInfo.idstatdate && val.getTime() < this.shopInfo.idstatdate.getTime()) {
+          cb('生效期不能晚于失效期');
+        } else {
+          cb();
+        }
+      };
+
+      let startValid = (rule, val, cb) => {
+        if(val === '') {
+          cb('请选择生效年月日');
+        } else {
+          if(this.shopInfo.idenddate !== '') {
+            this.$refs['shop_info'].validateField('idenddate');
+          }
+          cb();
+        }
+      };
+
       let isEmpty = (rule, val, cb) => {
         if (!val.trim()) {
           cb('只输入空格无效')
         } else {
           cb();
         }
-      }
+      };
+
       return {
         mapComponentURL: '',
         isShowCommitDone: false,
@@ -572,13 +588,10 @@
             {validator: idValid}
           ],
           idstatdate: [
-            {required: true, message: '请选择生效年月日'}
-//            { validator: function(rule, val, cb) {
-//                console.log('enddate:', val, this)
-//            }}
+            { validator: startValid }
           ],
           idenddate: [
-            {required: true, message: '请选择失效年月日'}
+            { validator: expireValid }
           ],
           bankuser: [
             {required: true, message: '请输入开户名', trigger: 'blur'},
@@ -713,12 +726,14 @@
         this.backToPrePage();
         this.isShowCommitDone = false;
       },
-      pickerStartChange(op) {
+
+      /* pickerStartChange(op) {
         this.shopInfo.idstatdate = op;
       },
       pickerEndChange(op) {
         this.shopInfo.idenddate = op;
-      },
+      }, */
+
       beforeAvatarUpload(file) {
         console.log('beforeAvatarUpload', file);
         const isRightImgType = file.type === 'image/jpeg' || file.type === 'image/png';
@@ -785,40 +800,34 @@
       preSignUp() { // 预注册
         this.$refs['shop_info'].validate((valid) => {
           if (valid) {
-            if(Date.parse(this.shopInfo.idstatdate + 'T00:00:00') - Date.parse(this.shopInfo.idenddate + 'T00:00:00') > 0) {
-                this.$message.error('证件生效期不能晚于证件失效期，请重新选择');
-                return;
-            }else {
-              if (this.shopInfo.userid) {
-                this.infoPage = !this.infoPage;
-                Vue.nextTick(function () {
-                  document.querySelectorAll('.user_name')[0].scrollIntoView();
-                })
-              } else {
-                this.btnLocked = true;
-                axios.post(`${config.ohost}/mchnt/user/pre_signup`, {
-                  mode: 'bigmchnt',
-                  format: 'cors'
-                }).then((res) => {
-                  let data = res.data;
-                  if (data.respcd === config.code.OK) {
-                    this.shopInfo.userid = data.data.userid;
-                    this.shopInfo.username = data.data.username;
-                    this.infoPage = !this.infoPage;
-                    console.log(this.shopInfo);
-                    Vue.nextTick(function () {
-                      document.querySelectorAll('.user_name')[0].scrollIntoView();
-                    })
-                  } else {
-                    this.$message.error(data.resperr);
-                  }
+            if (this.shopInfo.userid) {
+              this.infoPage = !this.infoPage;
+              Vue.nextTick(function () {
+                document.querySelectorAll('.user_name')[0].scrollIntoView();
+              })
+            } else {
+              this.btnLocked = true;
+              axios.post(`${config.ohost}/mchnt/user/pre_signup`, {
+                mode: 'bigmchnt',
+                format: 'cors'
+              }).then((res) => {
+                let data = res.data;
+                if (data.respcd === config.code.OK) {
+                  this.shopInfo.userid = data.data.userid;
+                  this.shopInfo.username = data.data.username;
+                  this.infoPage = !this.infoPage;
+                  console.log(this.shopInfo);
+                  Vue.nextTick(function () {
+                    document.querySelectorAll('.user_name')[0].scrollIntoView();
+                  })
+                } else {
+                  this.$message.error(data.resperr);
+                }
+                this.btnLocked = false;
+              }).catch((e) => {
+                  this.$message.error(e);
                   this.btnLocked = false;
-                })
-                  .catch((e) => {
-                    this.$message.error(e);
-                    this.btnLocked = false;
-                  });
-              }
+              });
             }
 
           } else {
@@ -856,8 +865,8 @@
               idcardfront: this.shopInfo.idcardfront_name,
               idcardback: this.shopInfo.idcardback_name,
               idcardinhand: this.shopInfo.idcardinhand_name,
-              idstatdate: this.shopInfo.idstatdate,
-              idenddate: this.shopInfo.idenddate,
+              idstatdate: formatDate(this.shopInfo.idstatdate),
+              idenddate: formatDate(this.shopInfo.idenddate),
               mode: 'bigmchnt',
               format: 'cors'
             }), {
