@@ -40,15 +40,21 @@ let filters = {
   },
 
   busicdText (busicd) {
-    let frontNumber = busicd.substr(0, 4)
-    if (frontNumber === '8002') {
-      return '微信收款'
-    } else if (frontNumber === '8001') {
-      return '支付宝收款'
-    } else if (frontNumber === '7000') {
-      return '储值消费'
-    } else {
-      return busicd
+    switch (frontStr) {
+      case '8002':
+        return '微信收款'
+      case '8001':
+        return '支付宝收款'
+      case '8005':
+        return '京东钱包'
+      case '8006':
+        return 'QQ钱包'
+      case '7000':
+        return '储值消费'
+      case '0000':
+        return '刷卡消费'
+      default:
+        return '其他类型'
     }
   }
 
