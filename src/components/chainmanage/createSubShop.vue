@@ -513,8 +513,8 @@
         mapComponentURL: '',
         isShowCommitDone: false,
         btnLocked: false,
-        isShowMap: true,
-        infoPage: false, // 子商户信息填写页
+        isShowMap: false,
+        infoPage: true, // 子商户信息填写页
         uploadInterface: `${config.imgUpload}/util/v1/uploadfile`, // 上传接口
         shopInfo: {
           shopAccout: '',
