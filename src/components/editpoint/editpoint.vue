@@ -20,7 +20,7 @@
           <el-form :rules="formrules" :model="form" ref="form" class="myRate">
             <el-form-item label="目标点数">
               <el-form-item prop="exchange_pt">
-                <el-rate :max=10 v-model="form.exchange_pt" show-text void-icon-class="el-rate-off" :icon-classes="['el-rate-on','el-rate-on','el-rate-on']" :texts="textList" text-color="#FE9B20">
+                <el-rate :max=10 disabled v-model="form.exchange_pt" show-text void-icon-class="el-rate-off" :icon-classes="['el-rate-on','el-rate-on','el-rate-on']" :texts="textList" text-color="#FE9B20">
                 </el-rate>
               </el-form-item>
               <div class="gray-explain">* 大数据分析表明，选择5点可使回头客明显增加，活动效果更优！</div>

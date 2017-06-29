@@ -189,7 +189,7 @@
 
     <el-dialog title="提示" :visible.sync="showDeleteShopConfirm" custom-class="mydialog pass" top="20%"
                :show-close="true" @close="handleClose('pwdform')">
-      <div style="margin-bottom: 20px;">若要删除分店，请输入总账户登录密码以确认操作</div>
+      <div style="margin-bottom: 20px;">删除分店前建议先终止该分店正在进行的会员营销活动。</div>
       <el-form :model="formpwd" :rules="formrules" ref="pwdform">
         <el-form-item prop="primeaccountpwd">
           <el-input v-model="formpwd.primeaccountpwd" placeholder="请输入总账户登录密码" type="password"></el-input>

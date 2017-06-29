@@ -509,6 +509,14 @@
         }
       };
 
+      let nameValid = (rule, val, cb) => {
+        if(!/^[\u4e00-\u9fa5A-Za-z]*$/.test(val)) {
+          cb('请输入汉字或字母');
+        }else {
+          cb();
+        }
+      };
+
       return {
         mapComponentURL: '',
         isShowCommitDone: false,
@@ -576,7 +584,8 @@
           ],
           shopname: [
             {required: true, message: '请输入分店名称', trigger: 'blur'},
-            {validator: isEmpty}
+            {validator: isEmpty},
+            {validator: nameValid}
           ],
           shoptype_name: [
             {required: true, message: '请选择经营类型'}
