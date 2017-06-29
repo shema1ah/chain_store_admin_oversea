@@ -23,7 +23,7 @@
         <div class="sub_info_wrapper">
           <el-form :model="shopInfo" label-width="96px" label-position="left" :rules="page1_rules" ref="shop_info">
             <el-form-item label="分店登录密码" prop="password">
-              <el-input v-model="shopInfo.password" size="small" type="password" placeholder="请输入新密码"
+              <el-input v-model.trim="shopInfo.password" size="small" type="password" placeholder="请输入新密码"
                         auto-complete="off" class="sub-account-item-info"></el-input>
             </el-form-item>
 
@@ -33,7 +33,7 @@
             </div>
 
             <el-form-item label="分店名称" prop="shopname">
-              <el-input v-model="shopInfo.shopname" size="small" type="text" placeholder="请输入" auto-complete="off"
+              <el-input v-model.trim="shopInfo.shopname" size="small" type="text" placeholder="请输入" auto-complete="off"
                         class="sub-account-item-info"></el-input>
             </el-form-item>
 
@@ -64,13 +64,13 @@
                       ref="city_id"></el-input>
 
             <el-form-item label="店铺地址" prop="location">
-              <el-input v-model="shopInfo.location" size="small" type="text" placeholder="点击右侧按钮打开地图"
+              <el-input v-model.trim="shopInfo.location" size="small" type="text" placeholder="点击右侧按钮打开地图"
                         auto-complete="off" class="sub-account-item-info"></el-input>
               <span @click="showMap" type="primary" size="small" class="btn-map">地图定位店铺地址</span>
             </el-form-item>
 
             <el-form-item label="详细门牌号" prop="address" style="margin-bottom: 0;">
-              <el-input v-model="shopInfo.address" size="small" type="text" placeholder="" auto-complete="off"
+              <el-input v-model.trim="shopInfo.address" size="small" type="text" placeholder="" auto-complete="off"
                         class="sub-account-item-info-long"></el-input>
             </el-form-item>
 
@@ -81,7 +81,7 @@
             </el-form-item>
 
             <el-form-item label="店内联系电话">
-              <el-input v-model="shopInfo.landline" size="small" type="text" placeholder="请输入顾客可联系的电话"
+              <el-input v-model.trim="shopInfo.landline" size="small" type="text" placeholder="请输入顾客可联系的电话"
                         auto-complete="off" class="sub-account-item-info"></el-input>
               <span style="color:#8a8c92;">（选填）</span>
             </el-form-item>
@@ -92,12 +92,12 @@
             </div>
 
             <el-form-item label="店主姓名" prop="bankuser">
-              <el-input v-model="shopInfo.bankuser" size="small" type="text" placeholder="请与收款卡号开户名一致"
+              <el-input v-model.trim="shopInfo.bankuser" size="small" type="text" placeholder="请与收款卡号开户名一致"
                         auto-complete="off" class="sub-account-item-info"></el-input>
             </el-form-item>
 
             <el-form-item label="身份证号" prop="idnumber">
-              <el-input v-model="shopInfo.idnumber" size="small" type="text" placeholder="请输入" auto-complete="off"
+              <el-input v-model.trim="shopInfo.idnumber" size="small" type="text" placeholder="请输入" auto-complete="off"
                         class="sub-account-item-info"></el-input>
             </el-form-item>
 
@@ -132,17 +132,17 @@
             </div>
 
             <el-form-item label="开户名" prop="bankuser">
-              <el-input v-model="shopInfo.bankuser" size="small" type="text" placeholder="请与店主姓名一致" auto-complete="off"
+              <el-input v-model.trim="shopInfo.bankuser" size="small" type="text" placeholder="请与店主姓名一致" auto-complete="off"
                         class="sub-account-item-info"></el-input>
             </el-form-item>
 
             <el-form-item label="银行卡号" prop="bankaccount">
-              <el-input v-model="shopInfo.bankaccount" size="small" type="text" placeholder="请输入" auto-complete="off"
+              <el-input v-model.trim="shopInfo.bankaccount" size="small" type="text" placeholder="请输入" auto-complete="off"
                         class="sub-account-item-info" @blur="getCardsInfo"></el-input>
             </el-form-item>
 
             <el-form-item label="预留手机号" prop="bankmobile">
-              <el-input v-model="shopInfo.bankmobile" size="small" type="text" placeholder="请输入" auto-complete="off"
+              <el-input v-model.trim="shopInfo.bankmobile" size="small" type="text" placeholder="请输入" auto-complete="off"
                         class="sub-account-item-info"></el-input>
             </el-form-item>
 
@@ -510,7 +510,7 @@
       };
 
       let nameValid = (rule, val, cb) => {
-        if(!/^[\u4e00-\u9fa5A-Za-z]*$/.test(val)) {
+        if(!/^[\u4e00-\u9fa5A-Za-z\s]*$/.test(val)) {
           cb('请输入汉字或字母');
         }else {
           cb();
@@ -584,8 +584,7 @@
           ],
           shopname: [
             {required: true, message: '请输入分店名称', trigger: 'blur'},
-            {validator: isEmpty},
-            {validator: nameValid}
+            {validator: isEmpty}
           ],
           shoptype_name: [
             {required: true, message: '请选择经营类型'}
@@ -609,7 +608,8 @@
           ],
           bankuser: [
             {required: true, message: '请输入开户名', trigger: 'blur'},
-            {validator: isEmpty}
+            {validator: isEmpty},
+            {validator: nameValid}
           ],
           bankaccount: [
             {required: true, message: '请输入银行卡号', trigger: 'blur'},
