@@ -245,6 +245,7 @@
                     category: 1,
                     source: 1,
                     tag: 'shopphoto',
+                    format: 'cors',
                     userid: shopInfo.userid
                 }">
                   <div v-if="shopInfo.shopphoto_url" class="avatar-wrap">
@@ -283,6 +284,7 @@
                     category: 1,
                     source: 1,
                     tag: 'goodsphoto',
+                    format: 'cors',
                     userid: shopInfo.userid
                 }">
                   <div v-if="shopInfo.goodsphoto_url" class="avatar-wrap">
@@ -320,7 +322,8 @@
                     category: 1,
                     source: 1,
                     tag: 'idcardfront',
-                    userid: shopInfo.userid
+                    userid: shopInfo.userid,
+                    format: 'cors'
                 }">
                   <div v-if="shopInfo.idcardfront_url" class="avatar-wrap">
                     <img :src="shopInfo.idcardfront_url" class="avatar">
@@ -352,6 +355,7 @@
                     category: 1,
                     source: 1,
                     tag: 'idcardback',
+                    format: 'cors',
                     userid: shopInfo.userid
                 }">
                   <div v-if="shopInfo.idcardback_url" class="avatar-wrap">
@@ -384,6 +388,7 @@
                     category: 1,
                     source: 1,
                     tag: 'idcardinhand',
+                    format: 'cors',
                     userid: shopInfo.userid
                 }">
                   <div v-if="shopInfo.idcardinhand_url" class="avatar-wrap">
@@ -509,7 +514,7 @@
         isShowCommitDone: false,
         btnLocked: false,
         isShowMap: false,
-        infoPage: true, // 子商户信息填写页
+        infoPage: false, // 子商户信息填写页
         uploadInterface: `${config.imgUpload}/util/v1/uploadfile`, // 上传接口
         shopInfo: {
           shopAccout: '',
