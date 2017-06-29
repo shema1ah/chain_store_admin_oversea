@@ -66,7 +66,7 @@
             <el-form-item label="店铺地址" prop="location">
               <el-input v-model="shopInfo.location" size="small" type="text" placeholder="点击右侧按钮打开地图"
                         auto-complete="off" class="sub-account-item-info"></el-input>
-              <span @click="showMap" type="primary" size="small" class="btn-map">地图定位</span>
+              <span @click="showMap" type="primary" size="small" class="btn-map">地图定位店铺地址</span>
             </el-form-item>
 
             <el-form-item label="详细门牌号" prop="address" style="margin-bottom: 0;">
@@ -718,6 +718,10 @@
         if(e.data.name) {
           console.log(e.data);
           this.shopInfo.location = e.data.address + e.data.name;
+          this.$message({
+            type: 'success',
+            message: '您选择了新的店铺地址：' + this.shopInfo.location
+          });
         }
       },
       backToShopManagement() {
@@ -1169,7 +1173,7 @@
 
     .btn-map {
       display: inline-block;;
-      width: 66px;
+      width: 132px;
       height: 30px;
       line-height: 30px;
       margin-left: 10px;
