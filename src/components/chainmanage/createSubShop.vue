@@ -513,7 +513,7 @@
         mapComponentURL: '',
         isShowCommitDone: false,
         btnLocked: false,
-        isShowMap: false,
+        isShowMap: true,
         infoPage: false, // 子商户信息填写页
         uploadInterface: `${config.imgUpload}/util/v1/uploadfile`, // 上传接口
         shopInfo: {
@@ -732,52 +732,18 @@
         this.isShowCommitDone = false;
       },
 
-      /* pickerStartChange(op) {
-        this.shopInfo.idstatdate = op;
-      },
-      pickerEndChange(op) {
-        this.shopInfo.idenddate = op;
-      }, */
-
       beforeAvatarUpload(file) {
-        console.log('beforeAvatarUpload', file);
         const isRightImgType = file.type === 'image/jpeg' || file.type === 'image/png';
         if (!isRightImgType) {
           this.$message.error('上传头像图片只能是 JPG 或 PNG 格式!');
         }
         return isRightImgType;
       },
-      beginUploadImg(payload) { // 开始上传图片
-        axios.post(`${config.imgUpload}/util/v1/uploadfile`, {
-          category: payload.data.category,
-          source: payload.data.source,
-          tag: payload.data.tag,
-          file: payload,
-          userid: payload.data.userid,
-          format: 'cors'
-        }, {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        }).then((res) => {
-          let data = res.data;
-          if (data.respcd === config.code.OK) {
-            this.shopInfo[data.data.tag + '_url'] = data.data.url;
-            this.shopInfo[data.data.tag + '_name'] = data.data.name;
-            console.log(this.shopInfo);
-          } else {
-            this.$message.error(data.resperr);
-          }
-        }).catch((e) => {
-          this.$message.error(e);
-        });
-      },
       avatarSuccess(res, file) {
         let data = res.data;
         if (res.respcd === config.code.OK) {
           this.shopInfo[data.tag + '_url'] = data.url;
           this.shopInfo[data.tag + '_name'] = data.name;
-//        console.log(this.shopInfo, file);
         } else {
           this.$message.error(res.resperr);
         }
@@ -821,7 +787,6 @@
                   this.shopInfo.userid = data.data.userid;
                   this.shopInfo.username = data.data.username;
                   this.infoPage = !this.infoPage;
-                  console.log(this.shopInfo);
                   Vue.nextTick(function () {
                     document.querySelectorAll('.user_name')[0].scrollIntoView();
                   })
@@ -1019,7 +984,6 @@
             let data = res.data;
             if (data.respcd === config.code.OK) {
               console.log('获取商户类型列表成功')
-              console.log('$$$$$$$$$$$$$$', data);
               this.shopInfo.shop_types = data.data.shop_types;
             } else {
               this.$message.error(data.resperr);
@@ -1037,7 +1001,6 @@
         console.log(node);
         this.shopInfo.shoptype_id = node.id;
         this.shopInfo.shoptype_name = node.name;
-        console.log(this.shopInfo);
       }
     },
     mounted() {
