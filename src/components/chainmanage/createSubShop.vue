@@ -66,8 +66,8 @@
                       ref="city_id"></el-input>
 
             <el-form-item label="店铺地址" prop="location">
-              <el-input v-model.trim="shopInfo.location" size="small" type="text" placeholder="点击右侧按钮打开地图"
-                        auto-complete="off" class="sub-account-item-info"></el-input>
+              <el-input v-model.trim="shopInfo.location" size="small" type="textarea" :rows="2" resize="none" placeholder="点击右侧按钮打开地图"
+                        auto-complete="off" class="sub-account-item-info" readonly></el-input>
               <span @click="showMap" type="primary" size="small" class="btn-map">地图定位店铺地址</span>
             </el-form-item>
 
@@ -181,12 +181,13 @@
             </el-form-item>
 
             <el-form-item label="开户支行" prop="bankcode" style="margin-bottom: 0;">
-              <el-select v-model="shopInfo.bankcode" placeholder="请选择" icon="caret-bottom" class="sub-account-item-info"
+              <el-select v-model="shopInfo.bankcode" placeholder="请选择" icon="caret-bottom" ref="branch_bank_select" class="sub-account-item-info"
                          @change="switchBranchBank">
                 <el-option
                   v-for="bbank in shopInfo.branchBanks"
-                  :label="bbank && bbank.name"
-                  :value="bbank && bbank.code">
+                  :key="bbank.code"
+                  :label="bbank.name"
+                  :value="bbank.code">
                 </el-option>
               </el-select>
             </el-form-item>
@@ -604,10 +605,10 @@
             {required: true, message: '请选择经营类型'}
           ],
           location: [
-            {required: true, message: '请从地图中定位店铺地址或手动填写'}
+            {required: true, message: '请从地图中定位店铺地址'}
           ],
           address: [
-            {required: true, message: '请从填写详细门牌号'}
+            {required: true, message: '请输入详细门牌号'}
           ],
           idnumber: [
             {required: true, message: '请输入身份证号', trigger: 'blur'},
@@ -979,6 +980,7 @@
       },
       switchHeadBank(value, label) {
         this.shopInfo.headbankname = label;
+        var _this = this;
         axios.get(`${config.ohost}/mchnt/tool/branchbanks`, {
           params: {
             cityid: this.shopInfo.city_id,
@@ -990,7 +992,7 @@
             let data = res.data;
             if (data.respcd === config.code.OK) {
               console.log('获取获取银行支行成功');
-              this.shopInfo.branchBanks = data.data.records;
+              _this.shopInfo.branchBanks = data.data.records;
             } else {
               this.$message.error(data.resperr);
             }
@@ -1001,6 +1003,7 @@
       },
       switchBranchBank(value, label) {
         this.shopInfo.bankname = label;
+        this.shopInfo.bankcode = value;
         console.log('所有设置完毕：', this.shopInfo);
       },
       getOperationType() { // 获取经营类型 传0
