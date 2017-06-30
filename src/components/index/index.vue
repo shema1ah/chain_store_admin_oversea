@@ -114,11 +114,11 @@
                 活动已进行{{activity.going_days}}天
               </span>
             </div>
-            <ul>
-              <li>
+            <ul style="text-align:center">
+              <!-- <li>
                 <strong>今日储值</strong>
                 <span><em>{{activity.today_total_pay_amt | formatCurrency}}</em>元</span>
-              </li>
+              </li> -->
               <li>
                 <strong>储值会员</strong>
                 <span><em>{{activity.user_num}}</em>位</span>

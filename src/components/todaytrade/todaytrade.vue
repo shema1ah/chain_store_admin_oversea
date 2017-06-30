@@ -100,9 +100,9 @@
               for (let variable in tradeskey) {
                 tradesObject[tradeskey[variable]] = tradesvalue[key][variable]
                 // note key 是json string 只提取有用的 mchnt_coupon
-                if (tradeskey[variable] === 'note') {
+                if (tradeskey[variable] === 'note' && tradesObject['note']) {
                   let noteObject = JSON.parse(tradesObject['note'])
-                  tradesObject['merchanCouponAmt'] = noteObject.coupon_amt || 0
+                  tradesObject['merchanCouponAmt'] = noteObject.coupon_amt
                   tradesObject['orig_amt'] = noteObject.orig_amt
                 }
               }
