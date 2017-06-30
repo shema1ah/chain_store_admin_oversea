@@ -128,7 +128,7 @@
 
       <el-row>
         <el-col :span="6" class="title">手机号</el-col>
-        <el-col :span="10" class="desc">{{ detailData.telephone || detailData.mobile }}</el-col>
+        <el-col :span="10" class="desc">{{ detailData.telephone || '无' }}</el-col>
       </el-row>
       <el-row>
         <el-col :span="6" class="title">持卡人</el-col>

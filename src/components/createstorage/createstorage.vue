@@ -19,7 +19,8 @@
         <div class="myform_wrapper">
           <el-form :rules="formrules" :model="form" ref="form">
             <el-form-item label="适用门店" v-if="!role.single">
-              <span v-for="shop in shopData">{{ shop.shop_name }}、</span>
+              <span v-if="shopData.length > 0" v-for="(shop,index) in shopData">{{ shop.shop_name }}{{ index < shopData.length - 1?"、":"" }}</span>
+              <span v-else>无</span>
               <div class="remark mt-0 lh-16">注：请确保以上门店均已开通储值服务，否则无法正常储值</div>
             </el-form-item>
             <el-form-item label="开始时间" prop="start_time">

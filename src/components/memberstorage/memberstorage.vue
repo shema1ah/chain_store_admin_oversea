@@ -103,7 +103,8 @@
           <el-col :span="7" class="title">适用门店</el-col>
           <el-col :span="17" class="desc">
             <div>
-              <span v-for="(shop,index) in shopData">{{ shop.shop_name }}{{ index < shopData.length - 1?"、":"" }}</span>
+              <span v-if="shopData.length > 0" v-for="(shop,index) in shopData">{{ shop.shop_name }}{{ index < shopData.length - 1?"、":"" }}</span>
+              <span v-else>无</span>
             </div>
             <div class="remark mt-0 lh-16">注：请确保以上门店均已开通储值服务，否则无法正常储值！</div>
           </el-col>

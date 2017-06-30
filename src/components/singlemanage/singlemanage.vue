@@ -28,7 +28,7 @@
           </div>
           <div class="info">
             <div class="info__title">手机号</div>
-            <div class="info__desc">{{ shop.telephone || shop.mobile }}</div>
+            <div class="info__desc">{{ shop.telephone || '无' }}</div>
           </div>
           <div class="info">
             <div class="info__title">持卡人</div>

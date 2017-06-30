@@ -21,7 +21,7 @@
             <span class="info-title">适用门店</span>
             <div class="info-desc__wrapper">
               <div class="info-desc">
-                <div><span v-for="shop in shopData">{{ shop.shop_name }}、</span></div>
+                <div><span v-for="(shop,index) in shopData">{{ shop.shop_name }}{{ index < shopData.length - 1?"、":"" }}</span></div>
                 <div class="info-desc remark mt-0 lh-16 ml-0">注：请确保以上门店均已开通储值服务，否则无法正常储值</div>
               </div>
             </div>
