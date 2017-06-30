@@ -125,7 +125,7 @@
               </li>
               <li>
                 <strong>储值金额</strong>
-                <span><em>{{activity.total_txamt | formatCurrency}}</em>元</span>
+                <span><em>{{activity.total_pay_amt | formatCurrency}}</em>元</span>
               </li>
             </ul>
           </div>
