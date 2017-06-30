@@ -53,7 +53,7 @@
         </div>
         <div class="paragraph-divider"></div>
         <div class="panel-paragraph">
-          <p>钱方好近合作的清算方名称如下，请在对账时下载银行卡相应的流水单</p>
+          <p>合作的清算方名称如下，请在对账时下载银行卡相应的流水单</p>
           <p>联动优势电子商务有限公司客户备付金</p>
           <p>商户结算专户</p>
           <p>昆明结算中心</p>
@@ -65,7 +65,7 @@
         <div class="paragraph-divider"></div>
         <div class="panel-paragraph">
           <p>如您已成为微信实名认证商户，请在微信商户后台查看微信交易的对账单。<a target="_blank" href="https://pay.weixin.qq.com/index.php" class="paragraph-link">点此跳转</a></p>
-          <p>钱方商户后台仅提供非微信交易的对账单，如支付宝、京东等。</p>
+          <p>商户管理后台仅提供非微信交易的对账单，如支付宝、京东等。</p>
         </div>
       </div>
     </div>

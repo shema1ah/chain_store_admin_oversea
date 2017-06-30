@@ -175,9 +175,9 @@
         </div>
         <el-form-item v-for="(shop, index) in shopData.list" v-if="index !== 0">
           <el-tooltip placement="bottom" :content="shop.shop_name" class="subshoptip">
-            <label>{{shop.shop_name}}</label>
+            <label style="width:140px">{{shop.shop_name}}</label>
           </el-tooltip>
-          <el-input v-model="shop.tag" size="small" placeholder="请输入二十位以内的文字或字母" style="width:72%" @blur="updateShopTag(shop)"></el-input>
+          <el-input v-model="shop.tag" size="small" placeholder="请输入二十位以内的文字或字母" style="width:65%" @blur="updateShopTag(shop)"></el-input>
         </el-form-item>
 
       </el-form>

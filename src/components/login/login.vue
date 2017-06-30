@@ -38,7 +38,7 @@
         },
         formrules: {
           username: [
-            { required: true, message: '请输入注册账号' }
+            { required: true, message: '请输入账号' }
           ],
           password: [
             { required: true, message: '请输入密码' }

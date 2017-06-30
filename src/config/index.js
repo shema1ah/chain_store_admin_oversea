@@ -7,7 +7,7 @@ let ohost = 'https://o.qfpay.com';
 let payHost = 'https://openapi.qfpay.com'
 let imgUpload = 'https://o2.qfpay.com';
 let o2host = 'https://o2.qfpay.com';
-let mapURL = 'https://m.amap.com/picker/?key=608d75903d29ad471362f8c58c550daf';
+let mapURL = 'https://m.amap.com/picker/';
 let mapKey = '608d75903d29ad471362f8c58c550daf';
 
 // 测试配置
@@ -16,8 +16,8 @@ if (test) {
   ohost = 'https://o.qa.qfpay.net'
   o2host = 'https://o2.qa.qfpay.net'
   payHost = 'https://openapi.qa.qfpay.net'
-  imgUpload = 'https://172.100.111.45:8080';
-  mapURL = 'https://m.amap.com/picker/?key=608d75903d29ad471362f8c58c550daf';
+  imgUpload = 'https://o2.qfpay.com';
+  mapURL = 'https://m.amap.com/picker/';
   mapKey = '608d75903d29ad471362f8c58c550daf';
 }
 // 本地配置
@@ -27,7 +27,7 @@ if (dev) {
   o2host = 'https://o2.qa.qfpay.net';
   payHost = 'https://openapi.qa.qfpay.net';
   imgUpload = 'https://o2.qfpay.com';
-  mapURL = 'http://m.amap.com/picker/?key=608d75903d29ad471362f8c58c550daf';
+  mapURL = 'https://m.amap.com/picker/';
   mapKey = '608d75903d29ad471362f8c58c550daf';
 }
 
