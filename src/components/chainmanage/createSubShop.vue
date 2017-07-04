@@ -141,30 +141,30 @@
             <el-form-item label="银行卡号" prop="bankaccount">
               <el-input v-model.trim="shopInfo.bankaccount" size="small" type="text" placeholder="请输入" auto-complete="off"
                         class="sub-account-item-info" @blur="getCardsInfo"></el-input>
-            </el-form-item>
+            </el-form-item><!-- @blur="getCardsInfo"-->
 
             <el-form-item label="预留手机号" prop="bankmobile">
               <el-input v-model.trim="shopInfo.bankmobile" size="small" type="text" placeholder="请输入" auto-complete="off"
                         class="sub-account-item-info"></el-input>
             </el-form-item>
 
-            <el-form-item label="开户地" prop="bankcity">
+            <el-form-item label="开户地" prop="city_id">
               <!--<el-input v-model="shopInfo.banklocation" icon="caret-bottom" size="small" type="text" placeholder="请选择" auto-complete="off" class="sub-account-item-info"></el-input>-->
-              <el-select v-model="shopInfo.bankcity" placeholder="请选择" icon="caret-bottom" class="sub-account-item-info"
+              <el-select v-model="shopInfo.city_id" placeholder="请选择" icon="caret-bottom" class="sub-account-item-info"
                          @change="switchBankLocation">
                 <el-option
                   v-for="city in shopInfo.bankCitys"
                   :key="city.city_no"
                   :label="city.city_name"
-                  :value="city.city_name">
+                  :value="city.city_no">
                 </el-option>
               </el-select>
             </el-form-item>
 
             <el-input v-model="shopInfo.bankprovince" type="hidden" auto-complete="off" class="hidden"
                       ref="bankprovince"></el-input>
-            <el-input v-model="shopInfo.bankcity" type="hidden" auto-complete="off" class="hidden"
-                      ref="bankcity"></el-input>
+            <!--<el-input v-model="shopInfo.bankcity" type="hidden" auto-complete="off" class="hidden"-->
+                      <!--ref="bankcity"></el-input>-->
             <el-input v-model="shopInfo.adcode" type="hidden" auto-complete="off" class="hidden"
                       ref="adcode"></el-input>
 
@@ -196,7 +196,7 @@
 
             <el-form-item label="" class="sub-item-tip">
               <div class="sub-account-item-info-long">
-                * 查询此银行卡的开户行请拨打：<span v-model="shopInfo.csphone">{{shopInfo.csphone || '95588'}}</span>
+                * 查询此银行卡的开户行请拨打：<span v-model="shopInfo.csphone">{{shopInfo.csphone || ''}}</span>
               </div>
             </el-form-item>
 
@@ -478,6 +478,7 @@
   import Vue from 'vue';
     const AMap = window.AMap;
     var map = null;
+    var geocoder = null;
 
   export default {
     components: {
@@ -693,7 +694,7 @@
           if(this.isShowMap) return;
 
           map = new AMap.Map('geolocation');
-          map.plugin('AMap.Geolocation', () => {
+          map.plugin(['AMap.Geolocation', 'AMap.Geocoder'], () => {
             let geolocation = new AMap.Geolocation({
               enableHighAccuracy: true, // 是否使用高精度定位，默认:true
               timeout: 10000,           // 超过10秒后停止定位，默认：无穷大
@@ -711,6 +712,10 @@
             geolocation.getCurrentPosition();
             AMap.event.addListener(geolocation, 'complete', this.onLocationComplete); // 返回定位信息
             AMap.event.addListener(geolocation, 'error', this.onLocationError);       // 返回定位出错信息
+            geocoder = new AMap.Geocoder({
+              city: '全国',
+              extensions: 'base'
+            })
           });
         },
       hideMapDialog() {
@@ -740,13 +745,32 @@
         window.addEventListener('message', this.getMessageFromRemote, false);
       },
       getMessageFromRemote(e) {
+        var _this = this;
         if(e.data.name) {
           console.log(e.data);
-          this.shopInfo.location = e.data.address + e.data.name;
-          this.$message({
-            type: 'success',
-            message: '您选择了新的店铺地址：' + this.shopInfo.location
-          });
+          let lng = +e.data.location.split(',')[0];
+          let lat = +e.data.location.split(',')[1];
+//          this.shopInfo.location = e.data.address + e.data.name;
+          geocoder && geocoder.getAddress([lng, lat], (status, result) => {
+            if (status === 'complete' && result.info === 'OK') {
+              _this.shopInfo.headbanks.length = 0;
+              _this.shopInfo.branchBanks.length = 0;
+              _this.onLocationComplete({
+                addressComponent: result.regeocode.addressComponent,
+                formattedAddress: result.regeocode.formattedAddress,
+                position: {
+                  lng: lng,
+                  lat: lat
+                }
+              });
+              _this.$message({
+                type: 'success',
+                message: '您选择了新的店铺地址：' + result.regeocode.formattedAddress
+              });
+            }else{
+              console.log('选取定位后获取有效地址信息失败');
+            }
+          })
           this.hideMapDialog();
         }
       },
@@ -892,7 +916,8 @@
           }
         })
       },
-      onLocationError() {
+      onLocationError(e) {
+          console.log('定位错误信息：',e);
       },
       onLocationComplete(loc) {
         console.log(loc)
@@ -901,12 +926,14 @@
         let _city = loc.addressComponent.city;
         this.shopInfo.adcode = this.shopInfo.provinceid = _adcode || '';
         this.shopInfo.province = _province;
-        if (_city === '') {
+        this.shopInfo.city = _city;
+        if (!_city) {
           this.shopInfo.city = _province;
         }
         this.shopInfo.longitude = loc.position.lng;
         this.shopInfo.latitude = loc.position.lat;
         this.shopInfo.location = loc.formattedAddress;
+
         if (_adcode) {
           this.getBankLocation();
         }
@@ -944,12 +971,16 @@
             let data = res.data;
             if (data.respcd === config.code.OK) {
               console.log('获取开户地成功')
+              this.shopInfo.bankCitys.length = 0;
               this.shopInfo.bankCitys = data.data.cities; // 支行所在市数组
               this.shopInfo.bankprovince = data.data.area_name; // 支行所在省
               this.shopInfo.area_id = data.data.area_id; // 支行所在省id
               if (data.data.cities.length) {
                 this.shopInfo.bankcity = data.data.cities[0].city_name;
                 this.shopInfo.city_id = data.data.cities[0].city_no;
+              }else {
+                this.shopInfo.bankcity = "";
+                this.shopInfo.city_id = "";
               }
             } else {
               this.$message.error(data.resperr);
@@ -959,7 +990,10 @@
             this.$message.error(e);
           });
       },
-      switchBankLocation(option) { // 切换开户地 获取开户行总行
+      switchBankLocation(value, label) { // 切换开户地 获取开户行总行
+        if(label) this.shopInfo.bankcity = label;
+        this.shopInfo.city_id = value;
+        let _this = this;
         axios.get(`${config.ohost}/mchnt/tool/headbanks`, {
           params: {
             format: 'cors'
@@ -969,18 +1003,28 @@
             let data = res.data;
             if (data.respcd === config.code.OK) {
               console.log('获取获取银行总行成功');
-              this.shopInfo.headbanks = data.data.records;
+              _this.shopInfo.headbanks = data.data.records;
+              if(data.data.records.length) {
+                _this.shopInfo.headbankname = data.data.records[0].headbankname;
+                _this.shopInfo.headbankid = data.data.records[0].headbankid;
+              }
+              _this.shopInfo.branchBanks.length = 0;
+              _this.shopInfo.bankname = "";
+              _this.shopInfo.bankcode = "";
             } else {
-              this.$message.error(data.resperr);
+              _this.$message.error(data.resperr);
             }
           })
           .catch((e) => {
-            this.$message.error(e);
+            _this.$message.error(e);
           });
       },
       switchHeadBank(value, label) {
-        this.shopInfo.headbankname = label;
-        var _this = this;
+        if(label) {
+          this.shopInfo.headbankname = label;
+        }
+        this.shopInfo.headbankid = value;
+
         axios.get(`${config.ohost}/mchnt/tool/branchbanks`, {
           params: {
             cityid: this.shopInfo.city_id,
@@ -991,8 +1035,17 @@
           .then((res) => {
             let data = res.data;
             if (data.respcd === config.code.OK) {
-              console.log('获取获取银行支行成功');
-              _this.shopInfo.branchBanks = data.data.records;
+              if(data.data.records.length) {
+                console.log('获取获取银行支行成功');
+                this.shopInfo.branchBanks = data.data.records;
+                this.shopInfo.bankname = data.data.records[0].name;
+                this.shopInfo.bankcode = data.data.records[0].code;
+              }else {
+                this.shopInfo.branchBanks.length = 0;
+                this.shopInfo.bankname = "";
+                this.shopInfo.bankcode = "";
+                this.$message.error('该开户总行下无支行，请重新选择开户总行');
+              }
             } else {
               this.$message.error(data.resperr);
             }
@@ -1002,7 +1055,7 @@
           });
       },
       switchBranchBank(value, label) {
-        this.shopInfo.bankname = label;
+        if(label) this.shopInfo.bankname = label;
         this.shopInfo.bankcode = value;
         console.log('所有设置完毕：', this.shopInfo);
       },
