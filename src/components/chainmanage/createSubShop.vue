@@ -2,7 +2,7 @@
   <div class="index">
     <div class="mydialog" v-show="isShowMap" id="geolocation_mask" @click="hideMapDialog"></div>
     <!--sandbox="allow-scripts allow-popups allow-forms allow-same-origin"-->
-    <iframe sandbox="allow-scripts allow-popups allow-forms allow-same-origin" id="miframe" v-show="isShowMap" :src="mapComponentURL" frameborder="0" scrolling="no" width="100%" height="100%"></iframe>
+    <iframe sandbox="allow-scripts allow-same-origin" id="miframe" v-if="isShowMap" :src="mapComponentURL" frameborder="0" scrolling="no" width="100%" height="100%"></iframe>
     <!-- 地图弹窗-->
     <div class="banner_wrapper">
       <div class="banner-breadcrumb">
@@ -170,19 +170,20 @@
 
             <el-form-item label="开户总行" prop="headbankid">
               <el-select v-model="shopInfo.headbankid" placeholder="请选择" icon="caret-bottom"
-                         class="sub-account-item-info" @change="switchHeadBank">
+                         class="sub-account-item-info"  @change="switchHeadBank" filterable>
                 <el-option
-                  v-for="hbank in shopInfo.headbanks"
-                  :key="hbank.headbankid"
+                  v-for="(hbank, index) in shopInfo.headbanks"
+                  :key="hbank.headbankid + '@' + index"
                   :label="hbank.headbankname"
-                  :value="hbank.headbankid">
+                  :value="hbank.headbankid"
+                >
                 </el-option>
               </el-select>
             </el-form-item>
 
             <el-form-item label="开户支行" prop="bankcode" style="margin-bottom: 0;">
               <el-select v-model="shopInfo.bankcode" placeholder="请选择" icon="caret-bottom" ref="branch_bank_select" class="sub-account-item-info"
-                         @change="switchBranchBank">
+                         @change="switchBranchBank" filterable>
                 <el-option
                   v-for="bbank in shopInfo.branchBanks"
                   :key="bbank.code"
@@ -196,7 +197,7 @@
 
             <el-form-item label="" class="sub-item-tip">
               <div class="sub-account-item-info-long">
-                * 查询此银行卡的开户行请拨打：<span v-model="shopInfo.csphone">{{shopInfo.csphone || ''}}</span>
+                <span v-if="!!shopInfo.csphone">* 查询此银行卡的开户行请拨打：{{shopInfo.csphone}}</span>
               </div>
             </el-form-item>
 
@@ -551,6 +552,8 @@
           isShowTree: false, // 是否显示经营类型树状结构
           longitude: -1, // 经度
           latitude: -1, // 纬度
+          initlng: -1,  //初始经度
+          initlat: -1,  //初始纬度
           city_id: '', //  城市代号
           location: '', // 店铺地址
           address: '', // 详细门牌号
@@ -721,16 +724,15 @@
       hideMapDialog() {
         this.isShowMap = false;
         this.mapComponentURL = '';
-        setTimeout(function() {
-          document.getElementById('miframe').style.display = 'none';
-        }, 0);
         window.removeEventListener('message', this.getMessageFromRemote);
       },
       showMap(e) {
         if (this.isShowMap) return;
         this.isShowMap = true;
-        this.mapComponentURL = `${config.mapURL}?center=${this.shopInfo.longitude},${this.shopInfo.latitude}&key=${config.mapKey}`
-        this.initIframe();
+        this.mapComponentURL = `${config.mapURL}?center=${this.shopInfo.initlng},${this.shopInfo.initlat}&key=${config.mapKey}`;
+        Vue.nextTick(()=> {
+            this.initIframe();
+        })
       },
       initIframe() {
         var iframe = null;
@@ -757,12 +759,12 @@
               _this.shopInfo.branchBanks.length = 0;
               _this.onLocationComplete({
                 addressComponent: result.regeocode.addressComponent,
-                formattedAddress: result.regeocode.formattedAddress,
+                formattedAddress: e.data.address + ' ' + e.data.name,
                 position: {
                   lng: lng,
                   lat: lat
                 }
-              });
+              },'reLocation');
               _this.$message({
                 type: 'success',
                 message: '您选择了新的店铺地址：' + result.regeocode.formattedAddress
@@ -892,6 +894,8 @@
               idcardinhand: this.shopInfo.idcardinhand_name,
               idstatdate: formatDate(this.shopInfo.idstatdate),
               idenddate: formatDate(this.shopInfo.idenddate),
+              longitude: this.shopInfo.longitude,
+              latitude: this.shopInfo.latitude,
               mode: 'bigmchnt',
               format: 'cors'
             }), {
@@ -919,8 +923,8 @@
       onLocationError(e) {
           console.log('定位错误信息：',e);
       },
-      onLocationComplete(loc) {
-        console.log(loc)
+      onLocationComplete(loc, flag) {
+//        console.log(loc)
         let _adcode = loc.addressComponent.adcode;
         let _province = loc.addressComponent.province;
         let _city = loc.addressComponent.city;
@@ -932,6 +936,10 @@
         }
         this.shopInfo.longitude = loc.position.lng;
         this.shopInfo.latitude = loc.position.lat;
+        if(!flag) {
+          this.shopInfo.initlng = loc.position.lng;
+          this.shopInfo.initlat = loc.position.lat;
+        }
         this.shopInfo.location = loc.formattedAddress;
 
         if (_adcode) {
@@ -971,17 +979,13 @@
             let data = res.data;
             if (data.respcd === config.code.OK) {
               console.log('获取开户地成功')
-              this.shopInfo.bankCitys.length = 0;
               this.shopInfo.bankCitys = data.data.cities; // 支行所在市数组
               this.shopInfo.bankprovince = data.data.area_name; // 支行所在省
               this.shopInfo.area_id = data.data.area_id; // 支行所在省id
-              if (data.data.cities.length) {
-                this.shopInfo.bankcity = data.data.cities[0].city_name;
-                this.shopInfo.city_id = data.data.cities[0].city_no;
-              }else {
-                this.shopInfo.bankcity = "";
-                this.shopInfo.city_id = "";
-              }
+              this.shopInfo.headbankid = '';
+              this.shopInfo.headbankname = '';
+              this.shopInfo.bankcity = "";
+              this.shopInfo.city_id = "";
             } else {
               this.$message.error(data.resperr);
             }
@@ -1004,13 +1008,11 @@
             if (data.respcd === config.code.OK) {
               console.log('获取获取银行总行成功');
               _this.shopInfo.headbanks = data.data.records;
-              if(data.data.records.length) {
-                _this.shopInfo.headbankname = data.data.records[0].headbankname;
-                _this.shopInfo.headbankid = data.data.records[0].headbankid;
-              }
+              _this.shopInfo.headbankname = '';
+              _this.shopInfo.headbankid = '';
               _this.shopInfo.branchBanks.length = 0;
-              _this.shopInfo.bankname = "";
-              _this.shopInfo.bankcode = "";
+              _this.shopInfo.bankname = '';
+              _this.shopInfo.bankcode = '';
             } else {
               _this.$message.error(data.resperr);
             }
@@ -1019,9 +1021,12 @@
             _this.$message.error(e);
           });
       },
-      switchHeadBank(value, label) {
+      switchHeadBank(value, label, index) {
         if(label) {
           this.shopInfo.headbankname = label;
+        }
+        if(index) {
+          this.shopInfo.csphone = this.shopInfo.headbanks[index].csphone;
         }
         this.shopInfo.headbankid = value;
 
@@ -1038,13 +1043,11 @@
               if(data.data.records.length) {
                 console.log('获取获取银行支行成功');
                 this.shopInfo.branchBanks = data.data.records;
-                this.shopInfo.bankname = data.data.records[0].name;
-                this.shopInfo.bankcode = data.data.records[0].code;
-              }else {
-                this.shopInfo.branchBanks.length = 0;
                 this.shopInfo.bankname = "";
                 this.shopInfo.bankcode = "";
-                this.$message.error('该开户总行下无支行，请重新选择开户总行');
+              }else {
+                this.shopInfo.branchBanks.length = 0;
+//                this.$message.error('该开户总行下无支行，请重新选择开户总行');
               }
             } else {
               this.$message.error(data.resperr);
