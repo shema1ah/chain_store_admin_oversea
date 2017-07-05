@@ -206,11 +206,11 @@
       <el-form :model="associate_form" :rules="formrules" ref="associate_form">
         <div class="desc">
           <p>请输入您的分店信息，以做关联。</p>
-          <p>如您的分店还没有钱方好近商户的账号，请联系客服或</p>
+          <p>如您的分店还没有账号，请联系客服或</p>
           <p>者业务员为您的分店入网。</p>
         </div>
         <el-form-item label="分店账号" prop="account">
-          <el-input v-model="associate_form.account" size="small" placeholder="请输入分店登录手机号"></el-input>
+          <el-input v-model="associate_form.account" size="small" placeholder="请输入分店账号"></el-input>
         </el-form-item>
         <el-form-item label="登录密码" prop="password">
           <el-input type="password" v-model="associate_form.password" size="small" placeholder="请输入分店登录密码"></el-input>
@@ -330,7 +330,7 @@
             {required: true, message: '请输入总账户密码', trigger: 'blur'}
           ],
           account: [
-            {required: true, message: '请输入分店登录手机号!'}
+            {required: true, message: '请输入分店账号!'}
           ],
           password: [
             {required: true, message: '请输入分店登录密码!'}

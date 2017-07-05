@@ -100,38 +100,38 @@
     <el-dialog v-if="detailData.activity_info" v-model="isShowDetail" class="detail_dialog" title="储值活动详情">
       <template>
         <el-row class="mb-5" v-if="!role.single">
-          <el-col :span="7" class="title">适用门店</el-col>
-          <el-col :span="17" class="desc">
-            <div>
-              <span v-if="shopData.length > 0" v-for="(shop,index) in shopData">{{ shop.shop_name }}{{ index < shopData.length - 1?"、":"" }}</span>
-              <span v-else>无</span>
+          <el-col :span="5" class="title">适用门店</el-col>
+          <el-col :span="19" class="desc">
+            <div v-if="shopData.length > 0">
+              <span  v-for="(shop,index) in shopData">{{ shop.shop_name }}{{ index < shopData.length - 1?"、":"" }}</span>
             </div>
+            <div v-else>无</div>
             <div class="remark mt-0 lh-16">注：请确保以上门店均已开通储值服务，否则无法正常储值！</div>
           </el-col>
         </el-row>
         <el-row>
-          <el-col :span="7" class="title">储值规则</el-col>
-          <el-col :span="17" class="desc">
+          <el-col :span="5" class="title">储值规则</el-col>
+          <el-col :span="19" class="desc">
             <div class="desc-item" v-for="rule in detailData.activity_info.rules">
               <span>储值{{ rule.pay_amt | formatCurrency }}送{{ rule.present_amt | formatCurrency }}元</span>
             </div>
           </el-col>
         </el-row>
         <el-row>
-          <el-col :span="7" class="title">储值规则备注</el-col>
-          <el-col :span="17" class="desc">{{ detailData.activity_info.desc }}</el-col>
+          <el-col :span="5" class="title">储值规则备注</el-col>
+          <el-col :span="19" class="desc">{{ detailData.activity_info.desc }}</el-col>
         </el-row>
         <el-row>
-          <el-col :span="7" class="title">活动开始时间</el-col>
-          <el-col :span="17" class="desc">{{ detailData.activity_info.start_time }}</el-col>
+          <el-col :span="5" class="title">活动开始时间</el-col>
+          <el-col :span="19" class="desc">{{ detailData.activity_info.start_time }}</el-col>
         </el-row>
         <el-row>
-          <el-col :span="7" class="title">活动结束时间</el-col>
-          <el-col :span="17" class="desc">{{ detailData.activity_info.end_time }}</el-col>
+          <el-col :span="5" class="title">活动结束时间</el-col>
+          <el-col :span="19" class="desc">{{ detailData.activity_info.end_time }}</el-col>
         </el-row>
         <el-row>
-          <el-col :span="7" class="title">预留手机号码</el-col>
-          <el-col :span="17" class="desc">{{ detailData.activity_info.mch_mobile }}</el-col>
+          <el-col :span="5" class="title">预留手机号码</el-col>
+          <el-col :span="19" class="desc">{{ detailData.activity_info.mch_mobile }}</el-col>
         </el-row>
 
       </template>
@@ -327,12 +327,14 @@
       },
 
       getDetailData(id) {
+        this.loading = true;
         axios.get(`${config.host}/merchant/prepaid/detail`, {
           params: {
             activity_id: id
           }
         })
         .then((res) => {
+          this.loading = false;
           let data = res.data;
           if(data.respcd === config.code.OK) {
             this.detailData = data.data;
@@ -342,6 +344,7 @@
           }
         })
         .catch(() => {
+          this.loading = false;
           this.$message.error('获取储值详情失败');
         });
       },

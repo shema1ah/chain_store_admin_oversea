@@ -82,30 +82,30 @@
     <el-dialog v-model="isShowDetail" class="detail_dialog" title="红包详情">
       <template v-if="detailData.type === 'type_common'">
         <el-row>
-          <el-col :span="8" class="title">红包类型</el-col>
-          <el-col :span="16" class="desc">{{ detailData.type_str }}</el-col>
+          <el-col :span="5" class="title">红包类型</el-col>
+          <el-col :span="19" class="desc">{{ detailData.type_str }}</el-col>
         </el-row>
         <el-row v-if="!role.single">
-          <el-col :span="8" class="title">适用门店</el-col>
-          <el-col :span="16" class="desc">
+          <el-col :span="5" class="title">适用门店</el-col>
+          <el-col :span="19" class="desc">
             <span v-for="(shop,index) in detailData.effect_sub_merchant">{{ shop.shopname }}{{ index < detailData.effect_sub_merchant.length - 1?"、":"" }}</span>
           </el-col>
         </el-row>
         <el-row>
-          <el-col :span="8" class="title">通知会员数</el-col>
-          <el-col :span="16" class="desc">{{ member_total }}人</el-col>
+          <el-col :span="5" class="title">通知会员数</el-col>
+          <el-col :span="19" class="desc">{{ member_total }}人</el-col>
         </el-row>
         <el-row>
-          <el-col :span="8" class="title">单个红包金额</el-col>
-          <el-col :span="16" class="desc">{{ detailData.share_info.amt_max | formatCurrency }}</el-col>
+          <el-col :span="5" class="title">单个红包金额</el-col>
+          <el-col :span="19" class="desc">{{ detailData.share_info.amt_max | formatCurrency }}</el-col>
         </el-row>
         <el-row>
-          <el-col :span="8" class="title">红包有效期</el-col>
-          <el-col :span="16" class="desc">{{ detailData.share_info.coupon_rule.effect_len }}天</el-col>
+          <el-col :span="5" class="title">红包有效期</el-col>
+          <el-col :span="19" class="desc">{{ detailData.share_info.coupon_rule.effect_len }}天</el-col>
         </el-row>
         <el-row>
-          <el-col :span="8" class="title">通知时间</el-col>
-          <el-col :span="16" class="desc">
+          <el-col :span="5" class="title">通知时间</el-col>
+          <el-col :span="19" class="desc">
             <div class="desc-item">{{ detailData.notify_time }}</div>
             <div class="remark">备注：红包费用由商户承担</div>
           </el-col>
@@ -113,44 +113,44 @@
       </template>
       <template v-if="detailData.type === 'type_sharing'">
         <el-row>
-          <el-col :span="8" class="title">活动名称</el-col>
-          <el-col :span="16" class="desc">{{ detailData.act_name }}</el-col>
+          <el-col :span="5" class="title">活动名称</el-col>
+          <el-col :span="19" class="desc">{{ detailData.act_name }}</el-col>
         </el-row>
         <el-row>
-          <el-col :span="8" class="title">红包类型</el-col>
-          <el-col :span="16" class="desc">{{ detailData.type_str }}</el-col>
+          <el-col :span="5" class="title">红包类型</el-col>
+          <el-col :span="19" class="desc">{{ detailData.type_str }}</el-col>
         </el-row>
         <el-row v-if="!role.single">
-          <el-col :span="8" class="title">适用门店</el-col>
-          <el-col :span="16" class="desc">
+          <el-col :span="5" class="title">适用门店</el-col>
+          <el-col :span="19" class="desc">
             <span v-for="(shop,index) in detailData.effect_sub_merchant">{{ shop.shopname }}{{ index < detailData.effect_sub_merchant.length - 1?"、":"" }}</span>
           </el-col>
         </el-row>
         <el-row>
-          <el-col :span="8" class="title">活动开始时间</el-col>
-          <el-col :span="16" class="desc">{{ detailData.start_time }}</el-col>
+          <el-col :span="5" class="title">活动开始时间</el-col>
+          <el-col :span="19" class="desc">{{ detailData.start_time }}</el-col>
         </el-row>
         <el-row>
-          <el-col :span="8" class="title">活动结束时间</el-col>
-          <el-col :span="16" class="desc">{{ detailData.expire_time }}</el-col>
+          <el-col :span="5" class="title">活动结束时间</el-col>
+          <el-col :span="19" class="desc">{{ detailData.expire_time }}</el-col>
         </el-row>
         <el-row>
-          <el-col :span="8" class="title">总预算</el-col>
-          <el-col :span="16" class="desc">{{ detailData.total_amt | formatCurrency }}元</el-col>
+          <el-col :span="5" class="title">总预算</el-col>
+          <el-col :span="19" class="desc">{{ detailData.total_amt | formatCurrency }}元</el-col>
         </el-row>
         <el-row>
           <template v-if="packetType === 0">
-            <el-col :span="8" class="title">单个红包金额</el-col>
-            <el-col :span="16" class="desc">{{ detailData.share_info.amt_max | formatCurrency }}元</el-col>
+            <el-col :span="5" class="title">单个红包金额</el-col>
+            <el-col :span="19" class="desc">{{ detailData.share_info.amt_max | formatCurrency }}元</el-col>
           </template>
           <template v-if="packetType === 1">
-            <el-col :span="8" class="title">单个红包金额</el-col>
-            <el-col :span="16" class="desc">{{ detailData.share_info.amt_min | formatCurrency }} - {{ detailData.share_info.amt_max | formatCurrency }}元</el-col>
+            <el-col :span="5" class="title">单个红包金额</el-col>
+            <el-col :span="19" class="desc">{{ detailData.share_info.amt_min | formatCurrency }} - {{ detailData.share_info.amt_max | formatCurrency }}元</el-col>
           </template>
         </el-row>
         <el-row>
-          <el-col :span="8" class="title">红包规则</el-col>
-          <el-col :span="16">
+          <el-col :span="5" class="title">红包规则</el-col>
+          <el-col :span="19">
             <div class="desc">
               <div class="desc-item">会员微信扫描收款二维码<span class="highlight">{{ detailData.share_info.rule.amt | formatCurrency  }}</span>元可分享红包；</div>
               <div class="desc-item">每个分享链接可以有10人领取红包，每人只能领取一个；</div>
@@ -163,45 +163,45 @@
       </template>
       <template v-if="detailData.type === 'type_payment'">
         <el-row>
-          <el-col :span="8" class="title">活动名称</el-col>
-          <el-col :span="16" class="desc">{{ detailData.act_name }}</el-col>
+          <el-col :span="5" class="title">活动名称</el-col>
+          <el-col :span="19" class="desc">{{ detailData.act_name }}</el-col>
         </el-row>
         <el-row>
-          <el-col :span="8" class="title">红包类型</el-col>
-          <el-col :span="16" class="desc">{{ detailData.type_str }}</el-col>
+          <el-col :span="5" class="title">红包类型</el-col>
+          <el-col :span="19" class="desc">{{ detailData.type_str }}</el-col>
         </el-row>
         <el-row v-if="!role.single">
-          <el-col :span="8" class="title">适用门店</el-col>
-          <el-col :span="16" class="desc">
+          <el-col :span="5" class="title">适用门店</el-col>
+          <el-col :span="19" class="desc">
             <span v-for="(shop,index) in detailData.effect_sub_merchant">{{ shop.shopname }}{{ index < detailData.effect_sub_merchant.length - 1?"、":"" }}</span>
           </el-col>
         </el-row>
         <el-row>
-          <el-col :span="8" class="title">活动开始时间</el-col>
-          <el-col :span="16" class="desc">{{ detailData.start_time }}</el-col>
+          <el-col :span="5" class="title">活动开始时间</el-col>
+          <el-col :span="19" class="desc">{{ detailData.start_time }}</el-col>
         </el-row>
         <el-row>
-          <el-col :span="8" class="title">活动结束时间</el-col>
-          <el-col :span="16" class="desc">{{ detailData.expire_time }}</el-col>
+          <el-col :span="5" class="title">活动结束时间</el-col>
+          <el-col :span="19" class="desc">{{ detailData.expire_time }}</el-col>
         </el-row>
         <el-row>
-          <el-col :span="8" class="title">总预算</el-col>
-          <el-col :span="16" class="desc">{{ detailData.total_amt | formatCurrency }}元</el-col>
+          <el-col :span="5" class="title">总预算</el-col>
+          <el-col :span="19" class="desc">{{ detailData.total_amt | formatCurrency }}元</el-col>
         </el-row>
         <el-row>
           <template v-if="packetType === 0">
-            <el-col :span="8" class="title">单个红包金额</el-col>
-            <el-col :span="16" class="desc">{{ detailData.obtain_info.amt_max | formatCurrency }}元</el-col>
+            <el-col :span="5" class="title">单个红包金额</el-col>
+            <el-col :span="19" class="desc">{{ detailData.obtain_info.amt_max | formatCurrency }}元</el-col>
           </template>
           <template v-if="packetType === 1">
-            <el-col :span="8" class="title">单个红包金额</el-col>
-            <el-col :span="16" class="desc">{{ detailData.obtain_info.amt_min | formatCurrency }} - {{ detailData.obtain_info.amt_max | formatCurrency }}元</el-col>
+            <el-col :span="5" class="title">单个红包金额</el-col>
+            <el-col :span="19" class="desc">{{ detailData.obtain_info.amt_min | formatCurrency }} - {{ detailData.obtain_info.amt_max | formatCurrency }}元</el-col>
           </template>
         </el-row>
 
         <el-row>
-          <el-col :span="8" class="title">红包规则</el-col>
-          <el-col :span="16">
+          <el-col :span="5" class="title">红包规则</el-col>
+          <el-col :span="19">
             <div class="desc">
               <div class="desc-item">会员微信扫描收款二维码<span class="highlight">{{ detailData.obtain_info.rule.amt | formatCurrency }}</span>元可返红包；</div>
               <!-- <div class="desc-item">同一会员每天最多领取一个红包；</div> -->
