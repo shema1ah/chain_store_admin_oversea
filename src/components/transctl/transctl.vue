@@ -224,8 +224,8 @@
   import {formatDate} from '../../common/js/util';
   import Store from '../../common/js/store';
 
-  const typeLists = ['wxpay', 'alipay', 'jdpay', 'qqpay', 'card'];
-  const otherLists = ['prepaid_recharge', 'prepaid', 'coupon', 'cancel'];
+  let typeLists = ['wxpay', 'alipay', 'jdpay', 'qqpay', 'card'];
+  let otherLists = ['prepaid_recharge', 'prepaid', 'coupon', 'cancel'];
 
   // cancel 0未撤销 1撤销 status  0:交易中 1:交易成功 2:交易失败 3:交易超时
 
@@ -347,6 +347,15 @@
       if(this.role.single) {
         this.form.selectShopUid = this.shop.uid;
         this.getOperators(this.shop.uid);
+      }
+      // 包商特殊处理
+      if(this.role.isBaoshang) {
+          this.typeList = [
+          {'name': '微信收款', 'value': 'wxpay'},
+          {'name': '支付宝收款', 'value': 'alipay'},
+          {'name': '京东收款', 'value': 'jdpay'}
+        ];
+        typeLists = ['wxpay', 'alipay', 'jdpay'];
       }
 
       this.loading = true;

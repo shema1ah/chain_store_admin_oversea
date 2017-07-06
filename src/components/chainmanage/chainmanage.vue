@@ -39,7 +39,7 @@
           </div> -->
           <div style="align-items: center;display: flex;">
             <el-button type="primary" class="panel-edit-btn__subshopnum" @click.native="editSubShopNum" style="float:left;">编辑分店编号</el-button>
-            <el-dropdown :hide-on-click="true" style="margin-left:10px;">
+            <el-dropdown :hide-on-click="true" style="margin-left:10px;" v-if="!role.isBaoshang">
               <div class="panel-header-btn__associate">
                 <i class="icon-create"></i>
                 <span>创建分店</span>
@@ -206,8 +206,7 @@
       <el-form :model="associate_form" :rules="formrules" ref="associate_form">
         <div class="desc">
           <p>请输入您的分店信息，以做关联。</p>
-          <p>如您的分店还没有账号，请联系客服或</p>
-          <p>者业务员为您的分店入网。</p>
+          <p>如您的分店还没有账号，请联系客服或者业务员为您的分店入网。</p>
         </div>
         <el-form-item label="分店账号" prop="account">
           <el-input v-model="associate_form.account" size="small" placeholder="请输入分店账号"></el-input>
@@ -235,6 +234,7 @@
 <script>
   import axios from 'axios';
   import config from 'config';
+  import Store from '../../common/js/store';
   import ElButton from "../../../node_modules/element-ui/packages/button/src/button";
   import ElForm from "../../../node_modules/element-ui/packages/form/src/form";
   const hasSpetialChar = function (str) {
@@ -286,6 +286,7 @@
         }
       }
       return {
+        role: Store.get('role') || {},
         currentpage: 1,
         visible: false,
         loading: false,

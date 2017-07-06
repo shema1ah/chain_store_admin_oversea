@@ -230,8 +230,22 @@
           pageSize: 10,
           packetValue: '',
           nameValue: '',
-          packetType: 0
+          packetType: 0,
+          role: Store.get('role') || {}
         });
+
+        if(vm.role.isBaoshang) {
+            vm.packetList = [{
+            value: '',
+            label: '全部'
+          }, {
+            value: 'type_sharing',
+            label: '分享红包'
+          }, {
+            value: 'type_payment',
+            label: '消费返红包'
+          }];
+        }
         vm.$store.dispatch('getRedpacketData');
 
         // 延时改变
@@ -244,7 +258,7 @@
     },
     data() {
       return {
-        role: Store.get('role') || {},
+        role: {},
         pageSize: 10,
         packetType: 0,
         effectList: ['当日生效', '次日生效'],

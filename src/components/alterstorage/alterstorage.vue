@@ -29,11 +29,11 @@
                 <span>全部</span>
               </el-form-item>
               <el-form-item label="开始时间" prop="start_time">
-                <el-date-picker v-model="form.start_time" type="date" placeholder="请选择开始时间"size="small" :clearable="false">
+                <el-date-picker v-model="form.start_time" type="date" placeholder="请选择开始时间"size="small" :clearable="false" :picker-options="dateRange">
                 </el-date-picker>
               </el-form-item>
               <el-form-item label="结束时间" prop="end_time">
-                <el-date-picker v-model="form.end_time" type="date" placeholder="请选择结束时间" size="small" :clearable="false">
+                <el-date-picker v-model="form.end_time" type="date" placeholder="请选择结束时间" size="small" :clearable="false" :picker-options="dateRange">
                 </el-date-picker>
               </el-form-item>
               <el-form-item label="设置规则" min-width="150">
@@ -63,11 +63,11 @@
                 <span>全部</span>
               </el-form-item>
               <el-form-item label="开始时间" prop="start_time">
-                <el-date-picker v-model="form.start_time" type="date" placeholder="请选择开始时间" size="small" :clearable="false" :disabled="true">
+                <el-date-picker v-model="form.start_time" type="date" placeholder="请选择开始时间" size="small" :clearable="false" :disabled="true" :picker-options="dateRange">
                 </el-date-picker>
               </el-form-item>
               <el-form-item label="结束时间" prop="end_time">
-                <el-date-picker v-model="form.end_time" type="date" :editable="false" placeholder="请选结束时间" size="small" :clearable="false">
+                <el-date-picker v-model="form.end_time" type="date" :editable="false" placeholder="请选结束时间" size="small" :clearable="false" :picker-options="dateRange">
                 </el-date-picker>
               </el-form-item>
               <el-form-item label="设置规则" min-width="150">
@@ -157,6 +157,11 @@
       };
 
       return {
+        dateRange: {
+          disabledDate: (time) => {
+            return time.getTime() < (Date.now() - 24 * 1000 * 3600);
+          }
+        },
         role: Store.get("role") || {},
         state: null,
         form: {

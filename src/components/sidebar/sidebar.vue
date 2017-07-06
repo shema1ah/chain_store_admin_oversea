@@ -131,6 +131,68 @@
               }
             ];
             break;
+          case 'baoshang':
+            this.navs = [
+              {
+                val: '首页概览',
+                pathname: 'index'
+              }, {
+                val: '会员功能',
+                sub: [{
+                  val: '会员管理',
+                  pathname: 'memberctl'
+                }, {
+                  val: '会员集点',
+                  pathname: 'memberredpoint'
+                }, {
+                  val: '会员红包',
+                  pathname: 'memberredpacket'
+                }, {
+                  val: '会员储值',
+                  pathname: 'memberstorage'
+                }]
+              }, {
+                val: '交易管理',
+                pathname: 'transctl'
+              },
+              {
+                val: '门店管理',
+                pathname: 'chainmanage'
+              }
+            ];
+            break;
+          case 'baoshang_single':
+            this.navs = [
+              {
+                val: '首页概览',
+                pathname: 'index'
+              }, {
+                val: '实时收款',
+                pathname: 'todaytrade'
+              }, {
+                val: '会员功能',
+                sub: [{
+                  val: '会员管理',
+                  pathname: 'memberctl'
+                }, {
+                  val: '会员集点',
+                  pathname: 'memberredpoint'
+                }, {
+                  val: '会员红包',
+                  pathname: 'memberredpacket'
+                }, {
+                  val: '会员储值',
+                  pathname: 'memberstorage'
+                }]
+              }, {
+                val: '交易管理',
+                pathname: 'transctl'
+              }, {
+                val: '门店管理',
+                pathname: 'singlemanage'
+              }
+            ];
+            break;
           case 'haiwai':
             this.navs = [
               {

@@ -20,7 +20,7 @@
           <el-form>
             <el-form-item label="红包类型">
               <el-radio-group v-model="act_type" @change="changePacketType">
-                <el-radio label="type_common">红包通知</el-radio>
+                <el-radio label="type_common" v-if="!role.isBaoshang">红包通知</el-radio>
                 <el-radio label="type_payment">消费返红包</el-radio>
                 <el-radio label="type_share">分享红包</el-radio>
               </el-radio-group>
@@ -48,6 +48,7 @@
     data() {
       return {
         loading: false,
+        role: Store.get('role') || {},
         act_type: ''
       };
     },

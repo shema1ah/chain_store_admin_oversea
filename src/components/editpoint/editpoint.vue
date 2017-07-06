@@ -45,11 +45,11 @@
               <span>元</span>
             </el-form-item>
             <el-form-item label="开始时间" prop="start_time">
-              <el-date-picker v-model="form.start_time" type="date" placeholder="请选择开始时间" size="small" :editable="false" :clearable="false">
+              <el-date-picker v-model="form.start_time" type="date" placeholder="请选择开始时间" size="small" :editable="false" :clearable="false" :picker-options="dateRange">
               </el-date-picker>
             </el-form-item>
             <el-form-item label="结束时间" prop="expire_time">
-              <el-date-picker v-model="form.expire_time" type="date" placeholder="请选结束时间" size="small" :editable="false" :clearable="false">
+              <el-date-picker v-model="form.expire_time" type="date" placeholder="请选结束时间" size="small" :editable="false" :clearable="false" :picker-options="dateRange">
               </el-date-picker>
             </el-form-item>
             <el-form-item prop="mchnt_id_list" label="适用门店" v-if="!role.single">
@@ -136,6 +136,11 @@
       };
 
       return {
+        dateRange: {
+          disabledDate: (time) => {
+            return time.getTime() < (Date.now() - 24 * 1000 * 3600);
+          }
+        },
         textList: ['1点', '2点', '3点', '4点', '5点', '6点', '7点', '8点', '9点', '10点'],
         shopData: [],
         role: Store.get('role') || {},

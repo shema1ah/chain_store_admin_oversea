@@ -530,6 +530,14 @@
         }
       };
 
+      let shopValid = (rule, val, cb) => {
+        if(!/^[\u4e00-\u9fa5A-Za-z\s\d]*$/.test(val)) {
+          cb('请不要输入特殊字符');
+        }else {
+          cb();
+        }
+      };
+
       return {
         shopphotoloading: false,
         goodsphotoloading: false,
@@ -603,7 +611,8 @@
             {max: 20, min: 6, message: '请输入6~20位数字或字母', trigger: 'blur'}
           ],
           shopname: [
-            {required: true, message: '请输入分店名称', trigger: 'blur'}
+            {required: true, message: '请输入分店名称', trigger: 'blur'},
+            {validator: shopValid}
           ],
           shoptype_name: [
             {required: true, message: '请选择经营类型'}

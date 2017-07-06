@@ -119,21 +119,33 @@ const getRole = (data) => {
     type: 'chain',
     haiwai: false,
     single: false,
+    isBaoshang: false,
     diancan: false
   }
-  if (data.country !== 'CN') {
-    role.type = 'haiwai'
-    role.haiwai = true
 
-    if (data.cate === 'submerchant') {
-      role.type = 'haiwai_single'
+  // 包商
+  if(data.is_baoshang_group === 'Y') {
+    role.isBaoshang = true
+    role.type = 'baoshang'
+    if (data.cate !== 'bigmerchant') {
+      role.type = 'baoshang_single'
       role.single = true
     }
-  } else {
-    // bigmerchant:大商户 submerchant:子商户 merchant:商户
-    if (data.cate !== 'bigmerchant') {
-      role.type = 'single'
-      role.single = true
+  }else {
+    if (data.country !== 'CN') {
+      role.type = 'haiwai'
+      role.haiwai = true
+
+      if (data.cate !== 'bigmerchant') {
+        role.type = 'haiwai_single'
+        role.single = true
+      }
+    } else {
+      // bigmerchant:大商户 submerchant:子商户 merchant:商户
+      if (data.cate !== 'bigmerchant') {
+        role.type = 'single'
+        role.single = true
+      }
     }
   }
 

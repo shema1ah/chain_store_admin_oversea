@@ -4,11 +4,11 @@
       <el-input v-model="form.act_name" size="small" class="el-form-item-300"></el-input>
     </el-form-item>
     <el-form-item label="开始时间" prop="start_time">
-      <el-date-picker v-model="form.start_time" type="date" :editable="false" placeholder="请选择开始时间" size="small" :clearable="false">
+      <el-date-picker v-model="form.start_time" type="date" :editable="false" placeholder="请选择开始时间" size="small" :clearable="false" :picker-options="dateRange">
       </el-date-picker>
     </el-form-item>
     <el-form-item label="结束时间" prop="expire_time">
-      <el-date-picker v-model="form.expire_time" type="date" :editable="false" placeholder="请选结束时间" size="small" :clearable="false">
+      <el-date-picker v-model="form.expire_time" type="date" :editable="false" placeholder="请选结束时间" size="small" :clearable="false" :picker-options="dateRange">
       </el-date-picker>
     </el-form-item>
     <el-form-item label="适用门店" prop="sub_mchnt_list" v-if="!role.single">
@@ -150,6 +150,11 @@
       };
 
       return {
+        dateRange: {
+          disabledDate: (time) => {
+            return time.getTime() < (Date.now() - 24 * 1000 * 3600);
+          }
+        },
         role: Store.get('role') || {},
         packetValue: 0,
         form: {

@@ -26,11 +26,11 @@
               <div class="remark mt-0 lh-16">注：请确保以上门店均已开通储值服务，否则无法正常储值</div>
             </el-form-item>
             <el-form-item label="开始时间" prop="start_time">
-              <el-date-picker v-model="form.start_time" type="date" placeholder="请选择开始时间" size="small" :editable="false" :clearable="false">
+              <el-date-picker v-model="form.start_time" type="date" placeholder="请选择开始时间" size="small" :editable="false" :clearable="false" :picker-options="dateRange">
               </el-date-picker>
             </el-form-item>
             <el-form-item label="结束时间" prop="end_time">
-              <el-date-picker v-model="form.end_time" type="date" placeholder="请选结束时间" size="small" :editable="false" :clearable="false">
+              <el-date-picker v-model="form.end_time" type="date" placeholder="请选结束时间" size="small" :editable="false" :clearable="false" :picker-options="dateRange">
               </el-date-picker>
             </el-form-item>
             <el-form-item label="设置规则" min-width="150">
@@ -106,6 +106,11 @@
       };
 
       return {
+        dateRange: {
+          disabledDate: (time) => {
+            return time.getTime() < (Date.now() - 24 * 1000 * 3600);
+          }
+        },
         role: Store.get('role') || {},
         form: {
           start_time: '',
