@@ -17,6 +17,7 @@ import memberredpoint from 'components/memberredpoint/memberredpoint'
 import memberpoint from 'components/memberpoint/memberpoint'
 import createpoint from 'components/createpoint/createpoint'
 import editpoint from 'components/editpoint/editpoint'
+import exchangecreditslist from 'components/exchangedcredits/exchangedcreditslist'
 import reviewpoint from 'components/reviewpoint/reviewpoint'
 import memberredpacket from 'components/memberredpacket/memberredpacket'
 import memberstorage from 'components/memberstorage/memberstorage'
@@ -78,6 +79,11 @@ export default new Router({
             {
               path: '',
               component: memberredpoint
+            },
+            {
+              path: 'exchangedcredits',
+              name: 'exchangedcredits',
+              component: exchangecreditslist
             },
             {
               path: 'createpoint',

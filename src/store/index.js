@@ -74,7 +74,7 @@ const store = new Vuex.Store({
     },
     getPageShopData ({ commit }, payload) {
       axios.get(`${config.host}/merchant/sub/list`, {
-        params: Object.assign({}, {start: 0, len: 10}, payload)
+        params: Object.assign({}, {start: 0, len: 10, format: 'cors'}, payload)
       })
       .then((res) => {
         let data = res.data
@@ -92,7 +92,7 @@ const store = new Vuex.Store({
       })
     },
     getShopList ({ commit }, payload) {
-      axios.get(`${config.host}/merchant/sub/list`)
+      axios.get(`${config.host}/merchant/sub/list?format=cors`)
       .then((res) => {
         let data = res.data
         if (data.respcd === config.code.OK) {
@@ -113,7 +113,7 @@ const store = new Vuex.Store({
       })
     },
     getMemberTotal ({ commit }, payload) {
-      axios.get(`${config.host}/merchant/member/count`)
+      axios.get(`${config.host}/merchant/member/count?format=cors`)
       .then((res) => {
         let data = res.data
         if (data.respcd === config.code.OK) {
@@ -137,7 +137,8 @@ const store = new Vuex.Store({
           type: '',
           sub_uid: '',
           length: 10,
-          curpage: 0
+          curpage: 0,
+          format: 'cors'
         }, payload && payload.params)
       })
       .then((res) => {
@@ -156,6 +157,36 @@ const store = new Vuex.Store({
         loading.close()
         Message.error('获取红包数据失败!')
       })
+    },
+    getExchangedCreditsList({ commit }, payload) {
+      var loading = Loading.service({
+        target: document.getElementById('memberredpacket'),
+        fullscreen: false
+      })
+      axios.get(`${config.host}/merchant/activity/list`, {
+        params: Object.assign({}, {
+          type: '',
+          sub_uid: '',
+          length: 10,
+          curpage: 0
+        }, payload && payload.params)
+      })
+        .then((res) => {
+          loading.close()
+          let data = res.data
+          if (data.respcd === config.code.OK) {
+            commit({
+              type: 'getRedpacketData',
+              redpacketData: data.data
+            })
+          } else {
+            Message.error(data.respmsg)
+          }
+        })
+        .catch(() => {
+          loading.close()
+          Message.error('获取红包数据失败!')
+        })
     }
   }
 })

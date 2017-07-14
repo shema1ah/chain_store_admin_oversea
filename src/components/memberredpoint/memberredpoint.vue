@@ -6,9 +6,12 @@
         <i class="icon-right_arrow"></i>
         <span>会员集点</span>
       </div>
-      <div class="banner-btn" @click="creatPoint">
-        <i class="icon-create"></i>
-        <span class="banner-btn__desc">新建集点</span>
+      <div class="btn-wrap">
+        <el-button type="primary" class="panel-edit-btn__subshopnum" @click.native="jumpToPointsExchange" style="width:158px;">礼品兑换</el-button>
+        <div class="banner-btn" @click="creatPoint">
+          <i class="icon-create"></i>
+          <span class="banner-btn__desc">新建集点</span>
+        </div>
       </div>
     </div>
     <div class="panel">
@@ -204,7 +207,8 @@
           sub_uid: this.nameValue,
           stateOptions: this.stateValue,
           length: this.pageSize,
-          curpage: this.currentpage
+          curpage: this.currentpage,
+          format: 'cors'
         };
       },
 
@@ -214,6 +218,9 @@
     },
 
     methods: {
+      jumpToPointsExchange() {
+        this.$router.push("/main/memberredpoint/exchangedcredits");
+      },
       // 改变活动状态
       stateChange() {
         this.currentChange();
@@ -362,4 +369,13 @@
 .orange {
   color: #FE9B20;
 }
+  .collectPacket {
+    .btn-wrap {
+      display: -webkit-flex;
+      display: flex;
+      .panel-edit-btn__subshopnum {
+        margin-right: 15px;
+      }
+    }
+  }
 </style>

@@ -78,7 +78,7 @@ export default {
     },
 
     getData() {
-      axios.get(`${config.host}/merchant/info`)
+      axios.get(`${config.host}/merchant/info?format=cors`)
         .then((res) => {
           let data = res.data;
           if(data.respcd === config.code.OK) {

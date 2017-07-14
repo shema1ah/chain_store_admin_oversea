@@ -2,7 +2,7 @@
   "name": "mchant-admin",
   "version": "1.0.0",
   "description": "A Vue.js project",
-  "author": "lidong <lidong@qfpay.com>",
+  "author": "qfpay LLC.",
   "private": true,
   "scripts": {
     "test": "standard --fix",
