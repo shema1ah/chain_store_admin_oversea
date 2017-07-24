@@ -15,8 +15,8 @@
         </div>
         <div class="bottom">
           <router-link :to="{ name: 'forget'}" class="forget">忘记密码?</router-link>
-          <span>|</span>
-          <router-link :to="{ name: 'register'}" class="register">我要注册连锁店管理账号</router-link>
+          <!--<span>|</span>
+          <router-link :to="{ name: 'register'}" class="register">我要注册连锁店管理账号</router-link>-->
         </div>
       </el-form>
     </div>
@@ -61,7 +61,7 @@
           if(!this.loading && valid) {
             this.loading = true;
 
-            axios.post(`${config.host}/merchant/login`, Object.assign(this.form, { format: 'cors' })).then((res) => {
+            axios.post(`${config.host}/merchant/login`, this.form).then((res) => {
               this.loading = false;
               let data = res.data;
               if(data.respcd === config.code.OK) {

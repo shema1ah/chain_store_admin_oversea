@@ -54,7 +54,13 @@
     },
     beforeRouteEnter (to, from, next) {
       next((vm) => {
-        vm.act_type = to.name;
+        if(vm.role.isBaoshang) {
+          vm.act_type = 'type_payment';
+          vm.$router.push({ name: 'type_payment' });
+        }else {
+          vm.act_type = 'type_common';
+          vm.$router.push({ name: 'type_common' });
+        }
       });
     },
     computed: {

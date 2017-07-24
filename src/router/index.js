@@ -140,10 +140,6 @@ export default new Router({
               component: createpacket,
               children: [
                 {
-                  path: '/',
-                  redirect: 'type_common'
-                },
-                {
                   path: 'type_common',
                   name: 'type_common',
                   component: packetnotify

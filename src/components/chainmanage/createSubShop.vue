@@ -133,6 +133,13 @@
               <span class="panel-header__desc">绑定银行卡信息</span>
             </div>
 
+            <el-form-item label="银行卡类型" prop="banktype">
+              <el-select v-model="shopInfo.banktype" placeholder="请选择" icon="caret-bottom" class="sub-account-item-info">
+                <el-option :key=1 label="对私账户" :value=1></el-option>
+                <el-option :key=2 label="对公账户" :value=2></el-option>
+              </el-select>
+            </el-form-item>
+
             <el-form-item label="开户名" prop="bankuser">
               <el-input v-model.trim="shopInfo.bankuser" size="small" type="text" placeholder="请与店主姓名一致" auto-complete="off"
                         class="sub-account-item-info"></el-input>
@@ -568,6 +575,7 @@
           idnumber: '', // 店主身份证号
           idstatdate: '', // 身份证有效开始日期(格式：2016-01-05)
           idenddate: '', // 身份证有效截止日期(格式：2017-01-05)
+          banktype: 1, // 账户类型，1，为对私，2为对公 ，默认为对私
           bankuser: '', // 开户名
           bankaccount: '', // 银行卡号
           bankmobile: '', // 预留手机号
@@ -835,6 +843,8 @@
         this.infoPage = !this.infoPage;
       },
       preSignUp() { // 预注册
+        console.log(this.shopInfo);
+
         this.$refs['shop_info'].validate((valid) => {
           if (valid) {
             if (this.shopInfo.userid) {
@@ -884,6 +894,7 @@
               idnumber: this.shopInfo.idnumber,
               bankprovince: this.shopInfo.bankprovince,
               bankcity: this.shopInfo.bankcity,
+              banktype: this.shopInfo.banktype,
               bankname: this.shopInfo.bankname,
               headbankname: this.shopInfo.headbankname,
               bankcode: this.shopInfo.bankcode,

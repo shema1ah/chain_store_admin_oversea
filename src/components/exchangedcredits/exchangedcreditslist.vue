@@ -85,10 +85,37 @@ import ElButton from "../../../node_modules/element-ui/packages/button/src/butto
     components: {
       ElButton,
       ElInput},
+    beforeRouteEnter (to, from, next) {
+      next((vm) => {
+        Object.assign(vm, {
+          flag: false,
+          nameValue: '',
+          code: '',
+          activityId: '',
+          loading: false,
+          currentpage: 1,
+          pageSize: 10
+        });
+
+        vm.getExchangedCreditsList();
+
+        if(Store.get('role').single) {
+          vm.getActivityId();
+        }
+
+        // 延时改变
+        setTimeout(() => {
+          Object.assign(vm, {
+            flag: true
+          });
+        }, 200);
+      });
+    },
     data() {
         return {
           role: Store.get('role') || {},
           nameValue: '',
+          flag: false,
           code: '',
           activityId: '',
           loading: false,
@@ -102,20 +129,11 @@ import ElButton from "../../../node_modules/element-ui/packages/button/src/butto
         return {
           sub_uid: this.nameValue,
           pagesize: this.pageSize,
-          page: this.currentpage,
-          format: 'cors'
+          page: this.currentpage
         };
       },
       shopData() {
         return this.$store.state.shopData;
-      }
-    },
-    created() {
-      this.getExchangedCreditsList();
-    },
-    mounted() {
-      if(!Store.get('role').single) {
-        this.getActivityId();
       }
     },
     methods: {
@@ -133,15 +151,21 @@ import ElButton from "../../../node_modules/element-ui/packages/button/src/butto
             console.log('获取activityId失败');
         });
       },
+
       exchangeHandler() {
         axios.post(`${config.ohost}/mchnt/card/v1/exchange_goods`, {
           id: this.activityId,
-          code: this.code
+          code: this.code,
+          format: 'cors'
         }).then((res) => {
           let data = res.data;
           if (data.respcd === config.code.OK) {
             this.code = '';
-            this.activityId = '';
+            this.$message({
+              type: 'success',
+              message: '兑换成功!'
+            });
+
             this.getExchangedCreditsList();
           } else {
             this.$message.error(data.respmsg);
@@ -150,6 +174,7 @@ import ElButton from "../../../node_modules/element-ui/packages/button/src/butto
           this.$message.error('获取集点兑换记录失败!');
         });
       },
+
       getExchangedCreditsList() {
         this.loading = true;
         axios.get(`${config.host}/merchant/card/records_list`, {
@@ -182,11 +207,12 @@ import ElButton from "../../../node_modules/element-ui/packages/button/src/butto
         if (current) {
           this.currentpage = current;
         }
-        this.getExchangedCreditsList();
+        if (this.flag) {
+          this.getExchangedCreditsList();
+        }
       },
-      nameChange(value, label) {
-        this.nameValue = value;
-        this.getExchangedCreditsList();
+      nameChange() {
+        this.currentChange();
       }
     }
   }

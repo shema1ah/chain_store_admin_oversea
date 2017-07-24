@@ -124,7 +124,7 @@ const getRole = (data) => {
   }
 
   // 包商
-  if(data.is_baoshang_group === 1) {
+  if(data.group_name === 'baoshang') {
     role.isBaoshang = true
     role.type = 'baoshang'
     if (data.cate !== 'bigmerchant') {

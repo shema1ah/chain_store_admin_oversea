@@ -38,7 +38,8 @@
             label="交易金额">
             <template scope="scope">
               <strong class="font-large">{{ scope.row.orig_amt || scope.row.txamt | formatCurrency }}元</strong>
-              <p class="font-small">实收{{ scope.row.txamt | formatCurrency }}元</p>
+              <p class="font-small" v-if="scope.row.busicd.substring(0, 4) === '7000'">实收0元</p>
+              <p class="font-small" v-else>实收{{ scope.row.txamt | formatCurrency }}元</p>
               <p class="font-small" v-show="scope.row.merchanCouponAmt">商家红包{{ scope.row.merchanCouponAmt | formatCurrency }}元</p>
               <p class="font-small" v-show="parseInt(scope.row.coupon_amt)">平台补贴{{ scope.row.coupon_amt | formatCurrency }}元</p>
             </template>
