@@ -2,27 +2,27 @@
   <div class="chain">
     <div class="banner_wrapper">
       <div class="banner-breadcrumb">
-        <span>门店管理</span>
+        <span>{{$t('shopmng.crumbs.L1')}}</span>
       </div>
     </div>
 
     <div class="panel">
       <div class="panel-header panel-header__fix">
         <div class="panel-select-group panel-select-group__justify">
-          <span class="panel-header__desc">基本信息</span>
+          <span class="panel-header__desc">{{$t('shopmng.title.baseInfo')}}</span>
           <!--<div class="panel-header-btn" @click="changePass('chain', shop.mobile)"></div>-->
-          <div type="primary" class="panel-header-btn" :plain="true" @click="changePass('chain', shop.mobile)">修改密码</div>
+          <div type="primary" class="panel-header-btn" :plain="true" @click="changePass('chain', shop.mobile)">{{$t('shopmng.panel.btn.editPwd')}}</div>
         </div>
       </div>
       <div class="panel-body">
         <div class="info_wrapper">
           <div class="info">
-            <div class="info__title">商户名称</div>
+            <div class="info__title">{{$t('shopmng.panel.shopName')}}</div>
             <div class="info__sign">:</div>
             <div class="info__desc">{{ shop.shopname }}</div>
           </div>
           <div class="info">
-            <div class="info__title">登录账号</div>
+            <div class="info__title">{{$t('shopmng.panel.loginAccount')}}</div>
             <div class="info__sign">:</div>
             <div class="info__desc">{{ shop.mobile }}</div>
           </div>
@@ -32,13 +32,13 @@
     <div class="panel">
       <div class="panel-header panel-header__fix">
         <div class="panel-select-group">
-          <span class="panel-header__desc">分店信息</span>
+          <span class="panel-header__desc">{{$t('shopmng.title.subInfo')}}</span>
           <!-- <div class="panel-header-btn__associate" @click="associate">
             <i class="icon-create"></i>
             <span>关联分店</span>
           </div> -->
           <div style="align-items: center;display: flex;">
-            <el-button type="primary" class="panel-edit-btn__subshopnum" @click.native="editSubShopNum" style="float:left;">编辑分店编号</el-button>
+            <el-button type="primary" class="panel-edit-btn__subshopnum" @click.native="editSubShopNum" style="float:left;">{{$t('shopmng.panel.btn.editSubTag')}}</el-button>
             <el-dropdown :hide-on-click="true" style="margin-left:10px;" v-if="!role.isBaoshang">
               <div class="panel-header-btn__associate">
                 <i class="icon-create"></i>
@@ -62,37 +62,37 @@
           v-loading.body="loading">
           <el-table-column
             prop="shop_name"
-            label="分店名称">
+            :label="$t('shopmng.panel.table.subName')">
           </el-table-column>
           <el-table-column
             prop="mobile"
-            label="登录账号">
+            :label="$t('shopmng.panel.table.loginAccount')">
           </el-table-column>
           <el-table-column
             prop="join_time"
-            label="注册时间">
+            :label="$t('shopmng.panel.table.regTime')">
             <template scope="scope">{{ scope.row.join_time }}</template>
           </el-table-column>
           <el-table-column
             prop="tag"
-            label="分店编号">
+            :label="$t('shopmng.panel.table.subTag')">
             <template scope="scope">{{ scope.row.tag }}</template>
           </el-table-column>
           <el-table-column
-            label="操作">
+            :label="$t('shopmng.panel.table.op')">
             <template scope="scope">
-              <el-button type="text" size="small" class="el-button__fix" @click="showDetail(scope)">查看详情</el-button>
+              <el-button type="text" size="small" class="el-button__fix" @click="showDetail(scope)">{{$t('shopmng.panel.table.detail')}}</el-button>
               <!--<el-button type="text" size="small" class="el-button__fix" @click="unbind(scope)">解绑此分店</el-button>-->
               <el-dropdown>
                 <span class="el-dropdown-link el-dropdown-link__fix">
-                  更多<i class="el-icon-caret-bottom el-icon--right"></i>
+                  {{$t('shopmng.panel.table.more')}}<i class="el-icon-caret-bottom el-icon--right"></i>
                 </span>
                 <el-dropdown-menu slot="dropdown" class="el-dropdown-menu__fix collect">
                   <el-dropdown-item class="el-dropdown-item__fix"
-                                    @click.native="changePass('single', scope.row.mobile)">修改密码
+                                    @click.native="changePass('single', scope.row.mobile)">{{$t('shopmng.panel.table.editPwd')}}
                   </el-dropdown-item>
                   <el-dropdown-item class="el-dropdown-item__fix" @click.native="confirmDeleteShop(scope.row.uid)">
-                    删除分店
+                    {{$t('shopmng.panel.table.delSub')}}
                   </el-dropdown-item>
 
                 </el-dropdown-menu>
@@ -112,92 +112,92 @@
       </div>
       <div class="table_placeholder" v-else></div>
     </div>
-    <el-dialog v-model="isShowDetail" class="detail_dialog" title="门店详情">
+    <el-dialog v-model="isShowDetail" class="detail_dialog" :title="$t('shopmng.dialog.shopDetail')">
       <el-row>
-        <el-col :span="6" class="title">登录账号</el-col>
+        <el-col :span="6" class="title">{{$t('shopmng.dialog.loginAccount')}}</el-col>
         <el-col :span="10" class="desc">{{ detailData.mobile }}</el-col>
       </el-row>
       <el-row class="">
-        <el-col :span="6" class="title">店铺名称</el-col>
+        <el-col :span="6" class="title">{{$t('shopmng.dialog.shopName')}}</el-col>
         <el-col :span="10" class="desc">{{ detailData.shopname }}</el-col>
       </el-row>
       <el-row>
-        <el-col :span="6" class="title">地址</el-col>
+        <el-col :span="6" class="title">{{$t('shopmng.dialog.address')}}</el-col>
         <el-col :span="10" class="desc">{{ detailData.address }}</el-col>
       </el-row>
 
       <el-row>
-        <el-col :span="6" class="title">手机号</el-col>
+        <el-col :span="6" class="title">{{$t('shopmng.dialog.mobile')}}</el-col>
         <el-col :span="10" class="desc">{{ detailData.telephone || '无' }}</el-col>
       </el-row>
       <el-row>
-        <el-col :span="6" class="title">持卡人</el-col>
+        <el-col :span="6" class="title">{{$t('shopmng.dialog.cardHolder')}}</el-col>
         <el-col :span="10" class="desc">{{ detailData.bankuser }}</el-col>
       </el-row>
       <el-row>
-        <el-col :span="6" class="title">银行账户</el-col>
+        <el-col :span="6" class="title">{{$t('shopmng.dialog.bankAccount')}}</el-col>
         <el-col :span="10" class="desc">{{ detailData.bankaccount }}</el-col>
       </el-row>
       <el-row>
-        <el-col :span="6" class="title">银行名称</el-col>
+        <el-col :span="6" class="title">{{$t('shopmng.dialog.bankName')}}</el-col>
         <el-col :span="14" class="desc">
           <div>{{ detailData.headbankname }}</div>
           <div>{{ detailData.bankname }}</div>
         </el-col>
       </el-row>
     </el-dialog>
-    <el-dialog title="修改密码" :visible.sync="showChangePass" @close="handleClose('form')" custom-class="mydialog"
+    <el-dialog :title="$t('shopmng.dialog.editPwd')" :visible.sync="showChangePass" @close="handleClose('form')" custom-class="mydialog"
                top="20%" :show-close="false">
       <el-form :model="form" :rules="formrules" ref="form">
-        <el-form-item label="登录账号">
+        <el-form-item :label="$t('shopmng.dialog.loginAccount')">
           <div>{{ userName }}</div>
         </el-form-item>
-        <el-form-item label="输入新密码" prop="pass">
-          <el-input v-model="form.pass" size="small" type="password" placeholder="请输入新密码"></el-input>
+        <el-form-item :label="$t('shopmng.dialog.inputNewPwd')" prop="pass">
+          <el-input v-model="form.pass" size="small" type="password" :placeholder="$t('shopmng.dialog.msg.m1')"></el-input>
         </el-form-item>
-        <el-form-item label="确认新密码" prop="repass">
-          <el-input v-model="form.repass" size="small" type="password" placeholder="请输入确认新密码"></el-input>
+        <el-form-item :label="$t('shopmng.dialog.confirmNewPwd')" prop="repass">
+          <el-input v-model="form.repass" size="small" type="password" :placeholder="$t('shopmng.dialog.msg.m2')"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <div @click="showChangePass = false" class="cancel">取消</div>
+        <div @click="showChangePass = false" class="cancel">{{$t('shopmng.dialog.cancel')}}</div>
         <div @click="submit" class="submit">
           <span class="el-icon-loading" v-if="iconShow"></span>
-          <span v-else>确定</span>
+          <span v-else>{{$t('shopmng.dialog.ok')}}</span>
         </div>
       </div>
     </el-dialog>
 
-    <el-dialog title="编辑分店编号" :visible.sync="showEditSubShopNum" class="mydialog" @close="refreshSubShopData">
+    <el-dialog :title="$t('shopmng.dialog.editSubTag')" :visible.sync="showEditSubShopNum" class="mydialog" @close="refreshSubShopData">
       <el-form ref="form-edit-subshop-num" label-position="left" class="edit-sub-tag">
         <div class="desc" style="text-align: left">
-          分店编号设置成功后将会显示在下载的交易明细和交易汇总中。
+          {{$t('shopmng.dialog.diaTip')}}
         </div>
         <el-form-item v-for="(shop, index) in shopData.list" v-if="index !== 0">
           <el-tooltip placement="bottom" :content="shop.shop_name" class="subshoptip">
             <label style="width:140px">{{shop.shop_name}}</label>
           </el-tooltip>
-          <el-input v-model="shop.tag" size="small" placeholder="请输入二十位以内的文字或字母" style="width:65%" @blur="updateShopTag(shop)"></el-input>
+          <el-input v-model="shop.tag" size="small" :placeholder="$t('shopmng.dialog.validateText')" style="width:65%" @blur="updateShopTag(shop)"></el-input>
         </el-form-item>
 
       </el-form>
       <div class="divider"></div>
       <div slot="footer" class="dialog-footer">
-        <div @click="refreshSubShopData" class="submit"><i class="el-icon-loading" v-show="iconShow"></i>确认</div>
+        <div @click="refreshSubShopData" class="submit"><i class="el-icon-loading" v-show="iconShow"></i>{{$t('shopmng.dialog.confirm')}}</div>
       </div>
     </el-dialog>
 
-    <el-dialog title="提示" :visible.sync="showDeleteShopConfirm" custom-class="mydialog pass" top="20%"
+    <el-dialog :title="$t('shopmng.dialog.notice')" :visible.sync="showDeleteShopConfirm" custom-class="mydialog pass" top="20%"
                :show-close="true" @close="handleClose('pwdform')">
-      <div style="margin-bottom: 20px;">删除分店前建议先终止该分店正在进行的会员营销活动。</div>
+      <div style="margin-bottom: 20px;">{{$t('shopmng.dialog.noticeTip')}}</div>
       <el-form :model="formpwd" :rules="formrules" ref="pwdform">
         <el-form-item prop="primeaccountpwd">
-          <el-input v-model="formpwd.primeaccountpwd" placeholder="请输入总账户登录密码" type="password"></el-input>
+          <el-input v-model="formpwd.primeaccountpwd" :placeholder="$t('shopmng.dialog.validateText2')" type="password"></el-input>
         </el-form-item>
 
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <div @click="checkPrimeShopPwd('pwdform',this)" class="submit"><i class="el-icon-loading" v-show="iconShow"></i>确认
+        <div @click="checkPrimeShopPwd('pwdform',this)" class="submit"><i class="el-icon-loading" v-show="iconShow"></i>{{$t('shopmng.dialog.ok')}}
         </div>
       </div>
     </el-dialog>

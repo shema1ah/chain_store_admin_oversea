@@ -11,6 +11,11 @@ import 'assets/scss/common.scss'
 import axios from 'axios'
 import config from 'src/config'
 import Store from 'common/js/store'
+import VueI18n from 'vue-i18n'
+import locale from 'element-ui/lib/locale'
+let switchlang = localStorage.getItem("lang") || JSON.stringify({value: navigator.language});
+let targetLang = require('element-ui/lib/locale/lang/' + (JSON.parse(switchlang).value || 'zh-CN'))
+Vue.use(VueI18n)
 
 Vue.use(Tree)
 Vue.use(Upload)
@@ -40,6 +45,16 @@ Vue.use(Checkbox)
 Vue.use(Rate)
 Vue.use(Tooltip)
 
+locale.use(targetLang.default); // elementUI组件的多语言
+var localePackage = { // 静态模板文案多语言
+  'zh-CN': require(`lang/${(JSON.parse(switchlang).value)}.js`)['default'],
+  en: require(`lang/${(JSON.parse(switchlang).value)}.js`)['default'],
+  ja: require(`lang/${(JSON.parse(switchlang).value)}.js`)['default']
+};
+Vue.config.lang = (JSON.parse(switchlang).value || 'zh-CN');
+Object.keys(localePackage).forEach(function (lang) {
+  Vue.locale(lang, localePackage[lang])
+})
 // header增加cookie验证信息
 /* axios.interceptors.request.use(function (config) {
   config.headers.Session = `Token3333`;
@@ -48,8 +63,8 @@ Vue.use(Tooltip)
   return Promise.reject(err);
 }); */
 
-// 允许跨域请求
-axios.defaults.withCredentials = true
+axios.defaults.withCredentials = true; // 允许跨域请求携带凭据
+axios.defaults.headers.common['lang'] = JSON.parse(switchlang).value;
 
 axios.interceptors.response.use((res) => {
   let data = res.data

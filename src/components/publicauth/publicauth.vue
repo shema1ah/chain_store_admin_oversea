@@ -2,12 +2,12 @@
   <!-- 未绑定总账户公众号 -->
   <div class="warpper" v-if="wechatNotAuth">
     <div class="banner_wrapper">
-      <p>您还没有关联您的微信账号，请关联您的微信账号以便我们能为您提供更多服务。</p>
+      <p>{{$t('pubSignal.crumbs.unauthorized')}}</p>
     </div>
     <div class="panel">
       <div class="panel-header">
         <div class="panel-select-group">
-          <span class="panel-header__desc">绑定微信公众号</span>
+          <span class="panel-header__desc">{{$t('pubSignal.title.bind')}}</span>
         </div>
       </div>
       <div class="panel-body" style="padding-bottom:25px">
@@ -15,47 +15,47 @@
           <li>
             <strong><span>Step</span>1</strong>
             <img src="./img/step01.jpeg" alt="step1">
-            <p>使用绑定的个人微信号扫描</p>
+            <p>{{$t('pubSignal.panel.wechatScan')}}</p>
           </li>
           <li>
             <strong><span>Step</span>2</strong>
             <img src="./img/step02.jpeg" alt="step1">
-            <p>公众号管理员授权确认</p>
+            <p>{{$t('pubSignal.panel.wechatScan')}}</p>
           </li>
           <li>
             <strong><span>Step</span>3</strong>
             <img src="./img/step03.jpeg" alt="step1">
-            <p>授权成功，运营公众号！</p>
+            <p>{{$t('pubSignal.panel.authSucc')}}</p>
           </li>
         </ul>
-        <button @click="goWechatAuth" class="el-button el-button--primary btn-add" type="button">免费添加微信公众号</button>
+        <button @click="goWechatAuth" class="el-button el-button--primary btn-add" type="button">{{$t('pubSignal.panel.btn.freeAdd')}}</button>
       </div>
     </div>
   </div>
   <!-- 已绑定总账户公众号 -->
   <div class="warpper public-auth" v-else>
     <div class="banner_wrapper">
-      <div class="banner-breadcrumb"><span>已授权公众号</span></div>
+      <div class="banner-breadcrumb"><span>{{$t('pubSignal.crumbs.authorizedPS')}}</span></div>
     </div>
     <div class="panel">
       <div class="panel-header">
         <div class="panel-select-group">
-          <span class="panel-header__desc">公众号基本信息</span>
+          <span class="panel-header__desc">{{$t('pubSignal.title.psInfo')}}</span>
         </div>
       </div>
       <div class="panel-body">
         <div class="public-info">
-          <img :src="publicAvatar" alt="头像" />
-          <span>名称
+          <img :src="publicAvatar" :alt="$t('pubSignal.panel.avatar')" />
+          <span>{{$t('pubSignal.panel.name')}}
             <strong>{{publicInfo.nick_name}}</strong>
           </span>
-          <span>ID（微信号）
+          <span>{{$t('pubSignal.panel.id')}}
             <strong>{{publicInfo.appid}}</strong>
           </span>
-          <span>公众号类型
+          <span>{{$t('pubSignal.panel.psType')}}
             <strong>{{publicInfo.service_type_str}}</strong>
           </span>
-          <span>认证类型
+          <span>{{$t('pubSignal.panel.authType')}}
             <strong>{{publicInfo.verify_type_str}}</strong>
           </span>
         </div>
@@ -67,7 +67,7 @@
         </div>
       </div>
     </div>
-    <div class="panel">
+    <div class="panel" v-if="!role.haiwai">
       <div class="panel-header panel-header__fix">
         <div class="panel-select-group">
           <span class="panel-header__desc">微信菜单链接</span>

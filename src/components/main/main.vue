@@ -3,6 +3,9 @@
     <sidebar></sidebar>
     <div class="main">
       <div class="header">
+        <el-select v-model="lang" placeholder="请选择" icon="caret-bottom" @change="switchLanguage">
+          <el-option v-for="item in [{label:'简体中文', value:'zh-CN'}, {label:'英文', value:'en'}]" :key="item.value" :label="item.label" :value="item.value"></el-option>
+        </el-select>
         <div class="user_wrapper">
           <div class="user_name">
             {{shop.shopname?'Welcome, '+shop.shopname:''}}
@@ -31,6 +34,7 @@ import sidebar from '../../components/sidebar/sidebar.vue';
 export default {
   data() {
     return {
+      lang: JSON.parse(localStorage.getItem("lang") || '{}').value || '',
       loading: false,
       shop: {},
       formrules: {
@@ -98,6 +102,10 @@ export default {
         .catch(() => {
           this.$message.error('网络错误!');
         });
+    },
+    switchLanguage(value, label) {
+      localStorage.setItem("lang", JSON.stringify({label: label, value: value}))
+      window.location.reload()
     }
   }
 };
@@ -116,7 +124,7 @@ export default {
       display: flex;
       height: 50px;
       background-color: #FE9B20;
-      justify-content: flex-end;
+      justify-content: space-between;
       align-items: center;
       color: #fff;
     }

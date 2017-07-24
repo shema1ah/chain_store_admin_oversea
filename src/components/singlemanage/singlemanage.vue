@@ -2,40 +2,40 @@
   <div class="single">
     <div class="banner_wrapper">
       <div class="banner-breadcrumb">
-        <span>门店管理</span>
+        <span>{{$t('shopmng.crumbs.L1')}}</span>
       </div>
     </div>
 
     <div class="panel">
       <div class="panel-header panel-header__fix">
         <div class="panel-select-group panel-select-group__justify">
-          <span class="panel-header__desc">基本信息</span>
+          <span class="panel-header__desc">{{$t('shopmng.title.baseInfo')}}</span>
         </div>
       </div>
       <div class="panel-body">
         <div class="info_wrapper">
           <div class="info">
-            <div class="info__title">登录账号</div>
+            <div class="info__title">{{$t('shopmng.panel.loginAccount')}}</div>
             <div class="info__desc">{{ shop.mobile }}</div>
           </div>
           <div class="info">
-            <div class="info__title">店铺名称</div>
+            <div class="info__title">{{$t('shopmng.dialog.shopName')}}</div>
             <div class="info__desc">{{ shop.shopname }}</div>
           </div>
           <div class="info">
-            <div class="info__title">地址</div>
+            <div class="info__title">{{$t('shopmng.dialog.address')}}</div>
             <div class="info__desc">{{ shop.address }}</div>
           </div>
           <div class="info">
-            <div class="info__title">手机号</div>
+            <div class="info__title">{{$t('shopmng.dialog.mobile')}}</div>
             <div class="info__desc">{{ shop.telephone || '无' }}</div>
           </div>
           <div class="info">
-            <div class="info__title">持卡人</div>
+            <div class="info__title">{{$t('shopmng.dialog.cardHolder')}}</div>
             <div class="info__desc">{{ shop.bankuser }}</div>
           </div>
           <div class="info">
-            <div class="info__title">银行账户</div>
+            <div class="info__title">{{$t('shopmng.dialog.bankAccount')}}</div>
             <div class="info__desc">{{ shop.bankaccount }} </div>
           </div>
           <div class="info" style="margin-bottom: 0">
@@ -43,14 +43,14 @@
             <div class="info__desc">{{ shop.headbankname }} </div>
           </div>
           <div class="info">
-            <div class="info__title" style="visibility: hidden">银行名称</div>
+            <div class="info__title" style="visibility: hidden">{{$t('shopmng.dialog.bankName')}}</div>
             <div class="info__desc">{{ shop.bankname }}</div>
           </div>
           <div class="panel-btn-group__wrapper">
-            <div class="panel-header-btn panel-header-btn__fill" @click="changePass(shop.mobile)">修改密码</div>
+            <div class="panel-header-btn panel-header-btn__fill" @click="changePass(shop.mobile)">{{$t('shopmng.panel.table.editPwd')}}</div>
             <a :href="downHref" download>
               <div class="panel-header-btn">
-                <span>下载店铺收款码</span>
+                <span>{{$t('shopmng.panel.btn.down')}}</span>
               </div>
             </a>
           </div>
@@ -58,23 +58,23 @@
       </div>
     </div>
 
-    <el-dialog title="修改密码" :visible.sync="showChangePass" @close="handleClose" custom-class="mydialog" top="20%" :show-close="false">
+    <el-dialog :title="$t('shopmng.dialog.editPwd')" :visible.sync="showChangePass" @close="handleClose" custom-class="mydialog" top="20%" :show-close="false">
       <el-form :model="form" :rules="formrules" ref="form">
-        <el-form-item label="登录账号">
+        <el-form-item :label="$t('shopmng.dialog.loginAccount')">
           <div>{{ userName }}</div>
         </el-form-item>
-        <el-form-item label="输入新密码" prop="pass">
-          <el-input v-model="form.pass" size="small" type="password" placeholder="请输入新密码"></el-input>
+        <el-form-item :label="$t('shopmng.dialog.inputNewPwd')" prop="pass">
+          <el-input v-model="form.pass" size="small" type="password" :placeholder="$t('shopmng.dialog.msg.m1')"></el-input>
         </el-form-item>
-        <el-form-item label="确认新密码" prop="repass">
-          <el-input v-model="form.repass" size="small" type="password" placeholder="请输入确认新密码"></el-input>
+        <el-form-item :label="$t('shopmng.dialog.confirmNewPwd')" prop="repass">
+          <el-input v-model="form.repass" size="small" type="password" :placeholder="$t('shopmng.dialog.msg.m2')"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <div @click="showChangePass = false" class="cancel">取消</div>
+        <div @click="showChangePass = false" class="cancel">{{$t('shopmng.dialog.cancel')}}</div>
         <div @click="submit" class="submit">
           <span class="el-icon-loading" v-if="iconShow"></span>
-          <span v-else>确定</span>
+          <span v-else>{{$t('shopmng.dialog.ok')}}</span>
         </div>
       </div>
     </el-dialog>
@@ -92,7 +92,7 @@
     data() {
       let passValid = (rule, val, cb) => {
         if(val === '') {
-          cb('请输入新密码');
+          cb(this.$t('shopmng.dialog.msg.m1'));
         } else {
           if(this.form.repass !== '') {
             this.$refs['form'].validateField('repass');
@@ -103,9 +103,9 @@
 
       let repassValid = (rule, val, cb) => {
         if(val === '') {
-          cb('请输入确认新密码');
+          cb(this.$t('shopmng.dialog.msg.m2'));
         } else if(this.form.pass && this.form.pass !== val) {
-          cb('新密码与确认密码不一致');
+          cb(this.$t('shopmng.dialog.msg.m3'));
         } else {
           console.log(val);
           cb();
@@ -123,11 +123,11 @@
         formrules: {
           pass: [
             { validator: passValid },
-            {max: 20, min: 6, message: '请输入6~20位数字或字母', trigger: 'blur'}
+            {max: 20, min: 6, message: this.$t('shopmng.dialog.msg.m4'), trigger: 'blur'}
           ],
           repass: [
             { validator: repassValid },
-            {max: 20, min: 6, message: '请输入6~20位数字或字母', trigger: 'blur'}
+            {max: 20, min: 6, message: this.$t('shopmng.dialog.msg.m4'), trigger: 'blur'}
           ]
         }
       };
