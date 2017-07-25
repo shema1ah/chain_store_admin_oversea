@@ -69,7 +69,7 @@
               </el-form-item>
             </div>
           </div>
-          <div class="panel-select-group" v-show="!role.haiwai">
+          <div class="panel-select-group">
             <div class="panel-select__wrapper">
               <span class="panel-select__desc">更多筛选</span>
               <el-form-item prop="checkAll2">
@@ -105,15 +105,15 @@
           <div class="num_total">
             <div class="num_wrapper">
               <p class="num-title">交易总金额</p>
-              <p class="num-desc">{{ transData.sucamt | formatNumber }} 元</p>
+              <p class="num-desc">{{ transData.sucamt | formatNumber }} {{ role.rate }}</p>
             </div>
-            <div class="num_wrapper">
+            <div class="num_wrapper" v-if="!role.haiwai">
               <p class="num-title">交易实收</p>
-              <p class="num-desc">{{ transData.total_txamt | formatNumber }} 元</p>
+              <p class="num-desc">{{ transData.total_txamt | formatNumber }} {{ role.rate }}</p>
             </div>
-            <div class="num_wrapper">
+            <div class="num_wrapper" v-if="!role.haiwai">
               <p class="num-title">红包优惠</p>
-              <p class="num-desc">{{ transData.coupon_amt | formatNumber }} 元</p>
+              <p class="num-desc">{{ transData.coupon_amt | formatNumber }} {{ role.rate }}</p>
             </div>
             <div class="num_wrapper">
               <p class="num-title">成功交易笔数</p>
@@ -161,12 +161,18 @@
             <template scope="scope">{{ scope.row.sysdtm }}</template>
           </el-table-column>
           <el-table-column
-            label="交易金额">
+            :label="'交易金额(' + role.rate + ')'" v-if="role.haiwai">
             <template scope="scope">
-              <div class="table-title">{{ scope.row.total_amt | formatNumber }}元</div>
-              <div class="table-content">实收{{ scope.row.txamt | formatNumber }}元</div>
-              <div v-show="scope.row.mchnt_coupon" class="table-content">商家红包{{ scope.row.mchnt_coupon | formatNumber }}元</div>
-              <div v-show="scope.row.hj_coupon" class="table-content">平台补贴{{ scope.row.hj_coupon | formatNumber }}元</div>
+              <div class="table-title">{{ scope.row.total_amt | formatNumber }}</div>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="交易金额" v-else>
+            <template scope="scope">
+              <div class="table-title">{{ scope.row.total_amt | formatNumber }}{{ role.rate }}</div>
+              <div class="table-content">实收{{ scope.row.txamt | formatNumber }}{{ role.rate }}</div>
+              <div v-show="scope.row.mchnt_coupon" class="table-content">商家红包{{ scope.row.mchnt_coupon | formatNumber }}{{ role.rate }}</div>
+              <div v-show="scope.row.hj_coupon" class="table-content">平台补贴{{ scope.row.hj_coupon | formatNumber }}{{ role.rate }}</div>
             </template>
           </el-table-column>
           <el-table-column
@@ -348,7 +354,7 @@
         this.form.selectShopUid = this.shop.uid;
         this.getOperators(this.shop.uid);
       }
-      // 包商特殊处理
+      // 包商收款方式特殊处理
       if(this.role.isBaoshang) {
           this.typeList = [
           {'name': '微信收款', 'value': 'wxpay'},
@@ -356,6 +362,14 @@
           {'name': '京东收款', 'value': 'jdpay'}
         ];
         typeLists = ['wxpay', 'alipay', 'jdpay'];
+      }
+
+      // 海外更多筛选特殊处理
+      if(this.role.haiwai) {
+        this.otherList = [
+          {'name': '撤销明细', 'value': 'cancel'}
+        ];
+        otherLists = ['cancel'];
       }
 
       this.loading = true;

@@ -17,7 +17,7 @@
                 <span class="remark note ml-0">* 请不要跨月查询</span>
               </el-form-item>
             </div>
-            <div class="panel-select__wrapper" v-show="!role.single">
+            <div class="panel-select__wrapper" v-if="!role.single">
               <span class="panel-select__desc">店铺名称</span>
               <el-form-item prop="selectShopUid">
                 <el-select v-model="form.selectShopUid" placeholder="全部" size="small">
@@ -44,7 +44,7 @@
         </el-form>
       </div>
     </div>
-    <div class="panel">
+    <div class="panel" v-if="!role.haiwai">
       <div class="panel-body panel-body__fix">
         <div class="panel-paragraph">
           <p>账单是T+1生成，即交易后的第二个工作日，请在相应日期下载对账单</p>
