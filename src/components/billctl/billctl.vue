@@ -2,7 +2,7 @@
   <div class="redpacket">
     <div class="banner_wrapper">
       <div class="banner-breadcrumb">
-        <span>账单管理</span>
+        <span>{{$t('billMng.crumbs.L1')}}</span>
       </div>
     </div>
     <div class="panel">
@@ -10,17 +10,17 @@
         <el-form :model="form" :rules="formrules" ref="form">
           <div class="panel-select-group">
             <div class="panel-select__wrapper">
-              <span class="panel-select__desc">打款时间</span>
+              <span class="panel-select__desc">{{$t('billMng.panel.payTime')}}</span>
               <el-form-item prop="dateRangeValue" class="relative">
-                <el-date-picker v-model="form.dateRangeValue" type="daterange" placeholder="选择日期范围" size="small" @change="changeDateRange" :clearable="false" :editable="false">
+                <el-date-picker v-model="form.dateRangeValue" type="daterange" :placeholder="$t('billMng.panel.range')" size="small" @change="changeDateRange" :clearable="false" :editable="false">
                 </el-date-picker>
-                <span class="remark note ml-0">* 请不要跨月查询</span>
+                <span class="remark note ml-0">* {{$t('billMng.msg.m1')}}</span>
               </el-form-item>
             </div>
             <div class="panel-select__wrapper" v-show="!role.single">
-              <span class="panel-select__desc">店铺名称</span>
+              <span class="panel-select__desc">{{$t('billMng.panel.shopName')}}</span>
               <el-form-item prop="selectShopUid">
-                <el-select v-model="form.selectShopUid" placeholder="全部" size="small">
+                <el-select v-model="form.selectShopUid" :placeholder="$t('common.all')" size="small">
                   <el-option v-for="shop in shopData.list" :label="shop.shop_name" :value="shop.uid">
                   </el-option>
                 </el-select>
@@ -31,20 +31,20 @@
             <a :href="detailHref" download="true">
               <div class="panel-btn__download panel-btn__download_detail">
                 <i class="icon-download"></i>
-                <span>下载打款明细</span>
+                <span>{{$t('billMng.btn.downDetail')}}</span>
               </div>
             </a>
             <a :href="recordHref" download="true">
               <div class="panel-btn__download panel-btn__download_record">
                 <i class="icon-download"></i>
-                <span>下载打款记录</span>
+                <span>{{$t('billMng.btn.downRecord')}}</span>
               </div>
             </a>
           </div>
         </el-form>
       </div>
     </div>
-    <div class="panel">
+    <div class="panel" v-if="!role.haiwai">
       <div class="panel-body panel-body__fix">
         <div class="panel-paragraph">
           <p>账单是T+1生成，即交易后的第二个工作日，请在相应日期下载对账单</p>
@@ -90,7 +90,7 @@
           let startmonth = value[0].getMonth();
           let endmonth = value[1].getMonth();
           if (startmonth !== endmonth) {
-            cb(new Error('请不要跨月进行选择!'));
+            cb(new Error(this.$t('billMng.msg.m2')));
           }
         }
       };
@@ -106,7 +106,7 @@
         formrules: {
           dateRangeValue: [{
             required: true,
-            message: '请选择打款时间!'
+            message: this.$t('billMng.msg.m3')
           }, {
             validator: checkDateRangeValue,
             trigger: 'change'
@@ -156,7 +156,7 @@
           let startmonth = this.form.dateRangeValue[0].getMonth();
           let endmonth = this.form.dateRangeValue[1].getMonth();
           if (startmonth !== endmonth) {
-            this.$message.error('请不要跨月进行选择!');
+            this.$message.error(this.$t('billMng.msg.m2'));
             this.form.dateRangeValue = this.defaultDateRange;
           }
         }

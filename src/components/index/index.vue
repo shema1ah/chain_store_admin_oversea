@@ -2,51 +2,51 @@
   <div class="index" v-loading="loading1 || loading2" element-loading-text="拼命加载中">
     <div class="banner_wrapper">
       <div class="banner-breadcrumb">
-        <span>首页</span>
+        <span>{{$t('home.crumbs.L1')}}</span>
       </div>
     </div>
 
     <div class="panel">
       <div class="panel-header panel-header__fix">
         <div class="panel-select-group">
-          <h2 class="panel-header__desc">会员及交易数据统计</h2>
+          <h2 class="panel-header__desc">{{$t('home.title.t1')}}</h2>
         </div>
       </div>
 
       <div class="panel-body panel-today">
         <div class="member">
-          <h3><i></i>今日会员新增</h3>
-          <strong><em>{{info.new_member_num}}</em>人</strong>
+          <h3><i></i>{{$t('home.panel.t1')}}</h3>
+          <strong><em>{{info.new_member_num}}</em>{{role.haiwai ? '' : '人'}}</strong>
           <ul>
             <li>
-              <strong><i></i>今日回头客</strong>
-              <span><em>{{info.old_member_num}}</em>个</span>
+              <strong><i></i>{{$t('home.panel.tc')}}</strong>
+              <span><em>{{info.old_member_num}}</em>{{role.haiwai ? '' : '个'}}</span>
             </li>
             <li>
-              <strong><i></i>本月会员新增</strong>
-              <span><em>{{info.month_new_member}}</em>人</span>
+              <strong><i></i>{{$t('home.panel.cmnew')}}</strong>
+              <span><em>{{info.month_new_member}}</em>{{role.haiwai ? '' : '人'}}</span>
             </li>
             <li>
-              <strong><i></i>累计会员数</strong>
-              <span><em>{{info.total_member}}</em>人</span>
+              <strong><i></i>{{$t('home.panel.cumulativeMembership')}}</strong>
+              <span><em>{{info.total_member}}</em>{{role.haiwai ? '' : '人'}}</span>
             </li>
           </ul>
         </div>
         <div class="fee">
-          <h3>今日交易金额</h3>
-          <strong><em>{{info.today_total_amt | formatCurrency}}</em>元</strong>
+          <h3>{{$t('home.panel.t2')}}</h3>
+          <strong><em>{{info.today_total_amt | formatCurrency}}</em>{{role.haiwai ? '' : '元'}}</strong>
           <ul>
             <li>
-              <strong><i></i>今日交易笔数</strong>
-              <span><em>{{info.nums}}</em>笔</span>
+              <strong><i></i>{{$t('home.panel.tta')}}</strong>
+              <span><em>{{info.nums}}</em>{{role.haiwai ? '' : '笔'}}</span>
             </li>
             <li>
-              <strong><i></i>今日实收</strong>
-              <span><em>{{info.today_txamt | formatCurrency}}</em>元</span>
+              <strong><i></i>{{$t('home.panel.tincome')}}</strong>
+              <span><em>{{info.today_txamt | formatCurrency}}</em>{{role.haiwai ? '' : '元'}}</span>
             </li>
             <li>
-              <strong><i></i>本月实收</strong>
-              <span><em>{{info.month_txamt | formatCurrency}}</em>元</span>
+              <strong><i></i>{{$t('home.panel.cmincome')}}</strong>
+              <span><em>{{info.month_txamt | formatCurrency}}</em>{{role.haiwai ? '' : '元'}}</span>
             </li>
           </ul>
         </div>
@@ -198,7 +198,7 @@
           })
           .catch(() => {
             this.loading1 = false;
-            this.$message.error('网络错误!')
+            this.$message.error(this.$t('common.netError'))
           });
       },
       fetchActivityData() {
@@ -215,7 +215,7 @@
           })
           .catch(() => {
             this.loading2 = false;
-            this.$message.error('网络错误!')
+            this.$message.error(this.$t('common.netError'))
           })
       },
       openDetail(type) {

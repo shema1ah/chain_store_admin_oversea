@@ -1,20 +1,20 @@
 <template>
   <div class="login">
     <div class="content">
-      <div class="head">商户管理后台</div>
+      <div class="head">{{$t('login.head')}}</div>
       <el-form :model="form" :rules="formrules" ref="form">
         <el-form-item prop="username" class="username">
-          <el-input v-model.trim="form.username" size="small" type="text" placeholder="注册账号" @keyup.enter.native="onEnter"></el-input>
+          <el-input v-model.trim="form.username" size="small" type="text" :placeholder="$t('login.reg')" @keyup.enter.native="onEnter"></el-input>
         </el-form-item>
         <el-form-item prop="password" class="password">
-          <el-input v-model.trim="form.password" size="small" type="password" placeholder="6位以上" @keyup.enter.native="onEnter"></el-input>
+          <el-input v-model.trim="form.password" size="small" type="password" :placeholder="$t('login.ltsix')" @keyup.enter.native="onEnter"></el-input>
         </el-form-item>
         <div class="panel-header-btn panel-header-btn__fill" @click="login">
           <span class="el-icon-loading" v-if="loading"></span>
           <span v-else>登录</span>
         </div>
-        <div class="bottom">
-          <router-link :to="{ name: 'forget'}" class="forget">忘记密码?</router-link>
+        <div class="bottom" v-if="!role.haiwai">
+          <router-link :to="{ name: 'forget'}" class="forget">{{$t('login.forgetPwd')}}</router-link>
           <!--<span>|</span>
           <router-link :to="{ name: 'register'}" class="register">我要注册连锁店管理账号</router-link>-->
         </div>
@@ -31,6 +31,7 @@
   export default {
     data() {
       return {
+        role: Store.get('role') || {},
         loading: false,
         form: {
           username: '',
@@ -38,10 +39,10 @@
         },
         formrules: {
           username: [
-            { required: true, message: '请输入账号' }
+            { required: true, message: this.$t('login.msg.m1') }
           ],
           password: [
-            { required: true, message: '请输入密码' }
+            { required: true, message: this.$t('login.msg.m2') }
           ]
         }
       };
@@ -75,7 +76,7 @@
               }
             }).catch(() => {
               this.loading = false;
-              this.$message.error('登录失败');
+              this.$message.error(this.$t('login.msg.m3'));
             });
           }
         });

@@ -6,6 +6,14 @@
 
 exports.__esModule = true;
 exports.default = {
+  common: {
+    ok: 'OK',
+    cancel: 'Cancel',
+    tip: 'tips',
+    all: 'all',
+    netError: 'net error',
+    loading: 'loading...'
+  },
   shopmng: { // 门店管理模块
     crumbs: {
       L1: 'Shop Management'
@@ -57,11 +65,101 @@ exports.default = {
       bankAccount: 'bankAccount',
       bankName: 'bankName',
       editSubTag: 'edit sub tag',
-      diaTip: 'aaa',
-      validateText: 'bbb',
-      validateText2: 'ccc',
+      diaTip: '',
+      validateText: '',
+      validateText2: '',
       notice: 'Notice',
-      noticeTip: 'dddd。'
+      noticeTip: '。'
+    }
+  },
+  pubSignal: { // 公众号授权
+    crumbs: {
+      authorizedPS: '',
+      unauthorized: ''
+    },
+    title: {
+      psInfo: '',
+      bind: ''
+    },
+    panel: {
+      avatar: '',
+      name: '',
+      id: '',
+      psType: '',
+      authType: '',
+      wechatScan: '',
+      adminAuthConfirm: '',
+      authSucc: '',
+      btn: {
+        subAuthMng: '',
+        deAuth: '',
+        dePrimeAuth: '',
+        freeAdd: ''
+      }
+    },
+    dialog: {
+      m1: '',
+      all: ''
+    },
+    msg: {
+      m1: '',
+      m2: '',
+      m3: '',
+      m4: '',
+      m5: '',
+      m6: '',
+      m7: ''
+    }
+  },
+  billMng: { // 账单管理
+    crumbs: {
+      L1: ''
+    },
+    panel: {
+      payTime: '',
+      shopName: '',
+      range: ''
+    },
+    msg: {
+      m1: '',
+      m2: '',
+      m3: ''
+    },
+    btn: {
+      downDetail: '',
+      downRecord: ''
+    }
+  },
+  home: { // 首页概览
+    crumbs: {
+      L1: ''
+    },
+    title: {
+      t1: '',
+      t2: ''
+    },
+    panel: {
+      t1: '',
+      t2: '',
+      tc: '',
+      cmnew: '',
+      cumulativeMembership: '',
+      tta: '',
+      tincome: '',
+      cmincome: '',
+      noActivity: ''
+    }
+  },
+  login: {
+    head: '',
+    reg: '',
+    ltsix: '',
+    forgetPwd: '',
+    msg: {
+      m1: '',
+      m2: '',
+      m3: ''
     }
   }
+
 }

@@ -60,9 +60,9 @@
           </span>
         </div>
         <div class="operation">
-          <div class="panel-header-btn panel-header-btn__fill" @click="showDialog" v-if="!role.single">分店授权管理</div>
+          <div class="panel-header-btn panel-header-btn__fill" @click="showDialog" v-if="!role.single">{{$t('pubSignal.panel.btn.subAuthMng')}}</div>
           <div class="panel-header-btn" @click="confirm">
-              {{role.single ? '解除账户授权' : '解除总账户授权'}}
+              {{role.single ? $t('pubSignal.panel.btn.deAuth') : $t('pubSignal.panel.btn.dePrimeAuth')}}
           </div>
         </div>
       </div>
@@ -134,7 +134,7 @@
         </ul>
       </div>
     </div>
-    <el-dialog title="请勾选需要授权的分店" v-model="dialogVisible" size="tiny">
+    <el-dialog :title="$t('pubSignal.dialog.m1')" v-model="dialogVisible" size="tiny">
       <el-form>
         <el-checkbox-group v-model="checkedStores" @change="handleCheckedStoresChange">
           <el-checkbox v-for="store in stores" :label="store.userid">
@@ -143,9 +143,9 @@
         </el-checkbox-group>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange" class="check-all">全选</el-checkbox>
-        <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="authPublics">确 定</el-button>
+        <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange" class="check-all">{{$t('pubSignal.dialog.all')}}</el-checkbox>
+        <el-button @click="dialogVisible = false">{{$t('pubSignal.common.cancel')}}</el-button>
+        <el-button type="primary" @click="authPublics">{{$t('pubSignal.common.ok')}}</el-button>
       </span>
     </el-dialog>
   </div>
@@ -199,7 +199,7 @@
             }
           })
           .catch(() => {
-            this.$message.error('获取公众号信息失败')
+            this.$message.error(this.$t('pubSignal.msg.m1'))
           })
       },
       goWechatAuth () {
@@ -219,7 +219,7 @@
             }
           })
           .catch(() => {
-            this.$message.error('获取商户id信息失败')
+            this.$message.error(this.$t('pubSignal.msg.m2'))
           })
       },
       fetchSubMerchants() {
@@ -240,7 +240,7 @@
             }
           })
           .catch(() => {
-            this.$message.error('获取连锁店铺失败')
+            this.$message.error(this.$t('pubSignal.msg.m3'))
           })
       },
       authPublics() {
@@ -276,14 +276,14 @@
             this.wechatNotAuth = true
             this.$message({
               type: 'success',
-              message: '解除成功'
+              message: this.$t('pubSignal.msg.m4')
             })
           } else {
             this.$message.error(data.respmsg)
           }
         })
         .catch(() => {
-          this.$message.error('解除失败')
+          this.$message.error(this.$t('pubSignal.msg.m5'))
         })
       },
       handleCheckAllChange(event) {
@@ -299,10 +299,10 @@
         this.dialogVisible = true;
       },
       confirm() {
-        let tipText = this.role.single ? '请确认是否要解除账户授权?' : '请确认是否要解除总账户公众号?'
-        this.$confirm(tipText, '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
+        let tipText = this.role.single ? this.$t('pubSignal.msg.m6') : this.$t('pubSignal.msg.m7')
+        this.$confirm(tipText, this.$t('common.tip'), {
+          confirmButtonText: this.$t('common.ok'),
+          cancelButtonText: this.$t('common.cancel'),
           type: 'warning'
         }).then(() => {
           this.unbindPublic()

@@ -2,6 +2,14 @@
 
 exports.__esModule = true;
 exports.default = {
+  common: {
+    ok: '确 定',
+    cancel: '取 消',
+    tip: '提示',
+    all: '全部',
+    netError: '网络错误',
+    loading: '拼命加载中'
+  },
   shopmng: { // 门店管理模块
     crumbs: {
       L1: '门店管理'
@@ -80,9 +88,73 @@ exports.default = {
       authSucc: '授权成功，运营公众号！',
       btn: {
         subAuthMng: '分店授权管理',
-        deAuth: '解除总账户授权',
+        deAuth: '解除账户授权',
+        dePrimeAuth: '解除总账户授权',
         freeAdd: '免费添加微信公众号'
       }
+    },
+    dialog: {
+      m1: '请勾选需要授权的分店',
+      all: '全选'
+    },
+    msg: {
+      m1: '获取公众号信息失败',
+      m2: '获取商户id失败',
+      m3: '获取连锁店铺失败',
+      m4: '解除成功',
+      m5: '解除失败',
+      m6: '请确认是否要解除账户授权?',
+      m7: '请确认是否要解除总账户公众号?'
+    }
+  },
+  billMng: { // 账单管理
+    crumbs: {
+      L1: '账单管理'
+    },
+    panel: {
+      payTime: '打款时间',
+      shopName: '店铺名称',
+      range: '选择日期范围'
+    },
+    msg: {
+      m1: '请不要跨月查询',
+      m2: '请不要跨月选择!',
+      m3: '请选择打款时间!'
+    },
+    btn: {
+      downDetail: '下载打款明细',
+      downRecord: '下载打款记录'
+    }
+  },
+  home: { // 首页概览
+    crumbs: {
+      L1: '首页'
+    },
+    title: {
+      t1: '会员及交易数据统计',
+      t2: '活动运营数据统计'
+    },
+    panel: {
+      t1: '今日会员新增',
+      t2: '今日交易金额',
+      tc: '今日回头客',
+      cmnew: '本月会员新增',
+      cumulativeMembership: '累计会员数',
+      tta: '今日交易笔数',
+      tincome: '今日实收',
+      cmincome: '本月实收',
+      noActivity: '暂无活动'
+    }
+  },
+  login: {
+    head: '商户管理后台',
+    reg: '注册账号',
+    ltsix: '6位以上',
+    forgetPwd: '忘记密码?',
+    msg: {
+      m1: '请输入账号',
+      m2: '请输入密码',
+      m3: '登录失败'
     }
   }
 }
