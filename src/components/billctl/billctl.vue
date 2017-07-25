@@ -18,7 +18,7 @@
               </el-form-item>
             </div>
             <div class="panel-select__wrapper" v-show="!role.single">
-              <span class="panel-select__desc">{{$t('billMng.panel.shopName')}}</span>
+              <span class="panel-select__desc">店铺名称</span>
               <el-form-item prop="selectShopUid">
                 <el-select v-model="form.selectShopUid" :placeholder="$t('common.all')" size="small">
                   <el-option v-for="shop in shopData.list" :label="shop.shop_name" :value="shop.uid">

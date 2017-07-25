@@ -118,35 +118,48 @@ const getRole = (data) => {
   let role = {
     type: 'chain',
     haiwai: false,
+    rate: data.rate || '元',
     single: false,
     isBaoshang: false,
     diancan: false
   }
 
-  // 包商
-  if(data.group_name === 'baoshang') {
-    role.isBaoshang = true
-    role.type = 'baoshang'
-    if (data.cate !== 'bigmerchant') {
-      role.type = 'baoshang_single'
-      role.single = true
-    }
-  }else {
-    if (data.country !== 'CN') {
-      role.type = 'haiwai'
-      role.haiwai = true
-
+  // 包商baoshang 日本japan 香港hongkong ''代表是其他group
+  // bigmerchant:大商户 submerchant:子商户 merchant:商户
+  switch (data.group_name) {
+    case 'baoshang':
+      role.isBaoshang = true
+      role.type = 'baoshang'
       if (data.cate !== 'bigmerchant') {
-        role.type = 'haiwai_single'
+        role.type = 'baoshang_single'
         role.single = true
       }
-    } else {
-      // bigmerchant:大商户 submerchant:子商户 merchant:商户
+      break;
+    case 'japan':
+      role.type = 'japan'
+      if (data.cate !== 'bigmerchant') {
+        role.type = 'japan_single'
+        role.single = true
+      }
+      break;
+    case 'hongkong':
+      role.type = 'hongkong'
+      if (data.cate !== 'bigmerchant') {
+        role.type = 'hongkong_single'
+        role.single = true
+      }
+      break;
+    default:
       if (data.cate !== 'bigmerchant') {
         role.type = 'single'
         role.single = true
       }
-    }
+      break;
+  }
+
+  // 是否海外
+  if (data.country !== 'CN') {
+    role.haiwai = true
   }
 
   // 是否展示智慧餐厅
@@ -154,6 +167,7 @@ const getRole = (data) => {
     role.diancan = true;
   }
 
+  console.log(role, 1111)
   return role
 }
 

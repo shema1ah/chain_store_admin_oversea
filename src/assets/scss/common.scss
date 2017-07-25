@@ -65,6 +65,9 @@ input[type="number"]{
   -webkit-appearance: none;
 }
 
+// 去掉自动填充颜色
+input:-webkit-autofill { box-shadow: 0 0 0px 1000px white inset !important;}
+
 // 没有内容展示
 .no-content {
   text-align: center;
