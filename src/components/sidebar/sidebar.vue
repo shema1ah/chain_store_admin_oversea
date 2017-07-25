@@ -205,6 +205,9 @@
               }, {
                 val: '门店管理',
                 pathname: 'chainmanage'
+              }, {
+                val: '设置',
+                pathname: 'settings'
               }
             ];
             break;
@@ -242,6 +245,9 @@
               }, {
                 val: '门店管理',
                 pathname: 'chainmanage'
+              }, {
+                val: '设置',
+                pathname: 'settings'
               }
             ];
             break;

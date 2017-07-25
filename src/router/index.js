@@ -33,6 +33,7 @@ import alterstorage from 'components/alterstorage/alterstorage'
 import membersto from 'components/membersto/membersto'
 import publicauth from 'components/publicauth/publicauth'
 import failed from 'components/publicauth/failed'
+import settings from 'components/settings/settings'
 
 Vue.use(Router)
 
@@ -200,6 +201,10 @@ export default new Router({
         {
           path: 'authfailed',
           component: failed
+        },
+        {
+          path: 'settings',
+          component: settings
         }
       ]
     }

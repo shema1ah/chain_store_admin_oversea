@@ -1,4 +1,7 @@
 import Vue from 'vue'
+import Store from '../common/js/store'
+
+let role = Store.get('role') || {};
 
 let filters = {
 
@@ -8,7 +11,8 @@ let filters = {
     } else if (number === 0) {
       return 0
     }
-    return (number / 100).toFixed(2)
+
+    return (number / role.rate).toFixed(2)
   },
 
   formatNumber (string) {
@@ -17,7 +21,7 @@ let filters = {
     }else if(parseInt(string) === 0) {
       return 0
     }
-    return (string / 100).toFixed(2)
+    return (string / role.rate).toFixed(2)
   },
 
   removeHMS (time) {

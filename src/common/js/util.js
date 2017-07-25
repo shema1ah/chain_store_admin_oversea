@@ -118,7 +118,8 @@ const getRole = (data) => {
   let role = {
     type: 'chain',
     haiwai: false,
-    rate: data.rate || '元',
+    currency: data.currency || '元',
+    rate: data.rate || 100,
     single: false,
     isBaoshang: false,
     diancan: false
@@ -166,8 +167,6 @@ const getRole = (data) => {
   if (data.diancan_display === 1) {
     role.diancan = true;
   }
-
-  console.log(role, 1111)
   return role
 }
 
