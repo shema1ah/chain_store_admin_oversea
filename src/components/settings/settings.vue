@@ -16,7 +16,7 @@
           <el-form :rules="formrules" :model="form" ref="form">
             <el-form-item label="邮箱">
               <el-form-item prop="email">
-                <el-input size="small" type="text" v-model.trim="form.email" class="panel-select-input-220"></el-input>
+                <el-input size="small" type="text" :disabled="state2" v-model.trim="form.email" class="panel-select-input-220"></el-input>
               </el-form-item>
               <div class="panel-header-btn panel-header-btn__fill" v-if="state2" @click="commit">
                 <span class="el-icon-loading" v-if="loading1"></span>
@@ -168,6 +168,13 @@
     .panel-header-btn {
       display: inline-block;
       float: none;
+    }
+
+    .el-input.is-disabled .el-input__inner {
+      color: #2f323a;
+      background-color: transparent;
+      border: none;
+      font-size: 14px;
     }
     .edit {
       display: inline-block;
