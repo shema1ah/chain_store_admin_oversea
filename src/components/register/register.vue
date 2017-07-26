@@ -2,7 +2,10 @@
   <div class="registerb">
     <div class="head">商户管理后台</div>
     <el-form :model="form" :rules="formrules" ref="form">
-      <el-form-item label="手机号" prop="username" v-if="isRegister">
+      <el-form-item label="业务员手机号" prop="saleman_mobile" v-if="isRegister">
+        <el-input v-model.trim="form.saleman_mobile" size="small" type="number" placeholder="请输入业务员手机号"></el-input>
+      </el-form-item>
+      <el-form-item label="账户手机号" prop="username" v-if="isRegister">
         <el-input v-model="form.username" size="small" type="number" placeholder="请输入手机号"></el-input>
       </el-form-item>
       <el-form-item label="账号" prop="mobile" v-if="!isRegister">
@@ -26,9 +29,6 @@
       </el-form-item>
       <el-form-item label="商户名称" prop="shopname" v-if="isRegister">
         <el-input v-model.trim="form.shopname" size="small" type="text" placeholder="请输入商户名称"></el-input>
-      </el-form-item>
-      <el-form-item label="推荐人手机号" prop="saleman_mobile" v-if="isRegister">
-        <el-input v-model.trim="form.saleman_mobile" size="small" type="number" placeholder="请输入推荐人手机号"></el-input>
       </el-form-item>
       <div class="panel-header-btn panel-header-btn__fill" @click="submit">
         <span class="el-icon-loading" v-if="iconShow"></span>
@@ -115,7 +115,7 @@
             { required: true, message: '请输入商户名称' }
           ],
           saleman_mobile: [
-            { required: true, message: '请输入推荐人手机号' },
+            { required: true, message: '请输入业务员手机号' },
             { validator: phoneValid, trigger: 'blur' }
           ]
         }
@@ -130,37 +130,89 @@
     methods: {
       // 获取验证码
       getCode() {
-        let type = this.isRegister ? 'username' : 'mobile';
-        this.$refs['form'].validateField(type, (valid) => {
-          if(valid === '' && !this.isSending) {
-            this.isSending = true;
+        if(this.isRegister) {
+          this.$refs['form'].validateField('saleman_mobile', (valid) => {
+            if(valid === '' && !this.isSending) {
+              this.$refs['form'].validateField('username', (valid) => {
+                if(valid === '' && !this.isSending) {
+                  this.isSending = true;
 
-            axios.get(`${config.ohost}/mchnt/smscode/send`, {
-              params: {
-                mobile: this.isRegister ? this.form.username : this.form.mobile,
-                mode: this.isRegister ? 'signup' : 'reset_pwd',
+                  let params = {
+                    username: this.form.saleman_mobile,
+                    mode: 'saleman'
+                  };
+                  axios.post(`${config.ohost}/mchnt/user/check`, qs.stringify(params), {
+                    headers: {
+                      'Content-Type': 'application/x-www-form-urlencoded'
+                    }
+                  }).then((res) => {
+                    let data = res.data;
+                    if (data.respcd === config.code.OK) {
+                      if(data.data.is_saleman === 1) {
+                        // 发送验证码
+                        let param = {
+                          mobile: this.form.username,
+                          saleman_mobile: this.form.saleman_mobile,
+                          mode: 'signup',
+                          format: 'cors'
+                        };
+                        this.getQuest(param);
+                      }else {
+                        this.$message.error('未查询到该业务员!');
+                        this.isSending = false;
+                      }
+
+                    } else {
+                      this.$message.error(data.respmsg);
+                      this.isSending = false;
+                    }
+                  }).catch(() => {
+                    this.$message.error('请求失败!');
+                    this.isSending = false;
+                  });
+
+                }
+              });
+
+            }
+          });
+        }else {
+          this.$refs['form'].validateField('mobile', (valid) => {
+            if(valid === '' && !this.isSending) {
+              this.isSending = true;
+
+              let param = {
+                mobile: this.form.mobile,
+                mode: 'reset_pwd',
                 format: 'cors'
-              }
-            }).then((res) => {
-              let data = res.data;
-              if (data.respcd === config.code.OK) {
-                this.isSendCode = false;
-                this.isSending = false;
+              };
+              this.getQuest(param);
+            }
+          });
+        }
+      },
 
-                this.startTimer();
-              } else {
-                this.$message.error(data.respmsg);
-                this.isSendCode = true;
-                this.isSending = false;
-              }
-            }).catch(() => {
-              this.$message.error('请求失败!');
-              this.isSendCode = true;
-              this.isSending = false;
-            });
+      // 发送验证码请求
+      getQuest(param) {
+        axios.get(`${config.ohost}/mchnt/smscode/send`, {
+          params: param
+        }).then((res) => {
+          let data = res.data;
+          if (data.respcd === config.code.OK) {
+            this.isSendCode = false;
+            this.isSending = false;
+
+            this.startTimer();
+          } else {
+            this.$message.error(data.respmsg);
+            this.isSendCode = true;
+            this.isSending = false;
           }
+        }).catch(() => {
+          this.$message.error('请求失败!');
+          this.isSendCode = true;
+          this.isSending = false;
         });
-
       },
 
       // 计时
