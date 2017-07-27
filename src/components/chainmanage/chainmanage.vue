@@ -39,7 +39,7 @@
           </div> -->
           <div style="align-items: center;display: flex;">
             <el-button type="primary" class="panel-edit-btn__subshopnum" @click.native="editSubShopNum" style="float:left;">{{$t('shopmng.panel.btn.editSubTag')}}</el-button>
-            <el-dropdown :hide-on-click="true" style="margin-left:10px;" v-if="!role.isBaoshang || !role.haiwai">
+            <el-dropdown :hide-on-click="true" style="margin-left:10px;" v-if="!role.isBaoshang && !role.haiwai">
               <div class="panel-header-btn__associate">
                 <i class="icon-create"></i>
                 <span>创建分店</span>

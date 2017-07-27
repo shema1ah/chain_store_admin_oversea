@@ -139,7 +139,8 @@
 
                   let params = {
                     username: this.form.saleman_mobile,
-                    mode: 'saleman'
+                    mode: 'saleman',
+                    format: 'cors'
                   };
                   axios.post(`${config.ohost}/mchnt/user/check`, qs.stringify(params), {
                     headers: {
