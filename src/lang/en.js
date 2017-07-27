@@ -17,10 +17,10 @@ exports.default = {
   common: {
     ok: 'OK',
     cancel: 'Cancel',
-    tip: 'tips',
-    all: 'all',
-    netError: 'net error',
-    loading: 'loading...',
+    tip: 'Tips',
+    all: 'All',
+    netError: 'Net error',
+    loading: 'Loading...',
     modSucc: 'Modified successfully',
     modFailed: 'Failed to modify',
     logout: 'Logout',
@@ -111,7 +111,7 @@ exports.default = {
       psType: 'Official Account Type',
       authType: 'Authentication Type',
       wechatScan: 'Scan QR code with a personal wechat account',
-      adminAuthConfirm: 'Authorization Confirmation',
+      adminAuthConfirm: 'Confirm to authorize by the administrator of the official account',
       authSucc: 'Authorization success, start to operate the official account!',
       btn: {
         subAuthMng: 'Branch Auth',
@@ -199,24 +199,24 @@ exports.default = {
       red: 'paid from the red envelope', // 商家红包
       plat: 'paid from the platform', // 平台补贴
       btn: {
-        downDetail: 'Download the Payment Details',
-        downTrade: 'Download the Payment Summary'
+        downDetail: 'Download The Payment Details',
+        downTrade: 'Download The Payment Summary'
       }
     },
     dialog: {
-      d1: 'If you want to cancel the Payment, please operate it after entering the password of the account to confirm'
+      d1: 'If you want to cancel the payment, please operate it after entering the password of the account to confirm'
     },
     msg: {
       m1: 'Serial number must be figures!',
-      m2: 'At least 14 digits are necessary for the Payment serial number!',
-      m3: 'Failed to get the Payment list at the first time',
-      m4: 'Failed to get the Payment data',
-      m5: 'Failed to get the operator information',
-      m6: 'Successfully cancelled',
-      m7: 'Failed to cancel',
-      m8: 'Please enter the serial number',
-      m9: "Please enter the account's password",
-      m10: 'invalidate password'
+      m2: 'At least 14 digits are necessary for the payment serial number!',
+      m3: 'Failed to get the payment list at the first time.',
+      m4: 'Failed to get the payment data.',
+      m5: 'Failed to get the operator information.',
+      m6: 'Successfully cancelled.',
+      m7: 'Failed to cancel.',
+      m8: 'Please enter the serial number.',
+      m9: "Please enter the account's password.",
+      m10: 'invalidate password.'
     }
   },
   home: { // 首页概览
@@ -240,9 +240,9 @@ exports.default = {
     }
   },
   login: { // 登录页
-    head: 'Shop management platform',
+    head: 'Shop Management Platform',
     reg: 'Register a new account',
-    ltsix: 'more than 6 digits',
+    ltsix: 'More than 6 digits',
     login: 'Login',
     msg: {
       m1: 'Please enter the account',
@@ -257,7 +257,7 @@ exports.default = {
     panel: {
       mailSetup: 'Email setting',
       mail: 'Email Address',
-      explain: 'A daily payment report will send to this address every morning 7 a.m。',
+      explain: 'A daily payment report will send to this address every morning 7 a.m.',
       dailySend: 'Turn On Daily Report',
       modi: 'Change',
       confirm: 'Confirm'

@@ -34,7 +34,7 @@
             <div class="panel-select__wrapper" v-show="!role.single">
               <span class="panel-select__desc">{{$t('tradeMng.panel.shopName')}}</span>
               <el-form-item prop="selectShopUid">
-                <el-select v-model="form.selectShopUid" placeholder="全部" size="small" @change="getOperators(form.selectShopUid)">
+                <el-select v-model="form.selectShopUid" :placeholder="lang==='en'? 'All':'全部'" size="small" @change="getOperators(form.selectShopUid)">
                   <el-option
                     v-for="shop in shopData.list"
                     :label="shop.shop_name"
@@ -249,6 +249,7 @@
         }
       };
       return {
+        lang: JSON.parse(localStorage.getItem("lang") || '{}').value || '',
         role: Store.get('role') || {},
         showConfirm: false,
         checkValue: {},

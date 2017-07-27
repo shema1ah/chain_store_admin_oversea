@@ -27,7 +27,7 @@ const store = new Vuex.Store({
       state.pageShopData = payload.pageShopData;
     },
     getShopList (state, payload) {
-      payload.shopData.list.unshift({shop_name: '全部', uid: ''})
+      payload.shopData.list.unshift({shop_name: localStorage.getItem('lang') && JSON.parse(localStorage.getItem('lang')).value === 'en' ? 'All' : '全部', uid: ''})
       state.shopData = payload.shopData
     },
     updateMemberTotal (state, payload) {
