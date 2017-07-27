@@ -69,7 +69,7 @@ axios.defaults.headers.common['lang'] = JSON.parse(switchlang).value;
 
 axios.interceptors.response.use((res) => {
   let data = res.data
-  if (data.respcd === config.code.SESSIONERR) {
+  if (data.respcd == config.code.SESSIONERR) {
     // 清除本地cookie
     document.cookie = "sessionid=''; expires=" + new Date(0).toUTCString()
     Store.set('flag', true);

@@ -11,7 +11,7 @@
         </el-form-item>
         <div class="panel-header-btn panel-header-btn__fill" @click="login">
           <span class="el-icon-loading" v-if="loading"></span>
-          <span v-else>登录</span>
+          <span v-else>{{$t('login.login')}}</span>
         </div>
         <div class="bottom" v-if="!role.haiwai">
           <router-link :to="{ name: 'forget'}" class="forget">{{$t('login.forgetPwd')}}</router-link>

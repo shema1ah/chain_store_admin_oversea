@@ -19,12 +19,12 @@
           </li>
           <li>
             <strong><span>Step</span>2</strong>
-            <img src="./img/step02.jpeg" alt="step1">
-            <p>{{$t('pubSignal.panel.wechatScan')}}</p>
+            <img src="./img/step02.jpeg" alt="step2">
+            <p>{{$t('pubSignal.panel.adminAuthConfirm')}}</p>
           </li>
           <li>
             <strong><span>Step</span>3</strong>
-            <img src="./img/step03.jpeg" alt="step1">
+            <img src="./img/step03.jpeg" alt="step3">
             <p>{{$t('pubSignal.panel.authSucc')}}</p>
           </li>
         </ul>

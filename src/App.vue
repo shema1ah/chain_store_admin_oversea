@@ -9,8 +9,6 @@
         let role = {
           type: 'chain',
           haiwai: false,
-          currency: data.currency || '元',
-          rate: data.rate || 100,
           single: false,
           isBaoshang: false,
           diancan: false

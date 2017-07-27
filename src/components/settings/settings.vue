@@ -1,32 +1,32 @@
 <template>
-  <div class="settings" v-loading="loading" element-loading-text="拼命加载中">
+  <div class="settings" v-loading.body="loading">
     <div class="banner_wrapper">
       <div class="banner-breadcrumb">
-        <span>设置</span>
+        <span>{{$t('setting.crumbs.L1')}}</span>
       </div>
     </div>
     <div class="panel">
       <div class="panel-header panel-header__fix">
         <div class="panel-select-group">
-          <span class="panel-header__desc">邮箱设置</span>
+          <span class="panel-header__desc">{{$t('setting.panel.mailSetup')}}</span>
         </div>
       </div>
       <div class="panel-body">
         <div class="myform_wrapper">
           <el-form :rules="formrules" :model="form" ref="form">
-            <el-form-item label="邮箱">
+            <el-form-item :label="$t('setting.panel.mail')">
               <el-form-item prop="email">
                 <el-input size="small" type="text" :disabled="!state2" v-model.trim="form.email" class="panel-select-input-220"></el-input>
               </el-form-item>
-              <div class="panel-header-btn panel-header-btn__fill" v-if="state2" @click="commit">
+                <div class="panel-header-btn panel-header-btn__fill" v-if="state2" @click="commit">
                 <span class="el-icon-loading" v-if="loading1"></span>
-                <span v-else>确认</span>
+                <span v-else>{{$t('setting.panel.confirm')}}</span>
               </div>
-              <div v-else class="edit" @click="edit">修改</div>
+              <div v-else class="edit" @click="edit">{{$t('setting.panel.modi')}}</div>
 
-              <div class="gray-explain">* 我们会在次日早上7点，把上一天的交易记录发送给您。</div>
+              <div class="gray-explain">* {{$t('setting.panel.explain')}}</div>
             </el-form-item>
-            <el-form-item label="每日发送交易报表" prop="status">
+            <el-form-item :label="$t('setting.panel.dailySend')" prop="status">
               <el-switch v-model="form.status" on-text="" off-text="" on-color="#7ed321" off-color="#d8d8d8" on-value=1 off-value=0 @change="sendChange" :disabled="state1"></el-switch>
             </el-form-item>
 
@@ -57,8 +57,8 @@
         },
         formrules: {
           email: [
-            { required: true, message: '请输入邮箱地址' },
-            { type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur,change' }
+            { required: true, message: this.$t('setting.msg.m1') },
+            { type: 'email', message: this.$t('setting.msg.m2'), trigger: 'blur,change' }
           ]
         }
       };
@@ -71,7 +71,7 @@
     methods: {
       getData() {
         this.loading = true;
-        axios.get(`${config.host}/merchant/get/email`).then((res) => {
+        axios.get(`${config.host}/merchant/get/email?format=cors`).then((res) => {
           this.loading = false;
           let data = res.data;
           if(data.respcd === config.code.OK) {
@@ -88,7 +88,7 @@
           }
         }).catch(() => {
           this.loading = false;
-          this.$message.error('获取邮箱设置失败!');
+          this.$message.error(this.$t('setting.msg.m3'));
         });
       },
 
@@ -100,12 +100,11 @@
             }).then((res) => {
               let data = res.data;
               if(data.respcd === config.code.OK) {
-                console.log('修改成功');
               } else {
                 this.$message.error(data.resperr);
               }
             }).catch(() => {
-              this.$message.error('修改失败!');
+              this.$message.error(this.$t('common.modFailed'));
             });
           }
         })
@@ -125,7 +124,7 @@
                 if(data.respcd === config.code.OK) {
                   this.$message({
                     type: 'success',
-                    message: '修改成功'
+                    message: this.$t('common.modSucc')
                   });
                   this.form.status = '1';
                   this.state1 = false;
@@ -135,7 +134,7 @@
                 }
               }).catch(() => {
                 this.loading1 = false;
-                this.$message.error('修改失败!');
+                this.$message.error(this.$t('common.modFailed'));
               });
             }
         })
@@ -157,13 +156,13 @@
     .gray-explain {
       color: #8A8C92;
       font-size: 14px;
-      margin-top: 12px;
+      margin-top: 10px;
     }
     .el-form-item__label {
       color: #2f323a;
     }
     .el-switch__core {
-      margin-left: 10px;
+      margin-left: 20px;
     }
     .panel-header-btn {
       display: inline-block;
@@ -173,15 +172,17 @@
     .el-input.is-disabled .el-input__inner {
       color: #2f323a;
       background-color: transparent;
-      border-color: transparent;
-      font-size: 14px;
+      border: none;
+      font-size: 16px;
     }
     .edit {
       display: inline-block;
       float: none;
       color: #FE9B20;
       cursor: pointer;
-      height: 35px;
+    }
+    .myform_wrapper {
+      padding-bottom: 2px;
     }
   }
 </style>
