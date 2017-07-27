@@ -32,7 +32,7 @@
           style="width: 100%"
           row-class-name="el-table__row_fix"
           v-loading="loading"
-          element-loading-text="拼命加载中..."
+          :element-loading-text="$t('common.loading')"
           id="memberstorage"
           >
           <el-table-column

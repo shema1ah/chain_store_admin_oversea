@@ -1,5 +1,5 @@
 <template>
-  <div class="top_content" v-loading="loading" element-loading-text="拼命加载中">
+  <div class="top_content" v-loading="loading" :element-loading-text="$t('common.loading')">
     <sidebar></sidebar>
     <div class="main">
       <div class="header">

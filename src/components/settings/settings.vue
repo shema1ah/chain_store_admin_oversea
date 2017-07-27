@@ -1,5 +1,5 @@
 <template>
-  <div class="settings" v-loading.body="loading">
+  <div class="settings" v-loading.body="loading" :element-loading-text="$t('common.loading')">
     <div class="banner_wrapper">
       <div class="banner-breadcrumb">
         <span>{{$t('setting.crumbs.L1')}}</span>
