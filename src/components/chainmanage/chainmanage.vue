@@ -17,12 +17,12 @@
       <div class="panel-body">
         <div class="info_wrapper">
           <div class="info">
-            <div class="info__title">{{$t('shopmng.panel.shopName')}}</div>
+            <div :class="lang === 'en'?'info__title info__title_en': 'info__title_en'">{{$t('shopmng.panel.shopName')}}</div>
             <div class="info__sign">:</div>
             <div class="info__desc">{{ shop.shopname }}</div>
           </div>
           <div class="info">
-            <div class="info__title">{{$t('shopmng.panel.loginAccount')}}</div>
+            <div :class="lang === 'en'?'info__title info__title_en': 'info__title_en'">{{$t('shopmng.panel.loginAccount')}}</div>
             <div class="info__sign">:</div>
             <div class="info__desc">{{ shop.mobile }}</div>
           </div>
@@ -168,7 +168,7 @@
       </div>
     </el-dialog>
 
-    <el-dialog :title="$t('shopmng.dialog.editSubTag')" :visible.sync="showEditSubShopNum" class="mydialog" @close="refreshSubShopData">
+    <el-dialog :title="$t('shopmng.dialog.editSubTag')" :visible.sync="showEditSubShopNum" class="mydialog" custom-class="mydialog_haiwai" size="small" @close="refreshSubShopData">
       <el-form ref="form-edit-subshop-num" label-position="left" class="edit-sub-tag">
         <div class="desc" style="text-align: left">
           {{$t('shopmng.dialog.diaTip')}}
@@ -177,7 +177,7 @@
           <el-tooltip placement="bottom" :content="shop.shop_name" class="subshoptip">
             <label style="width:140px">{{shop.shop_name}}</label>
           </el-tooltip>
-          <el-input v-model="shop.tag" size="small" :placeholder="$t('shopmng.dialog.validateText')" style="width:65%" @blur="updateShopTag(shop)"></el-input>
+          <el-input v-model="shop.tag" size="small" :placeholder="$t('shopmng.dialog.validateText')" :style="role[this.lang]?'width:98%':'width:65%'" @blur="updateShopTag(shop)"></el-input>
         </el-form-item>
 
       </el-form>
@@ -250,7 +250,7 @@
     data() {
       let passValid = (rule, val, cb) => {
         if (val === '') {
-          cb('请输入新密码');
+          cb(this.$t('shopmng.dialog.msg.m1'));
         } else {
           if (this.form.repass !== '') {
             this.$refs['form'].validateField('repass');
@@ -260,9 +260,9 @@
       };
       let repassValid = (rule, val, cb) => {
         if (val === '') {
-          cb('请输入确认新密码');
+          cb(this.$t('shopmng.dialog.msg.m2'));
         } else if (this.form.pass && this.form.pass !== val) {
-          cb('新密码与确认密码不一致');
+          cb(this.$t('shopmng.dialog.msg.m3'));
         } else {
           console.log(val);
           cb();
@@ -279,13 +279,14 @@
 //      };
       let primeAccountPwdValid = (rule, val, cb) => {
         if (val === '') {
-          cb('请输入总账户密码');
+          cb(this.$t('shopmng.dialog.validateText2'));
         } else {
           console.log(val);
           cb();
         }
       }
       return {
+        lang: JSON.parse(localStorage.getItem("lang") || '{}').value || '',
         role: Store.get('role') || {},
         currentpage: 1,
         visible: false,
@@ -314,33 +315,33 @@
         },
         checkTagRules: {
           tag: [
-            {max: 20, min: 0, message: '请输入二十以内的文字或字母', trigger: 'blur'}
+            {max: 20, min: 0, message: this.$t('shopmng.dialog.msg.m10'), trigger: 'blur'}
           ]
         },
         formrules: {
           pass: [
             {validator: passValid},
-            {max: 20, min: 6, message: '请输入6~20位数字或字母', trigger: 'blur'}
+            {max: 20, min: 6, message: this.$t('shopmng.dialog.msg.m4'), trigger: 'blur'}
           ],
           repass: [
             {validator: repassValid},
-            {max: 20, min: 6, message: '请输入6~20位数字或字母', trigger: 'blur'}
+            {max: 20, min: 6, message: this.$t('shopmng.dialog.msg.m4'), trigger: 'blur'}
           ],
           primeaccountpwd: [
             {validator: primeAccountPwdValid},
-            {required: true, message: '请输入总账户密码', trigger: 'blur'}
+            {required: true, message: this.$t('shopmng.dialog.msg.m5'), trigger: 'blur'}
           ],
           account: [
-            {required: true, message: '请输入分店账号!'}
+            {required: true, message: this.$t('shopmng.dialog.msg.m6')}
           ],
           password: [
-            {required: true, message: '请输入分店登录密码!'}
+            {required: true, message: this.$t('shopmng.dialog.msg.m7')}
           ],
           bankuser: [
-            {required: true, message: '请输入分店收款人姓名!'}
+            {required: true, message: this.$t('shopmng.dialog.msg.m8')}
           ],
           bankaccount: [
-            {required: true, message: '请输入分店收款银行卡号!'}
+            {required: true, message: this.$t('shopmng.dialog.msg.m9')}
           ]
         }
       };
@@ -371,11 +372,11 @@
       updateShopTag(shop) {
           let _tag = shop.tag;
           if(_tag.length > 20) {
-              this.$message.error('请输入二十以内的文字或字母');
+              this.$message.error(this.$t('shopmng.dialog.msg.m10'));
               return;
           }
           if(hasSpetialChar(_tag)) {
-            this.$message.error('不能含有特殊字符');
+            this.$message.error(this.$t('shopmng.dialog.msg.m11'));
               return;
           }
           axios.post(`${config.host}/merchant/sub/tag_add`, {
@@ -387,10 +388,10 @@
             if (data.respcd === config.code.OK) {
               this.$message({
                 type: 'success',
-                message: '修改成功!'
+                message: this.$t('common.modSucc')
               });
             } else {
-              this.$message.error('修改失败');
+              this.$message.error(this.$t('common.modFailed'));
             }
           }).catch((e) => {
             this.$message.error(e);
@@ -419,7 +420,7 @@
           if (data.data.result === 'success') {
             this.unbind(this.shouldDeleteUid);
           } else {
-            this.$message.error('密码不正确');
+            this.$message.error(this.$t('shopmng.dialog.msg.m12'));
             this.iconShow = false;
           }
         }).catch((e) => {
@@ -480,7 +481,7 @@
               if (data.respcd === config.code.OK) {
                 this.$message({
                   type: 'success',
-                  message: '修改成功!'
+                  message: this.$t('common.modSucc')
                 });
                 this.showChangePass = false;
 
@@ -492,7 +493,7 @@
               }
               this.iconShow = false;
             }).catch(() => {
-              this.$message.error('请求失败!');
+              this.$message.error(this.$t('common.netError'));
               this.iconShow = false;
             });
           }
@@ -513,7 +514,7 @@
               this.$message.error(data.respmsg);
             }
           }).catch(() => {
-          this.$message.error('请求失败');
+          this.$message.error(this.$t('common.netError'));
         });
       },
 
@@ -573,7 +574,7 @@
             if (data.respcd === config.code.OK) {
               this.$message({
                 type: 'success',
-                message: '删除分店成功!'
+                message: this.$t('shopmng.dialog.msg.m13')
               });
               this.shouldDeleteUid = '';
               this.formpwd.primeaccountpwd = '';
@@ -594,7 +595,8 @@
       showDetail(scope) {
         axios.get(`${config.host}/merchant/info`, {
           params: {
-            userid: scope.row.uid
+            userid: scope.row.uid,
+            format: 'cors'
           }
         })
           .then((res) => {
@@ -647,6 +649,9 @@
         color: #262323;
         width: 85px !important;
         margin-right: 0 !important;
+      }
+      @at-root .info__title.info__title_en {
+        width: 140px !important;
       }
       @at-root .info__sign {
         margin: 0px 10px 0px 0px;
@@ -710,7 +715,11 @@
     .mydialog .el-dialog__body {
       padding: 0 !important;
     }
-
+    .mydialog  {
+      .el-dialog.el-dialog--small.mydialog_haiwai {
+        width: auto !important;
+      }
+    }
     .panel-header-btn__associate {
       float:right;
     }

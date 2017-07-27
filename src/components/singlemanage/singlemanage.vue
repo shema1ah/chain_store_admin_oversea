@@ -39,7 +39,7 @@
             <div class="info__desc">{{ shop.bankaccount }} </div>
           </div>
           <div class="info" style="margin-bottom: 0">
-            <div class="info__title">银行名称</div>
+            <div class="info__title">{{$t('shopmng.dialog.bankName')}}</div>
             <div class="info__desc">{{ shop.headbankname }} </div>
           </div>
           <div class="info">
@@ -165,7 +165,7 @@
               this.$message.error(data.respmsg);
             }
           }).catch(() => {
-          this.$message.error('请求失败');
+          this.$message.error(this.$t('common.netError'));
         });
       },
 
@@ -187,7 +187,7 @@
               if (data.respcd === config.code.OK) {
                 this.$message({
                   type: 'success',
-                  message: '修改成功!'
+                  message: this.$t('common.modSucc')
                 });
                 this.showChangePass = false;
                 this.logout();
@@ -198,7 +198,7 @@
               this.iconShow = false;
             }).catch(() => {
               this.iconShow = false;
-              this.$message.error('请求失败!');
+              this.$message.error(this.$t('common.netError'));
             });
           }
         });
@@ -239,7 +239,7 @@
     @at-root .info__title {
       font-size: 20px;
       color: #262323;
-      width: 88px;
+      width: 140px;
       margin-right: 25px;
       text-align: left;
     }

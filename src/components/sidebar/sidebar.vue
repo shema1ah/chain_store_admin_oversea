@@ -2,7 +2,7 @@
   <div class="sidebar">
     <div class="sidebar-logo__wrapper">
       <img src="./img/logo.png" alt="logo" class="sidebar-img"/>
-      <h1 class="sidebar-logo__title">商户管理后台</h1>
+      <h1 class="sidebar-logo__title">{{$t('nav.mmp')}}</h1>
     </div>
     <ul class="left-nav">
       <li v-for="nav in navs" :class="{'dark': $route.fullPath.indexOf('member') != -1 && nav.sub}">
@@ -23,10 +23,11 @@
       </li>
       <li v-if="this.role.diancan"><a href="/wxofficial/setting" class="sidebar-nav__item">智慧餐厅</a></li>
     </ul>
-    <!--<div class="copyright_wrapper">
-      <span class="copyright-text">Copyright</span>
-      <span class="copyright-desc">&copy 2017 好近</span>
-    </div>-->
+    <div class="copyright_wrapper" v-if="role.haiwai">
+      <el-select v-model="lang" :placeholder="$t('common.msg.sel')" icon="caret-bottom" @change="switchLanguage"><!-- , {label:'日文', value:'ja'}-->
+        <el-option v-for="item in [{label:'简体中文', value:'zh-CN'}, {label:'英文', value:'en'}]" :key="item.value" :label="item.label" :value="item.value"></el-option>
+      </el-select>
+    </div>
   </div>
 </template>
 <script>
@@ -35,6 +36,7 @@
   export default {
     data() {
       return {
+        lang: JSON.parse(localStorage.getItem("lang") || '{}').value || '',
         role: Store.get('role') || {},
         navs: [],
         isShow: true,
@@ -47,6 +49,11 @@
     },
 
     methods: {
+      switchLanguage(value, label) {
+        localStorage.setItem("lang", JSON.stringify({label: label, value: value}));
+        this.role[value] = true;
+        window.location.reload()
+      },
       router(router) {
         return `/${router}`;
       },
@@ -57,7 +64,7 @@
           case 'chain':
             this.navs = [
               {
-                val: '首页概览',
+                val: this.$t('nav.index'),
                 pathname: 'index'
               }, {
                 val: '会员功能',
@@ -75,16 +82,16 @@
                   pathname: 'memberstorage'
                 }]
               }, {
-                val: '交易管理',
+                val: this.$t('nav.tradeMng'),
                 pathname: 'transctl'
               }, {
-                val: '账单管理',
+                val: this.$t('nav.billMng'),
                 pathname: 'billctl'
               }, {
-                val: '公众号授权',
+                val: this.$t('nav.publicAuth'),
                 pathname: 'publicauth'
               }, {
-                val: '门店管理',
+                val: this.$t('nav.shopMng'),
                 pathname: 'chainmanage'
               }
             ];
@@ -191,22 +198,22 @@
           case 'hongkong':
             this.navs = [
               {
-                val: '首页概览',
+                val: this.$t('nav.index'),
                 pathname: 'index'
               }, {
-                val: '交易管理',
+                val: this.$t('nav.tradeMng'),
                 pathname: 'transctl'
               }, {
-                val: '账单管理',
+                val: this.$t('nav.billMng'),
                 pathname: 'billctl'
               }, {
-                val: '公众号授权',
+                val: this.$t('nav.publicAuth'),
                 pathname: 'publicauth'
               }, {
-                val: '门店管理',
+                val: this.$t('nav.shopMng'),
                 pathname: 'chainmanage'
               }, {
-                val: '设置',
+                val: this.$t('nav.setup'),
                 pathname: 'settings'
               }
             ];
@@ -214,19 +221,19 @@
           case 'hongkong_single':
             this.navs = [
               {
-                val: '首页概览',
+                val: this.$t('nav.index'),
                 pathname: 'index'
               }, {
-                val: '交易管理',
+                val: this.$t('nav.tradeMng'),
                 pathname: 'transctl'
               }, {
-                val: '账单管理',
+                val: this.$t('nav.billMng'),
                 pathname: 'billctl'
               }, {
-                val: '公众号授权',
+                val: this.$t('nav.publicAuth'),
                 pathname: 'publicauth'
               }, {
-                val: '门店管理',
+                val: this.$t('nav.shopMng'),
                 pathname: 'singlemanage'
               }
             ];
@@ -234,19 +241,19 @@
           case 'japan':
             this.navs = [
               {
-                val: '首页概览',
+                val: this.$t('nav.index'),
                 pathname: 'index'
               }, {
-                val: '交易管理',
+                val: this.$t('nav.tradeMng'),
                 pathname: 'transctl'
               }, {
-                val: '公众号授权',
+                val: this.$t('nav.publicAuth'),
                 pathname: 'publicauth'
               }, {
-                val: '门店管理',
+                val: this.$t('nav.shopMng'),
                 pathname: 'chainmanage'
               }, {
-                val: '设置',
+                val: this.$t('nav.setup'),
                 pathname: 'settings'
               }
             ];

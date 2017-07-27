@@ -2,7 +2,7 @@
   <div class="transctl">
     <div class="banner_wrapper">
       <div class="banner-breadcrumb">
-        <span>交易管理</span>
+        <span>{{$t('tradeMng.crumbs.L1')}}</span>
       </div>
     </div>
     <div class="panel down">
@@ -10,13 +10,13 @@
         <el-form :model="form" :rules="formrules" ref="form">
           <div class="panel-select-group">
             <div class="panel-select__wrapper">
-              <span class="panel-select__desc">时间</span>
+              <span class="panel-select__desc">{{$t('tradeMng.panel.time')}}</span>
               <el-form-item prop="dateRangeValue">
                 <el-date-picker
                   v-model="form.dateRangeValue"
                   type="daterange"
                   :editable="false"
-                  placeholder="选择日期范围"
+                  :placeholder="$t('billMng.panel.range')"
                   size="small"
                   :clearable="false">
                 </el-date-picker>
@@ -32,7 +32,7 @@
           </div>
           <div class="panel-select-group">
             <div class="panel-select__wrapper" v-show="!role.single">
-              <span class="panel-select__desc">店铺名称</span>
+              <span class="panel-select__desc">{{$t('tradeMng.panel.shopName')}}</span>
               <el-form-item prop="selectShopUid">
                 <el-select v-model="form.selectShopUid" placeholder="全部" size="small" @change="getOperators(form.selectShopUid)">
                   <el-option
@@ -44,10 +44,10 @@
               </el-form-item>
             </div>
             <div class="panel-select__wrapper">
-              <span class="panel-select__desc">操作员</span>
+              <span class="panel-select__desc">{{$t('tradeMng.panel.operator')}}</span>
               <el-form-item>
-                <el-select v-model="form.operaValue" placeholder="全部" size="small" @change="operaChange" :disabled="form.selectShopUid === ''">
-                  <el-option label="全部" value=""></el-option>
+                <el-select v-model="form.operaValue" :placeholder="$t('tradeMng.table.all')" size="small" @change="operaChange" :disabled="form.selectShopUid === ''">
+                  <el-option :label="$t('tradeMng.table.all')" value=""></el-option>
                   <el-option
                           v-for="(label, value) in operaList"
                          :label="label" :value="value" :key="value">
@@ -58,9 +58,9 @@
           </div>
           <div class="panel-select-group" v-show="!role.haiwai">
             <div class="panel-select__wrapper">
-              <span class="panel-select__desc">收款方式</span>
+              <span class="panel-select__desc">{{$t('tradeMng.table.colWay')}}</span>
               <el-form-item prop="checkAll1">
-                <el-checkbox v-model="form.checkAll1" @change="handleCheckAllChange1">不限</el-checkbox>
+                <el-checkbox v-model="form.checkAll1" @change="handleCheckAllChange1">{{$t('tradeMng.panel.noLimit')}}</el-checkbox>
               </el-form-item>
               <el-form-item prop="type">
                 <el-checkbox-group v-model="form.type" @change="handleCheckedCitiesChange1">
@@ -71,9 +71,9 @@
           </div>
           <div class="panel-select-group">
             <div class="panel-select__wrapper">
-              <span class="panel-select__desc">更多筛选</span>
+              <span class="panel-select__desc">{{$t('tradeMng.panel.moreFilter')}}</span>
               <el-form-item prop="checkAll2">
-                <el-checkbox v-model="form.checkAll2" @change="handleCheckAllChange2">不限</el-checkbox>
+                <el-checkbox v-model="form.checkAll2" @change="handleCheckAllChange2">{{$t('tradeMng.panel.noLimit')}}</el-checkbox>
               </el-form-item>
               <el-form-item prop="other">
                 <el-checkbox-group v-model="form.other" @change="handleCheckedCitiesChange2">
@@ -85,17 +85,17 @@
 
           <div class="panel-select-group">
             <div class="panel-select__wrapper">
-              <span class="panel-select__desc">流水号</span>
+              <span class="panel-select__desc">{{$t('tradeMng.panel.sNum')}}</span>
               <el-form-item prop="orderno">
-                <el-input v-model="form.orderno" type="number" placeholder="请输入流水号" size="small" class="panel-select-input__fix panel-select-input-220"></el-input>
+                <el-input v-model="form.orderno" type="number" :placeholder="$t('tradeMng.msg.m8')" size="small" class="panel-select-input__fix panel-select-input-220"></el-input>
               </el-form-item>
             </div>
             <div class="panel-header-btn-group">
               <div class="panel-header-btn panel-header-btn__fill" @click="getTransData">
                 <span class="el-icon-loading" v-if="loading"></span>
-                <span v-else>查询</span>
+                <span v-else>{{$t('tradeMng.panel.btn.query')}}</span>
               </div>
-              <div class="panel-header-btn" @click="reset">重置</div>
+              <div class="panel-header-btn" @click="reset">{{$t('tradeMng.panel.btn.reset')}}</div>
             </div>
           </div>
         </el-form>
@@ -104,32 +104,32 @@
         <div class="panel-btn-group__wrapper panel-body-btn-group flex-normal">
           <div class="num_total">
             <div class="num_wrapper">
-              <p class="num-title">交易总金额</p>
+              <p class="num-title">{{$t('tradeMng.table.total')}}</p>
               <p class="num-desc">{{ transData.sucamt | formatNumber }} {{ role.currency }}</p>
             </div>
             <div class="num_wrapper" v-if="!role.haiwai">
-              <p class="num-title">交易实收</p>
+              <p class="num-title">{{$t('tradeMng.table.realrec')}}</p>
               <p class="num-desc">{{ transData.total_txamt | formatNumber }} {{ role.currency }}</p>
             </div>
             <div class="num_wrapper" v-if="!role.haiwai">
-              <p class="num-title">红包优惠</p>
+              <p class="num-title">{{$t('tradeMng.table.redpacket')}}</p>
               <p class="num-desc">{{ transData.coupon_amt | formatNumber }} {{ role.currency }}</p>
             </div>
             <div class="num_wrapper">
-              <p class="num-title">成功交易笔数</p>
-              <p class="num-desc">{{ transData.sucnum || 0 }} 笔</p>
+              <p class="num-title">{{$t('tradeMng.table.succ')}}</p>
+              <p class="num-desc">{{ transData.sucnum || 0 }}</p>
             </div>
             <div class="num_wrapper">
-              <p class="num-title">撤销笔数</p>
-              <p class="num-default">{{ transData.cancelnum || 0 }} 笔</p>
+              <p class="num-title">{{$t('tradeMng.table.undoNum')}}</p>
+              <p class="num-default">{{ transData.cancelnum || 0 }}</p>
             </div>
           </div>
           <div class="a-wrapper">
             <el-dropdown>
-              <span class="el-dropdown-link"><img src="./img/download.png" alt="下载"></span>
+              <span class="el-dropdown-link"><img src="./img/download.png" alt="download"></span>
               <el-dropdown-menu slot="dropdown">
-                <a :href="detailHref" download><el-dropdown-item command=1>下载交易明细</el-dropdown-item></a>
-                <a :href="collectionHref" download><el-dropdown-item command=2>下载交易汇总</el-dropdown-item></a>
+                <a :href="detailHref" download><el-dropdown-item command=1>{{$t('tradeMng.table.btn.downDetail')}}</el-dropdown-item></a>
+                <a :href="collectionHref" download><el-dropdown-item command=2>{{$t('tradeMng.table.btn.downTrade')}}</el-dropdown-item></a>
               </el-dropdown-menu>
             </el-dropdown>
           </div>
@@ -140,28 +140,28 @@
           row-class-name="el-table__row_fix"
           v-loading="loading">
           <el-table-column
-            label="店铺名称/ID">
+            :label="$t('tradeMng.table.shopName')">
             <template scope="scope">
               <div>{{ scope.row.username }}</div>
               <div>{{ scope.row.userid }}</div>
             </template>
           </el-table-column>
           <el-table-column
-            label="操作员">
+            :label="$t('tradeMng.table.operator')">
             <template scope="scope">{{ scope.row.opuser || '-' }}</template>
           </el-table-column>
           <el-table-column
             prop="busicd_info"
-            label="交易类型">
+            :label="$t('tradeMng.table.tradeType')">
           </el-table-column>
           <el-table-column
             prop="sysdtm"
             min-width="150"
-            label="交易时间">
+            :label="$t('tradeMng.table.tradeTime')">
             <template scope="scope">{{ scope.row.sysdtm }}</template>
           </el-table-column>
           <el-table-column
-            :label="'交易金额(' + role.currency + ')'" v-if="role.haiwai">
+            :label="$t('tradeMng.table.tradeAmount') + '(' + role.currency + ')'" v-if="role.haiwai">
             <template scope="scope">
               <div class="table-title">{{ scope.row.total_amt | formatNumber }}</div>
             </template>
@@ -177,16 +177,16 @@
           </el-table-column>
           <el-table-column
             prop="status_str"
-            label="交易状态">
+            :label="$t('tradeMng.table.tradeState')">
           </el-table-column>
           <el-table-column
             prop="syssn"
             min-width="210"
-            label="流水号">
+            :label="$t('tradeMng.table.sNum')">
           </el-table-column>
-          <el-table-column min-width="100" label="操作" v-if="role.single">
+          <el-table-column min-width="100" :label="$t('tradeMng.table.op')" v-if="role.single">
             <template scope="scope">
-              <el-button type="text" size="small" :disabled="new Date(scope.row.sysdtm).toDateString() !== new Date().toDateString() || scope.row.cancel !== 0 || scope.row.status !== 1" class="el-button__fix" @click="confirm(scope.row)">撤销</el-button>
+              <el-button type="text" size="small" :disabled="new Date(scope.row.sysdtm).toDateString() !== new Date().toDateString() || scope.row.cancel !== 0 || scope.row.status !== 1" class="el-button__fix" @click="confirm(scope.row)">{{$t('tradeMng.table.cancel')}}</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -204,19 +204,19 @@
       <div class="table_placeholder" v-else></div>
     </div>
 
-    <el-dialog title="提示" :visible.sync="showConfirm" custom-class="mydialog" top="20%"
+    <el-dialog :title="$t('common.tip')" :visible.sync="showConfirm" custom-class="mydialog" top="20%"
                :show-close="false" @close="handleClose">
-      <div style="margin-bottom: 20px;">若要撤销交易，请输入账户登录密码以确认操作</div>
+      <div style="margin-bottom: 20px;">{{$t('tradeMng.dialog.d1')}}</div>
       <el-form :model="formpwd" :rules="pwdrules" ref="formpwd">
         <el-form-item prop="pwd">
-          <el-input v-model="formpwd.pwd" placeholder="请输入账户密码" type="password"></el-input>
+          <el-input v-model="formpwd.pwd" :placeholder="$t('tradeMng.msg.m9')" type="password"></el-input>
         </el-form-item>
 
       </el-form>
       <div slot="footer" class="dialog-footer">
         <div @click="checkPwd" class="submit">
           <span class="el-icon-loading" v-if="iconLoading"></span>
-          <span v-else>确认</span>
+          <span v-else>{{$t('common.ok')}}</span>
         </div>
       </div>
     </el-dialog>
@@ -241,9 +241,9 @@
       let defaultDateRange = [start, start];
       let checkOrderNo = (rule, val, cb) => {
         if(val && !/\d+/.test(Number(val))) {
-          cb(new Error('流水号必须为数字！'));
+          cb(new Error()); // this.$t('tradeMng.msg.m1')
         } else if(val && !/\d{14}/.test(val)) {
-          cb(new Error('交易流水号需要至少14位'));
+          cb(new Error()); // this.$t('tradeMng.msg.m2')
         } else {
           cb();
         }
@@ -273,10 +273,10 @@
           {'name': '撤销明细', 'value': 'cancel'}
         ],
         choosetimes: [
-          {'name': '今天', 'value': '1'},
-          {'name': '昨天', 'value': '2'},
-          {'name': '近7天', 'value': '7'},
-          {'name': '近30天', 'value': '30'}
+          {'name': this.$t('tradeMng.panel.today'), 'value': '1'},
+          {'name': this.$t('tradeMng.panel.yestoday'), 'value': '2'},
+          {'name': this.$t('tradeMng.panel.near7'), 'value': '7'},
+          {'name': this.$t('tradeMng.panel.near30'), 'value': '30'}
         ],
         form: {
           selectShopUid: '',
@@ -299,7 +299,7 @@
         },
         pwdrules: {
             pwd: [
-              { required: true, message: '请输入账户密码' }
+              { required: true, message: '' } // this.$t('tradeMng.msg.m9')
             ]
         }
       };
@@ -334,7 +334,8 @@
           page: 1,
           maxnum: this.pageSize,
           paytypes: this.form.type.join(','),
-          filters: this.form.other.join(',')
+          filters: this.form.other.join(','),
+          format: 'cors'
         };
       }
     },
@@ -367,7 +368,7 @@
       // 海外更多筛选特殊处理
       if(this.role.haiwai) {
         this.otherList = [
-          {'name': '撤销明细', 'value': 'cancel'}
+          {'name': this.$t('tradeMng.panel.dd'), 'value': 'cancel'}
         ];
         otherLists = ['cancel'];
       }
@@ -385,7 +386,7 @@
         }
       }).catch(() => {
         this.loading = false;
-        this.$message.error('首次获取交易列表失败');
+        this.$message.error(); // this.$t('tradeMng.msg.m3')
       });
     },
 
@@ -417,7 +418,7 @@
           if (data.respcd === config.code.OK) {
             this.$message({
               type: 'success',
-              message: '撤销成功'
+              message: this.$t('tradeMng.msg.m6')
             });
 
             this.showConfirm = false;
@@ -429,7 +430,7 @@
           }
         }).catch((res) => {
           this.iconLoading = false;
-          this.$message.error("撤销失败");
+          this.$message.error(); // this.$t('tradeMng.msg.m7')
         });
       },
 
@@ -447,11 +448,11 @@
                 this.revoke();
               } else {
                 this.iconLoading = false;
-                this.$message.error('密码不正确');
+                this.$message.error(this.$t('tradeMng.msg.m10'));
               }
             }).catch(() => {
               this.iconLoading = false;
-              this.$message.error('请求失败');
+              this.$message.error(this.$t('common.netError'));
             })
           }
 
@@ -517,7 +518,7 @@
               }
             }).catch(() => {
               this.loading = false;
-              this.$message.error('获取交易数据失败');
+              this.$message.error(this.$t('tradeMng.msg.m4'));
             });
           }
         });
@@ -542,7 +543,7 @@
             this.$message.error(data.resperr);
           }
         }).catch(() => {
-          this.$message.error('获取操作员信息失败');
+          this.$message.error(this.$t('tradeMng.msg.m5'));
         });
       },
 
@@ -678,7 +679,7 @@
       margin-bottom: 10px;
       position: relative;
       .panel-select__desc {
-        width: 70px;
+        width: 120px;
         margin: 0;
       }
       .el-input__inner {
