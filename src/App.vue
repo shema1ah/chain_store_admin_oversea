@@ -9,7 +9,9 @@
         let role = {
           type: 'chain',
           haiwai: false,
-          single: false
+          single: false,
+          isBaoshang: false,
+          diancan: false
         };
         Store.set('role', role);
         Store.set('flag', false);

@@ -34,7 +34,7 @@
         </div>
         <div class="fee">
           <h3>{{$t('home.panel.t2')}}</h3>
-          <strong><em>{{info.today_total_amt | formatCurrency}}</em>{{ role.currency }}</strong>
+          <strong><em>{{info.today_total_amt | formatCurrency}}</em> {{ role.currency }}</strong>
           <ul>
             <li>
               <strong><i></i>{{$t('home.panel.tta')}}</strong>
@@ -42,11 +42,11 @@
             </li>
             <li>
               <strong><i></i>{{$t('home.panel.tincome')}}</strong>
-              <span><em>{{info.today_txamt | formatCurrency}}</em>{{ role.currency }}</span>
+              <span><em>{{info.today_txamt | formatCurrency}}</em> {{ role.currency }}</span>
             </li>
             <li>
               <strong><i></i>{{$t('home.panel.cmincome')}}</strong>
-              <span><em>{{info.month_txamt | formatCurrency}}</em>{{ role.currency }}</span>
+              <span><em>{{info.month_txamt | formatCurrency}}</em> {{ role.currency }}</span>
             </li>
           </ul>
         </div>
