@@ -9,7 +9,11 @@
         let role = {
           type: 'chain',
           haiwai: false,
-          single: false
+          currency: data.currency || '元',
+          rate: data.rate || 100,
+          single: false,
+          isBaoshang: false,
+          diancan: false
         };
         Store.set('role', role);
         Store.set('flag', false);

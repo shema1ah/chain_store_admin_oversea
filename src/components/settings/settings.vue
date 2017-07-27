@@ -1,5 +1,5 @@
 <template>
-  <div class="settings" v-loading.body="loading">
+  <div class="settings" v-loading="loading" element-loading-text="拼命加载中">
     <div class="banner_wrapper">
       <div class="banner-breadcrumb">
         <span>设置</span>
@@ -157,7 +157,7 @@
     .gray-explain {
       color: #8A8C92;
       font-size: 14px;
-      margin-top: 10px;
+      margin-top: 12px;
     }
     .el-form-item__label {
       color: #2f323a;
@@ -173,7 +173,7 @@
     .el-input.is-disabled .el-input__inner {
       color: #2f323a;
       background-color: transparent;
-      border: none;
+      border-color: transparent;
       font-size: 14px;
     }
     .edit {
@@ -181,6 +181,7 @@
       float: none;
       color: #FE9B20;
       cursor: pointer;
+      height: 35px;
     }
   }
 </style>
