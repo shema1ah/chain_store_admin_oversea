@@ -38,21 +38,25 @@
             <div class="info__title">{{$t('shopmng.dialog.bankAccount')}}</div>
             <div class="info__desc">{{ shop.bankaccount }} </div>
           </div>
-          <div class="info" style="margin-bottom: 0">
+          <!--
+           <div class="info" style="margin-bottom: 0">
             <div class="info__title">{{$t('shopmng.dialog.bankName')}}</div>
             <div class="info__desc">{{ shop.headbankname }} </div>
           </div>
+          -->
           <div class="info">
-            <div class="info__title" style="visibility: hidden">{{$t('shopmng.dialog.bankName')}}</div>
+            <div class="info__title" >{{$t('shopmng.dialog.bankName')}}</div>
             <div class="info__desc">{{ shop.bankname }}</div>
           </div>
           <div class="panel-btn-group__wrapper">
             <div class="panel-header-btn panel-header-btn__fill" @click="changePass(shop.mobile)">{{$t('shopmng.panel.table.editPwd')}}</div>
-            <a :href="downHref" download>
-              <div class="panel-header-btn">
-                <span>{{$t('shopmng.panel.btn.down')}}</span>
-              </div>
-            </a>
+            <el-tooltip class="item" effect="dark" :content="$t('shopmng.panel.btn.downTip')" placement="right">
+              <a :href="downHref" download>
+                <div class="panel-header-btn">
+                  <span>{{$t('shopmng.panel.btn.down')}}</span>
+                </div>
+              </a>
+            </el-tooltip>
           </div>
         </div>
       </div>
@@ -112,6 +116,7 @@
         }
       };
       return {
+        lang: JSON.parse(localStorage.getItem("lang") || '{}').value || navigator.language,
         loading: false,
         iconShow: false,
         showChangePass: false,
@@ -135,7 +140,7 @@
 
     computed: {
       downHref() {
-          return `${config.host}/merchant/qrcode?userid=${this.shop.uid}`;
+          return `${config.host}/merchant/qrcode?userid=${this.shop.uid}&lang=${this.lang}`;
       }
     },
 
@@ -258,7 +263,7 @@
 
   .single {
     .panel-header-btn {
-      width: 155px;
+      width: 164px;
     }
   }
 </style>

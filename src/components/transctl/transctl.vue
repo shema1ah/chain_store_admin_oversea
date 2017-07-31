@@ -336,6 +336,7 @@
           maxnum: this.pageSize,
           paytypes: this.form.type.join(','),
           filters: this.form.other.join(','),
+          lang: this.lang,
           format: 'cors'
         };
       }

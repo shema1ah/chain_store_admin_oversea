@@ -24,8 +24,8 @@
       <li v-if="this.role.diancan"><a href="/wxofficial/setting" class="sidebar-nav__item">智慧餐厅</a></li>
     </ul>
     <div class="copyright_wrapper" v-if="role.haiwai">
-      <el-select v-model="lang" :placeholder="$t('common.msg.sel')" icon="caret-bottom" @change="switchLanguage"><!-- , {label:'日文', value:'ja'}-->
-        <el-option v-for="item in [{label:'简体中文', value:'zh-CN'}, {label:'英文', value:'en'}]" :key="item.value" :label="item.label" :value="item.value"></el-option>
+      <el-select v-model="lang"  icon="caret-bottom" @change="switchLanguage" size="small" popperClass="popperBg">
+        <el-option v-for="item in [{label: $t('lang.zh'), value:'zh-CN'}, {label: $t('lang.en'), value:'en'}, {label: $t('lang.ja'), value:'ja'}]" :key="item.value" :label="item.label" :value="item.value"></el-option>
       </el-select>
     </div>
   </div>
@@ -36,7 +36,7 @@
   export default {
     data() {
       return {
-        lang: JSON.parse(localStorage.getItem("lang") || '{}').value || '',
+        lang: JSON.parse(localStorage.getItem("lang") || '{}').value || navigator.language,
         role: Store.get('role') || {},
         navs: [],
         isShow: true,
@@ -261,16 +261,16 @@
           default:
             this.navs = [
               {
-                val: '首页概览',
+                val: this.$t('nav.index'),
                 pathname: 'index'
               }, {
-                val: '交易管理',
+                val: this.$t('nav.tradeMng'),
                 pathname: 'transctl'
               }, {
-                val: '公众号授权',
+                val: this.$t('nav.publicAuth'),
                 pathname: 'publicauth'
               }, {
-                val: '门店管理',
+                val: this.$t('nav.shopMng'),
                 pathname: 'singlemanage'
               }
             ];
@@ -400,5 +400,8 @@
     100% {
       height: 0px;
     }
+  }
+  .popperBg {
+    background-color: white;
   }
 </style>

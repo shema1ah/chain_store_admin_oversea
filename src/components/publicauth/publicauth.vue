@@ -1,6 +1,6 @@
 <template>
   <!-- 未绑定总账户公众号 -->
-  <div class="warpper" v-if="wechatNotAuth">
+  <div class="warpper" v-if="wechatNotAuth" v-loading="loading1" :element-loading-text="$t('common.loading')">
     <div class="banner_wrapper">
       <p>{{$t('pubSignal.crumbs.unauthorized')}}</p>
     </div>
@@ -61,9 +61,11 @@
         </div>
         <div class="operation">
           <div class="panel-header-btn panel-header-btn__fill" @click="showDialog" v-if="!role.single">{{$t('pubSignal.panel.btn.subAuthMng')}}</div>
-          <div class="panel-header-btn" @click="confirm">
-              {{role.single ? $t('pubSignal.panel.btn.deAuth') : $t('pubSignal.panel.btn.dePrimeAuth')}}
-          </div>
+          <el-tooltip class="item" effect="dark" :content="role.single ? $t('pubSignal.panel.btn.deAuth') : $t('pubSignal.panel.btn.dePrimeAuth')" placement="right">
+            <div class="panel-header-btn" @click="confirm">
+              {{$t('pubSignal.panel.btn.releaseAuth')}}
+            </div>
+          </el-tooltip>
         </div>
       </div>
     </div>
@@ -160,6 +162,7 @@
   export default {
     data() {
       return {
+        loading1: false,
         role: Store.get("role") || {},
         wechatNotAuth: false,
         publicInfo: {},
@@ -180,9 +183,11 @@
     },
     methods: {
       fetchPublicInfo () {
+        this.loading1 = true;
         axios.post(`${config.host}/wxofficial/setting`)
           .then((res) => {
-            let data = res.data
+            let data = res.data;
+            this.loading1 = false;
             if (data.respcd === config.code.OK) {
               if (data.data.offical_status === false) {
                 this.wechatNotAuth = true
@@ -199,6 +204,7 @@
             }
           })
           .catch(() => {
+            this.loading1 = false;
             this.$message.error(this.$t('pubSignal.msg.m1'))
           })
       },
@@ -303,6 +309,7 @@
         this.$confirm(tipText, this.$t('common.tip'), {
           confirmButtonText: this.$t('common.ok'),
           cancelButtonText: this.$t('common.cancel'),
+          showClose: false,
           type: 'warning'
         }).then(() => {
           this.unbindPublic()
@@ -352,9 +359,9 @@
   .btn-add{
     display: block;
     width: 369px;
-    height: 60px;
+    height: 40px;
     margin: 64px auto 0 auto;
-    font-size: 20px;
+    font-size: 17px;
   }
   // 已绑定
   .public-info {

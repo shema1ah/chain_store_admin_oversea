@@ -165,8 +165,9 @@
           <span class="cancel" @click="backToEdit">返回修改</span>
           <div class="panel-btn__download panel-btn__download_detail" @click="submit">
             <i class="el-icon-loading" v-if="iconShow"></i>
-            <i class="icon-create"></i>
-            <span>确认提交</span>
+            <i class="icon-create" v-else="">
+              <span>确认提交</span>
+            </i>
           </div>
         </div>
       </div>
@@ -236,25 +237,28 @@
       submit() {
         let data = this.fixData();
         console.log(data);
-        this.iconShow = true;
-        axios.post(`${config.host}/merchant/activity/create`, data)
-        .then((res) => {
-          this.iconShow = false;
-          let data = res.data;
-          if (data.respcd === config.code.OK) {
-            this.$message({
-              type: 'success',
-              message: '创建红包活动成功'
+
+        if(!this.iconShow) {
+          this.iconShow = true;
+          axios.post(`${config.host}/merchant/activity/create`, data)
+            .then((res) => {
+              this.iconShow = false;
+              let data = res.data;
+              if (data.respcd === config.code.OK) {
+                this.$message({
+                  type: 'success',
+                  message: '创建红包活动成功'
+                });
+                this.$router.push('/main/memberredpacket');
+              } else {
+                this.$message.error(data.resperr);
+              }
+            })
+            .catch(() => {
+              this.iconShow = false;
+              this.$message.error('创建红包活动失败');
             });
-            this.$router.push('/main/memberredpacket');
-          } else {
-            this.$message.error(data.resperr);
-          }
-        })
-        .catch(() => {
-          this.iconShow = false;
-          this.$message.error('创建红包活动失败');
-        });
+        }
       }
     }
 };
