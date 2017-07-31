@@ -6,15 +6,33 @@
 
 exports.__esModule = true;
 exports.default = {
+  lang: {
+    zh: '中国語',
+    en: '英語',
+    ja: '日本語の'
+  },
+  nav: {
+    mmp: '商店管理コンソール',
+    index: 'トップ',
+    tradeMng: '取引管理',
+    billMng: '勘定書管理',
+    publicAuth: '公式アカウント',
+    shopMng: '店舗管理',
+    setup: '設定'
+  },
   common: {
     ok: '確定',
     cancel: 'キャンセル',
     tip: 'ヒント',
     all: '全部',
     netError: 'ネットワークエラー',
-    loading: '',
+    loading: '一生懸命ローディング中です',
     modSucc: '',
-    modFailed: ''
+    modFailed: '訂正できませんでした',
+    logout: 'ログアウト',
+    msg: {
+      sel: '選択してください'
+    }
   },
   shopmng: { // 门店管理模块
     crumbs: {
@@ -26,16 +44,17 @@ exports.default = {
     },
     panel: {
       shopName: '商店名',
-      loginAccount: 'ログインアカウント',
+      loginAccount: 'アカウント',
       btn: {
         editPwd: 'パスワードを変更します',
         editSub: '支店を編集します',
         editSubTag: '支店番号を編集します',
-        down: '店舗の集金コードをダウンロードします'
+        down: '店舗の集金コード',
+        downTip: 'ボタンを押してダウンロードします'
       },
       table: {
         subName: '支店名',
-        loginAccount: 'ログインアカウント',
+        loginAccount: 'アカウント',
         regTime: '登録時間',
         subTag: '支店番号',
         op: '操作',
@@ -47,14 +66,23 @@ exports.default = {
     },
     dialog: {
       editPwd: 'パスワードを変更します',
-      loginAccount: 'ログインアカウント',
-      inputNewPwd: '新しいパスワードを入力してください',
-      confirmNewPwd: '新しいパスワードを確認してください',
+      loginAccount: 'アカウント',
+      inputNewPwd: 'パスワード',
+      confirmNewPwd: '確認',
       msg: {
         m1: '新しいパスワードを入力してください',
         m2: '新しいパスワードを確認してください',
         m3: '新しいパスワードはその確認入力と一致していません',
-        m4: '6~20桁の数字かアルファベットを入力してください'
+        m4: '6~20桁の数字かアルファベットを入力してください',
+        m5: 'アカウントを入力してください',
+        m6: '支店のアカウントを入力してください',
+        m7: '支店のアカウントパスワードを入力してください',
+        m8: '支店の受取人の名前を入力してください',
+        m9: '支店の受取人の口座番号を入力してください',
+        m10: '20以内の文字を入力してください',
+        m11: '特殊文字ができません',
+        m12: 'パスワードが正しくありません',
+        m13: '支店をキャンセルしました'
       },
       cancel: 'キャンセル',
       ok: '確定',
@@ -96,12 +124,13 @@ exports.default = {
         subAuthMng: '支店への授権管理',
         deAuth: 'アカウントの授権を解除します',
         dePrimeAuth: 'マスターアカウントの授権を解除します',
-        freeAdd: '無料でWechat公式アカウントを追加します'
+        freeAdd: '無料でWechat公式アカウントを追加します',
+        releaseAuth: '授権を解除します'
       }
     },
     dialog: {
-      m1: '',
-      all: ''
+      m1: '授権する支店の前にチェックを入れてください。',
+      all: '全て選択'
     },
     msg: {
       m1: '公式アカウント情報を取得に失敗しました',
@@ -120,7 +149,7 @@ exports.default = {
     panel: {
       payTime: '送金時間',
       shopName: '店舗名',
-      range: ''
+      range: '日付の範囲を選択してください'
     },
     msg: {
       m1: '勘定書の検索は当月限定にしてください',
@@ -132,8 +161,71 @@ exports.default = {
       downRecord: '送金記録をダウンロードします'
     }
   },
-  tradeMng: { // 交易管理
-
+  tradeMng: {
+    crumbs: {
+      L1: '取引管理'
+    },
+    panel: {
+      time: '日付',
+      today: '今日',
+      yestoday: '昨日',
+      near7: '最近の７日間',
+      near30: '最近の３０日間',
+      shopName: '店舗名',
+      operator: 'オペレーター',
+      moreFilter: '更に多く選択します',
+      noLimit: '全部',
+      dd: '明細をキャンセスします', // 撤销明细
+      sNum: 'シリアル番号', // 流水号
+      tip: 'シリアル番号を入力してください',
+      btn: {
+        query: '検索',
+        reset: 'リセット'
+      }
+    },
+    table: {
+      total: '取引総額',
+      realrec: '実際の集金額',
+      succ: '成功した取引数',
+      undoNum: '取消された取引数',
+      bi: '',
+      undo: '取消',
+      shopName: '店舗名',
+      operator: 'オペレーター',
+      all: '全部',
+      colWay: '集金方式',
+      wechatCollect: 'Wechatで集金します',
+      tradeType: '取引種類',
+      tradeTime: '取引時間',
+      tradeAmount: '取引金額',
+      tradeState: '取引状態',
+      redpacket: ' 紅包（ホンバオ）割引', // 红包优惠
+      sNum: 'シリアル番号',
+      op: '操作',
+      cancel: '取消',
+      ac: '', // 实收
+      red: '商店の 紅包', // 商家红包
+      plat: 'をプラートフォームから支給', // 平台补贴
+      btn: {
+        downDetail: '取引明細をダウンロードします',
+        downTrade: '取引纏めをダウンロードします'
+      }
+    },
+    dialog: {
+      d1: '取引を取消したい場合、アカウントのログインパスワードを入力し、確認してから操作してください'
+    },
+    msg: {
+      m1: 'シリアル番号は必ず数字です！',
+      m2: '取引シリアル番号はせめて１４桁があります！',
+      m3: '初回取引一覧表を取得に失敗しました',
+      m4: '取引データ取得に失敗しました',
+      m5: 'オペレーター情報取得に失敗しました',
+      m6: '取消に成功しました',
+      m7: '取消に失敗しました',
+      m8: 'シリアル番号を入力してください',
+      m9: 'アカウントを入力してください',
+      m10: 'パスワードが正しくありません'
+    }
   },
   home: { // 首页概览
     crumbs: {
@@ -157,13 +249,32 @@ exports.default = {
   },
   login: {
     head: '商店管理コンソール',
-    reg: '新規登録',
+    reg: 'ログインアカウント',
     ltsix: '6ケタ以上',
     login: 'ログイン',
+    forgetPwd: 'パスワードを忘れて',
     msg: {
-      m1: 'アカウントを入力してください',
+      m1: 'ログインアカウントを入力してください',
       m2: 'パスワードを入力してください',
       m3: 'ログイン失敗しました'
+    }
+  },
+  setting: { // 邮箱设置页
+    crumbs: {
+      L1: '設定'
+    },
+    panel: {
+      mailSetup: 'メール設定',
+      mail: 'メールアドレス',
+      explain: '翌日の朝7時に前日の取引記録をお送りします',
+      dailySend: '毎日取引レポートをお送りします',
+      modi: '訂正',
+      confirm: '確認'
+    },
+    msg: {
+      m1: 'メールアドレスを入力してください',
+      m2: '正しいメールアドレスを入力してください',
+      m3: 'メールの設定が取得できませんでした!'
     }
   }
 }

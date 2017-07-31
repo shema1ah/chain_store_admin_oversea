@@ -11,7 +11,7 @@
         <div class="panel-select-group panel-select-group__justify">
           <span class="panel-header__desc">{{$t('shopmng.title.baseInfo')}}</span>
           <!--<div class="panel-header-btn" @click="changePass('chain', shop.mobile)"></div>-->
-          <div type="primary" class="panel-header-btn" :plain="true" @click="changePass('chain', shop.mobile)">{{$t('shopmng.panel.btn.editPwd')}}</div>
+          <div type="primary" :class="lang === 'ja' ? 'panel-header-btn panel-header-btn-ja': 'panel-header-btn'" :plain="true" @click="changePass('chain', shop.mobile)">{{$t('shopmng.panel.btn.editPwd')}}</div>
         </div>
       </div>
       <div class="panel-body">
@@ -38,7 +38,7 @@
             <span>关联分店</span>
           </div> -->
           <div style="align-items: center;display: flex;">
-            <el-button type="primary" class="panel-edit-btn__subshopnum" @click.native="editSubShopNum" style="float:left;">{{$t('shopmng.panel.btn.editSubTag')}}</el-button>
+            <el-button type="primary" class="panel-edit-btn__subshopnum" @click.native="editSubShopNum">{{$t('shopmng.panel.btn.editSubTag')}}</el-button>
             <el-dropdown :hide-on-click="true" style="margin-left:10px;" v-if="!role.isBaoshang && !role.haiwai">
               <div class="panel-header-btn__associate">
                 <i class="icon-create"></i>
@@ -686,8 +686,11 @@
     .panel-header-btn {
       width: 150px;
     }
+    .panel-header-btn-ja {
+      width: 200px;
+    }
     .panel-edit-btn__subshopnum {
-      width: 155px;
+      width: 164px;
       /*margin-left: 60%;*/
     }
     .pass {

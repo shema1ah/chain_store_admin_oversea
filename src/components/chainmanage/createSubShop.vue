@@ -392,7 +392,7 @@
                 <img src="./image/example3.jpg" class="" width="240" height="180" class="example_img"/>
               </el-col>
             </el-form-item>
-            <div class="image_info">* 必须使用有效期内的二代身份证，有效期清晰可见，完整身份反正面照。</div>
+            <div class="image_info">* 必须使用有效期内的二代身份证，有效期清晰可见，完整身份证反面照。</div>
 
             <el-form-item style="margin-bottom:0">
               <el-col :span="8">
@@ -427,7 +427,7 @@
                 <img src="./image/example5.jpg" class="" width="240" height="180" class="example_img"/>
               </el-col>
             </el-form-item>
-            <div class="image_info">* 必须使用有效期内的二代身份证，有效期清晰可见，完整身份反正面照。</div>
+            <div class="image_info">* 必须使用有效期内的二代身份证，身份证本人手持证件，正面展示。</div>
             <div class="divider"></div>
 
             <el-form-item>

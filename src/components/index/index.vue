@@ -1,5 +1,5 @@
 <template>
-  <div class="index" v-loading="loading1 || loading2" element-loading-text="拼命加载中">
+  <div class="index" v-loading="loading1 || loading2" :element-loading-text="$t('common.loading')">
     <div class="banner_wrapper">
       <div class="banner-breadcrumb">
         <span>{{$t('home.crumbs.L1')}}</span>

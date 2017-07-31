@@ -6,12 +6,18 @@
 
 exports.__esModule = true;
 exports.default = {
+  lang: {
+    zh: 'Chinese',
+    en: 'English',
+    ja: 'Japanese'
+  },
   nav: {
     mmp: 'Shop Management Platform',
     index: 'HomePage',
-    tradeMng: 'Transaction Mng',
+    tradeMng: 'Transaction Mgmt',
+    billMng: 'Bill Management',
     publicAuth: 'Official Account Auth',
-    shopMng: 'Shop Mng',
+    shopMng: 'Shop Management',
     setup: 'Setting'
   },
   common: {
@@ -43,7 +49,8 @@ exports.default = {
         editPwd: 'Change Password',
         editSub: 'Edit Branch Shop',
         editSubTag: 'Edit Branch',
-        down: 'Shop QR Code'
+        down: 'Shop QR Code',
+        downTip: 'Click to download QR code'
       },
       table: {
         subName: 'Branch Shop Name',
@@ -63,18 +70,18 @@ exports.default = {
       inputNewPwd: 'New PWD',
       confirmNewPwd: 'Confirm',
       msg: {
-        m1: 'Please enter a new password',
-        m2: 'Please confirm the new password',
-        m3: 'The new password and the confirmation don’t match',
-        m4: 'Please enter alphabets or numbers from 6 to 20 digits',
-        m5: 'Please enter password of master account', // 请输入总账户密码
-        m6: 'Please enter branch account', // 请输入分店账号
-        m7: 'Please enter password of branch account',
-        m8: 'Please enter branch account owner name',
+        m1: 'Please enter a new password.',
+        m2: 'Please confirm the new password.',
+        m3: 'The new password and the confirmation don’t match.',
+        m4: 'Please enter alphabets or numbers from 6 to 20 digits.',
+        m5: 'Please enter password of master account.', // 请输入总账户密码
+        m6: 'Please enter branch account.', // 请输入分店账号
+        m7: 'Please enter password of branch account.',
+        m8: 'Please enter branch account owner name.',
         m9: 'Please enter branch bank account!',
-        m10: 'Alphabets or numbers within 20 digits',
-        m11: 'No special characters',
-        m12: 'Incorrect Password',
+        m10: 'Alphabets or numbers within 20 digits.',
+        m11: 'No special characters.',
+        m12: 'Incorrect Password.',
         m13: 'Branch Deleted!'
       },
       cancel: 'Cancel',
@@ -88,17 +95,17 @@ exports.default = {
       bankAccount: 'Bank Account',
       bankName: 'Bank Name',
       editSubTag: 'Edit Branch Shop Number',
-      diaTip: 'Branch number would be shown at the exported Payment detail and Payment summary',
-      validateText: 'Please enter characters or alphabets within 20 digits',
+      diaTip: 'Branch number would be shown at the exported payment detail and payment summary.',
+      validateText: 'Please enter charactors within 20',
       validateText2: 'Please enter the login password of master account',
       notice: 'Be Awared!',
-      noticeTip: 'Always remember to turn off the branch shop promotions before delete the branch'
+      noticeTip: 'Always remember to turn off the branch shop promotions before delete the branch.'
     }
   },
   pubSignal: { // 公众号授权
     crumbs: {
       authorizedPS: 'Authorized Official Account',
-      unauthorized: 'You haven’t bound your Wechat account yet, please bind your Wechat account to get more service'
+      unauthorized: 'You haven’t bound your Wechat account yet, please bind your Wechat account to get more service.'
     },
     title: {
       psInfo: 'Basic information of Official Account',
@@ -112,24 +119,25 @@ exports.default = {
       authType: 'Authentication Type',
       wechatScan: 'Scan QR code with a personal wechat account',
       adminAuthConfirm: 'Confirm to authorize by the administrator of the official account',
-      authSucc: 'Authorization success, start to operate the official account!',
+      authSucc: 'Authorization success, start to operate the official account',
       btn: {
         subAuthMng: 'Branch Auth',
         deAuth: 'Cancel The Authorization For The Account',
         dePrimeAuth: 'Release Auth',
-        freeAdd: 'Add Wechat Official Account For Free'
+        freeAdd: 'Add Wechat Official Account For Free',
+        releaseAuth: 'Release Auth'
       }
     },
     dialog: {
-      m1: '',
+      m1: 'Select branches to authorize',
       all: 'Select all'
     },
     msg: {
-      m1: 'Failed to get the official account information',
-      m2: 'Failed to get the shop ID',
-      m3: 'Failed to get the chain shop',
-      m4: 'Successfully cancelled',
-      m5: 'Failed to cancel',
+      m1: 'Failed to get the official account information.',
+      m2: 'Failed to get the shop ID.',
+      m3: 'Failed to get the chain shop.',
+      m4: 'Successfully cancelled.',
+      m5: 'Failed to cancel.',
       m6: 'Do you really want to cancel the authorization the official account?',
       m7: 'Do you really want to cancel the authorization the master official account?'
     }
@@ -144,21 +152,21 @@ exports.default = {
       range: 'select date range'
     },
     msg: {
-      m1: "Please don't search over a month",
-      m2: "Please don't choose it over a month",
-      m3: 'Please choose the remittance time'
+      m1: "Please don't search over a month.",
+      m2: "Please don't choose it over a month.",
+      m3: 'Please choose the remittance time.'
     },
     btn: {
       downDetail: 'Transfer Details',
       downRecord: 'Transfer Record'
     }
   },
-  tradeMng: {
+  tradeMng: { // 交易管理
     crumbs: {
       L1: 'Payment Management'
     },
     panel: {
-      time: 'Time',
+      time: 'Date',
       today: 'Today',
       yestoday: 'Yesterday',
       near7: 'Last 7 days',
@@ -242,12 +250,13 @@ exports.default = {
   login: { // 登录页
     head: 'Shop Management Platform',
     reg: 'Register a new account',
-    ltsix: 'More than 6 digits',
+    ltsix: 'More than 6 digits.',
     login: 'Login',
+    forgetPwd: 'Forget password?',
     msg: {
-      m1: 'Please enter the account',
-      m2: 'Please enter the password',
-      m3: 'Failed to log in'
+      m1: 'Please enter the account.',
+      m2: 'Please enter the password.',
+      m3: 'Failed to log in.'
     }
   },
   setting: { // 邮箱设置页
@@ -263,8 +272,8 @@ exports.default = {
       confirm: 'Confirm'
     },
     msg: {
-      m1: 'Please enter email address',
-      m2: 'Please enter correct email address',
+      m1: 'Please enter email address.',
+      m2: 'Please enter correct email address.',
       m3: 'Fetch email address failed!'
     }
   }

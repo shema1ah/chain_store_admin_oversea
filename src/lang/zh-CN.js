@@ -2,6 +2,11 @@
 
 exports.__esModule = true;
 exports.default = {
+  lang: {
+    zh: '简体中文',
+    en: '英文',
+    ja: '日文'
+  },
   nav: {
     mmp: '商户管理后台',
     index: '首页概览',
@@ -40,7 +45,8 @@ exports.default = {
         editPwd: '修改密码',
         editSub: '编辑分店',
         editSubTag: '编辑分店编号',
-        down: '下载店铺收款码'
+        down: '下载店铺收款码',
+        downTip: '点击下载店铺收款二维码'
       },
       table: {
         subName: '分店名称',
@@ -114,7 +120,8 @@ exports.default = {
         subAuthMng: '分店授权管理',
         deAuth: '解除账户授权',
         dePrimeAuth: '解除总账户授权',
-        freeAdd: '免费添加微信公众号'
+        freeAdd: '免费添加微信公众号',
+        releaseAuth: '接触授权'
       }
     },
     dialog: {
@@ -241,6 +248,7 @@ exports.default = {
     reg: '注册账号',
     ltsix: '6位以上',
     login: '登录',
+    forgetPwd: '忘记密码?',
     msg: {
       m1: '请输入账号',
       m2: '请输入密码',

@@ -1,5 +1,5 @@
 <template>
-  <div class="top_content" v-loading="loading" element-loading-text="拼命加载中">
+  <div class="top_content" v-loading="loading" :element-loading-text="$t('common.loading')">
     <sidebar></sidebar>
     <div class="main">
       <div class="header">
@@ -67,7 +67,7 @@ export default {
         if (data.respcd === config.code.OK) {
           // 清除本地cookie
           document.cookie = "sessionid=''; expires=" + new Date(0).toUTCString();
-          localStorage.getItem('lang') && localStorage.removeItem('lang');
+//          localStorage.getItem('lang') && localStorage.removeItem('lang');
           this.$router.push("/login");
         } else {
           this.$message.error(data.respmsg);
