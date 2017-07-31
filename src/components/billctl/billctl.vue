@@ -96,6 +96,7 @@
       };
 
       return {
+        lang: JSON.parse(localStorage.getItem("lang") || '{}').value || '',
         role: Store.get('role') || {},
         defaultDateRange: defaultDateRange,
         form: {
@@ -136,6 +137,7 @@
           enddate: this.enddate,
           startdate: this.startdate,
           busicd: this.form.orderno || '',
+          lang: this.lang,
           charset: 'utf-8'
         };
       }
