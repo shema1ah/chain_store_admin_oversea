@@ -286,7 +286,7 @@
         }
       }
       return {
-        lang: JSON.parse(localStorage.getItem("lang") || '{}').value || '',
+        lang: JSON.parse(localStorage.getItem("lang") || '{}').value || navigator.language,
         role: Store.get('role') || {},
         currentpage: 1,
         visible: false,

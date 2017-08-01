@@ -13,7 +13,7 @@
           <span class="el-icon-loading" v-if="loading"></span>
           <span v-else>{{$t('login.login')}}</span>
         </div>
-        <div class="bottom" v-if="!role.haiwai">
+        <div class="bottom" v-if="lang.indexOf('zh-CN')>-1">
           <router-link :to="{ name: 'forget'}" class="forget">{{$t('login.forgetPwd')}}</router-link>
           <!--<span>|</span>
           <router-link :to="{ name: 'register'}" class="register">我要注册连锁店管理账号</router-link>-->
@@ -31,6 +31,7 @@
   export default {
     data() {
       return {
+        lang: navigator.language,
         role: Store.get('role') || {},
         loading: false,
         form: {
