@@ -16,7 +16,7 @@
           <el-form :rules="formrules" :model="form" ref="form">
             <el-form-item :label="$t('setting.panel.mail')">
               <el-form-item prop="email">
-                <el-input size="small" type="text" :disabled="!state2" v-model.trim="form.email" class="panel-select-input-220"></el-input>
+                <el-input size="small" type="text" :disabled="!state2" v-model.trim="form.email" class="panel-select-input-230"></el-input>
               </el-form-item>
                 <div class="panel-header-btn panel-header-btn__fill" v-if="state2" @click="commit">
                 <span class="el-icon-loading" v-if="loading1"></span>
@@ -150,6 +150,9 @@
 
 <style lang="scss">
   .settings {
+    .panel-select-input-230 {
+      width: 230px;
+    }
     .panel-header__auto{
       border-top: none;
     }
