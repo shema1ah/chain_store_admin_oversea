@@ -12,7 +12,7 @@
             <div class="panel-select__wrapper">
               <span class="panel-select__desc">{{$t('billMng.panel.payTime')}}</span>
               <el-form-item prop="dateRangeValue" class="relative">
-                <el-date-picker v-model="form.dateRangeValue" type="daterange" :placeholder="$t('billMng.panel.range')" size="small" @change="changeDateRange" :clearable="false" :editable="false">
+                <el-date-picker style="width:265px;" v-model="form.dateRangeValue" type="daterange" :placeholder="$t('billMng.panel.range')" size="small" @change="changeDateRange" :clearable="false" :editable="false">
                 </el-date-picker>
                 <span class="remark note ml-0">* {{$t('billMng.msg.m1')}}</span>
               </el-form-item>
@@ -96,7 +96,7 @@
       };
 
       return {
-        lang: JSON.parse(localStorage.getItem("lang") || '{}').value || '',
+        lang: JSON.parse(localStorage.getItem("lang") || '{}').value || navigator.language,
         role: Store.get('role') || {},
         defaultDateRange: defaultDateRange,
         form: {

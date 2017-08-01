@@ -359,11 +359,12 @@
 
 
   .copyright_wrapper {
-    position: absolute;
-    bottom: 20px;
-    width: 100%;
+    position: fixed;
+    left: 6px;
+    bottom: 10px;
     text-align: center;
     font-size: 14px;
+    background-color: #585a60;
     @at-root .copyright-text {
       color: #fff;
     }
@@ -371,8 +372,11 @@
       text-align: center;
       color: #FE9B20;
     }
+    .custom-stylee {
+      background-color: #2a2a2a;
+      color: #8a8c92;
+    }
   }
-
   .collpase {
     overflow: hidden;
   }

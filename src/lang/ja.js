@@ -27,7 +27,7 @@ exports.default = {
     all: '全部',
     netError: 'ネットワークエラー',
     loading: '一生懸命ローディング中です',
-    modSucc: '',
+    modSucc: '改正に成功する!',
     modFailed: '訂正できませんでした',
     logout: 'ログアウト',
     msg: {
@@ -157,8 +157,8 @@ exports.default = {
       m3: '送金の時間を選択してください'
     },
     btn: {
-      downDetail: '送金明細をダウンロードします',
-      downRecord: '送金記録をダウンロードします'
+      downDetail: '送金明細',
+      downRecord: '送金記録'
     }
   },
   tradeMng: {
@@ -173,7 +173,7 @@ exports.default = {
       near30: '最近の３０日間',
       shopName: '店舗名',
       operator: 'オペレーター',
-      moreFilter: '更に多く選択します',
+      moreFilter: '選択します',
       noLimit: '全部',
       dd: '明細をキャンセスします', // 撤销明细
       sNum: 'シリアル番号', // 流水号
