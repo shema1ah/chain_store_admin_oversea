@@ -136,7 +136,7 @@
         </ul>
       </div>
     </div>
-    <el-dialog :title="$t('pubSignal.dialog.m1')" v-model="dialogVisible" size="tiny">
+    <el-dialog :title="$t('pubSignal.dialog.m1')" v-model="dialogVisible" size="tiny" :show-close="false">
       <el-form>
         <el-checkbox-group v-model="checkedStores" @change="handleCheckedStoresChange">
           <el-checkbox v-for="store in stores" :label="store.userid">
@@ -146,8 +146,8 @@
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange" class="check-all">{{$t('pubSignal.dialog.all')}}</el-checkbox>
-        <el-button @click="dialogVisible = false">{{$t('pubSignal.common.cancel')}}</el-button>
-        <el-button type="primary" @click="authPublics">{{$t('pubSignal.common.ok')}}</el-button>
+        <el-button @click="dialogVisible = false">{{$t('common.cancel')}}</el-button>
+        <el-button type="primary" @click="authPublics">{{$t('common.ok')}}</el-button>
       </span>
     </el-dialog>
   </div>
