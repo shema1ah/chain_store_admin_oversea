@@ -177,7 +177,7 @@
           <el-tooltip placement="bottom" :content="shop.shop_name" class="subshoptip">
             <label style="width:140px">{{shop.shop_name}}</label>
           </el-tooltip>
-          <el-input v-model="shop.tag" size="small" :placeholder="$t('shopmng.dialog.validateText')" :style="role[this.lang]?'width:98%':'width:65%'" @blur="updateShopTag(shop)"></el-input>
+          <el-input v-model="shop.tag" size="small" :placeholder="$t('shopmng.dialog.validateText')" :style="lang === 'ja'?'width:98%':'width:65%'" @blur="updateShopTag(shop)"></el-input>
         </el-form-item>
 
       </el-form>
@@ -192,7 +192,7 @@
       <div style="margin-bottom: 20px;">{{$t('shopmng.dialog.noticeTip')}}</div>
       <el-form :model="formpwd" :rules="formrules" ref="pwdform">
         <el-form-item prop="primeaccountpwd">
-          <el-input v-model="formpwd.primeaccountpwd" :placeholder="$t('shopmng.dialog.validateText2')" type="password"></el-input>
+          <el-input v-model="formpwd.primeaccountpwd" :placeholder="$t('shopmng.dialog.validateText2')" type="password" style="font-size:12px"></el-input>
         </el-form-item>
 
       </el-form>
