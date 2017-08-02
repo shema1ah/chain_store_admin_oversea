@@ -121,7 +121,7 @@ exports.default = {
         deAuth: '解除账户授权',
         dePrimeAuth: '解除总账户授权',
         freeAdd: '免费添加微信公众号',
-        releaseAuth: '接触授权'
+        releaseAuth: '解除授权'
       }
     },
     dialog: {

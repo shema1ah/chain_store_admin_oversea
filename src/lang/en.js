@@ -15,9 +15,9 @@ exports.default = {
     mmp: 'Shop Management Platform',
     index: 'HomePage',
     tradeMng: 'Transaction Mgmt',
-    billMng: 'Bill Management',
+    billMng: 'Bill Mgmt',
     publicAuth: 'Official Account Auth',
-    shopMng: 'Shop Management',
+    shopMng: 'Shop Mgmt',
     setup: 'Setting'
   },
   common: {
@@ -73,7 +73,7 @@ exports.default = {
         m1: 'Please enter a new password.',
         m2: 'Please confirm the new password.',
         m3: 'The new password and the confirmation don’t match.',
-        m4: 'Please enter alphabets or numbers from 6 to 20 digits.',
+        m4: 'Enter alphabets or numbers from 6 to 20 digits.',
         m5: 'Please enter password of master account.', // 请输入总账户密码
         m6: 'Please enter branch account.', // 请输入分店账号
         m7: 'Please enter password of branch account.',
