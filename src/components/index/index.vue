@@ -16,19 +16,19 @@
       <div class="panel-body panel-today">
         <div class="member">
           <h3><i></i>{{$t('home.panel.t1')}}</h3>
-          <strong><em>{{info.new_member_num}}</em>{{role.haiwai ? '' : '人'}}</strong>
+          <strong><em>{{info.new_member_num}}</em> {{role.haiwai ? '' : '人'}}</strong>
           <ul>
             <li>
               <strong><i></i>{{$t('home.panel.tc')}}</strong>
-              <span><em>{{info.old_member_num}}</em>{{role.haiwai ? '' : '个'}}</span>
+              <span><em>{{info.old_member_num}}</em> {{role.haiwai ? '' : '个'}}</span>
             </li>
             <li>
               <strong><i></i>{{$t('home.panel.cmnew')}}</strong>
-              <span><em>{{info.month_new_member}}</em>{{role.haiwai ? '' : '人'}}</span>
+              <span><em>{{info.month_new_member}}</em> {{role.haiwai ? '' : '人'}}</span>
             </li>
             <li>
               <strong><i></i>{{$t('home.panel.cumulativeMembership')}}</strong>
-              <span><em>{{info.total_member}}</em>{{role.haiwai ? '' : '人'}}</span>
+              <span><em>{{info.total_member}}</em> {{role.haiwai ? '' : '人'}}</span>
             </li>
           </ul>
         </div>
@@ -38,7 +38,7 @@
           <ul>
             <li>
               <strong><i></i>{{$t('home.panel.tta')}}</strong>
-              <span><em>{{info.nums}}</em>{{role.haiwai ? '' : '笔'}}</span>
+              <span><em>{{info.nums}}</em> {{role.haiwai ? '' : '笔'}}</span>
             </li>
             <li>
               <strong><i></i>{{$t('home.panel.tincome')}}</strong>
