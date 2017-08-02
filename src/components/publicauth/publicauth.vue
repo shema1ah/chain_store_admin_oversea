@@ -1,155 +1,157 @@
 <template>
-  <!-- 未绑定总账户公众号 -->
-  <div class="warpper" v-if="wechatNotAuth" v-loading="loading1" :element-loading-text="$t('common.loading')">
-    <div class="banner_wrapper">
-      <p>{{$t('pubSignal.crumbs.unauthorized')}}</p>
-    </div>
-    <div class="panel">
-      <div class="panel-header">
-        <div class="panel-select-group">
-          <span class="panel-header__desc">{{$t('pubSignal.title.bind')}}</span>
+  <div v-loading="loading1 || loading2" :element-loading-text="$t('common.loading')">
+    <!-- 未绑定总账户公众号 -->
+    <div class="warpper" v-if="wechatNotAuth">
+      <div class="banner_wrapper">
+        <p>{{$t('pubSignal.crumbs.unauthorized')}}</p>
+      </div>
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-select-group">
+            <span class="panel-header__desc">{{$t('pubSignal.title.bind')}}</span>
+          </div>
+        </div>
+        <div class="panel-body" style="padding-bottom:25px">
+          <ul class="steps">
+            <li>
+              <strong><span>Step</span>1</strong>
+              <img src="./img/step01.jpeg" alt="step1">
+              <p>{{$t('pubSignal.panel.wechatScan')}}</p>
+            </li>
+            <li>
+              <strong><span>Step</span>2</strong>
+              <img src="./img/step02.jpeg" alt="step2">
+              <p>{{$t('pubSignal.panel.adminAuthConfirm')}}</p>
+            </li>
+            <li>
+              <strong><span>Step</span>3</strong>
+              <img src="./img/step03.jpeg" alt="step3">
+              <p>{{$t('pubSignal.panel.authSucc')}}</p>
+            </li>
+          </ul>
+          <button @click="goWechatAuth" class="el-button el-button--primary btn-add" type="button">{{$t('pubSignal.panel.btn.freeAdd')}}</button>
         </div>
       </div>
-      <div class="panel-body" style="padding-bottom:25px">
-        <ul class="steps">
-          <li>
-            <strong><span>Step</span>1</strong>
-            <img src="./img/step01.jpeg" alt="step1">
-            <p>{{$t('pubSignal.panel.wechatScan')}}</p>
-          </li>
-          <li>
-            <strong><span>Step</span>2</strong>
-            <img src="./img/step02.jpeg" alt="step2">
-            <p>{{$t('pubSignal.panel.adminAuthConfirm')}}</p>
-          </li>
-          <li>
-            <strong><span>Step</span>3</strong>
-            <img src="./img/step03.jpeg" alt="step3">
-            <p>{{$t('pubSignal.panel.authSucc')}}</p>
-          </li>
-        </ul>
-        <button @click="goWechatAuth" class="el-button el-button--primary btn-add" type="button">{{$t('pubSignal.panel.btn.freeAdd')}}</button>
+    </div>
+    <!-- 已绑定总账户公众号 -->
+    <div class="warpper public-auth" v-else>
+      <div class="banner_wrapper">
+        <div class="banner-breadcrumb"><span>{{$t('pubSignal.crumbs.authorizedPS')}}</span></div>
       </div>
-    </div>
-  </div>
-  <!-- 已绑定总账户公众号 -->
-  <div class="warpper public-auth" v-else>
-    <div class="banner_wrapper">
-      <div class="banner-breadcrumb"><span>{{$t('pubSignal.crumbs.authorizedPS')}}</span></div>
-    </div>
-    <div class="panel">
-      <div class="panel-header">
-        <div class="panel-select-group">
-          <span class="panel-header__desc">{{$t('pubSignal.title.psInfo')}}</span>
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-select-group">
+            <span class="panel-header__desc">{{$t('pubSignal.title.psInfo')}}</span>
+          </div>
         </div>
-      </div>
-      <div class="panel-body">
-        <div class="public-info">
-          <img :src="publicAvatar" :alt="$t('pubSignal.panel.avatar')" />
-          <span>{{$t('pubSignal.panel.name')}}
+        <div class="panel-body">
+          <div class="public-info">
+            <img :src="publicAvatar" :alt="$t('pubSignal.panel.avatar')" />
+            <span>{{$t('pubSignal.panel.name')}}
             <strong>{{publicInfo.nick_name}}</strong>
           </span>
-          <span>{{$t('pubSignal.panel.id')}}
+            <span>{{$t('pubSignal.panel.id')}}
             <strong>{{publicInfo.appid}}</strong>
           </span>
-          <span>{{$t('pubSignal.panel.psType')}}
+            <span>{{$t('pubSignal.panel.psType')}}
             <strong>{{publicInfo.service_type_str}}</strong>
           </span>
-          <span>{{$t('pubSignal.panel.authType')}}
+            <span>{{$t('pubSignal.panel.authType')}}
             <strong>{{publicInfo.verify_type_str}}</strong>
           </span>
-        </div>
-        <div class="operation">
-          <div class="panel-header-btn panel-header-btn__fill" @click="showDialog" v-if="!role.single">{{$t('pubSignal.panel.btn.subAuthMng')}}</div>
-          <el-tooltip class="item" effect="dark" :content="role.single ? $t('pubSignal.panel.btn.deAuth') : $t('pubSignal.panel.btn.dePrimeAuth')" placement="right">
-            <div class="panel-header-btn" @click="confirm">
-              {{$t('pubSignal.panel.btn.releaseAuth')}}
-            </div>
-          </el-tooltip>
-        </div>
-      </div>
-    </div>
-    <div class="panel" v-if="!role.haiwai">
-      <div class="panel-header panel-header__fix">
-        <div class="panel-select-group">
-          <span class="panel-header__desc">微信菜单链接</span>
+          </div>
+          <div class="operation">
+            <div class="panel-header-btn panel-header-btn__fill" @click="showDialog" v-if="!role.single">{{$t('pubSignal.panel.btn.subAuthMng')}}</div>
+            <el-tooltip class="item" effect="dark" :content="role.single ? $t('pubSignal.panel.btn.deAuth') : $t('pubSignal.panel.btn.dePrimeAuth')" placement="right">
+              <div class="panel-header-btn" @click="confirm">
+                {{$t('pubSignal.panel.btn.releaseAuth')}}
+              </div>
+            </el-tooltip>
+          </div>
         </div>
       </div>
-      <div class="panel-body">
-        <ul class="copy-list" id="copy-list">
-          <li v-if="role.single">
-            <span @click="selectext($event)">点餐链接</span>
-            <p>https://o.qfpay.com/dc/?/#!/merchant/{{uid}}</p>
-            <button @click="copylink($event)" type="button" class="el-button el-button--text">
-              <img src="./img/ic_copy.png" alt="icon">复制链接
-            </button>
-          </li>
-          <li v-if="role.single">
-            <span @click="selectext($event)">外卖链接</span>
-            <p>https://o.qfpay.com/dc/take-out.html?/#!/merchant/{{uid}}</p>
-            <button @click="copylink($event)" type="button" class="el-button el-button--text">
-              <img src="./img/ic_copy.png" alt="icon">复制链接
-            </button>
-          </li>
-          <li v-else>
-            <span @click="selectext($event)">外卖链接</span>
-            <p>https://o.qfpay.com/dc/store-list.html?/#!/merchant/{{uid}}</p>
-            <button @click="copylink($event)" type="button" class="el-button el-button--text">
-              <img src="./img/ic_copy.png" alt="icon">复制链接
-            </button>
-          </li>
-          <li>
-            <span @click="selectext($event)">订单链接</span>
-            <p>https://o.qfpay.com/dc/order-list.html?mchnt_id={{uid}}</p>
-            <button @click="copylink($event)" type="button" class="el-button el-button--text">
-              <img src="./img/ic_copy.png" alt="icon">复制链接
-            </button>
-          </li>
-          <li>
-            <span @click="selectext($event)">集点链接</span>
-            <p>http://m.haojin.in/v2/app.html?mchnt_id={{uid}}#!/card</p>
-            <button @click="copylink($event)" type="button" class="el-button el-button--text">
-              <img src="./img/ic_copy.png" alt="icon">复制链接
-            </button>
-          </li>
-          <li>
-            <span @click="selectext($event)">红包链接</span>
-            <p>http://m.haojin.in/v2/app.html?mchnt_id={{uid}}#!/coupon</p>
-            <button @click="copylink($event)" type="button" class="el-button el-button--text">
-              <img src="./img/ic_copy.png" alt="icon">复制链接
-            </button>
-          </li>
-          <li>
-            <span @click="selectext($event)">储值链接</span>
-            <p>https://o2.qfpay.com/prepaid/v1/page/c/usercenter/merchant.html?h={{hashid}}</p>
-            <button @click="copylink($event)" type="button" class="el-button el-button--text">
-              <img src="./img/ic_copy.png" alt="icon">复制链接
-            </button>
-          </li>
-          <li>
-            <span @click="selectext($event)">会员中心</span>
-            <p>http://m.haojin.in/v2/app.html#!/carddetail/{{hashid}}</p>
-            <button @click="copylink($event)" type="button" class="el-button el-button--text">
-              <img src="./img/ic_copy.png" alt="icon">复制链接
-            </button>
-          </li>
-        </ul>
+      <div class="panel" v-if="!role.haiwai">
+        <div class="panel-header panel-header__fix">
+          <div class="panel-select-group">
+            <span class="panel-header__desc">微信菜单链接</span>
+          </div>
+        </div>
+        <div class="panel-body">
+          <ul class="copy-list" id="copy-list">
+            <li v-if="role.single">
+              <span @click="selectext($event)">点餐链接</span>
+              <p>https://o.qfpay.com/dc/?/#!/merchant/{{uid}}</p>
+              <button @click="copylink($event)" type="button" class="el-button el-button--text">
+                <img src="./img/ic_copy.png" alt="icon">复制链接
+              </button>
+            </li>
+            <li v-if="role.single">
+              <span @click="selectext($event)">外卖链接</span>
+              <p>https://o.qfpay.com/dc/take-out.html?/#!/merchant/{{uid}}</p>
+              <button @click="copylink($event)" type="button" class="el-button el-button--text">
+                <img src="./img/ic_copy.png" alt="icon">复制链接
+              </button>
+            </li>
+            <li v-else>
+              <span @click="selectext($event)">外卖链接</span>
+              <p>https://o.qfpay.com/dc/store-list.html?/#!/merchant/{{uid}}</p>
+              <button @click="copylink($event)" type="button" class="el-button el-button--text">
+                <img src="./img/ic_copy.png" alt="icon">复制链接
+              </button>
+            </li>
+            <li>
+              <span @click="selectext($event)">订单链接</span>
+              <p>https://o.qfpay.com/dc/order-list.html?mchnt_id={{uid}}</p>
+              <button @click="copylink($event)" type="button" class="el-button el-button--text">
+                <img src="./img/ic_copy.png" alt="icon">复制链接
+              </button>
+            </li>
+            <li>
+              <span @click="selectext($event)">集点链接</span>
+              <p>http://m.haojin.in/v2/app.html?mchnt_id={{uid}}#!/card</p>
+              <button @click="copylink($event)" type="button" class="el-button el-button--text">
+                <img src="./img/ic_copy.png" alt="icon">复制链接
+              </button>
+            </li>
+            <li>
+              <span @click="selectext($event)">红包链接</span>
+              <p>http://m.haojin.in/v2/app.html?mchnt_id={{uid}}#!/coupon</p>
+              <button @click="copylink($event)" type="button" class="el-button el-button--text">
+                <img src="./img/ic_copy.png" alt="icon">复制链接
+              </button>
+            </li>
+            <li>
+              <span @click="selectext($event)">储值链接</span>
+              <p>https://o2.qfpay.com/prepaid/v1/page/c/usercenter/merchant.html?h={{hashid}}</p>
+              <button @click="copylink($event)" type="button" class="el-button el-button--text">
+                <img src="./img/ic_copy.png" alt="icon">复制链接
+              </button>
+            </li>
+            <li>
+              <span @click="selectext($event)">会员中心</span>
+              <p>http://m.haojin.in/v2/app.html#!/carddetail/{{hashid}}</p>
+              <button @click="copylink($event)" type="button" class="el-button el-button--text">
+                <img src="./img/ic_copy.png" alt="icon">复制链接
+              </button>
+            </li>
+          </ul>
+        </div>
       </div>
-    </div>
-    <el-dialog :title="$t('pubSignal.dialog.m1')" v-model="dialogVisible" size="tiny" :show-close="false">
-      <el-form>
-        <el-checkbox-group v-model="checkedStores" @change="handleCheckedStoresChange">
-          <el-checkbox v-for="store in stores" :label="store.userid">
-            {{store.shop_name}}
-          </el-checkbox>
-        </el-checkbox-group>
-      </el-form>
-      <span slot="footer" class="dialog-footer">
+      <el-dialog :title="$t('pubSignal.dialog.m1')" v-model="dialogVisible" size="tiny" :show-close="false">
+        <el-form>
+          <el-checkbox-group v-model="checkedStores" @change="handleCheckedStoresChange">
+            <el-checkbox v-for="store in stores" :label="store.userid">
+              {{store.shop_name}}
+            </el-checkbox>
+          </el-checkbox-group>
+        </el-form>
+        <span slot="footer" class="dialog-footer">
         <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange" class="check-all">{{$t('pubSignal.dialog.all')}}</el-checkbox>
         <el-button @click="dialogVisible = false">{{$t('common.cancel')}}</el-button>
         <el-button type="primary" @click="authPublics">{{$t('common.ok')}}</el-button>
       </span>
-    </el-dialog>
+      </el-dialog>
+    </div>
   </div>
 </template>
 
@@ -163,6 +165,7 @@
     data() {
       return {
         loading1: false,
+        loading2: false,
         role: Store.get("role") || {},
         wechatNotAuth: false,
         publicInfo: {},
@@ -214,8 +217,10 @@
         window.location.href = `${tempPage}/v1/wxthird/auth_url?userid=${this.uid}&redirect_url=${origin}/redirect/main/publicauth`
       },
       fetchMerchantIds () {
+        this.loading2 = true;
         axios.get(`${config.host}/merchant/ids`)
           .then((res) => {
+            this.loading2 = false;
             let data = res.data
             if (data.respcd === config.code.OK) {
               this.hashid = data.data.hashid
@@ -225,6 +230,7 @@
             }
           })
           .catch(() => {
+            this.loading2 = false;
             this.$message.error(this.$t('pubSignal.msg.m2'))
           })
       },

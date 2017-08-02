@@ -11,8 +11,11 @@ let filters = {
     } else if (number === 0) {
       return 0
     }
-
-    return (number / role.rate).toFixed(2)
+    if(role.haiwai) {
+      return (number / role.rate)
+    }else {
+      return (number / role.rate).toFixed(2)
+    }
   },
 
   formatNumber (string) {
@@ -21,7 +24,11 @@ let filters = {
     }else if(parseInt(string) === 0) {
       return 0
     }
-    return (string / role.rate).toFixed(2)
+    if(role.haiwai) {
+      return (string / role.rate)
+    }else {
+      return (string / role.rate).toFixed(2)
+    }
   },
 
   removeHMS (time) {

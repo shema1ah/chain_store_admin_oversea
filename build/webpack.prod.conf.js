@@ -78,9 +78,6 @@ var webpackConfig = merge(baseWebpackConfig, {
     new webpack.optimize.CommonsChunkPlugin({
       name: 'manifest',
       chunks: ['vendor']
-    }),
-    new webpack.LoaderOptionsPlugin({
-      minimize: true
     })
   ]
 })

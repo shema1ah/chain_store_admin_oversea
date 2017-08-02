@@ -163,16 +163,16 @@
           <el-table-column
             :label="$t('tradeMng.table.tradeAmount') + '(' + role.currency + ')'" v-if="role.haiwai">
             <template scope="scope">
-              <div class="table-title">{{ scope.row.total_amt | formatNumber }}</div>
+              <div class="table-title">{{ scope.row.total_amt | formatCurrency }}</div>
             </template>
           </el-table-column>
           <el-table-column
             label="交易金额" v-else>
             <template scope="scope">
-              <div class="table-title">{{ scope.row.total_amt | formatNumber }}{{ role.currency }}</div>
-              <div class="table-content">实收{{ scope.row.txamt | formatNumber }}{{ role.currency }}</div>
-              <div v-show="scope.row.mchnt_coupon" class="table-content">商家红包{{ scope.row.mchnt_coupon | formatNumber }}{{ role.currency }}</div>
-              <div v-show="scope.row.hj_coupon" class="table-content">平台补贴{{ scope.row.hj_coupon | formatNumber }}{{ role.currency }}</div>
+              <div class="table-title">{{ scope.row.total_amt | formatCurrency }}{{ role.currency }}</div>
+              <div class="table-content">实收{{ scope.row.txamt | formatCurrency }}{{ role.currency }}</div>
+              <div v-show="scope.row.mchnt_coupon" class="table-content">商家红包{{ scope.row.mchnt_coupon | formatCurrency }}{{ role.currency }}</div>
+              <div v-show="scope.row.hj_coupon" class="table-content">平台补贴{{ scope.row.hj_coupon | formatCurrency }}{{ role.currency }}</div>
             </template>
           </el-table-column>
           <el-table-column
@@ -240,10 +240,10 @@
       let start = new Date();
       let defaultDateRange = [start, start];
       let checkOrderNo = (rule, val, cb) => {
-        if(val && !/\d+/.test(Number(val))) {
-          cb(new Error()); // this.$t('tradeMng.msg.m1')
+        if(val && !/^\d+$/.test(Number(val))) {
+          cb(this.$t('tradeMng.msg.m1')); // this.$t('tradeMng.msg.m1')
         } else if(val && !/\d{14}/.test(val)) {
-          cb(new Error()); // this.$t('tradeMng.msg.m2')
+          cb(this.$t('tradeMng.msg.m2')); // this.$t('tradeMng.msg.m2')
         } else {
           cb();
         }
