@@ -523,6 +523,8 @@
               // 清除本地cookie
               document.cookie = "sessionid=''; expires=" + new Date(0).toUTCString();
 
+              localStorage.getItem('lang') && localStorage.removeItem('lang');
+
               this.$router.push("/login");
             } else {
               this.$message.error(data.respmsg);
