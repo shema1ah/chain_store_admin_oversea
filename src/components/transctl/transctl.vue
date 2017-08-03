@@ -84,7 +84,7 @@
           </div>
 
           <div class="panel-select-group">
-            <div class="panel-select__wrapper">
+            <div class="panel-select__wrapper orderno_nowrap">
               <span class="panel-select__desc">{{$t('tradeMng.panel.sNum')}}</span>
               <el-form-item prop="orderno">
                 <el-input v-model="form.orderno" type="number" :placeholder="$t('tradeMng.msg.m8')" size="small" class="panel-select-input__fix panel-select-input-220"></el-input>
@@ -680,6 +680,11 @@
     .panel-select-group {
       margin-bottom: 10px;
       position: relative;
+
+      .orderno_nowrap .el-form-item__error {
+        overflow: visible;
+        white-space: nowrap;
+      }
       .panel-select__desc {
         width: 120px;
         margin: 0;
@@ -692,7 +697,7 @@
       }
     }
     .panel-header__auto {
-      padding-bottom: 0;
+      padding-bottom: 10px;
     }
     .table-title {
       font-size: 16px;
