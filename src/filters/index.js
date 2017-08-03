@@ -1,16 +1,15 @@
 import Vue from 'vue'
 import Store from '../common/js/store'
 
-let role = Store.get('role') || {};
-
 let filters = {
 
   formatCurrency (number) {
-    if (isNaN(number)) {
-      return
-    } else if (number === 0) {
+    if(isNaN(number)) {
+      return 0
+    } else if(number === 0) {
       return 0
     }
+    let role = Store.get('role') || {};
     if(role.haiwai) {
       return (number / role.rate)
     }else {
@@ -24,6 +23,7 @@ let filters = {
     }else if(parseInt(string) === 0) {
       return 0
     }
+    let role = Store.get('role') || {};
     if(role.haiwai) {
       return (string / role.rate)
     }else {

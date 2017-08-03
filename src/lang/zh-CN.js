@@ -186,7 +186,7 @@ exports.default = {
       undoNum: '撤销笔数',
       bi: '笔',
       undo: '撤销明细',
-      shopName: '店铺名称',
+      shopName: '店铺名称/ID',
       operator: '操作员',
       all: '全部',
       colWay: '收款方式',

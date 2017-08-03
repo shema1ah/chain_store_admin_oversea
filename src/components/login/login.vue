@@ -31,7 +31,7 @@
   export default {
     data() {
       return {
-        lang: navigator.language,
+        lang: JSON.parse(localStorage.getItem("lang") || '{}').value || navigator.language,
         role: Store.get('role') || {},
         loading: false,
         form: {

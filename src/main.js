@@ -52,7 +52,7 @@ var localePackage = { // 静态模板文案多语言
   en: require(`lang/${(JSON.parse(switchlang).value)}.js`)['default'],
   ja: require(`lang/${(JSON.parse(switchlang).value)}.js`)['default']
 };
-Vue.config.lang = (JSON.parse(switchlang).value || 'zh-CN');
+Vue.config.lang = (JSON.parse(switchlang).value || navigator.language);
 Object.keys(localePackage).forEach(function (lang) {
   Vue.locale(lang, localePackage[lang])
 })

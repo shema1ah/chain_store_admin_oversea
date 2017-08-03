@@ -1,5 +1,5 @@
 <template>
-  <div class="top_content" v-loading="loading" :element-loading-text="$t('common.loading')">
+  <div class="top_content" v-loading.fullscreen.lock="loading" :element-loading-text="$t('common.loading')">
     <sidebar></sidebar>
     <div class="main">
       <div class="header">

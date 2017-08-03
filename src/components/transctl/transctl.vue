@@ -186,7 +186,7 @@
           </el-table-column>
           <el-table-column min-width="100" :label="$t('tradeMng.table.op')" v-if="role.single">
             <template scope="scope">
-              <el-button type="text" size="small" :disabled="new Date(scope.row.sysdtm).toDateString() !== new Date().toDateString() || scope.row.cancel !== 0 || scope.row.status !== 1" class="el-button__fix" @click="confirm(scope.row)">{{$t('tradeMng.table.cancel')}}</el-button>
+              <el-button type="text" size="small" :disabled="scope.row.cancel !== 0 || scope.row.status !== 1" class="el-button__fix" @click="confirm(scope.row)">{{$t('tradeMng.table.cancel')}}</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -241,15 +241,15 @@
       let defaultDateRange = [start, start];
       let checkOrderNo = (rule, val, cb) => {
         if(val && !/^\d+$/.test(Number(val))) {
-          cb(this.$t('tradeMng.msg.m1')); // this.$t('tradeMng.msg.m1')
+          cb(this.$t('tradeMng.msg.m1'));
         } else if(val && !/\d{14}/.test(val)) {
-          cb(this.$t('tradeMng.msg.m2')); // this.$t('tradeMng.msg.m2')
+          cb(this.$t('tradeMng.msg.m2'));
         } else {
           cb();
         }
       };
       return {
-        lang: JSON.parse(localStorage.getItem("lang") || '{}').value || '',
+        lang: JSON.parse(localStorage.getItem("lang") || '{}').value || navigator.language,
         role: Store.get('role') || {},
         showConfirm: false,
         checkValue: {},
@@ -300,7 +300,7 @@
         },
         pwdrules: {
             pwd: [
-              { required: true, message: '' } // this.$t('tradeMng.msg.m9')
+              { required: true, message: this.$t('tradeMng.msg.m9') }
             ]
         }
       };
@@ -388,7 +388,7 @@
         }
       }).catch(() => {
         this.loading = false;
-        this.$message.error(); // this.$t('tradeMng.msg.m3')
+        this.$message.error(this.$t('tradeMng.msg.m3'));
       });
     },
 
@@ -432,13 +432,13 @@
           }
         }).catch((res) => {
           this.iconLoading = false;
-          this.$message.error(); // this.$t('tradeMng.msg.m7')
+          this.$message.error(this.$t('tradeMng.msg.m7'));
         });
       },
 
       // 验证密码
       checkPwd() {
-        this.$refs['form'].validate((valid) => {
+        this.$refs['formpwd'].validate((valid) => {
           if (valid && !this.iconLoading) {
             this.iconLoading = true;
             axios.post(`${config.host}/merchant/validate_password`, {
