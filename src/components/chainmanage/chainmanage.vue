@@ -364,18 +364,7 @@
 //      this.$store.dispatch('getShopList');
     },
     mounted() {
-      // 引用地图相关js
-      /* if(!this.role.isBaoshang && !this.role.haiwai) {
-        if(!document.getElementById("unique_map")) {
-          let no = document.createElement('script');
-          no.id = 'unique_map';
-          no.type = "text/javascript";
-          no.src = "https://webapi.amap.com/maps?v=1.3&key=0500da1f6f0d37a6683b590aee534b8b";
-          no.async = true;
-          no.defer = true;
-          document.body.appendChild(no);
-        }
-      } */
+
     },
     methods: {
       refreshSubShopData() {
@@ -451,7 +440,6 @@
       },
       // 确认是否删除分店
       confirmDeleteShop(uid) {
-        console.log('deleteing uid:', uid);
         this.shouldDeleteUid = uid;
         this.showDeleteShopConfirm = true;
       },
