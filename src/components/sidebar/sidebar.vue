@@ -35,7 +35,6 @@
   import config from 'src/config';
   export default {
     data() {
-        console.log('****语言：', config)
       return {
         lang: config.lang,
         role: Store.get('role') || {},
