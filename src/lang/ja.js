@@ -190,7 +190,7 @@ exports.default = {
       undoNum: '取消された取引数',
       bi: '',
       undo: '取消',
-      shopName: '店舗名',
+      shopName: '店舗名/ID',
       operator: 'オペレーター',
       all: '全部',
       colWay: '集金方式',

@@ -365,7 +365,7 @@
     },
     mounted() {
       // 引用地图相关js
-      if(!this.role.isBaoshang && !this.role.haiwai) {
+      /* if(!this.role.isBaoshang && !this.role.haiwai) {
         if(!document.getElementById("unique_map")) {
           let no = document.createElement('script');
           no.id = 'unique_map';
@@ -375,7 +375,7 @@
           no.defer = true;
           document.body.appendChild(no);
         }
-      }
+      } */
     },
     methods: {
       refreshSubShopData() {
@@ -523,7 +523,9 @@
               // 清除本地cookie
               document.cookie = "sessionid=''; expires=" + new Date(0).toUTCString();
 
-              this.$router.push("/login");
+              localStorage.getItem('lang') && localStorage.removeItem('lang');
+
+              this.$router.push(`/login?from=logout&haiwai=${this.role.haiwai}`);
             } else {
               this.$message.error(data.respmsg);
             }

@@ -51,11 +51,29 @@
 
     created() {
       // cookie存在跳转首页
+      console.log(666)
       if(getCookie('sessionid') && !Store.get("flag")) {
        this.$router.push('/main/index');
        }
     },
-
+    mounted() {
+      var getQuery = function (href) {
+        var Request = {};
+        if (href.indexOf('?') != -1) {
+          var str = location.hash.substring(location.hash.indexOf('?') + 1);
+          var strs = str.split('&');
+          for (var i = 0; i < strs.length; i++) {
+            var _key = strs[i].split('=')[0];
+            Request[_key] = strs[i].split('=')[1];
+          }
+        }
+        return Request;
+      };
+      var param = getQuery(location.href);
+      if(param && param.from && Boolean(this.role.haiwai)) {
+          location.replace(location.protocol + '//' + location.host);
+      }
+    },
     methods: {
       // 登录
       login() {

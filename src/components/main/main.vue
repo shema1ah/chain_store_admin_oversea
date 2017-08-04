@@ -1,5 +1,5 @@
 <template>
-  <div class="top_content" v-loading.fullscreen.lock="loading" :element-loading-text="$t('common.loading')">
+  <div class="top_content" v-loading.fullscreen="loading" :element-loading-text="$t('common.loading')">
     <sidebar></sidebar>
     <div class="main">
       <div class="header">
@@ -32,6 +32,7 @@ import sidebar from '../../components/sidebar/sidebar.vue';
 export default {
   data() {
     return {
+      role: Store.get('role') || {},
       loading: false,
       shop: {},
       formrules: {
@@ -67,8 +68,8 @@ export default {
         if (data.respcd === config.code.OK) {
           // 清除本地cookie
           document.cookie = "sessionid=''; expires=" + new Date(0).toUTCString();
-//          localStorage.getItem('lang') && localStorage.removeItem('lang');
-          this.$router.push("/login");
+          localStorage.getItem('lang') && localStorage.removeItem('lang');
+          this.$router.push(`/login?from=logout&haiwai=${this.role.haiwai}`);
         } else {
           this.$message.error(data.respmsg);
         }

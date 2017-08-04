@@ -72,9 +72,11 @@ axios.interceptors.response.use((res) => {
   if (data.respcd == config.code.SESSIONERR) {
     // 清除本地cookie
     document.cookie = "sessionid=''; expires=" + new Date(0).toUTCString()
+
+    localStorage.getItem('lang') && localStorage.removeItem('lang');
     Store.set('flag', true);
 
-    location.href = `/`
+    location.href = `/?from=logout&haiwai=${Store.get('role').haiwai}`
   } else {
     return res
   }

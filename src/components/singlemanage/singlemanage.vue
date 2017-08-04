@@ -88,6 +88,7 @@
 
 <script>
   import ElButton from "../../../node_modules/element-ui/packages/button/src/button";
+  import Store from '../../common/js/store';
   import axios from 'axios';
   import config from 'config';
 
@@ -165,7 +166,8 @@
               // 清除本地cookie
               document.cookie = "sessionid=''; expires=" + new Date(0).toUTCString();
 
-              this.$router.push("/login");
+              localStorage.getItem('lang') && localStorage.removeItem('lang');
+              this.$router.push(`/login?from=logout&haiwai=${Store.get('role').haiwai}`);
             } else {
               this.$message.error(data.respmsg);
             }
