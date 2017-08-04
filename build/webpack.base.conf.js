@@ -38,7 +38,7 @@ module.exports = {
       {
         test: /\.js$/,
         loader: 'babel-loader',
-        include: [resolve('src'), resolve('test'), resolve('node_modules')]
+        include: [resolve('src'), resolve('test'), resolve('node_modules/element-ui')]
       },
       {
         test: /\.(js|vue)$/,

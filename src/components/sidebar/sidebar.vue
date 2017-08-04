@@ -32,11 +32,12 @@
 </template>
 <script>
   import Store from '../../common/js/store';
-
+  import config from 'src/config';
   export default {
     data() {
+        console.log('****语言：', config)
       return {
-        lang: JSON.parse(localStorage.getItem("lang") || '{}').value || navigator.language,
+        lang: config.lang,
         role: Store.get('role') || {},
         navs: [],
         isShow: true,

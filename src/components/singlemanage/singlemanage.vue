@@ -117,7 +117,7 @@
         }
       };
       return {
-        lang: JSON.parse(localStorage.getItem("lang") || '{}').value || navigator.language,
+        lang: config.lang,
         loading: false,
         iconShow: false,
         showChangePass: false,

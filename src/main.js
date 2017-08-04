@@ -13,8 +13,14 @@ import config from 'src/config'
 import Store from 'common/js/store'
 import VueI18n from 'vue-i18n'
 import locale from 'element-ui/lib/locale'
-let switchlang = localStorage.getItem("lang") || JSON.stringify({value: navigator.language});
-let targetLang = require('element-ui/lib/locale/lang/' + (JSON.parse(switchlang).value || 'zh-CN'))
+let langAdaptor = function(lang) {
+  if(~lang.indexOf('en')) return 'en'
+  if(~lang.indexOf('zh')) return 'zh-CN'
+  if(~lang.indexOf('ja')) return 'ja'
+  return 'en';
+}
+let switchlang = localStorage.getItem("lang") || JSON.stringify({value: langAdaptor(navigator.language)});
+let targetLang = require('element-ui/lib/locale/lang/' + JSON.parse(switchlang).value)
 Vue.use(VueI18n)
 
 Vue.use(Tree)
@@ -52,7 +58,7 @@ var localePackage = { // 静态模板文案多语言
   en: require(`lang/${(JSON.parse(switchlang).value)}.js`)['default'],
   ja: require(`lang/${(JSON.parse(switchlang).value)}.js`)['default']
 };
-Vue.config.lang = (JSON.parse(switchlang).value || navigator.language);
+config.lang = JSON.parse(switchlang).value;
 Object.keys(localePackage).forEach(function (lang) {
   Vue.locale(lang, localePackage[lang])
 })

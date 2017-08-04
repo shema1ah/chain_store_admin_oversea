@@ -286,7 +286,7 @@
         }
       }
       return {
-        lang: JSON.parse(localStorage.getItem("lang") || '{}').value || navigator.language,
+        lang: config.lang,
         role: Store.get('role') || {},
         currentpage: 1,
         visible: false,
