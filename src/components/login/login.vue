@@ -26,7 +26,7 @@
 <script>
   import axios from 'axios';
   import config from 'config';
-  import { getRole, getCookie } from '../../common/js/util';
+  import { getRole, getCookie, setCookie } from '../../common/js/util';
   import Store from '../../common/js/store';
   export default {
     data() {
@@ -51,7 +51,6 @@
 
     created() {
       // cookie存在跳转首页
-      console.log(666)
       if(getCookie('sessionid') && !Store.get("flag")) {
        this.$router.push('/main/index');
        }
@@ -89,6 +88,10 @@
                 this.$store.state.role = val;
                 Store.set('role', val);
                 Store.set('flag', false);
+
+                // 当前域名下设置cookie
+                setCookie('sessionid', data.data.session_id);
+
                 this.$router.push('/main/index')
               } else {
                 this.$message.error(data.resperr);

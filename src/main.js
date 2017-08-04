@@ -58,7 +58,7 @@ Object.keys(localePackage).forEach(function (lang) {
 })
 // header增加cookie验证信息
 /* axios.interceptors.request.use(function (config) {
-  config.headers.Session = `Token3333`;
+  config.headers.Session = `sessionid=eee`;
   return config;
 }, function (err) {
   return Promise.reject(err);
