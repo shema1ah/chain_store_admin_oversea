@@ -174,8 +174,8 @@ exports.default = {
       shopName: 'Shop Name',
       operator: 'Operator',
       moreFilter: 'Choose More',
-      noLimit: 'Unlimited',
-      dd: 'Cancel The Details', // 撤销明细
+      noLimit: 'All',
+      dd: 'Canceled', // 撤销明细
       sNum: 'Serial Number', // 流水号
       tip: 'Please enter the serial number',
       btn: {
@@ -190,7 +190,7 @@ exports.default = {
       undoNum: 'Canceled',
       bi: 'times',
       undo: 'Cancel The Details',
-      shopName: 'Shop Name',
+      shopName: 'Shop Name/ID',
       operator: 'Operator',
       all: 'All',
       colWay: 'Collection Method',
@@ -236,11 +236,11 @@ exports.default = {
       t2: 'Event Operation Statistics'
     },
     panel: {
-      t1: 'New Members Today',
+      t1: 'New Customers Today',
       t2: 'Payment Amount Today',
       tc: 'Returning Customer Today',
-      cmnew: 'New Members This Month',
-      cumulativeMembership: 'Total Members',
+      cmnew: 'New Customers This Month',
+      cumulativeMembership: 'Total Customers',
       tta: 'Payment Today',
       tincome: 'Actual Amount Today',
       cmincome: 'Actual Amount This Month',

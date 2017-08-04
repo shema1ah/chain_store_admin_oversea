@@ -240,7 +240,7 @@
       let start = new Date();
       let defaultDateRange = [start, start];
       let checkOrderNo = (rule, val, cb) => {
-        if(val && !/^\d+$/.test(Number(val))) {
+        if(val && !/^\d+$/.test(val)) {
           cb(this.$t('tradeMng.msg.m1'));
         } else if(val && !/\d{14}/.test(val)) {
           cb(this.$t('tradeMng.msg.m2'));
