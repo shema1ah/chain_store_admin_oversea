@@ -167,6 +167,11 @@
               document.cookie = "sessionid=''; expires=" + new Date(0).toUTCString();
 
               localStorage.getItem('lang') && localStorage.removeItem('lang');
+              var to_removed = document.getElementById('unique_map');
+              if(to_removed) {
+                to_removed.onload = null;
+                document.body.removeChild(to_removed);
+              }
               this.$router.push(`/login?from=logout&haiwai=${Store.get('role').haiwai}`);
             } else {
               this.$message.error(data.respmsg);
