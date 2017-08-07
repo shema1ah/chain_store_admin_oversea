@@ -1114,9 +1114,22 @@
         e.stopPropagation();
       },
       handleNodeClick(node) {
-        console.log(node);
         this.shopInfo.shoptype_id = node.id;
         this.shopInfo.shoptype_name = node.name;
+      },
+      addMapScript() {
+        // 引用地图相关js
+        if (!this.role.isBaoshang && !this.role.haiwai) {
+          var _self = this;
+          var script = document.createElement('script');
+          script.id = 'unique_map';
+          script.type = "text/javascript";
+          script.src = "https://webapi.amap.com/maps?v=1.3&key=0500da1f6f0d37a6683b590aee534b8b";
+          document.body.insertBefore(script, document.querySelectorAll('script')[document.querySelectorAll('script').length - 1]);
+          script.onload = function() {
+            _self.initMapAPI();
+          }
+        }
       }
     },
     mounted() {
@@ -1130,25 +1143,14 @@
           _self.showTreeComponent(evt);
         }
       }, false);
-      // 引用地图相关js
-      if (!this.role.isBaoshang && !this.role.haiwai) {
-        if (!document.getElementById("unique_map")) {
-          var script = document.createElement('script');
-          script.id = 'unique_map';
-          script.type = "text/javascript";
-          script.src = "https://webapi.amap.com/maps?v=1.3&key=0500da1f6f0d37a6683b590aee534b8b";
-          document.body.insertBefore(script, document.querySelectorAll('script')[document.querySelectorAll('script').length - 1]);
-//            Vue.nextTick(function() {
-//              script.onload = function(){
-//                _self.initMapAPI();
-//              }
-//            })
-          setTimeout(function(){
-            _self.initMapAPI();
-          }, 3000)
+      this.addMapScript();
+    },
+    beforeDestroy() {
+        var to_removed = document.getElementById('unique_map');
+        if(to_removed) {
+          to_removed.onload = null;
+          document.body.removeChild(to_removed);
         }
-      }
-
     }
   }
 </script>
