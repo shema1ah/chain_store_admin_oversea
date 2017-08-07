@@ -1,5 +1,6 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
+import 'babel-polyfill'
 import Vue from 'vue'
 import 'src/filters'
 import store from './store'
@@ -19,7 +20,7 @@ let langAdaptor = function(lang) {
   if(~lang.indexOf('ja')) return 'ja'
   return 'en';
 }
-let switchlang = localStorage.getItem("lang") || JSON.stringify({value: langAdaptor(navigator.language)});
+let switchlang = localStorage.getItem("lang") || JSON.stringify({value: langAdaptor(navigator.language || navigator.browserLanguage)}) || 'en';
 let targetLang = require('element-ui/lib/locale/lang/' + JSON.parse(switchlang).value)
 Vue.use(VueI18n)
 
@@ -75,7 +76,7 @@ axios.defaults.headers.common['lang'] = JSON.parse(switchlang).value;
 
 axios.interceptors.response.use((res) => {
   let data = res.data
-  if (data.respcd == config.code.SESSIONERR) {
+  if (data.respcd == config.code.SESSIONERR || data.respcd == config.code.LOGINERR) {
     // 清除本地cookie
     document.cookie = "sessionid=''; expires=" + new Date(0).toUTCString()
 
