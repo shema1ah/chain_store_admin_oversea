@@ -82,10 +82,10 @@ axios.interceptors.response.use((res) => {
 
     localStorage.getItem('lang') && localStorage.removeItem('lang');
     Store.set('flag', true);
-    var to_removed = document.getElementById('unique_map');
-    if(to_removed) {
-      to_removed.onload = null;
-      document.body.removeChild(to_removed);
+    var toRemoved = document.getElementById('unique_map');
+    if(toRemoved) {
+      toRemoved.onload = null;
+      document.body.removeChild(toRemoved);
     }
     location.href = `/?from=logout&haiwai=${Store.get('role').haiwai}`
   } else {
