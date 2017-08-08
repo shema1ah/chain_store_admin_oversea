@@ -14,7 +14,7 @@
               <el-form-item prop="dateRangeValue">
                 <el-date-picker
                   v-model="form.dateRangeValue"
-                  type="daterange"
+                  type="datetimerange"
                   :editable="false"
                   :placeholder="$t('billMng.panel.range')"
                   size="small"
@@ -324,11 +324,15 @@
         return this.$store.state.shopData;
       },
       basicParams() {
+        let str = '';
+        if(!this.form.choosetime) {
+          str = 'yyyy-MM-dd HH:mm:ss';
+        }
         return {
           userid: this.form.selectShopUid,
           opuid: this.form.operaValue,
-          endtime: formatDate(this.form.dateRangeValue[1]),
-          starttime: formatDate(this.form.dateRangeValue[0]),
+          starttime: formatDate(this.form.dateRangeValue[0], str),
+          endtime: formatDate(this.form.dateRangeValue[1], str),
           orderno: this.form.orderno,
           charset: 'utf-8',
           isdownload: false,

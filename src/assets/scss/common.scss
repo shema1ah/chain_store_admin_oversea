@@ -80,3 +80,27 @@ input:-webkit-autofill { box-shadow: 0 0 0px 1000px white inset !important;}
 .el-icon-loading{
   margin-right: 0;
 }
+
+// 时分秒选择控件
+.el-form-item__content {
+  .el-date-editor--datetimerange {
+    .el-icon-time {
+      display: none;
+    }
+
+    // 宽度
+    .el-input__inner {
+      width: 296px;
+      padding: 3px 10px;
+    }
+  }
+}
+
+// 对话框messagebox
+.el-message-box__wrapper {
+  .el-message-box__headerbtn {
+    padding: 0;
+    border: none;
+  }
+}
+

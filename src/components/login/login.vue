@@ -26,7 +26,7 @@
 <script>
   import axios from 'axios';
   import config from 'config';
-  import { getRole, getCookie, setCookie } from '../../common/js/util';
+  import { getRole, getCookie } from '../../common/js/util';
   import Store from '../../common/js/store';
   export default {
     data() {
@@ -90,7 +90,7 @@
                 Store.set('flag', false);
 
                 // 当前域名下设置cookie
-                setCookie('sessionid', data.data.session_id);
+                // setCookie('sessionid', data.data.session_id);
 
                 this.$router.push('/main/index')
               } else {

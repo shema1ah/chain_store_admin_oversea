@@ -20,7 +20,7 @@ let langAdaptor = function(lang) {
   if(~lang.indexOf('ja')) return 'ja'
   return 'en';
 }
-let switchlang = localStorage.getItem("lang") || JSON.stringify({value: langAdaptor(navigator.language || navigator.browserLanguage)}) || 'en';
+let switchlang = localStorage.getItem("lang") || JSON.stringify({value: langAdaptor(navigator.language || navigator.browserLanguage || 'en')});
 let targetLang = require('element-ui/lib/locale/lang/' + JSON.parse(switchlang).value)
 Vue.use(VueI18n)
 
