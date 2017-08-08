@@ -20,7 +20,7 @@ let langAdaptor = function(lang) {
   if(~lang.indexOf('ja')) return 'ja'
   return 'en';
 }
-let switchlang = localStorage.getItem("lang") || JSON.stringify({value: langAdaptor(navigator.language || navigator.browserLanguage)}) || 'en';
+let switchlang = localStorage.getItem("lang") || JSON.stringify({value: langAdaptor(navigator.language || navigator.browserLanguage)});
 let targetLang = require('element-ui/lib/locale/lang/' + JSON.parse(switchlang).value)
 Vue.use(VueI18n)
 
@@ -82,10 +82,10 @@ axios.interceptors.response.use((res) => {
 
     localStorage.getItem('lang') && localStorage.removeItem('lang');
     Store.set('flag', true);
-    var to_removed = document.getElementById('unique_map');
-    if(to_removed) {
-      to_removed.onload = null;
-      document.body.removeChild(to_removed);
+    var toRemoved = document.getElementById('unique_map');
+    if(toRemoved) {
+      toRemoved.onload = null;
+      document.body.removeChild(toRemoved);
     }
     location.href = `/?from=logout&haiwai=${Store.get('role').haiwai}`
   } else {

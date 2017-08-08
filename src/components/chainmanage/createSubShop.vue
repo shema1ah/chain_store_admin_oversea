@@ -808,8 +808,18 @@
         this.$router.push('/main/chainmanage');
       },
       continueToCreateSubShop() {
-        this.$refs['upload_info'].resetFields();
-        this.$refs['shop_info'].resetFields();
+          this.$refs['upload_info'].resetFields();
+          this.$refs['shop_info'].resetFields();
+          this.shopInfo.shopphoto_url = ''; // 经营场所/经营场所外景照片url
+          this.shopInfo.shopphoto_name = ''; // 经营场所/经营场所外景照片名
+          this.shopInfo.goodsphoto_url = ''; // 所售商品/经营场所内景照片url
+          this.shopInfo.goodsphoto_name = '';
+          this.shopInfo.idcardfront_url = ''; // 身份证正面/法人身份证正面url
+          this.shopInfo.idcardfront_name = '';
+          this.shopInfo.idcardback_url =  ''; // 身份证背面/法人身份证背面url
+          this.shopInfo.idcardback_name = '';
+          this.shopInfo.idcardinhand_url = ''; // 手持身份证合照url
+          this.shopInfo.idcardinhand_name = '';
         this.backToPrePage();
         this.isShowCommitDone = false;
       },
@@ -1146,11 +1156,11 @@
       this.addMapScript();
     },
     beforeDestroy() {
-        var to_removed = document.getElementById('unique_map');
-        if(to_removed) {
-          to_removed.onload = null;
-          document.body.removeChild(to_removed);
-        }
+      var toRemoved = document.getElementById('unique_map');
+      if(toRemoved) {
+        toRemoved.onload = null;
+        document.body.removeChild(toRemoved);
+      }
     }
   }
 </script>
