@@ -224,7 +224,7 @@
   export default {
     beforeRouteEnter (to, from, next) {
       next((vm) => {
-        Object.assign(vm, {
+        vm = Object.assign(vm, {
           flag: false,
           currentpage: 1,
           pageSize: 10,

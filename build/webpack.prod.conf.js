@@ -49,6 +49,8 @@ var webpackConfig = merge(baseWebpackConfig, {
       filename: config.build.index,
       template: 'index.html',
       inject: true,
+      // 缓存
+      cache:false,
       minify: {
         removeComments: true,
         collapseWhitespace: true,

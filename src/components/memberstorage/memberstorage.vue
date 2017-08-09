@@ -148,7 +148,7 @@
   export default {
     beforeRouteEnter (to, from, next) {
       next((vm) => {
-        Object.assign(vm, {
+        vm = Object.assign(vm, {
           stateValue: '',
           pageSize: 10,
           currentpage: 1,

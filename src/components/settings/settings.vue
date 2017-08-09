@@ -44,7 +44,6 @@
 
   export default {
     data() {
-
       return {
         role: Store.get('role') || {},
         loading: false,
@@ -64,7 +63,7 @@
       };
     },
 
-    created() {
+    mounted() {
         this.getData();
     },
 

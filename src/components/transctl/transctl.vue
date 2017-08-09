@@ -237,8 +237,6 @@
 
   export default {
     data() {
-      let start = new Date();
-      let defaultDateRange = [start, start];
       let checkOrderNo = (rule, val, cb) => {
         if(val && !/^\d+$/.test(val)) {
           cb(this.$t('tradeMng.msg.m1'));
@@ -282,7 +280,7 @@
         form: {
           selectShopUid: '',
           orderno: null,
-          dateRangeValue: defaultDateRange,
+          dateRangeValue: '',
           operaValue: '',
           checkAll1: true,
           checkAll2: true,
@@ -356,6 +354,7 @@
     },
 
     created() {
+      this.changeTime('1');
       // 子商户查询其操作员
       if(this.role.single) {
         this.form.selectShopUid = this.shop.uid;
@@ -477,8 +476,19 @@
           this.status = true;
           let end = new Date();
           let start = new Date(end.getTime() - 3600 * 1000 * 24 * (value - 1));
+
           if(value == 2) {
-              end = start;
+              end = new Date(end.getTime() - 3600 * 1000 * 24);
+          }
+
+          start.setHours(0);
+          start.setMinutes(0);
+          start.setSeconds(0);
+
+          if(value != 1) {
+            end.setHours(23);
+            end.setMinutes(59);
+            end.setSeconds(59);
           }
           this.form.dateRangeValue = [start, end];
         }
