@@ -726,8 +726,8 @@
           map = new AMap.Map('geolocation');
         }catch(e) {
            console.log(e);
-           this.$message.error('地图定位失败，将自动刷新页面以便重新获取定位信息...');
-           location.reload();
+           this.$message.error('地图定位失败，请刷新页面以便重新获取定位信息...');
+           return;
         }
         map.plugin(['AMap.Geolocation', 'AMap.Geocoder'], () => {
           let geolocation = new AMap.Geolocation({
