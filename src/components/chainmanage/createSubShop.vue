@@ -722,7 +722,13 @@
       initMapAPI() {
         if (this.isShowMap) return;
         var AMap = window.AMap;
-        map = new AMap.Map('geolocation');
+        try {
+          map = new AMap.Map('geolocation');
+        }catch(e) {
+           console.log(e);
+           this.$message.error('地图定位失败，将自动刷新页面以便重新获取定位信息...');
+           location.reload();
+        }
         map.plugin(['AMap.Geolocation', 'AMap.Geocoder'], () => {
           let geolocation = new AMap.Geolocation({
             enableHighAccuracy: true, // 是否使用高精度定位，默认:true
@@ -820,8 +826,10 @@
           this.shopInfo.idcardback_name = '';
           this.shopInfo.idcardinhand_url = ''; // 手持身份证合照url
           this.shopInfo.idcardinhand_name = '';
-        this.backToPrePage();
-        this.isShowCommitDone = false;
+          this.shopInfo.userid = '';
+          this.shopInfo.username = '';
+          this.backToPrePage();
+          this.isShowCommitDone = false;
       },
 
       beforeAvatarUpload(file) {
@@ -853,6 +861,8 @@
           type: 'warning'
         }).then(() => {
           _this.$refs[formName].resetFields();
+          _this.shopInfo.userid = '';
+          _this.shopInfo.username = '';
           _this.$router.push('/main/chainmanage');
         }).catch(() => {
           console.log('就不放弃，哈哈~')
