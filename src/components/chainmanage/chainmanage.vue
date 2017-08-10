@@ -103,9 +103,11 @@
       </div>
       <div class="pagination_wrapper" v-if="pageShopData.count >= 10">
         <el-pagination
-          layout="total, prev, pager, next, jumper"
-          :total="pageShopData.count"
-          :page-size="10"
+          ref="page"
+          layout="total, sizes, prev, pager, next, jumper"
+          :page-size="pageSize"
+          @size-change="handleSizeChange"
+          :total="+pageShopData.count"
           @current-change="currentChange"
           :current-page="currentpage">
         </el-pagination>
@@ -289,6 +291,7 @@
         lang: config.lang,
         role: Store.get('role') || {},
         currentpage: 1,
+        pageSize: 10,
         visible: false,
         loading: false,
         iconShow: false,
@@ -526,19 +529,28 @@
         });
       },
 
-      currentChange(currentPage) {
+      // 改变size
+      handleSizeChange(size) {
+        this.pageSize = size;
+        this.currentChange();
+      },
+
+      currentChange(current) {
+        console.log(current)
+
+        if (!current && this.currentpage !== 1) {
+          this.currentpage = 1;
+          return;
+        }
+        if (current) {
+          this.currentpage = current;
+        }
+
         this.$store.dispatch({
           type: 'getPageShopData',
-          start: currentPage - 1,
-          len: 10
+          start: current ? current - 1 : 0,
+          len: this.pageSize
         });
-//        if (!currentPage && this.currentpage !== 1) {
-//          this.currentpage = 1;
-//          return;
-//        }
-//        if (currentPage) {
-//          this.currentpage = currentPage;
-//        }
       },
 
       associate() {
@@ -571,6 +583,7 @@
           }
         });
       },
+
       unbind(uid) {
         axios.get(`${config.host}/merchant/sub/remove`, {
           params: {

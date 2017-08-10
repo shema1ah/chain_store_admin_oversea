@@ -94,7 +94,7 @@
           @size-change="handleSizeChange"
           :total="+collectData.count"
           @current-change="currentChange"
-          :current-page="currentpage">>
+          :current-page="currentpage">
         </el-pagination>
       </div>
       <div class="table_placeholder" v-else></div>

@@ -89,7 +89,7 @@ input:-webkit-autofill { box-shadow: 0 0 0px 1000px white inset !important;}
     }
     // 宽度
     .el-input__inner {
-      width: 310px;
+      width: 310px !important;
       padding: 3px 10px;
     }
   }
