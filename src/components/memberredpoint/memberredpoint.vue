@@ -34,7 +34,7 @@
         </div>
       </div>
       <div class="panel-body">
-        <el-table :data="collectData.result" style="width: 100%" row-class-name="el-table__row_fix" v-loading.body="loading" id="memberredcollect">
+        <el-table :data="collectData.result" style="width: 100%" row-class-name="el-table__row_fix" v-loading="loading" id="memberredcollect">
           <el-table-column label="活动时间" min-width="140">
             <template scope="scope">
               <p><span class="scope_cotent_title">开始时间</span>{{ scope.row.start_time | removeHMS }}</p>
@@ -86,7 +86,7 @@
           </el-table-column>
         </el-table>
       </div>
-      <div class="pagination_wrapper" v-if="collectData.count >= 10">
+      <div class="pagination_wrapper" v-if="+collectData.count >= 10">
         <el-pagination
           ref="page"
           layout="total, sizes, prev, pager, next, jumper"

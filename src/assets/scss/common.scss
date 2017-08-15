@@ -106,3 +106,8 @@ input:-webkit-autofill { box-shadow: 0 0 0px 1000px white inset !important;}
   }
 }
 
+.flex .info-desc__wrapper {
+  flex: 1;
+  overflow: hidden;
+}
+

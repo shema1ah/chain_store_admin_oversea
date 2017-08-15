@@ -367,7 +367,6 @@
 //      this.$store.dispatch('getShopList');
     },
     mounted() {
-
     },
     methods: {
       refreshSubShopData() {
@@ -571,7 +570,8 @@
                   });
                   this.visible = false;
                   this.$refs['associate_form'].resetFields();
-                  this.$store.dispatch('getPageShopData');
+
+                  this.handleSizeChange(10);
                   this.$store.dispatch('getShopList');
                 } else {
                   this.$message.error(data.resperr);
@@ -600,7 +600,8 @@
               this.shouldDeleteUid = '';
               this.formpwd.primeaccountpwd = '';
               this.showDeleteShopConfirm = false;
-              this.$store.dispatch('getPageShopData');
+
+              this.handleSizeChange(10);
               this.$store.dispatch('getShopList');
             } else {
               this.$message.error(data.resperr);

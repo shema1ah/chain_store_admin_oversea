@@ -870,6 +870,8 @@
       },
       backToPrePage() {
         this.infoPage = !this.infoPage;
+        // 自动滚动到顶部
+        document.body.scrollTop = 0;
       },
       preSignUp() { // 预注册
         this.$refs['shop_info'].validate((valid) => {
@@ -1153,6 +1155,9 @@
       }
     },
     mounted() {
+      // 自动滚动到顶部
+      document.body.scrollTop = 0;
+
       var _self = this;
       document.addEventListener('click', (evt) => {
         if ('el-tree-node'.indexOf(evt.target.className) == -1) {
