@@ -973,6 +973,7 @@
         console.log('定位错误信息：', e);
       },
       onLocationComplete(loc, flag) {
+          debugger;
         console.log(loc)
         let _adcode = loc.addressComponent.adcode;
         let _province = loc.addressComponent.province;
@@ -1155,9 +1156,6 @@
       }
     },
     mounted() {
-      // 自动滚动到顶部
-      document.body.scrollTop = 0;
-
       var _self = this;
       document.addEventListener('click', (evt) => {
         if ('el-tree-node'.indexOf(evt.target.className) == -1) {
@@ -1169,6 +1167,9 @@
         }
       }, false);
       this.addMapScript();
+      Vue.nextTick(() => {
+        document.querySelectorAll('.header')[0].scrollIntoView();
+      })
     },
     beforeDestroy() {
       var toRemoved = document.getElementById('unique_map');

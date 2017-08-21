@@ -9,7 +9,7 @@ exports.default = {
   lang: {
     zh: '中国語',
     en: '英語',
-    ja: '日本語の'
+    ja: '日本語'
   },
   nav: {
     mmp: '商店管理コンソール',
@@ -186,8 +186,8 @@ exports.default = {
     table: {
       total: '取引総額',
       realrec: '実際の集金額',
-      succ: '成功した取引数',
-      undoNum: '取消された取引数',
+      succ: '取引き数',
+      undoNum: '取消し数',
       bi: '',
       undo: '取消',
       shopName: '店舗名/ID',
@@ -267,14 +267,15 @@ exports.default = {
       mailSetup: 'メール設定',
       mail: 'メールアドレス',
       explain: '翌日の朝7時に前日の取引記録をお送りします',
-      dailySend: '毎日取引レポートをお送りします',
-      modi: '訂正',
+      dailySend: '毎日取引レポートを受け取る',
+      modi: 'アドレスを変更', // 訂正
       confirm: '確認'
     },
     msg: {
       m1: 'メールアドレスを入力してください',
       m2: '正しいメールアドレスを入力してください',
-      m3: 'メールの設定が取得できませんでした!'
+      m3: 'メールの設定が取得できませんでした!',
+      m4: 'アドレスを変更しました'
     }
   }
 }

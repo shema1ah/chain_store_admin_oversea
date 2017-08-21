@@ -123,7 +123,7 @@
                 if(data.respcd === config.code.OK) {
                   this.$message({
                     type: 'success',
-                    message: this.$t('common.modSucc')
+                    message: this.$t('setting.msg.m4')
                   });
                   this.form.status = '1';
                   this.state1 = false;

@@ -119,6 +119,7 @@ const getRole = (data) => {
     type: 'chain',
     haiwai: false,
     currency: data.currency || '元',
+    country: data.country,
     rate: data.rate || 100,
     single: false,
     isBaoshang: false,
