@@ -128,35 +128,36 @@ const getRole = (data) => {
 
   // 包商baoshang 日本japan 香港hongkong ''代表是其他group
   // bigmerchant:大商户 submerchant:子商户 merchant:商户
-  switch (data.group_name) {
-    case 'baoshang':
-      role.isBaoshang = true
-      role.type = 'baoshang'
-      if (data.cate !== 'bigmerchant') {
-        role.type = 'baoshang_single'
-        role.single = true
-      }
-      break;
-    case 'japan':
-      role.type = 'japan'
-      if (data.cate !== 'bigmerchant') {
-        role.type = 'japan_single'
-        role.single = true
-      }
-      break;
-    case 'hongkong':
-      role.type = 'hongkong'
-      if (data.cate !== 'bigmerchant') {
-        role.type = 'hongkong_single'
-        role.single = true
-      }
-      break;
-    default:
-      if (data.cate !== 'bigmerchant') {
-        role.type = 'single'
-        role.single = true
-      }
-      break;
+  if(data.group_name === 'baoshang') {
+    role.isBaoshang = true
+    role.type = 'baoshang'
+    if (data.cate !== 'bigmerchant') {
+      role.type = 'baoshang_single'
+      role.single = true
+    }
+  }else {
+    switch (data.country) {
+      case 'JP':
+        role.type = 'japan'
+        if (data.cate !== 'bigmerchant') {
+          role.type = 'japan_single'
+          role.single = true
+        }
+        break;
+      case 'HK':
+        role.type = 'hongkong'
+        if (data.cate !== 'bigmerchant') {
+          role.type = 'hongkong_single'
+          role.single = true
+        }
+        break;
+      default:
+        if (data.cate !== 'bigmerchant') {
+          role.type = 'single'
+          role.single = true
+        }
+        break;
+    }
   }
 
   // 是否海外

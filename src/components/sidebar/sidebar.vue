@@ -247,9 +247,6 @@
                 val: this.$t('nav.tradeMng'),
                 pathname: 'transctl'
               }, {
-                val: this.$t('nav.publicAuth'),
-                pathname: 'publicauth'
-              }, {
                 val: this.$t('nav.shopMng'),
                 pathname: 'chainmanage'
               }, {
@@ -266,9 +263,6 @@
               }, {
                 val: this.$t('nav.tradeMng'),
                 pathname: 'transctl'
-              }, {
-                val: this.$t('nav.publicAuth'),
-                pathname: 'publicauth'
               }, {
                 val: this.$t('nav.shopMng'),
                 pathname: 'singlemanage'

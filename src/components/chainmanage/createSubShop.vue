@@ -973,7 +973,6 @@
         console.log('定位错误信息：', e);
       },
       onLocationComplete(loc, flag) {
-          debugger;
         console.log(loc)
         let _adcode = loc.addressComponent.adcode;
         let _province = loc.addressComponent.province;
