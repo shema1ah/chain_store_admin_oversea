@@ -2,6 +2,8 @@
 var path = require('path')
 const isTest = process.argv[2] === 'test'
 
+console.error('构建index：', process.env.NODE_ENV, process.argv)
+
 module.exports = {
   build: {
     env: isTest ? require('./test.env') : require('./prod.env'),
