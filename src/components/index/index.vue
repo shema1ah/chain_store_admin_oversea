@@ -185,12 +185,12 @@
       this.fetchActivityData()
     },
     mounted() {
-      let bicon = new Image();
-      let sid = getCookie('sessionid') || '';
-      if(sid) {
-        bicon.style.display = 'none';
-        bicon.src = `${config.ohost}/mchnt/set_cookie?sessionid=${sid}`;
-      }
+//      let bicon = new Image();
+//      let sid = getCookie('sessionid') || '';
+//      if(sid) {
+//        bicon.style.display = 'none';
+//        bicon.src = `${config.ohost}/mchnt/set_cookie?sessionid=${sid}`;
+//      }
     },
     methods: {
       fetchDashboardData() {
