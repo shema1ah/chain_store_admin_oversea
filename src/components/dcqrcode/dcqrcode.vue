@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-loading="isLoading" :element-loading-text="$t('common.loading')">
     <div class="warpper">
       <div class="banner_wrapper">
         <p>生成有公众号桌牌二维码</p>
@@ -62,11 +62,15 @@
 </template>
 
 <script>
+  import axios from 'axios'
+  import config from 'config'
   import QRCode from 'qrcode'
+  import Store from '../../common/js/store'
 
   export default {
     data() {
       return {
+        isLoading: false,
         tabelForm: {
           areaName: '',
           startNum: '',
@@ -77,12 +81,34 @@
         createBtnDisabled: false,
         downloadTabelBtnDisabled: false,
         downloadQrcodeBtnDisabled: false,
-        merchantId: 0
+        uid: Store.get('uid')
       }
     },
     created() {
+      if (!this.uid) {
+        this.fetchMerchantIds()
+      }
     },
     methods: {
+      fetchMerchantIds () {
+        this.isLoading = true
+        axios.get(`${config.host}/merchant/ids`)
+          .then((res) => {
+            this.isLoading = false
+            let data = res.data
+            if (data.respcd === config.code.OK) {
+              let uid = data.data.uid
+              this.uid = uid
+              Store.set('uid', uid)
+            } else {
+              this.$message.error(data.respmsg)
+            }
+          })
+          .catch(() => {
+            this.isLoading = false
+            this.$message.error(this.$t('pubSignal.msg.m2'))
+          })
+      },
       submitForm (formName) {
         this.createBtnDisabled = true
         let startNum = this.tabelForm.startNum
@@ -128,8 +154,7 @@
         ctx.putImageData(imgData, 0, 0)
       },
       urlToQrcode (tableNumber) {
-        // let dcUrl = `https://o.qfpay.com/dc/?/#/merchant/${this.merchantId}/${tableNumber}`
-        let dcUrl = `https://o.qfpay.com/dc/?/#/merchant/1594813/${tableNumber}`
+        let dcUrl = `${config.ohost}/dc/?/#/merchant/${this.uid}/${tableNumber}`
         let qrcode = document.createElement('canvas')
         QRCode.toCanvas(qrcode, dcUrl, {scale: 8, margin: 0}, function (err) {
           if (err) throw err

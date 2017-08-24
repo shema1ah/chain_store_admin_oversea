@@ -170,8 +170,8 @@
         wechatNotAuth: false,
         publicInfo: {},
         publicAvatar: avatar,
-        hashid: '',
-        uid: '',
+        hashid: Store.get('uid'),
+        uid: Store.get('merchantId'),
         stores: [],
         dialogVisible: false,
         checkAll: true,
@@ -181,7 +181,9 @@
       }
     },
     created() {
-      this.fetchMerchantIds()
+      if (!this.hashid || !this.uid) {
+        this.fetchMerchantIds()
+      }
       this.fetchPublicInfo()
     },
     methods: {
@@ -225,6 +227,8 @@
             if (data.respcd === config.code.OK) {
               this.hashid = data.data.hashid
               this.uid = data.data.uid
+              Store.set('hashid', data.data.hashid)
+              Store.set('uid', data.data.uid)
             } else {
               this.$message.error(data.respmsg)
             }
