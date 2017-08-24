@@ -24,7 +24,7 @@
       <li v-if="this.role.diancan"><a href="/wxofficial/setting" class="sidebar-nav__item">智慧餐厅</a></li>
     </ul>
     <div class="copyright_wrapper" v-if="role.haiwai">
-      <el-select v-model="lang"  icon="caret-bottom" @change="switchLanguage" size="small" popperClass="popperBg">
+      <el-select v-model="lang"  icon="caret-bottom" @change="switchLanguage" size="small" popperClass="popperBg" style="width:90%;">
         <el-option v-for="item in [{label: $t('lang.ja'), value:'ja'}, {label: $t('lang.en'), value:'en'}, {label: $t('lang.zh'), value:'zh-CN'}]" :key="item.value" :label="item.label" :value="item.value"></el-option>
       </el-select>
     </div>
@@ -350,15 +350,12 @@
     background-color: #000;
   }
 
-
-
   .copyright_wrapper {
     position: fixed;
     left: 6px;
     bottom: 10px;
     text-align: center;
     font-size: 14px;
-    background-color: #585a60;
     @at-root .copyright-text {
       color: #fff;
     }

@@ -270,7 +270,7 @@
 
   .single {
     .panel-header-btn {
-      width: 164px;
+      width: 210px;
     }
   }
 </style>

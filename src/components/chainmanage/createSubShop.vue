@@ -1157,10 +1157,11 @@
     mounted() {
       var _self = this;
       document.addEventListener('click', (evt) => {
+          debugger;
         if ('el-tree-node'.indexOf(evt.target.className) == -1) {
           if (_self.shopInfo.isShowTree) this.shopInfo.isShowTree = false;
         }
-        if (evt.target.parentElement.id === 'op_type' && evt.target.className.indexOf('el-input__icon el-icon-caret-bottom') === -1) {
+        if (evt.target.parentNode && evt.target.parentNode.id === 'op_type' && evt.target.className.indexOf('el-input__icon el-icon-caret-bottom') === -1) {
           evt.preventDefault();
           _self.showTreeComponent(evt);
         }
