@@ -25,7 +25,7 @@
 <script>
 import axios from 'axios';
 import config from '../../config';
-import { getRole, clearCookie } from '../../common/js/util';
+import { getRole } from '../../common/js/util';
 import Store from '../../common/js/store';
 import sidebar from '../../components/sidebar/sidebar.vue';
 
@@ -68,7 +68,7 @@ export default {
         if (data.respcd === config.code.OK) {
           // 清除本地cookie
           document.cookie = "sessionid=''; expires=" + new Date(0).toUTCString();
-//          clearCookie('sessionid');
+          (new Image()).src = `${config.ohost}/mchnt/set_cookie?sessionid=`;
           localStorage.getItem('lang') && localStorage.removeItem('lang');
           var toRemoved = document.getElementById('unique_map');
           if(toRemoved) {
