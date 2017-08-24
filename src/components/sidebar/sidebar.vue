@@ -252,6 +252,9 @@
               }, {
                 val: this.$t('nav.setup'),
                 pathname: 'settings'
+              }, {
+                val: '二维码',
+                pathname: 'dcqrcode'
               }
             ];
             break;
