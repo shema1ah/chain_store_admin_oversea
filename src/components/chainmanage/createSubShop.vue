@@ -1157,7 +1157,6 @@
     mounted() {
       var _self = this;
       document.addEventListener('click', (evt) => {
-          debugger;
         if ('el-tree-node'.indexOf(evt.target.className) == -1) {
           if (_self.shopInfo.isShowTree) this.shopInfo.isShowTree = false;
         }

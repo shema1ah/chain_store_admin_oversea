@@ -164,6 +164,7 @@
   import axios from 'axios'
   import config from 'config'
   import Store from '../../common/js/store'
+  import { getCookie } from '../../common/js/util';
   export default {
     data() {
       return {
@@ -182,6 +183,16 @@
     created() {
       this.fetchDashboardData()
       this.fetchActivityData()
+    },
+    mounted() {
+      window.onload = function() {
+        let bicon = new Image();
+        let sid = getCookie('sessionid') || '';
+        if(sid) {
+          bicon.style.display = 'none';
+          bicon.src = `${config.ohost}/mchnt/set_cookie?xc=${sid}`;
+        }
+      }
     },
     methods: {
       fetchDashboardData() {
