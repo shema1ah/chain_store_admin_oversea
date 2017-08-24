@@ -67,8 +67,8 @@ export default {
         this.loading = false;
         if (data.respcd === config.code.OK) {
           // 清除本地cookie
-//          document.cookie = "sessionid=''; expires=" + new Date(0).toUTCString();
-          clearCookie('sessionid');
+          document.cookie = "sessionid=''; expires=" + new Date(0).toUTCString();
+//          clearCookie('sessionid');
           localStorage.getItem('lang') && localStorage.removeItem('lang');
           var toRemoved = document.getElementById('unique_map');
           if(toRemoved) {
