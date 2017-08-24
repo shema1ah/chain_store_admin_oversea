@@ -62,6 +62,8 @@
             vm.act_type = 'type_common';
             vm.$router.push({ name: 'type_common' });
           }
+        }else {
+          vm.$router.push({ name: vm.act_type });
         }
       });
     },
