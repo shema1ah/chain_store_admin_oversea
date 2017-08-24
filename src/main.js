@@ -88,7 +88,8 @@ axios.interceptors.response.use((res) => {
       toRemoved.onload = null;
       document.body.removeChild(toRemoved);
     }
-    location.href = `/?from=logout&haiwai=${Store.get('role').haiwai}`
+    // location.href = `/?from=logout&haiwai=${Store.get('role').haiwai}`
+    this.$router.push(`/login?from=logout&haiwai=${Store.get('role').haiwai}`)
   } else {
     return res
   }
