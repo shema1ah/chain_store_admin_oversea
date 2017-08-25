@@ -94,7 +94,7 @@
           @size-change="handleSizeChange"
           :total="+collectData.count"
           @current-change="currentChange"
-          :current-page="currentpage">
+          :current-page="currentPage">
         </el-pagination>
       </div>
       <div class="table_placeholder" v-else></div>
@@ -149,7 +149,7 @@
       next((vm) => {
         Object.assign(vm, {
           flag: false,
-          currentpage: 1,
+          currentPage: 1,
           pageSize: 10,
           nameValue: '',
           stateValue: ''
@@ -175,7 +175,7 @@
         nameValue: '',
         stateValue: '',
         loading: false,
-        currentpage: 1,
+        currentPage: 1,
         detailData: {},
         stateLists: [
           {
@@ -207,7 +207,7 @@
           sub_uid: this.nameValue,
           stateOptions: this.stateValue,
           length: this.pageSize,
-          curpage: this.currentpage,
+          curpage: this.currentPage,
           format: 'cors'
         };
       },
@@ -223,12 +223,12 @@
       },
       // 改变活动状态
       stateChange() {
-        this.currentChange();
+        this.handleSizeChange();
       },
 
       // 改变店铺名称
       nameChange() {
-        this.currentChange();
+        this.handleSizeChange();
       },
 
       // 请求数据
@@ -251,19 +251,19 @@
       },
 
       // 改变size
-      handleSizeChange(size) {
+      handleSizeChange(size = 10) {
         this.pageSize = size;
         this.currentChange();
       },
 
       // 改变当前页
       currentChange(current) {
-        if (!current && this.currentpage !== 1) {
-          this.currentpage = 1;
+        if (!current && this.currentPage !== 1) {
+          this.currentPage = 1;
           return;
         }
         if (current) {
-          this.currentpage = current;
+          this.currentPage = current;
         }
         if (this.flag) {
           this.getData();
@@ -286,11 +286,6 @@
                 type: 'success',
                 message: '集点活动停止成功'
               });
-
-              this.currentpage = 1;
-              this.pageSize = 10;
-              this.nameValue = '';
-              this.stateValue = '';
 
               this.getData();
             } else {

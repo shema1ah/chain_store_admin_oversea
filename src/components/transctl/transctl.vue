@@ -91,7 +91,7 @@
               </el-form-item>
             </div>
             <div class="panel-header-btn-group">
-              <div class="panel-header-btn panel-header-btn__fill" @click="getTransData">
+              <div class="panel-header-btn panel-header-btn__fill" @click="search">
                 <span class="el-icon-loading" v-if="loading"></span>
                 <span v-else>{{$t('tradeMng.panel.btn.query')}}</span>
               </div>
@@ -198,7 +198,8 @@
           :page-size="pageSize"
           @size-change="handleSizeChange"
           :total="transData.num"
-          @current-change="currentChange">
+          @current-change="currentChange"
+          :current-page="currentPage">
         </el-pagination>
       </div>
       <div class="table_placeholder" v-else></div>
@@ -334,7 +335,7 @@
           orderno: this.form.orderno,
           charset: 'utf-8',
           isdownload: false,
-          page: 1,
+          page: this.currentPage,
           maxnum: this.pageSize,
           paytypes: this.form.type.join(','),
           filters: this.form.other.join(','),
@@ -378,21 +379,7 @@
         otherLists = ['cancel'];
       }
 
-      this.loading = true;
-      axios.get(`${config.host}/merchant/trade/info`, {
-        params: this.basicParams
-      }).then((res) => {
-        this.loading = false;
-        let data = res.data;
-        if(data.respcd === config.code.OK) {
-          this.transData = data.data;
-        } else {
-          this.$message.error(data.resperr);
-        }
-      }).catch(() => {
-        this.loading = false;
-        this.$message.error(this.$t('tradeMng.msg.m3'));
-      });
+      this.getTransData();
     },
 
     methods: {
@@ -514,30 +501,30 @@
       },
 
       // 点击查询
-      getTransData(params) {
+      search() {
         this.downHref = 'javascript:;';
-        if(params && params.which && this.$refs['page']) {
-          this.$refs['page'].internalCurrentPage = 1;
+        this.handleSizeChange();
+      },
+
+      // 获取数据
+      getTransData() {
+        if(!this.loading) {
+          this.loading = true;
+          axios.get(`${config.host}/merchant/trade/info`, {
+            params: this.basicParams
+          }).then((res) => {
+            this.loading = false;
+            let data = res.data;
+            if(data.respcd === config.code.OK) {
+              this.transData = data.data;
+            } else {
+              this.$message.error(data.resperr);
+            }
+          }).catch(() => {
+            this.loading = false;
+            this.$message.error(this.$t('tradeMng.msg.m4'));
+          });
         }
-        this.$refs['form'].validate((valid) => {
-          if(valid && !this.loading) {
-            this.loading = true;
-            axios.get(`${config.host}/merchant/trade/info`, {
-              params: Object.assign({}, this.basicParams, params)
-            }).then((res) => {
-              this.loading = false;
-              let data = res.data;
-              if(data.respcd === config.code.OK) {
-                this.transData = data.data;
-              } else {
-                this.$message.error(data.resperr);
-              }
-            }).catch(() => {
-              this.loading = false;
-              this.$message.error(this.$t('tradeMng.msg.m4'));
-            });
-          }
-        });
       },
 
       operaChange(opuid) {
@@ -564,11 +551,15 @@
       },
 
       currentChange(current) {
-        this.currentPage = current;
-        console.log(current);
-        this.getTransData({
-          page: current
-        });
+        if (!current && this.currentPage !== 1) {
+          this.currentPage = 1;
+          return;
+        }
+        if (current) {
+          this.currentPage = current;
+        }
+
+        this.getTransData();
       },
 
       // 重置表单
@@ -577,10 +568,9 @@
         this.$refs['form'].resetFields();
       },
 
-      handleSizeChange(size) {
+      handleSizeChange(size = 10) {
         this.pageSize = size;
-        this.basicParams.page = 1;
-        this.getTransData({which: 1});
+        this.currentChange();
       }
     }
   };

@@ -27,6 +27,9 @@ import member from 'components/member/member'
 import packetnotify from 'components/packetnotify/packetnotify'
 import packetshare from 'components/packetshare/packetshare'
 import packetspend from 'components/packetspend/packetspend'
+import storagelist from 'components/storagelist/storagelist'
+import storagedetail from 'components/storagedetail/storagedetail'
+import storagebill from 'components/storagebill/storagebill'
 import createstorage from 'components/createstorage/createstorage'
 import reviewstorage from 'components/reviewstorage/reviewstorage'
 import alterstorage from 'components/alterstorage/alterstorage'
@@ -110,6 +113,21 @@ export default new Router({
             {
               path: '',
               component: memberstorage
+            },
+            {
+              path: 'storagelist',
+              name: 'storagelist',
+              component: storagelist
+            },
+            {
+              path: 'storagedetail',
+              name: 'storagedetail',
+              component: storagedetail
+            },
+            {
+              path: 'storagebill',
+              name: 'storagebill',
+              component: storagebill
             },
             {
               path: 'createstorage',

@@ -1,5 +1,5 @@
 <template>
-  <div class="redpacket">
+  <div class="memberStorage">
     <div class="banner_wrapper">
       <div class="banner-breadcrumb">
         <span>会员功能</span>
@@ -24,7 +24,17 @@
               </el-option>
             </el-select>
           </div>
+
+          <div class="btn-group">
+            <div class="panel-header-btn">
+              <router-link :to="{ name: 'storagelist'}">储值会员</router-link>
+            </div>
+            <div class="panel-header-btn">
+              <router-link :to="{ name: 'storagebill'}">储值账单</router-link>
+            </div>
+          </div>
         </div>
+
       </div>
       <div class="panel-body">
         <el-table
@@ -216,7 +226,7 @@
     },
     methods: {
       stateChange() {
-        this.currentChange();
+        this.handleSizeChange();
       },
       currentChange(current) {
         if(!current && this.currentpage !== 1) {
@@ -233,7 +243,8 @@
         }
         console.log(this.basicParams);
       },
-      handleSizeChange(size) {
+
+      handleSizeChange(size = 10) {
         this.pageSize = size;
         this.currentChange();
       },
@@ -366,5 +377,23 @@
   }
   .mb-5 {
     margin-bottom: 5px;
+  }
+
+  .memberStorage {
+    .panel-select-group {
+      justify-content: space-between;
+    }
+    .btn-group {
+      padding-right: 10px;
+
+      .panel-header-btn {
+        a {
+          color: #FE9B20;
+        }
+        &:not(:last-child) {
+          margin-right: 10px;
+        }
+      }
+    }
   }
 </style>
