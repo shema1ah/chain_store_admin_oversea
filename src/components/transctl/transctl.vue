@@ -14,7 +14,7 @@
               <el-form-item prop="dateRangeValue">
                 <el-date-picker
                   v-model="form.dateRangeValue"
-                  type="daterange"
+                  type="datetimerange"
                   :editable="false"
                   :placeholder="$t('billMng.panel.range')"
                   size="small"
@@ -237,8 +237,6 @@
 
   export default {
     data() {
-      let start = new Date();
-      let defaultDateRange = [start, start];
       let checkOrderNo = (rule, val, cb) => {
         if(val && !/^\d+$/.test(val)) {
           cb(this.$t('tradeMng.msg.m1'));
@@ -249,7 +247,7 @@
         }
       };
       return {
-        lang: JSON.parse(localStorage.getItem("lang") || '{}').value || navigator.language,
+        lang: config.lang,
         role: Store.get('role') || {},
         showConfirm: false,
         checkValue: {},
@@ -282,7 +280,7 @@
         form: {
           selectShopUid: '',
           orderno: null,
-          dateRangeValue: defaultDateRange,
+          dateRangeValue: '',
           operaValue: '',
           checkAll1: true,
           checkAll2: true,
@@ -324,11 +322,15 @@
         return this.$store.state.shopData;
       },
       basicParams() {
+        let str = '';
+        if(!this.form.choosetime) {
+          str = 'yyyy-MM-dd HH:mm:ss';
+        }
         return {
           userid: this.form.selectShopUid,
           opuid: this.form.operaValue,
-          endtime: formatDate(this.form.dateRangeValue[1]),
-          starttime: formatDate(this.form.dateRangeValue[0]),
+          starttime: formatDate(this.form.dateRangeValue[0], str),
+          endtime: formatDate(this.form.dateRangeValue[1], str),
           orderno: this.form.orderno,
           charset: 'utf-8',
           isdownload: false,
@@ -352,6 +354,7 @@
     },
 
     created() {
+      this.changeTime('1');
       // 子商户查询其操作员
       if(this.role.single) {
         this.form.selectShopUid = this.shop.uid;
@@ -473,8 +476,19 @@
           this.status = true;
           let end = new Date();
           let start = new Date(end.getTime() - 3600 * 1000 * 24 * (value - 1));
+
           if(value == 2) {
-              end = start;
+              end = new Date(end.getTime() - 3600 * 1000 * 24);
+          }
+
+          start.setHours(0);
+          start.setMinutes(0);
+          start.setSeconds(0);
+
+          if(value != 1) {
+            end.setHours(23);
+            end.setMinutes(59);
+            end.setSeconds(59);
           }
           this.form.dateRangeValue = [start, end];
         }

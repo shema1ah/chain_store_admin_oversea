@@ -28,7 +28,7 @@
         </div>
       </div>
       <div class="panel-body">
-        <el-table :data="exchangedData.records" style="width: 100%" row-class-name="el-table__row_fix" v-loading.body="loading" id="ex_points">
+        <el-table :data="exchangedData.records" style="width: 100%" row-class-name="el-table__row_fix" v-loading="loading" id="ex_points">
           <el-table-column label="头像" min-width="104">
             <template scope="scope">
               <img :src="scope.row.avatar" class="points-avatar">

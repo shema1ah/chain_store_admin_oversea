@@ -117,7 +117,7 @@
         }
       };
       return {
-        lang: JSON.parse(localStorage.getItem("lang") || '{}').value || navigator.language,
+        lang: config.lang,
         loading: false,
         iconShow: false,
         showChangePass: false,
@@ -167,6 +167,11 @@
               document.cookie = "sessionid=''; expires=" + new Date(0).toUTCString();
 
               localStorage.getItem('lang') && localStorage.removeItem('lang');
+              var toRemoved = document.getElementById('unique_map');
+              if(toRemoved) {
+                toRemoved.onload = null;
+                document.body.removeChild(toRemoved);
+              }
               this.$router.push(`/login?from=logout&haiwai=${Store.get('role').haiwai}`);
             } else {
               this.$message.error(data.respmsg);
@@ -265,7 +270,7 @@
 
   .single {
     .panel-header-btn {
-      width: 164px;
+      width: 210px;
     }
   }
 </style>

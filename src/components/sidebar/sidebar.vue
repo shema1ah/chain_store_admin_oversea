@@ -24,19 +24,19 @@
       <li v-if="this.role.diancan"><a href="/wxofficial/setting" class="sidebar-nav__item">智慧餐厅</a></li>
     </ul>
     <div class="copyright_wrapper" v-if="role.haiwai">
-      <el-select v-model="lang"  icon="caret-bottom" @change="switchLanguage" size="small" popperClass="popperBg">
-        <el-option v-for="item in [{label: $t('lang.zh'), value:'zh-CN'}, {label: $t('lang.en'), value:'en'}, {label: $t('lang.ja'), value:'ja'}]" :key="item.value" :label="item.label" :value="item.value"></el-option>
+      <el-select v-model="lang"  icon="caret-bottom" @change="switchLanguage" size="small" popperClass="popperBg" style="width:80%;">
+        <el-option v-for="item in [{label: $t('lang.ja'), value:'ja'}, {label: $t('lang.en'), value:'en'}, {label: $t('lang.zh'), value:'zh-CN'}]" :key="item.value" :label="item.label" :value="item.value"></el-option>
       </el-select>
     </div>
   </div>
 </template>
 <script>
   import Store from '../../common/js/store';
-
+  import config from 'src/config';
   export default {
     data() {
       return {
-        lang: JSON.parse(localStorage.getItem("lang") || '{}').value || navigator.language,
+        lang: config.lang,
         role: Store.get('role') || {},
         navs: [],
         isShow: true,
@@ -247,9 +247,6 @@
                 val: this.$t('nav.tradeMng'),
                 pathname: 'transctl'
               }, {
-                val: this.$t('nav.publicAuth'),
-                pathname: 'publicauth'
-              }, {
                 val: this.$t('nav.shopMng'),
                 pathname: 'chainmanage'
               }, {
@@ -266,9 +263,6 @@
               }, {
                 val: this.$t('nav.tradeMng'),
                 pathname: 'transctl'
-              }, {
-                val: this.$t('nav.publicAuth'),
-                pathname: 'publicauth'
               }, {
                 val: this.$t('nav.shopMng'),
                 pathname: 'singlemanage'
@@ -356,15 +350,12 @@
     background-color: #000;
   }
 
-
-
   .copyright_wrapper {
     position: fixed;
     left: 6px;
     bottom: 10px;
     text-align: center;
     font-size: 14px;
-    background-color: #585a60;
     @at-root .copyright-text {
       color: #fff;
     }

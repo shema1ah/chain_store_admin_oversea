@@ -68,7 +68,13 @@ export default {
         if (data.respcd === config.code.OK) {
           // 清除本地cookie
           document.cookie = "sessionid=''; expires=" + new Date(0).toUTCString();
+          (new Image()).src = `${config.ohost}/mchnt/set_cookie?sessionid=`;
           localStorage.getItem('lang') && localStorage.removeItem('lang');
+          var toRemoved = document.getElementById('unique_map');
+          if(toRemoved) {
+            toRemoved.onload = null;
+            document.body.removeChild(toRemoved);
+          }
           this.$router.push(`/login?from=logout&haiwai=${this.role.haiwai}`);
         } else {
           this.$message.error(data.respmsg);

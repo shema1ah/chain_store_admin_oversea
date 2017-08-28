@@ -31,7 +31,7 @@
   export default {
     data() {
       return {
-        lang: JSON.parse(localStorage.getItem("lang") || '{}').value || navigator.language,
+        lang: config.lang,
         role: Store.get('role') || {},
         loading: false,
         form: {
@@ -51,7 +51,6 @@
 
     created() {
       // cookie存在跳转首页
-      console.log(666)
       if(getCookie('sessionid') && !Store.get("flag")) {
        this.$router.push('/main/index');
        }
@@ -89,6 +88,10 @@
                 this.$store.state.role = val;
                 Store.set('role', val);
                 Store.set('flag', false);
+
+                // 当前域名下设置cookie
+                // setCookie('sessionid', data.data.session_id);
+
                 this.$router.push('/main/index')
               } else {
                 this.$message.error(data.resperr);

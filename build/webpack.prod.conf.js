@@ -16,17 +16,7 @@ var webpackConfig = merge(baseWebpackConfig, {
     rules: utils.styleLoaders({
       sourceMap: config.build.productionSourceMap,
       extract: true
-    }).concat([
-      {
-        test: /\.js$/,
-        use: [
-          'babel-loader',
-        ],
-        include: [
-          path.resolve(__dirname, '../dist/static/js')
-        ],
-      }
-    ])
+    })
   },
   devtool: config.build.productionSourceMap ? '#source-map' : false,
   output: {
@@ -59,6 +49,8 @@ var webpackConfig = merge(baseWebpackConfig, {
       filename: config.build.index,
       template: 'index.html',
       inject: true,
+      // 缓存
+      cache:false,
       minify: {
         removeComments: true,
         collapseWhitespace: true,

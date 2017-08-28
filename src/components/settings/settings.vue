@@ -1,5 +1,5 @@
 <template>
-  <div class="settings" v-loading.body="loading" :element-loading-text="$t('common.loading')">
+  <div class="settings" v-loading="loading" :element-loading-text="$t('common.loading')">
     <div class="banner_wrapper">
       <div class="banner-breadcrumb">
         <span>{{$t('setting.crumbs.L1')}}</span>
@@ -44,7 +44,6 @@
 
   export default {
     data() {
-
       return {
         role: Store.get('role') || {},
         loading: false,
@@ -64,7 +63,7 @@
       };
     },
 
-    created() {
+    mounted() {
         this.getData();
     },
 
@@ -92,11 +91,11 @@
         });
       },
 
-      sendChange() {
+      sendChange(val) {
         this.$refs['form'].validate((valid) => {
           if(valid && !this.loading1) {
             axios.post(`${config.host}/merchant/add/email`, {
-              status: this.form.status
+              status: val
             }).then((res) => {
               let data = res.data;
               if(data.respcd === config.code.OK) {

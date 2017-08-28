@@ -1,5 +1,6 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
+import 'babel-polyfill'
 import Vue from 'vue'
 import 'src/filters'
 import store from './store'
@@ -13,8 +14,14 @@ import config from 'src/config'
 import Store from 'common/js/store'
 import VueI18n from 'vue-i18n'
 import locale from 'element-ui/lib/locale'
-let switchlang = localStorage.getItem("lang") || JSON.stringify({value: navigator.language});
-let targetLang = require('element-ui/lib/locale/lang/' + (JSON.parse(switchlang).value || 'zh-CN'))
+let langAdaptor = function(lang) {
+  if(~lang.indexOf('en')) return 'en'
+  if(~lang.indexOf('zh')) return 'zh-CN'
+  if(~lang.indexOf('ja')) return 'ja'
+  return 'en';
+}
+let switchlang = localStorage.getItem("lang") || JSON.stringify({value: langAdaptor(navigator.language || navigator.browserLanguage || 'en')});
+let targetLang = require('element-ui/lib/locale/lang/' + JSON.parse(switchlang).value)
 Vue.use(VueI18n)
 
 Vue.use(Tree)
@@ -52,13 +59,13 @@ var localePackage = { // 静态模板文案多语言
   en: require(`lang/${(JSON.parse(switchlang).value)}.js`)['default'],
   ja: require(`lang/${(JSON.parse(switchlang).value)}.js`)['default']
 };
-Vue.config.lang = (JSON.parse(switchlang).value || navigator.language);
+config.lang = JSON.parse(switchlang).value;
 Object.keys(localePackage).forEach(function (lang) {
   Vue.locale(lang, localePackage[lang])
 })
 // header增加cookie验证信息
 /* axios.interceptors.request.use(function (config) {
-  config.headers.Session = `Token3333`;
+  config.headers.Session = `sessionid=eee`;
   return config;
 }, function (err) {
   return Promise.reject(err);
@@ -69,14 +76,19 @@ axios.defaults.headers.common['lang'] = JSON.parse(switchlang).value;
 
 axios.interceptors.response.use((res) => {
   let data = res.data
-  if (data.respcd == config.code.SESSIONERR) {
+  if (data.respcd == config.code.SESSIONERR || data.respcd == config.code.LOGINERR) {
     // 清除本地cookie
-    document.cookie = "sessionid=''; expires=" + new Date(0).toUTCString()
+    document.cookie = "sessionid=''; expires=" + new Date(0).toUTCString();
+    (new Image()).src = `${config.ohost}/mchnt/set_cookie?sessionid=`;
 
     localStorage.getItem('lang') && localStorage.removeItem('lang');
     Store.set('flag', true);
-
-    location.href = `/?from=logout&haiwai=${Store.get('role').haiwai}`
+    var toRemoved = document.getElementById('unique_map');
+    if(toRemoved) {
+      toRemoved.onload = null;
+      document.body.removeChild(toRemoved);
+    }
+    location.replace(`#/?from=logout&haiwai=${Store.get('role').haiwai}`);
   } else {
     return res
   }

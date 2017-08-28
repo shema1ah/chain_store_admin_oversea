@@ -2,7 +2,8 @@
   <div class="index">
     <div class="mydialog" v-show="isShowMap" id="geolocation_mask" @click="hideMapDialog"></div>
     <!--sandbox="allow-scripts allow-popups allow-forms allow-same-origin"-->
-    <iframe sandbox="allow-scripts allow-same-origin" id="miframe" v-if="isShowMap" :src="mapComponentURL" frameborder="0" scrolling="no" width="100%" height="100%"></iframe>
+    <iframe sandbox="allow-scripts allow-same-origin" id="miframe" v-if="isShowMap" :src="mapComponentURL"
+            frameborder="0" scrolling="no" width="100%" height="100%"></iframe>
     <!-- 地图弹窗-->
     <div class="banner_wrapper">
       <div class="banner-breadcrumb">
@@ -42,7 +43,7 @@
                         placeholder="请选择经营类型"
                         @click="showTreeComponent"
                         readonly
-                         class="sub-account-item-info"></el-input>
+                        class="sub-account-item-info"></el-input>
               <el-tree id="op-type-tree" :data="shopInfo.shop_types" :props="defaultProps" @node-click="handleNodeClick"
                        v-show="shopInfo.isShowTree"
                        style="position:absolute;top:32px;z-index:9;width:238px;overflow-y:auto;height:320px;"></el-tree>
@@ -66,7 +67,8 @@
                       ref="city_id"></el-input>
 
             <el-form-item label="店铺地址" prop="location">
-              <el-input v-model.trim="shopInfo.location" size="small" type="textarea" :rows="2" resize="none" placeholder="点击右侧按钮打开地图"
+              <el-input v-model.trim="shopInfo.location" size="small" type="textarea" :rows="2" resize="none"
+                        placeholder="点击右侧按钮打开地图"
                         auto-complete="off" class="sub-account-item-info" readonly></el-input>
               <span @click="showMap" type="primary" size="small" class="btn-map">地图定位店铺地址</span>
             </el-form-item>
@@ -134,24 +136,28 @@
             </div>
 
             <el-form-item label="银行卡类型" prop="banktype">
-              <el-select v-model="shopInfo.banktype" placeholder="请选择" icon="caret-bottom" class="sub-account-item-info">
+              <el-select v-model="shopInfo.banktype" placeholder="请选择" icon="caret-bottom"
+                         class="sub-account-item-info">
                 <el-option :key=1 label="对私账户" :value=1></el-option>
                 <el-option :key=2 label="对公账户" :value=2></el-option>
               </el-select>
             </el-form-item>
 
             <el-form-item label="开户名" prop="bankuser">
-              <el-input v-model.trim="shopInfo.bankuser" size="small" type="text" placeholder="请与店主姓名一致" auto-complete="off"
+              <el-input v-model.trim="shopInfo.bankuser" size="small" type="text" placeholder="请与店主姓名一致"
+                        auto-complete="off"
                         class="sub-account-item-info"></el-input>
             </el-form-item>
 
             <el-form-item label="银行卡号" prop="bankaccount">
-              <el-input v-model.trim="shopInfo.bankaccount" size="small" type="text" placeholder="请输入" auto-complete="off"
+              <el-input v-model.trim="shopInfo.bankaccount" size="small" type="text" placeholder="请输入"
+                        auto-complete="off"
                         class="sub-account-item-info" @blur="getCardsInfo"></el-input>
             </el-form-item><!-- @blur="getCardsInfo"-->
 
             <el-form-item label="预留手机号" prop="bankmobile">
-              <el-input v-model.trim="shopInfo.bankmobile" size="small" type="text" placeholder="请输入" auto-complete="off"
+              <el-input v-model.trim="shopInfo.bankmobile" size="small" type="text" placeholder="请输入"
+                        auto-complete="off"
                         class="sub-account-item-info"></el-input>
             </el-form-item>
 
@@ -171,13 +177,13 @@
             <el-input v-model="shopInfo.bankprovince" type="hidden" auto-complete="off" class="hidden"
                       ref="bankprovince"></el-input>
             <!--<el-input v-model="shopInfo.bankcity" type="hidden" auto-complete="off" class="hidden"-->
-                      <!--ref="bankcity"></el-input>-->
+            <!--ref="bankcity"></el-input>-->
             <el-input v-model="shopInfo.adcode" type="hidden" auto-complete="off" class="hidden"
                       ref="adcode"></el-input>
 
             <el-form-item label="开户总行" prop="headbankid">
               <el-select v-model="shopInfo.headbankid" placeholder="请选择" icon="caret-bottom"
-                         class="sub-account-item-info"  @change="switchHeadBank" filterable>
+                         class="sub-account-item-info" @change="switchHeadBank" filterable>
                 <el-option
                   v-for="(hbank, index) in shopInfo.headbanks"
                   :key="hbank.headbankid + '@' + index"
@@ -189,7 +195,8 @@
             </el-form-item>
 
             <el-form-item label="开户支行" prop="bankcode" style="margin-bottom: 0;">
-              <el-select v-model="shopInfo.bankcode" placeholder="请选择" icon="caret-bottom" ref="branch_bank_select" class="sub-account-item-info"
+              <el-select v-model="shopInfo.bankcode" placeholder="请选择" icon="caret-bottom" ref="branch_bank_select"
+                         class="sub-account-item-info"
                          @change="switchBranchBank" filterable>
                 <el-option
                   v-for="bbank in shopInfo.branchBanks"
@@ -246,15 +253,15 @@
             <el-form-item style="margin-bottom:0">
               <el-col :span="8">
                 <el-upload ref="shopphoto"
-                  v-loading="shopphotoloading"
-                  :on-progress="startAvatarUpload"
-                  class="avatar-uploader"
-                  :action="uploadInterface"
-                  :show-file-list="false"
-                  :before-upload="beforeAvatarUpload"
-                  :on-success="avatarSuccess"
-                  :on-error="avatarFailed"
-                  :data="{
+                           v-loading="shopphotoloading"
+                           :on-progress="startAvatarUpload"
+                           class="avatar-uploader"
+                           :action="uploadInterface"
+                           :show-file-list="false"
+                           :before-upload="beforeAvatarUpload"
+                           :on-success="avatarSuccess"
+                           :on-error="avatarFailed"
+                           :data="{
                     category: 1,
                     source: 1,
                     tag: 'shopphoto',
@@ -475,7 +482,7 @@
   import ElForm from "../../../node_modules/element-ui/packages/form/src/form";
   import ElInput from "../../../node_modules/element-ui/packages/input/src/input";
   import ElButton from "../../../node_modules/element-ui/packages/button/src/button";
-  import { cardValid, formatDate } from "../../common/js/util";
+  import {cardValid, formatDate} from "../../common/js/util";
   import axios from 'axios';
   import config from 'config';
   import ElFormItem from "../../../node_modules/element-ui/packages/form/src/form-item";
@@ -484,9 +491,10 @@
   import ElIcon from "../../../node_modules/element-ui/packages/icon/src/icon";
   import qs from 'qs';
   import Vue from 'vue';
-    const AMap = window.AMap;
-    var map = null;
-    var geocoder = null;
+  import Store from '../../common/js/store';
+//  const AMap = window.AMap;
+  var map = null;
+  var geocoder = null;
 
   export default {
     components: {
@@ -509,9 +517,9 @@
       };
 
       let expireValid = (rule, val, cb) => {
-        if(val === '') {
+        if (val === '') {
           cb('请选择失效年月日');
-        } else if(this.shopInfo.idstatdate && val.getTime() < this.shopInfo.idstatdate.getTime()) {
+        } else if (this.shopInfo.idstatdate && val.getTime() < this.shopInfo.idstatdate.getTime()) {
           cb('生效期不能晚于失效期');
         } else {
           cb();
@@ -519,10 +527,10 @@
       };
 
       let startValid = (rule, val, cb) => {
-        if(val === '') {
+        if (val === '') {
           cb('请选择生效年月日');
         } else {
-          if(this.shopInfo.idenddate !== '') {
+          if (this.shopInfo.idenddate !== '') {
             this.$refs['shop_info'].validateField('idenddate');
           }
           cb();
@@ -530,22 +538,23 @@
       };
 
       let nameValid = (rule, val, cb) => {
-        if(!/^[\u4e00-\u9fa5A-Za-z\s]*$/.test(val)) {
+        if (!/^[\u4e00-\u9fa5A-Za-z\s]*$/.test(val)) {
           cb('请输入汉字或字母');
-        }else {
+        } else {
           cb();
         }
       };
 
       let shopValid = (rule, val, cb) => {
-        if(!/^[\u4e00-\u9fa5A-Za-z\s\d]*$/.test(val)) {
+        if (!/^[\u4e00-\u9fa5A-Za-z\s\d]*$/.test(val)) {
           cb('请不要输入特殊字符');
-        }else {
+        } else {
           cb();
         }
       };
 
       return {
+        role: Store.get('role') || {},
         shopphotoloading: false,
         goodsphotoloading: false,
         idcardfrontloading: false,
@@ -636,10 +645,10 @@
             {validator: idValid}
           ],
           idstatdate: [
-            { validator: startValid }
+            {validator: startValid}
           ],
           idenddate: [
-            { validator: expireValid }
+            {validator: expireValid}
           ],
           bankuser: [
             {required: true, message: '请输入开户名', trigger: 'blur'},
@@ -704,40 +713,46 @@
     },
     created() {
       this.getOperationType();
-      this.initMapAPI();
+//      this.initMapAPI();
     },
     methods: {
       startAvatarUpload(event, file, fileList) {
-          this[file['__ob__'].dep.subs[0].vm.data.tag + 'loading'] = true;
+        this[file['__ob__'].dep.subs[0].vm.data.tag + 'loading'] = true;
       },
-        initMapAPI() {
-          if(this.isShowMap) return;
-
+      initMapAPI() {
+        if (this.isShowMap) return;
+        var AMap = window.AMap;
+        try {
           map = new AMap.Map('geolocation');
-          map.plugin(['AMap.Geolocation', 'AMap.Geocoder'], () => {
-            let geolocation = new AMap.Geolocation({
-              enableHighAccuracy: true, // 是否使用高精度定位，默认:true
-              timeout: 10000,           // 超过10秒后停止定位，默认：无穷大
-              maximumAge: 0,            // 定位结果缓存0毫秒，默认：0
-              convert: true,            // 自动偏移坐标，偏移后的坐标为高德坐标，默认：true
-              showButton: true,         // 显示定位按钮，默认：true
-              buttonPosition: 'LB',     // 定位按钮停靠位置，默认：'LB'，左下角
-              buttonOffset: new AMap.Pixel(10, 20), // 定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
-              showMarker: true,        // 定位成功后在定位到的位置显示点标记，默认：true
-              showCircle: true,        // 定位成功后用圆圈表示定位精度范围，默认：true
-              panToLocation: true,     // 定位成功后将定位到的位置作为地图中心点，默认：true
-              zoomToAccuracy: true      // 定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
-            });
-            map.addControl(geolocation);
-            geolocation.getCurrentPosition();
-            AMap.event.addListener(geolocation, 'complete', this.onLocationComplete); // 返回定位信息
-            AMap.event.addListener(geolocation, 'error', this.onLocationError);       // 返回定位出错信息
-            geocoder = new AMap.Geocoder({
-              city: '全国',
-              extensions: 'base'
-            })
+        }catch(e) {
+           console.log(e);
+           this.$message.error('地图定位失败，请刷新页面以便重新获取定位信息...');
+           return;
+        }
+        map.plugin(['AMap.Geolocation', 'AMap.Geocoder'], () => {
+          let geolocation = new AMap.Geolocation({
+            enableHighAccuracy: true, // 是否使用高精度定位，默认:true
+            timeout: 10000,           // 超过10秒后停止定位，默认：无穷大
+            maximumAge: 0,            // 定位结果缓存0毫秒，默认：0
+            convert: true,            // 自动偏移坐标，偏移后的坐标为高德坐标，默认：true
+            showButton: true,         // 显示定位按钮，默认：true
+            buttonPosition: 'LB',     // 定位按钮停靠位置，默认：'LB'，左下角
+            buttonOffset: new AMap.Pixel(10, 20), // 定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
+            showMarker: true,        // 定位成功后在定位到的位置显示点标记，默认：true
+            showCircle: true,        // 定位成功后用圆圈表示定位精度范围，默认：true
+            panToLocation: true,     // 定位成功后将定位到的位置作为地图中心点，默认：true
+            zoomToAccuracy: true      // 定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
           });
-        },
+          map.addControl(geolocation);
+          geolocation.getCurrentPosition();
+          AMap.event.addListener(geolocation, 'complete', this.onLocationComplete); // 返回定位信息
+          AMap.event.addListener(geolocation, 'error', this.onLocationError);       // 返回定位出错信息
+          geocoder = new AMap.Geocoder({
+            city: '全国',
+            extensions: 'base'
+          })
+        });
+      },
       hideMapDialog() {
         this.isShowMap = false;
         this.mapComponentURL = '';
@@ -747,8 +762,8 @@
         if (this.isShowMap) return;
         this.isShowMap = true;
         this.mapComponentURL = `${config.mapURL}?center=${this.shopInfo.initlng},${this.shopInfo.initlat}&key=${config.mapKey}`;
-        Vue.nextTick(()=> {
-            this.initIframe();
+        Vue.nextTick(() => {
+          this.initIframe();
         })
       },
       initIframe() {
@@ -756,7 +771,7 @@
         iframe = document.getElementById('miframe');
         var cw = iframe.contentWindow;
         iframe.onload = null;
-        iframe.onload = function() {
+        iframe.onload = function () {
           iframe.style.display = 'block';
           iframe.style.zIndex = 10;
           cw.postMessage('hello', config.mapURL);
@@ -765,7 +780,7 @@
       },
       getMessageFromRemote(e) {
         var _this = this;
-        if(e.data.name) {
+        if (e.data.name) {
           console.log(e.data);
           let lng = +e.data.location.split(',')[0];
           let lat = +e.data.location.split(',')[1];
@@ -781,12 +796,12 @@
                   lng: lng,
                   lat: lat
                 }
-              },'reLocation');
+              }, 'reLocation');
               _this.$message({
                 type: 'success',
                 message: '您选择了新的店铺地址：' + result.regeocode.formattedAddress
               });
-            }else{
+            } else {
               console.log('选取定位后获取有效地址信息失败');
             }
           })
@@ -799,10 +814,22 @@
         this.$router.push('/main/chainmanage');
       },
       continueToCreateSubShop() {
-        this.$refs['upload_info'].resetFields();
-        this.$refs['shop_info'].resetFields();
-        this.backToPrePage();
-        this.isShowCommitDone = false;
+          this.$refs['upload_info'].resetFields();
+          this.$refs['shop_info'].resetFields();
+          this.shopInfo.shopphoto_url = ''; // 经营场所/经营场所外景照片url
+          this.shopInfo.shopphoto_name = ''; // 经营场所/经营场所外景照片名
+          this.shopInfo.goodsphoto_url = ''; // 所售商品/经营场所内景照片url
+          this.shopInfo.goodsphoto_name = '';
+          this.shopInfo.idcardfront_url = ''; // 身份证正面/法人身份证正面url
+          this.shopInfo.idcardfront_name = '';
+          this.shopInfo.idcardback_url =  ''; // 身份证背面/法人身份证背面url
+          this.shopInfo.idcardback_name = '';
+          this.shopInfo.idcardinhand_url = ''; // 手持身份证合照url
+          this.shopInfo.idcardinhand_name = '';
+          this.shopInfo.userid = '';
+          this.shopInfo.username = '';
+          this.backToPrePage();
+          this.isShowCommitDone = false;
       },
 
       beforeAvatarUpload(file) {
@@ -834,6 +861,8 @@
           type: 'warning'
         }).then(() => {
           _this.$refs[formName].resetFields();
+          _this.shopInfo.userid = '';
+          _this.shopInfo.username = '';
           _this.$router.push('/main/chainmanage');
         }).catch(() => {
           console.log('就不放弃，哈哈~')
@@ -841,10 +870,10 @@
       },
       backToPrePage() {
         this.infoPage = !this.infoPage;
+        // 自动滚动到顶部
+        document.body.scrollTop = 0;
       },
       preSignUp() { // 预注册
-        console.log(this.shopInfo);
-
         this.$refs['shop_info'].validate((valid) => {
           if (valid) {
             if (this.shopInfo.userid) {
@@ -871,8 +900,8 @@
                 }
                 this.btnLocked = false;
               }).catch((e) => {
-                  this.$message.error(e);
-                  this.btnLocked = false;
+                this.$message.error(e);
+                this.btnLocked = false;
               });
             }
 
@@ -941,10 +970,10 @@
         })
       },
       onLocationError(e) {
-          console.log('定位错误信息：',e);
+        console.log('定位错误信息：', e);
       },
       onLocationComplete(loc, flag) {
-//        console.log(loc)
+        console.log(loc)
         let _adcode = loc.addressComponent.adcode;
         let _province = loc.addressComponent.province;
         let _city = loc.addressComponent.city;
@@ -956,7 +985,7 @@
         }
         this.shopInfo.longitude = loc.position.lng;
         this.shopInfo.latitude = loc.position.lat;
-        if(!flag) {
+        if (!flag) {
           this.shopInfo.initlng = loc.position.lng;
           this.shopInfo.initlat = loc.position.lat;
         }
@@ -1015,7 +1044,7 @@
           });
       },
       switchBankLocation(value, label) { // 切换开户地 获取开户行总行
-        if(label) this.shopInfo.bankcity = label;
+        if (label) this.shopInfo.bankcity = label;
         this.shopInfo.city_id = value;
         let _this = this;
         axios.get(`${config.ohost}/mchnt/tool/headbanks`, {
@@ -1042,10 +1071,10 @@
           });
       },
       switchHeadBank(value, label, index) {
-        if(label) {
+        if (label) {
           this.shopInfo.headbankname = label;
         }
-        if(index) {
+        if (index) {
           this.shopInfo.csphone = this.shopInfo.headbanks[index].csphone;
         }
         this.shopInfo.headbankid = value;
@@ -1060,12 +1089,12 @@
           .then((res) => {
             let data = res.data;
             if (data.respcd === config.code.OK) {
-              if(data.data.records.length) {
+              if (data.data.records.length) {
                 console.log('获取获取银行支行成功');
                 this.shopInfo.branchBanks = data.data.records;
                 this.shopInfo.bankname = "";
                 this.shopInfo.bankcode = "";
-              }else {
+              } else {
                 this.shopInfo.branchBanks.length = 0;
 //                this.$message.error('该开户总行下无支行，请重新选择开户总行');
               }
@@ -1078,7 +1107,7 @@
           });
       },
       switchBranchBank(value, label) {
-        if(label) this.shopInfo.bankname = label;
+        if (label) this.shopInfo.bankname = label;
         this.shopInfo.bankcode = value;
         console.log('所有设置完毕：', this.shopInfo);
       },
@@ -1107,9 +1136,22 @@
         e.stopPropagation();
       },
       handleNodeClick(node) {
-        console.log(node);
         this.shopInfo.shoptype_id = node.id;
         this.shopInfo.shoptype_name = node.name;
+      },
+      addMapScript() {
+        // 引用地图相关js
+        if (!this.role.isBaoshang && !this.role.haiwai) {
+          var _self = this;
+          var script = document.createElement('script');
+          script.id = 'unique_map';
+          script.type = "text/javascript";
+          script.src = "https://webapi.amap.com/maps?v=1.3&key=0500da1f6f0d37a6683b590aee534b8b";
+          document.body.insertBefore(script, document.querySelectorAll('script')[document.querySelectorAll('script').length - 1]);
+          script.onload = function() {
+            _self.initMapAPI();
+          }
+        }
       }
     },
     mounted() {
@@ -1118,251 +1160,255 @@
         if ('el-tree-node'.indexOf(evt.target.className) == -1) {
           if (_self.shopInfo.isShowTree) this.shopInfo.isShowTree = false;
         }
-        if(evt.target.parentElement.id === 'op_type' && evt.target.className.indexOf('el-input__icon el-icon-caret-bottom') === -1) {
+        if (evt.target.parentNode && evt.target.parentNode.id === 'op_type' && evt.target.className.indexOf('el-input__icon el-icon-caret-bottom') === -1) {
           evt.preventDefault();
           _self.showTreeComponent(evt);
         }
-//          if(_self.isShowMap && e.target.parentElement.className.indexOf('amap') > -1) {
-//              e.stopPropagation();
-//              return false;
-//          }
-//          if(_self.isShowMap && e.target.className !== 'btn-map' && e.currentTarget.nodeName === '#document') {
-//            _self.isShowMap = false;
-//            map && map.destroy();
-//          }
       }, false);
-
+      this.addMapScript();
+      Vue.nextTick(() => {
+        document.querySelectorAll('.header')[0].scrollIntoView();
+      })
+    },
+    beforeDestroy() {
+      var toRemoved = document.getElementById('unique_map');
+      if(toRemoved) {
+        toRemoved.onload = null;
+        document.body.removeChild(toRemoved);
+      }
     }
   }
 </script>
 <style lang="scss">
-      .avatar-uploader {
-        .el-loading-spinner {
-          width:68% !important;
-        }
+  .avatar-uploader {
+    .el-loading-spinner {
+      width: 68% !important;
+    }
+  }
+
+  .csup-panel-body {
+    padding: 0;
+    .sub_info_wrapper {
+      .image_info {
+        font-size: 14px;
+        color: #8a8c92;
+        height: 16px;
+        line-height: 16px;
+        padding: 10px 0 20px 30px;
       }
-      .csup-panel-body {
-        padding: 0;
-        .sub_info_wrapper {
-          .image_info {
-            font-size: 14px;
-            color: #8a8c92;
-            height: 16px;
-            line-height: 16px;
-            padding: 10px 0 20px 30px;
+      padding: 20px 0 0 0px;
+      .divider-icon {
+        width: 6px;
+        height: 28px;
+        background-color: #fe9b20;
+        display: inline-block;
+        border-radius: 0 30px 30px 0;
+      }
+      .panel-header__desc {
+        padding-left: 14px;
+      }
+      .el-form {
+        .panel-select-group.fix-unique {
+          justify-content: flex-start !important;
+        }
+        .hidden {
+          display: none;
+        }
+        .el-form-item {
+          margin: 20px 0 20px 30px;
+          .sub-account-item-info {
+            width: 240px;
+            cursor: pointer;
           }
-          padding: 20px 0 0 0px;
-          .divider-icon {
-            width: 6px;
-            height: 28px;
-            background-color: #fe9b20;
-            display: inline-block;
-            border-radius: 0 30px 30px 0;
+          .sub-account-item-info-long {
+            width: 410px;
+            line-height: 44px;
           }
-          .panel-header__desc {
-            padding-left: 14px;
-          }
-          .el-form {
-            .panel-select-group.fix-unique {
-              justify-content: flex-start !important;
-            }
-            .hidden {
-              display: none;
-            }
-            .el-form-item {
-              margin: 20px 0 20px 30px;
-              .sub-account-item-info {
-                width: 240px;
-                cursor: pointer;
-              }
-              .sub-account-item-info-long {
-                width: 410px;
-                line-height: 44px;
-              }
-              .el-form-item__content {
-                .el-col {
-                  .el-date-editor.el-input.el-date-editor--date {
-                    .el-picker-panel.el-date-picker.adjustPoper {
-                      min-width: 254px !important;
-                    }
-                  }
+          .el-form-item__content {
+            .el-col {
+              .el-date-editor.el-input.el-date-editor--date {
+                .el-picker-panel.el-date-picker.adjustPoper {
+                  min-width: 254px !important;
                 }
               }
             }
-            .el-form-item.sub-item-tip {
-              margin-top: 0;
-            }
-
           }
         }
+        .el-form-item.sub-item-tip {
+          margin-top: 0;
+        }
+
       }
-
-
-    #miframe {
-      width: 660px;
-      height: 520px;
-      display: none;
-      top: 50% !important;
-      left: 50% !important;
-      margin-left: -330px !important;
-      margin-top: -210px !important;
-      overflow: hidden !important;
-      position: fixed !important;
-      z-index: 999;
-      background-color: #ffffff;
     }
-    #geolocation_mask {
-      width: 100%;
-      height: 100%;
-      top: 0;
-      left: 0;
-      overflow: hidden !important;
-      position: fixed !important;
-      z-index:9;
-      background-color:rgba(0,0,0,0.5);
-      /*#close-geo {*/
-      /*width: 16px;*/
-      /*height: 16px;*/
-      /*line-height: 16px;*/
-      /*z-index: 9999;*/
-      /*position: absolute;*/
-      /*top: 6px;*/
-      /*right: 8px;*/
-      /*}*/
-    }
+  }
 
-    /*.map-dialog {*/
-    /*width:660px;*/
-    /*height:420px;*/
-    /*.el-dialog__header {*/
-    /*padding:0;*/
-    /*}*/
-    /*.el-dialog__body {*/
-    /*padding:0;*/
-    /*width:660px;*/
-    /*height:420px;*/
-    /*}*/
-    /*}*/
-    /*.el-message-box {*/
-    /*.el-message-box__title {*/
-    /*.el-message-box__headerbtn {*/
-    /*visibility: hidden !important;*/
-    /*}*/
-    /*}*/
-    /*}*/
-    .backToSMBtn {
-      color: #fe9b20;
-      border: 1px solid #fe9b20;
-      margin-left: 180px;
-    }
+  #miframe {
+    width: 660px;
+    height: 520px;
+    display: none;
+    top: 50% !important;
+    left: 50% !important;
+    margin-left: -330px !important;
+    margin-top: -210px !important;
+    overflow: hidden !important;
+    position: fixed !important;
+    z-index: 999;
+    background-color: #ffffff;
+  }
 
-    .done-icon {
-      height: 46px;
+  #geolocation_mask {
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    overflow: hidden !important;
+    position: fixed !important;
+    z-index: 9;
+    background-color: rgba(0, 0, 0, 0.5);
+    /*#close-geo {*/
+    /*width: 16px;*/
+    /*height: 16px;*/
+    /*line-height: 16px;*/
+    /*z-index: 9999;*/
+    /*position: absolute;*/
+    /*top: 6px;*/
+    /*right: 8px;*/
+    /*}*/
+  }
+
+  /*.map-dialog {*/
+  /*width:660px;*/
+  /*height:420px;*/
+  /*.el-dialog__header {*/
+  /*padding:0;*/
+  /*}*/
+  /*.el-dialog__body {*/
+  /*padding:0;*/
+  /*width:660px;*/
+  /*height:420px;*/
+  /*}*/
+  /*}*/
+  /*.el-message-box {*/
+  /*.el-message-box__title {*/
+  /*.el-message-box__headerbtn {*/
+  /*visibility: hidden !important;*/
+  /*}*/
+  /*}*/
+  /*}*/
+  .backToSMBtn {
+    color: #fe9b20;
+    border: 1px solid #fe9b20;
+    margin-left: 180px;
+  }
+
+  .done-icon {
+    height: 46px;
+    text-align: center;
+    line-height: 46px;
+    .OK {
+      width: 36px;
+      height: 36px;
+      line-height: 40px;
+      border-radius: 50%;
+      border: 3px solid #7ed321;
+      font-size: 24px;
       text-align: center;
-      line-height: 46px;
-      .OK {
-        width: 36px;
-        height: 36px;
-        line-height: 40px;
-        border-radius: 50%;
-        border: 3px solid #7ed321;
-        font-size: 24px;
-        text-align: center;
-        color: #7ed321;
-      }
-      span.done-text {
-        font-size: 26px;
-        color: #262424;
-        padding-left: 10px;
-        display: inline-block;
-      }
+      color: #7ed321;
     }
-
-    .done-desc {
-      text-align: center;
-      font-size: 17px;
+    span.done-text {
+      font-size: 26px;
       color: #262424;
+      padding-left: 10px;
+      display: inline-block;
     }
+  }
 
-    .btn-map {
-      display: inline-block;;
-      width: 132px;
-      height: 30px;
-      line-height: 30px;
-      margin-left: 10px;
-      border-radius: 4px;
-      border: 1px solid #fe9b20;
-      text-align: center;
-      font-size: 14px;
-      color: #fe9b20;
-      cursor: pointer;
-    }
-    .avatar-wrap {
-      posistion: relative !important;
-      .avatar {
-        width: 240px;
-        height: 180px;
-        display: block;
-      }
-      .img-tip {
-        width: 240px;
-        height: 46px;
-        line-height: 46px;
-        position: absolute;
-        bottom: 13px;
-        left: 0;
-        color: #ffffff;
-        text-align: center;
-        background-color: rgba(138, 140, 146, 0.5);
-        display: none;
-      }
-      &:hover .img-tip {
-        display: block;
-        /*animation: growUp .5s ease;*/
-        -webkit-animation-name: growUp;
-        -webkit-animation-duration: 500ms;
-        -webkit-animation-iteration-count: 1;
-        -webkit-animation-timing-function: ease-in-out;
-      }
-      @-webkit-keyframes growUp {
-        0% {
-          height: 0px;
-        }
-        100% {
-          height: 46px;
-        }
-      }
-    }
+  .done-desc {
+    text-align: center;
+    font-size: 17px;
+    color: #262424;
+  }
 
-    .avatar-uploader-wrap {
+  .btn-map {
+    display: inline-block;;
+    width: 132px;
+    height: 30px;
+    line-height: 30px;
+    margin-left: 10px;
+    border-radius: 4px;
+    border: 1px solid #fe9b20;
+    text-align: center;
+    font-size: 14px;
+    color: #fe9b20;
+    cursor: pointer;
+  }
+
+  .avatar-wrap {
+    posistion: relative !important;
+    .avatar {
       width: 240px;
-      height: 144px;
-      background-color: #f2f2f2;
+      height: 180px;
+      display: block;
+    }
+    .img-tip {
+      width: 240px;
+      height: 46px;
+      line-height: 46px;
+      position: absolute;
+      bottom: 13px;
+      left: 0;
+      color: #ffffff;
       text-align: center;
-      padding-top: 37px;
-      .avatar-uploader-icon {
-        width: 50px;
-        height: 50px;
-        display: inline-block;
-        border-radius: 50%;
-        line-height: 50px;
-        text-align: center;
-        border: 1px dashed #c2c2c2;
-        color: #c2c2c2;
-        font-size: 20px;
+      background-color: rgba(138, 140, 146, 0.5);
+      display: none;
+    }
+    &:hover .img-tip {
+      display: block;
+      /*animation: growUp .5s ease;*/
+      -webkit-animation-name: growUp;
+      -webkit-animation-duration: 500ms;
+      -webkit-animation-iteration-count: 1;
+      -webkit-animation-timing-function: ease-in-out;
+    }
+    @-webkit-keyframes growUp {
+      0% {
+        height: 0px;
       }
-      .avatar-desc {
-        font-size: 14px;
-        color: #8a8c92;
+      100% {
+        height: 46px;
       }
-      .avatar-tip {
-        color: #bdbdbd;
-      }
+    }
+  }
 
+  .avatar-uploader-wrap {
+    width: 240px;
+    height: 144px;
+    background-color: #f2f2f2;
+    text-align: center;
+    padding-top: 37px;
+    .avatar-uploader-icon {
+      width: 50px;
+      height: 50px;
+      display: inline-block;
+      border-radius: 50%;
+      line-height: 50px;
+      text-align: center;
+      border: 1px dashed #c2c2c2;
+      color: #c2c2c2;
+      font-size: 20px;
+    }
+    .avatar-desc {
+      font-size: 14px;
+      color: #8a8c92;
+    }
+    .avatar-tip {
+      color: #bdbdbd;
     }
 
-    .el-date-editor .el-picker-panel {
-      min-width: 254px !important;
-    }
+  }
+
+  .el-date-editor .el-picker-panel {
+    min-width: 254px !important;
+  }
 
 </style>

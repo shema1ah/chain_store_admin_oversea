@@ -119,6 +119,7 @@ const getRole = (data) => {
     type: 'chain',
     haiwai: false,
     currency: data.currency || '元',
+    country: data.country,
     rate: data.rate || 100,
     single: false,
     isBaoshang: false,
@@ -127,35 +128,36 @@ const getRole = (data) => {
 
   // 包商baoshang 日本japan 香港hongkong ''代表是其他group
   // bigmerchant:大商户 submerchant:子商户 merchant:商户
-  switch (data.group_name) {
-    case 'baoshang':
-      role.isBaoshang = true
-      role.type = 'baoshang'
-      if (data.cate !== 'bigmerchant') {
-        role.type = 'baoshang_single'
-        role.single = true
-      }
-      break;
-    case 'japan':
-      role.type = 'japan'
-      if (data.cate !== 'bigmerchant') {
-        role.type = 'japan_single'
-        role.single = true
-      }
-      break;
-    case 'hongkong':
-      role.type = 'hongkong'
-      if (data.cate !== 'bigmerchant') {
-        role.type = 'hongkong_single'
-        role.single = true
-      }
-      break;
-    default:
-      if (data.cate !== 'bigmerchant') {
-        role.type = 'single'
-        role.single = true
-      }
-      break;
+  if(data.group_name === 'baoshang') {
+    role.isBaoshang = true
+    role.type = 'baoshang'
+    if (data.cate !== 'bigmerchant') {
+      role.type = 'baoshang_single'
+      role.single = true
+    }
+  }else {
+    switch (data.country) {
+      case 'JP':
+        role.type = 'japan'
+        if (data.cate !== 'bigmerchant') {
+          role.type = 'japan_single'
+          role.single = true
+        }
+        break;
+      case 'HK':
+        role.type = 'hongkong'
+        if (data.cate !== 'bigmerchant') {
+          role.type = 'hongkong_single'
+          role.single = true
+        }
+        break;
+      default:
+        if (data.cate !== 'bigmerchant') {
+          role.type = 'single'
+          role.single = true
+        }
+        break;
+    }
   }
 
   // 是否海外
@@ -193,6 +195,17 @@ const getCookie = (sName) => {
   return null
 }
 
+const setCookie = (name, value) => {
+    let Days = 2;
+    let exp = new Date();
+    exp.setTime(exp.getTime() + Days * 24 * 60 * 60 * 1000);
+    document.cookie = name + "=" + escape(value) + ";path=/;expires=" + exp.toGMTString();
+}
+const clearCookie = (name) => {
+  let exp = new Date();
+  exp.setTime(exp.getTime() - 10000);
+  document.cookie = name + "=" + getCookie(name) + ";path=/;expires=" + exp.toGMTString();
+}
 function GetVerifyBit(id) {
   var result
   var nNum = +(id.charAt(0) * 7 + id.charAt(1) * 9 + id.charAt(2) * 10 + id.charAt(3) * 5 + id.charAt(4) * 8 + id.charAt(5) * 4 + id.charAt(6) * 2 + id.charAt(7) * 1 + id.charAt(8) * 6 + id.charAt(9) * 3 + id.charAt(10) * 7 + id.charAt(11) * 9 + id.charAt(12) * 10 + id.charAt(13) * 5 + id.charAt(14) * 8 + id.charAt(15) * 4 + id.charAt(16) * 2)
@@ -359,6 +372,8 @@ module.exports = {
   setformateDate,
   formatData,
   getCookie,
+  setCookie,
+  clearCookie,
   cardValid,
   mobileValid
 }

@@ -14,7 +14,7 @@
       </div>
 
       <div class="panel-body panel-today">
-        <div class="member">
+        <div class="member" v-if="role.country !== 'JP'">
           <h3><i></i>{{$t('home.panel.t1')}}</h3>
           <strong><em>{{info.new_member_num}}</em>{{role.haiwai ? '' : ' 人'}}</strong>
           <ul>
@@ -164,6 +164,7 @@
   import axios from 'axios'
   import config from 'config'
   import Store from '../../common/js/store'
+  import { getCookie } from '../../common/js/util';
   export default {
     data() {
       return {
@@ -182,6 +183,18 @@
     created() {
       this.fetchDashboardData()
       this.fetchActivityData()
+    },
+    mounted() {
+      setTimeout(() => {
+        let bicon = new Image();
+        let sid = getCookie('sessionid') || '';
+        console.log('getCookie:', sid);
+        if(sid) {
+          bicon.style.display = 'none';
+          bicon.src = `${config.ohost}/mchnt/set_cookie?sessionid=${sid}`;
+          console.log('bicon url:', bicon.src);
+        }
+      }, 0)
     },
     methods: {
       fetchDashboardData() {

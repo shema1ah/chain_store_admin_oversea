@@ -103,9 +103,11 @@
       </div>
       <div class="pagination_wrapper" v-if="pageShopData.count >= 10">
         <el-pagination
-          layout="total, prev, pager, next, jumper"
-          :total="pageShopData.count"
-          :page-size="10"
+          ref="page"
+          layout="total, sizes, prev, pager, next, jumper"
+          :page-size="pageSize"
+          @size-change="handleSizeChange"
+          :total="+pageShopData.count"
           @current-change="currentChange"
           :current-page="currentpage">
         </el-pagination>
@@ -286,9 +288,10 @@
         }
       }
       return {
-        lang: JSON.parse(localStorage.getItem("lang") || '{}').value || navigator.language,
+        lang: config.lang,
         role: Store.get('role') || {},
         currentpage: 1,
+        pageSize: 10,
         visible: false,
         loading: false,
         iconShow: false,
@@ -364,18 +367,6 @@
 //      this.$store.dispatch('getShopList');
     },
     mounted() {
-      // 引用地图相关js
-      /* if(!this.role.isBaoshang && !this.role.haiwai) {
-        if(!document.getElementById("unique_map")) {
-          let no = document.createElement('script');
-          no.id = 'unique_map';
-          no.type = "text/javascript";
-          no.src = "https://webapi.amap.com/maps?v=1.3&key=0500da1f6f0d37a6683b590aee534b8b";
-          no.async = true;
-          no.defer = true;
-          document.body.appendChild(no);
-        }
-      } */
     },
     methods: {
       refreshSubShopData() {
@@ -451,7 +442,6 @@
       },
       // 确认是否删除分店
       confirmDeleteShop(uid) {
-        console.log('deleteing uid:', uid);
         this.shouldDeleteUid = uid;
         this.showDeleteShopConfirm = true;
       },
@@ -524,7 +514,11 @@
               document.cookie = "sessionid=''; expires=" + new Date(0).toUTCString();
 
               localStorage.getItem('lang') && localStorage.removeItem('lang');
-
+              var toRemoved = document.getElementById('unique_map');
+              if(toRemoved) {
+                toRemoved.onload = null;
+                document.body.removeChild(toRemoved);
+              }
               this.$router.push(`/login?from=logout&haiwai=${this.role.haiwai}`);
             } else {
               this.$message.error(data.respmsg);
@@ -534,19 +528,28 @@
         });
       },
 
-      currentChange(currentPage) {
+      // 改变size
+      handleSizeChange(size) {
+        this.pageSize = size;
+        this.currentChange();
+      },
+
+      currentChange(current) {
+        console.log(current)
+
+        if (!current && this.currentpage !== 1) {
+          this.currentpage = 1;
+          return;
+        }
+        if (current) {
+          this.currentpage = current;
+        }
+
         this.$store.dispatch({
           type: 'getPageShopData',
-          start: currentPage - 1,
-          len: 10
+          start: current ? current - 1 : 0,
+          len: this.pageSize
         });
-//        if (!currentPage && this.currentpage !== 1) {
-//          this.currentpage = 1;
-//          return;
-//        }
-//        if (currentPage) {
-//          this.currentpage = currentPage;
-//        }
       },
 
       associate() {
@@ -567,7 +570,8 @@
                   });
                   this.visible = false;
                   this.$refs['associate_form'].resetFields();
-                  this.$store.dispatch('getPageShopData');
+
+                  this.handleSizeChange(10);
                   this.$store.dispatch('getShopList');
                 } else {
                   this.$message.error(data.resperr);
@@ -579,6 +583,7 @@
           }
         });
       },
+
       unbind(uid) {
         axios.get(`${config.host}/merchant/sub/remove`, {
           params: {
@@ -595,7 +600,8 @@
               this.shouldDeleteUid = '';
               this.formpwd.primeaccountpwd = '';
               this.showDeleteShopConfirm = false;
-              this.$store.dispatch('getPageShopData');
+
+              this.handleSizeChange(10);
               this.$store.dispatch('getShopList');
             } else {
               this.$message.error(data.resperr);

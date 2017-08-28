@@ -1,7 +1,7 @@
 // https://github.com/shelljs/shelljs
 require('./check-versions')()
 
-let env = process.env.NODE_ENV = process.argv[2] || 'production'
+process.env.NODE_ENV = process.argv[2] || 'production'
 
 var ora = require('ora')
 var path = require('path')

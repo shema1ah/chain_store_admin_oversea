@@ -2,6 +2,8 @@
 var path = require('path')
 const isTest = process.argv[2] === 'test'
 
+console.error('构建index：', process.env.NODE_ENV, process.argv)
+
 module.exports = {
   build: {
     env: isTest ? require('./test.env') : require('./prod.env'),
@@ -25,7 +27,7 @@ module.exports = {
   dev: {
     env: require('./dev.env'),
     port: 80,
-    autoOpenBrowser: true,
+    autoOpenBrowser: false,
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
