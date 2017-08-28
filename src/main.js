@@ -79,7 +79,7 @@ axios.interceptors.response.use((res) => {
   if (data.respcd == config.code.SESSIONERR || data.respcd == config.code.LOGINERR) {
     // 清除本地cookie
     document.cookie = "sessionid=''; expires=" + new Date(0).toUTCString();
-    // (new Image()).src = `${config.ohost}/mchnt/set_cookie?sessionid=`;
+    (new Image()).src = `${config.ohost}/mchnt/set_cookie?sessionid=`;
 
     localStorage.getItem('lang') && localStorage.removeItem('lang');
     Store.set('flag', true);
@@ -88,8 +88,7 @@ axios.interceptors.response.use((res) => {
       toRemoved.onload = null;
       document.body.removeChild(toRemoved);
     }
-    location.href = `/?from=logout&haiwai=${Store.get('role').haiwai}`
-    // this.$router.push(`/login?from=logout&haiwai=${Store.get('role').haiwai}`)
+    location.replace(`#/?from=logout&haiwai=${Store.get('role').haiwai}`);
   } else {
     return res
   }
