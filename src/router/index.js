@@ -226,12 +226,8 @@ export default new Router({
           component: settings
         },
         {
-          path: 'qrcode:userId',
-          nam,
-          component: dcqrcode
-        },
-        {
-          path: 'noqrcode',
+          path: 'qrcode/:has',
+          name: 'qrcode',
           component: dcqrcode
         }
       ]

@@ -146,7 +146,7 @@
         ctx.fillStyle = '#fe9b20'
         ctx.font = 'bold 22px 黑体'
         ctx.textAlign = 'center'
-        let text = this.tabelForm.areaName ? `${this.tabelForm.areaName} ${tableNumber}号桌` : `${tableNumber}号桌`
+        let text = this.tabelForm.areaName ? `${this.tabelForm.areaName} ${tableNumber}` : `${tableNumber}`
         ctx.fillText(text, qrcode.width / 2, qrcode.height + 30)
 
         let qrcodeCtx = qrcode.getContext("2d")
@@ -182,7 +182,7 @@
         ctx.fillStyle = '#fe9b20'
         ctx.font = 'bold 22px 黑体'
         ctx.textAlign = 'center'
-        let text = this.tabelForm.areaName ? `${this.tabelForm.areaName} ${tableNumber}号桌` : `${tableNumber}号桌`
+        let text = this.tabelForm.areaName ? `${this.tabelForm.areaName} ${tableNumber}` : `${tableNumber}`
         ctx.fillText(text, 228, 460)
 
         let qrcodeCtx = qrcode.getContext("2d")
@@ -204,7 +204,7 @@
         ctx.fillStyle = '#fe9b20'
         ctx.font = 'bold 22px 黑体'
         ctx.textAlign = 'center'
-        let text = this.tabelForm.areaName ? `${this.tabelForm.areaName} ${tableNumber}号桌` : `${tableNumber}号桌`
+        let text = this.tabelForm.areaName ? `${this.tabelForm.areaName} ${tableNumber}` : `${tableNumber}`
         ctx.fillText(text, qrcode.width / 2, qrcode.height + 30)
 
         let qrcodeCtx = qrcode.getContext("2d")

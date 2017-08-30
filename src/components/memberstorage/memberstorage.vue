@@ -72,7 +72,7 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column label="创建来源" prop="activity_stat.user_num"></el-table-column>
+          <el-table-column label="创建来源" prop="who_create"></el-table-column>
           <el-table-column
             width="160"
             label="操作">
@@ -230,7 +230,7 @@
       // 格式化门店列表
       getshopList() {
         let list = this.shopData;
-        let ids = this.detailData.mchnt_ids || [];
+        let ids = this.detailData.shop_list || [];
         let lists = [];
         if(ids[0] === '') {
           lists = list;
