@@ -1147,7 +1147,7 @@
           script.id = 'unique_map';
           script.type = "text/javascript";
           script.src = "https://webapi.amap.com/maps?v=1.3&key=0500da1f6f0d37a6683b590aee534b8b";
-          document.body.insertBefore(script, document.querySelectorAll('script')[document.querySelectorAll('script').length - 1]);
+          document.body.insertBefore(script, document.body.querySelectorAll('script')[0]);
           script.onload = function() {
             _self.initMapAPI();
           }
