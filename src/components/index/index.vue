@@ -164,7 +164,7 @@
   import axios from 'axios'
   import config from 'config'
   import Store from '../../common/js/store'
-  import { getCookie } from '../../common/js/util';
+  // import { getCookie } from '../../common/js/util';
   export default {
     data() {
       return {
@@ -258,7 +258,7 @@
         width: 48%;
         display: inline-block;
         text-align: center;
-        &:first-child {
+        &:first-child:not(:only-child) {
           border-right: 1px solid #E8E7E6;
         }
         > strong {

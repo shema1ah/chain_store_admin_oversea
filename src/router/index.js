@@ -37,6 +37,7 @@ import membersto from 'components/membersto/membersto'
 import publicauth from 'components/publicauth/publicauth'
 import failed from 'components/publicauth/failed'
 import settings from 'components/settings/settings'
+import dcqrcode from 'components/dcqrcode/dcqrcode'
 
 Vue.use(Router)
 
@@ -223,6 +224,15 @@ export default new Router({
         {
           path: 'settings',
           component: settings
+        },
+        {
+          path: 'qrcode:userId',
+          nam,
+          component: dcqrcode
+        },
+        {
+          path: 'noqrcode',
+          component: dcqrcode
         }
       ]
     }

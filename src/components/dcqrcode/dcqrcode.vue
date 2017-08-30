@@ -1,0 +1,272 @@
+<template>
+  <div v-loading="isLoading" :element-loading-text="$t('common.loading')">
+    <div class="warpper">
+      <div class="banner_wrapper">
+        <p>生成有公众号桌牌二维码</p>
+      </div>
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-select-group">
+            <span class="panel-header__desc">输入桌牌信息</span>
+          </div>
+        </div>
+        <div class="panel-body" style="padding:30px 0">
+          <el-row>
+            <el-col :span="10" style="padding:80px 12% 0 8%;">
+              <el-form label-position="top" label-width="80px" :model="tabelForm" ref="tabelForm">
+                <el-form-item label="区域名称">
+                  <el-input v-model="tabelForm.areaName" placeholder="例：2楼A区"></el-input>
+                </el-form-item>
+                <el-form-item label="桌号范围" prop="startNum" :rules="[
+                  { required: true, message: '起始桌号不能为空'},
+                  { type: 'number', message: '桌号必须为数字'}
+                ]">
+                  <el-input v-model.number="tabelForm.startNum" placeholder="起始桌号"></el-input>
+                </el-form-item>
+                <el-form-item label="至" prop="endNum" :rules="[
+                  { pattern: /^(0|[1-9][0-9]*)$/,  message:'桌号必须为数字'}
+                ]">
+                  <el-input v-model.number="tabelForm.endNum" placeholder="结尾桌号"></el-input>
+                </el-form-item>
+                <el-form-item>
+                  <el-button type="primary" :disabled="createBtnDisabled" @click="submitForm('tabelForm')">生成二维码</el-button>
+                </el-form-item>
+              </el-form>
+            </el-col>
+            <el-col :span="14" style="text-align:center;border-left:1px solid #e7eaec;padding:0 60px;">
+              <figure v-show="isPreview">
+                <img style="width:350px" src="./img/qrcode-demo.png" alt="二维码预览">
+                <p>二维码预览</p>
+              </figure>
+              <div v-show="!isPreview" class="realQrcode">
+                <figure id="tablePreview">
+                  <canvas width="350" height="455"></canvas>
+                  <p>已生成<em>{{tabelNumbers.length}}</em>个桌贴</p>
+                  <el-button type="primary" :disabled="downloadTabelBtnDisabled" @click="downloadTabel()">下载桌贴</el-button>
+                </figure>
+                <figure id="qrcodePreview">
+                  <canvas width="350" height="455"></canvas>
+                  <p>已生成<em>{{tabelNumbers.length}}</em>个二维码</p>
+                  <el-button type="primary" :disabled="downloadQrcodeBtnDisabled" @click="downloadQrcode()">下载二维码</el-button>
+                </figure>
+              </div>
+            </el-col>
+          </el-row>
+          <img id="bg" src="./img/bg.jpg" alt="点餐桌贴" style="display:none">
+          <div id="tableQrcodeContainer" style="display:none"></div>
+          <div id="qrcodeContainer" style="display:none"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+  import axios from 'axios'
+  import config from 'config'
+  import QRCode from 'qrcode'
+  import Store from '../../common/js/store'
+
+  export default {
+    data() {
+      return {
+        isLoading: false,
+        tabelForm: {
+          areaName: '',
+          startNum: '',
+          endNum: ''
+        },
+        tabelNumbers: [],
+        isPreview: true,
+        createBtnDisabled: false,
+        downloadTabelBtnDisabled: false,
+        downloadQrcodeBtnDisabled: false,
+        uid: Store.get('uid')
+      }
+    },
+    created() {
+      if (!this.uid) {
+        this.fetchMerchantIds()
+      }
+    },
+    methods: {
+      fetchMerchantIds () {
+        this.isLoading = true
+        axios.get(`${config.host}/merchant/ids`)
+          .then((res) => {
+            this.isLoading = false
+            let data = res.data
+            if (data.respcd === config.code.OK) {
+              let uid = data.data.uid
+              this.uid = uid
+              Store.set('uid', uid)
+            } else {
+              this.$message.error(data.respmsg)
+            }
+          })
+          .catch(() => {
+            this.isLoading = false
+            this.$message.error(this.$t('pubSignal.msg.m2'))
+          })
+      },
+      submitForm (formName) {
+        this.createBtnDisabled = true
+        let startNum = this.tabelForm.startNum
+        let endNum = this.tabelForm.endNum
+        let length = endNum ? endNum - startNum : 0 // 桌号数组长度
+        if (endNum && startNum > endNum) {
+          this.$message('起始桌号必须小于结尾桌号')
+          return false
+        } else if (length > 49) {
+          this.$message('单次最多生成50个二维码')
+          return false
+        }
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            for (let i = 0; i < length + 1; i++) {
+              this.tabelNumbers[i] = i === 0 ? startNum : this.tabelNumbers[i - 1] + 1
+              this.urlToQrcode(this.tabelNumbers[i])
+            }
+            this.isPreview = false
+          } else {
+            return false
+          }
+        })
+      },
+      drawPreviewCanvas (qrcode, hasFrame, tableNumber) {
+        let domName = hasFrame ? 'tablePreview' : 'qrcodePreview'
+        let canvas = document.getElementById(domName).firstElementChild
+        let ctx = canvas.getContext('2d')
+        canvas.width = qrcode.width
+        canvas.height = qrcode.height + 50
+        ctx.rect(0, 0, qrcode.width, qrcode.height + 50)
+        ctx.fillStyle = '#ffffff'
+        ctx.fill()
+
+        ctx.fillStyle = '#fe9b20'
+        ctx.font = 'bold 22px 黑体'
+        ctx.textAlign = 'center'
+        let text = this.tabelForm.areaName ? `${this.tabelForm.areaName} ${tableNumber}号桌` : `${tableNumber}号桌`
+        ctx.fillText(text, qrcode.width / 2, qrcode.height + 30)
+
+        let qrcodeCtx = qrcode.getContext("2d")
+        let imgData = qrcodeCtx.getImageData(0, 0, qrcode.width, qrcode.height)
+        ctx.putImageData(imgData, 0, 0)
+      },
+      urlToQrcode (tableNumber) {
+        let dcUrl = `${config.ohost}/dc/?/#/merchant/${this.uid}/${tableNumber}`
+        let qrcode = document.createElement('canvas')
+        QRCode.toCanvas(qrcode, dcUrl, {scale: 8, margin: 0}, function (err) {
+          if (err) throw err
+        })
+        this.drawTableCanvas(qrcode, tableNumber)
+        this.drawQrcodeCanvas(qrcode, tableNumber)
+        if (tableNumber === this.tabelForm.startNum) {
+          this.drawPreviewCanvas(qrcode, true, tableNumber)
+          this.drawPreviewCanvas(qrcode, false, tableNumber)
+        }
+      },
+      // 绘制第一张真实桌牌
+      drawTableCanvas (qrcode, tableNumber) {
+        let canvas = document.createElement('canvas')
+        canvas.setAttribute('name', tableNumber)
+        let ctx = canvas.getContext('2d')
+        canvas.width = 460
+        canvas.height = 620
+        ctx.rect(0, 0, canvas.width, canvas.height)
+        ctx.fill()
+
+        let bg = document.getElementById('bg')
+        ctx.drawImage(bg, 0, 0, canvas.width, canvas.height)
+
+        ctx.fillStyle = '#fe9b20'
+        ctx.font = 'bold 22px 黑体'
+        ctx.textAlign = 'center'
+        let text = this.tabelForm.areaName ? `${this.tabelForm.areaName} ${tableNumber}号桌` : `${tableNumber}号桌`
+        ctx.fillText(text, 228, 460)
+
+        let qrcodeCtx = qrcode.getContext("2d")
+        let imgData = qrcodeCtx.getImageData(0, 0, qrcode.width, qrcode.height)
+        ctx.putImageData(imgData, 97, 162)
+
+        document.getElementById('tableQrcodeContainer').append(canvas)
+      },
+      drawQrcodeCanvas (qrcode, tableNumber) {
+        let canvas = document.createElement('canvas')
+        canvas.setAttribute('name', tableNumber)
+        let ctx = canvas.getContext('2d')
+        canvas.width = qrcode.width
+        canvas.height = qrcode.height + 50
+        ctx.rect(0, 0, qrcode.width, qrcode.height + 50)
+        ctx.fillStyle = '#ffffff'
+        ctx.fill()
+
+        ctx.fillStyle = '#fe9b20'
+        ctx.font = 'bold 22px 黑体'
+        ctx.textAlign = 'center'
+        let text = this.tabelForm.areaName ? `${this.tabelForm.areaName} ${tableNumber}号桌` : `${tableNumber}号桌`
+        ctx.fillText(text, qrcode.width / 2, qrcode.height + 30)
+
+        let qrcodeCtx = qrcode.getContext("2d")
+        let imgData = qrcodeCtx.getImageData(0, 0, qrcode.width, qrcode.height)
+        ctx.putImageData(imgData, 0, 0)
+
+        document.getElementById('qrcodeContainer').append(canvas)
+      },
+      downloadFile(fileName, canvas) {
+        let a = document.createElement('a')
+        a.setAttribute('download', fileName)
+        a.setAttribute('href', canvas.toDataURL())
+        a.click()
+      },
+      downloadTabel () {
+        this.downloadTabelBtnDisabled = true
+        let tables = document.getElementById('tableQrcodeContainer').childNodes
+        for (let i = 0; i < tables.length; i++) {
+          this.downloadFile(tables[i].getAttribute('name'), tables[i])
+        }
+      },
+      downloadQrcode (e) {
+        this.downloadQrcodeBtnDisabled = true
+        let qrcodes = document.getElementById('qrcodeContainer').childNodes
+        for (let i = 0; i < qrcodes.length; i++) {
+          this.downloadFile(qrcodes[i].getAttribute('name'), qrcodes[i])
+        }
+      }
+    }
+  };
+</script>
+
+<style scoped lang="scss">
+  .el-form-item {
+    margin-bottom: 22px;
+  }
+  .realQrcode {
+    figure {
+      width: 45%;
+      display: inline-block;
+    }
+    canvas {
+      width: 52%;
+      margin-top: 28%;
+      border: 3px solid #f2932f;
+      border-radius: 6px;
+      padding: 10px 10px 0;
+    }
+    p {
+      margin: 32% 0 20px;;
+    }
+    em {
+      color: #fe9b20;
+      margin: 0 8px;
+    }
+  }
+  #tablePreview {
+    background: url('./img/qr-1.jpg') no-repeat;
+    background-size: 100% auto;
+  }
+  #qrcodePreview {
+    background: url('./img/qr-2.jpg') no-repeat;
+    background-size: 100% auto;
+  }
+</style>

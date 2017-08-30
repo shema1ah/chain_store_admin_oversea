@@ -27,34 +27,32 @@
                 <img src="./img/default.png" alt="图像" v-else>
               </div>
               <div class="information">
-                <p class="info-title">{{ storeData.name || '2233' }}</p>
+                <p class="info-title">{{ storeData.name }}</p>
                 <p>
                   <img src="./img/tel.png" alt="图标">
-                  <span>{{ storeData.mobile || '13523232323' }}</span>
+                  <span>{{ storeData.mobile }}</span>
                 </p>
                 <p>
                   <img src="./img/birthday.png" alt="图标">
-                  <span>{{ storeData.birthday || '1992-02-11' }}</span>
+                  <span>{{ storeData.birthday }}</span>
                 </p>
               </div>
             </div>
             <div class="info-right">
               <div>
                 <p class="right-title">余额</p>
-                <p class="right-count">¥ 52800.00</p>
+                <p class="right-count">{{ storeData.balance | formatCurrency }}</p>
               </div>
               <div>
                 <p class="right-title">累计储值</p>
-                <p class="right-count">¥ 52800.00</p>
+                <p class="right-count">{{ storeData.recharge_amt | formatCurrency }}</p>
               </div>
               <div>
                 <p class="right-title">储值次数</p>
-                <p class="right-count">3</p>
+                <p class="right-count">{{ storeData.recharge_times | formatCurrency }}</p>
               </div>
             </div>
-
           </div>
-
         </div>
       </div>
     </div>
@@ -70,10 +68,11 @@
           :data="listData.data"
           style="width: 100%"
           row-class-name="el-table__row_fix"
+          :row-style="rowStyle"
           v-loading="loading">
           <el-table-column label="图像">
             <template scope="scope">
-              <img v-if="scope.row.c_avatar" :src="scope.row.c_avatar" alt="" width="44" height="44" />
+              <img v-if="scope.row.c_avatar || scope.row.avatar" :src="scope.row.c_avatar || scope.row.avatar" alt="" width="44" height="44" />
               <img src="./img/default.png" height="44" width="44" v-else/>
             </template>
           </el-table-column>
@@ -83,7 +82,11 @@
           <el-table-column min-width="100" label="时间" prop="sysdtm">
           </el-table-column>
           <el-table-column min-width="100" label="交易金额">
-            <template scope="scope">{{ scope.row.txamt | formatCurrency }}</template>
+            <template scope="scope">
+              <span class="table-title">{{ scope.row.txamt | formatCurrency }}元</span>
+              <span v-show="scope.row.status === 4">(已撤销)</span>
+              <span v-show="scope.row.present_amt" class="table-content">(赠送￥{{ scope.row.present_amt | formatCurrency }}元)</span>
+            </template>
           </el-table-column>
           <el-table-column min-width="100" label="交易门店" prop="shopname">
           </el-table-column>
@@ -196,6 +199,14 @@
       handleSizeChange(size = 7) {
         this.pageSize = size;
         this.currentChange();
+      },
+
+      // 当交易为撤销的时候样式
+      rowStyle(row) {
+        if (row.status === 4) {
+          return {opacity: 0.4}
+        }
+        return {}
       }
     }
   };
@@ -269,6 +280,13 @@
           }
         }
       }
+    }
+
+    .table-title {
+      color: #FE9B20;
+    }
+    .head-content {
+      color: #777a7d;
     }
   }
 

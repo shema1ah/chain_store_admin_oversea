@@ -68,8 +68,9 @@ export default {
         if (data.respcd === config.code.OK) {
           // 清除本地cookie
           document.cookie = "sessionid=''; expires=" + new Date(0).toUTCString();
-//          (new Image()).src = `${config.ohost}/mchnt/set_cookie?sessionid=`;
-          localStorage.getItem('lang') && localStorage.removeItem('lang');
+          (new Image()).src = `${config.ohost}/mchnt/set_cookie?sessionid=`;
+          // 清除所有localStorage
+          localStorage.clear();
           var toRemoved = document.getElementById('unique_map');
           if(toRemoved) {
             toRemoved.onload = null;

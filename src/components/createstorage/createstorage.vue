@@ -18,13 +18,6 @@
       <div class="panel-body">
         <div class="myform_wrapper">
           <el-form :rules="formrules" :model="form" ref="form">
-            <el-form-item label="适用门店" v-if="!role.single">
-              <div v-if="shopData.length > 0">
-                <span v-for="(shop,index) in shopData">{{ shop.shop_name }}{{ index < shopData.length - 1?"、":"" }}</span>
-              </div>
-              <div v-else>无</div>
-              <div class="remark mt-0 lh-16">注：请确保以上门店均已开通储值服务，否则无法正常储值</div>
-            </el-form-item>
             <el-form-item label="开始时间" prop="start_time">
               <el-date-picker v-model="form.start_time" type="date" placeholder="请选择开始时间" size="small" :editable="false" :clearable="false" :picker-options="dateRange">
               </el-date-picker>
@@ -32,6 +25,15 @@
             <el-form-item label="结束时间" prop="end_time">
               <el-date-picker v-model="form.end_time" type="date" placeholder="请选结束时间" size="small" :editable="false" :clearable="false" :picker-options="dateRange">
               </el-date-picker>
+            </el-form-item>
+            <el-form-item label="适用门店" v-if="!role.single">
+              <el-form-item prop="mchnt_ids">
+                <el-select v-model="form.mchnt_ids" placeholder="请选择门店" multiple size="small">
+                  <el-option v-for="shop in shopList" :label="shop.shop_name" :key="shop.uid" :value="shop.uid">
+                  </el-option>
+                </el-select>
+              </el-form-item>
+              <div class="remark">注：请确保以上门店均已开通储值服务，否则无法正常储值</div>
             </el-form-item>
             <el-form-item label="设置规则" min-width="150">
               <div class="storage-item" v-for="(item, index) in form.rulesData">
@@ -70,7 +72,7 @@
   </div>
 </template>
 <script>
-  import {formatDate, deepClone} from '../../common/js/util';
+  import {formatDate} from '../../common/js/util';
   import Validator from '../../validator';
   import Store from '../../common/js/store';
 
@@ -115,6 +117,7 @@
         form: {
           start_time: '',
           end_time: '',
+          mchnt_ids: [''],
           mobile: '',
           desc: '',
           pay_amt0: null,
@@ -139,6 +142,9 @@
           ],
           end_time: [
             { validator: expireValid }
+          ],
+          mchnt_ids: [
+            {required: true, message: '请选择适用门店'}
           ],
           desc: [
             { validator: descValid }
@@ -173,11 +179,24 @@
         }
       };
     },
+    watch: {
+      'form.mchnt_ids': function (val, oldval) {
+        if(val.length > oldval.length) {
+          if(val.indexOf('') > 0) {
+            this.form.mchnt_ids = [''];
+          }else if(oldval.indexOf('') > -1) {
+            this.form.mchnt_ids.shift();
+          }
+        }
+      }
+    },
+
     computed: {
       data() {
         return {
           start_time: this.form.start_time && formatDate(this.form.start_time),
           end_time: this.form.end_time && formatDate(this.form.end_time),
+          mchnt_ids: this.form.mchnt_ids,
           mobile: this.form.mobile,
           desc: this.form.desc,
           rules: this.form.rulesData
@@ -186,10 +205,9 @@
       len() {
         return this.form.rulesData.length;
       },
-      shopData() {
-        let shopData = deepClone(this.$store.state.shopData);
-        shopData.length !== 0 && shopData.list.shift();
-        return shopData.list;
+      shopList() {
+        let shopData = this.$store.state.shopData || {};
+        return shopData.list || [];
       }
     },
     methods: {
