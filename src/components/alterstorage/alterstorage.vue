@@ -219,7 +219,7 @@
         return {
           start_time: this.form.start_time && formatDate(this.form.start_time),
           end_time: this.form.end_time && formatDate(this.form.end_time),
-          mchnt_ids: this.form.mchnt_ids,
+          mchnt_ids: this.form.mchnt_ids || [],
           mobile: this.form.mobile,
           desc: this.form.desc,
           rules: this.form.rulesData,
@@ -229,7 +229,7 @@
       },
 
       len() {
-        return this.form.rulesData.length;
+        return this.form.rulesData.length || [];
       },
 
       shopList() {

@@ -127,8 +127,7 @@
         this.iconShow = true;
         // 新建
         if(!this.data.flag) {
-          // axios.post(`${config.host}/merchant/prepaid/create`, data)
-          axios.post(`http://172.100.107.196:9099/merchant/prepaid/create`, data)
+          axios.post(`${config.host}/merchant/prepaid/create`, data)
           .then((res) => {
             this.iconShow = false;
             let data = res.data;
@@ -148,8 +147,7 @@
           });
         } else {
           // 编辑活动
-          // axios.post(`${config.host}/merchant/prepaid/alter`, data)
-          axios.post(`http://172.100.107.196:9099/merchant/prepaid/alter`, data)
+          axios.post(`${config.host}/merchant/prepaid/alter`, data)
           .then((res) => {
             this.iconShow = false;
             let data = res.data;

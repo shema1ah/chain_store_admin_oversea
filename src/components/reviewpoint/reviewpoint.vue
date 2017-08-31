@@ -6,7 +6,7 @@
         <i class="icon-right_arrow"></i>
         <span>会员集点</span>
         <i class="icon-right_arrow"></i>
-        <span>创建集点</span>
+        <span>{{ type === 'create'?'创建集点':'修改集点'}}</span>
       </div>
     </div>
     <div class="panel">
@@ -65,7 +65,7 @@
   import axios from 'axios';
   import config from 'config';
   import qs from 'qs';
-  import { getParams, formatData } from '../../common/js/util';
+  import { formatData } from '../../common/js/util';
   import Store from '../../common/js/store';
 
   export default {
@@ -74,6 +74,12 @@
         vm.data = Store.get('pointData');
         let list = Store.get('shopStateList');
         vm.shopList = vm.getshopList(list);
+
+        if(vm.$route.query.type === 'edit') {
+          vm.type = 'edit'
+        }else {
+          vm.type = 'create'
+        }
       });
     },
     data() {
@@ -81,6 +87,7 @@
         loading: false,
         role: Store.get('role') || {},
         data: {},
+        type: 'create',
         shopList: []
       };
     },
@@ -117,7 +124,7 @@
         if(!this.loading) {
           this.loading = true;
           let params;
-          if(getParams("type") === "create") {
+          if(this.type === "create") {
             params = "actv_create";
           }else {
             params = "actv_change";
@@ -142,7 +149,7 @@
               if(data.respcd === config.code.OK) {
                 this.$message({
                   type: 'success',
-                  message: getParams("type") === "create" ? '创建集点活动成功' : '修改集点活动成功'
+                  message: this.type === "create" ? '创建集点活动成功' : '修改集点活动成功'
                 });
                 this.$router.push('/main/memberredpoint');
               } else {

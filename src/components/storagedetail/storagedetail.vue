@@ -113,9 +113,6 @@
   import axios from 'axios';
   import config from 'config';
   import Store from "../../common/js/store";
-  import { getParams } from '../../common/js/util';
-
-  let id = getParams('id');
 
   export default {
     beforeRouteEnter (to, from, next) {
@@ -126,6 +123,7 @@
           flag: false
         });
 
+        vm.id = vm.$route.query.id;
         vm.getData();
 
         setTimeout(() => {
@@ -154,7 +152,7 @@
         return {
           curpage: this.currentPage,
           length: this.pageSize,
-          cid: id,
+          cid: this.id,
           format: 'cors'
         };
       }

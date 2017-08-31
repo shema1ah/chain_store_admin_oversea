@@ -29,13 +29,8 @@
         <transition name="collpase">
           <ul v-show="isShow2" class="collpase">
             <li>
-              <router-link class="sidebar-nav__item sidebar-nav__subitem" :to="{ name: 'qrcode', params: { has: 'yes' }}">
-                有公众号二维码
-              </router-link>
-            </li>
-            <li>
-              <router-link class="sidebar-nav__item sidebar-nav__subitem" :to="{ name: 'qrcode', params: { has: 'no' }}">
-                无公众号二维码
+              <router-link class="sidebar-nav__item sidebar-nav__subitem" :to="{ name: 'qrcode'}">
+                生成二维码
               </router-link>
             </li>
             <li>
