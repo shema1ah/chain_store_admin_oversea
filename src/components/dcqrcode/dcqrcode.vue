@@ -1,5 +1,5 @@
 <template>
-  <div v-loading="isLoading" :element-loading-text="$t('common.loading')">
+  <div v-loading="isLoading1 || isLoading2" :element-loading-text="$t('common.loading')">
     <div class="warpper">
       <div class="banner_wrapper">
         <p>生成有公众号桌牌二维码</p>
@@ -21,7 +21,7 @@
                   { required: true, message: '起始桌号不能为空'},
                   { type: 'number', message: '桌号必须为数字'}
                 ]">
-                  <el-input v-model.number="tabelForm.startNum" placeholder="起始桌号"></el-input>
+                  <el-input type="startNum" v-model.number="tabelForm.startNum" placeholder="起始桌号"></el-input>
                 </el-form-item>
                 <el-form-item label="至" prop="endNum" :rules="[
                   { pattern: /^(0|[1-9][0-9]*)$/,  message:'桌号必须为数字'}
@@ -30,6 +30,7 @@
                 </el-form-item>
                 <el-form-item>
                   <el-button type="primary" :disabled="createBtnDisabled" @click="submitForm('tabelForm')">生成二维码</el-button>
+                  <el-button @click="reset()">重置</el-button>
                 </el-form-item>
               </el-form>
             </el-col>
@@ -64,19 +65,23 @@
 <script>
   import axios from 'axios'
   import config from 'config'
+  import qs from 'qs'
   import QRCode from 'qrcode'
   import Store from '../../common/js/store'
 
   export default {
-    data() {
+    data () {
       return {
-        isLoading: false,
+        isLoading1: false,
+        isLoading2: false,
+        wechatNotAuth: false,
         tabelForm: {
           areaName: '',
           startNum: '',
           endNum: ''
         },
         tabelNumbers: [],
+        qrcodeUrlList: [],
         isPreview: true,
         createBtnDisabled: false,
         downloadTabelBtnDisabled: false,
@@ -84,17 +89,47 @@
         uid: Store.get('uid')
       }
     },
-    created() {
+    created () {
       if (!this.uid) {
         this.fetchMerchantIds()
       }
+      this.fetchPublicInfo()
     },
     methods: {
+      reset() {
+        this.tabelNumbers = []
+        this.$refs['tabelForm'].resetFields()
+        this.isPreview = true
+        this.createBtnDisabled = false
+        this.downloadTabelBtnDisabled = false
+        this.downloadQrcodeBtnDisabled = false
+      },
+      fetchPublicInfo () {
+        this.isLoading1 = true
+        axios.post(`${config.host}/wxofficial/setting`)
+          .then((res) => {
+            let data = res.data
+            this.isLoading1 = false
+            if (data.respcd === config.code.OK) {
+              if (data.data.offical_status === false) {
+                this.wechatNotAuth = true
+              } else {
+                this.wechatNotAuth = false
+              }
+            } else {
+              this.$message.error(data.respmsg)
+            }
+          })
+          .catch(() => {
+            this.isLoading1 = false
+            this.$message.error(this.$t('pubSignal.msg.m1'))
+          })
+      },
       fetchMerchantIds () {
-        this.isLoading = true
+        this.isLoading2 = true
         axios.get(`${config.host}/merchant/ids`)
           .then((res) => {
-            this.isLoading = false
+            this.isLoading2 = false
             let data = res.data
             if (data.respcd === config.code.OK) {
               let uid = data.data.uid
@@ -103,6 +138,34 @@
             } else {
               this.$message.error(data.respmsg)
             }
+          })
+          .catch(() => {
+            this.isLoading2 = false
+            this.$message.error(this.$t('pubSignal.msg.m2'))
+          })
+      },
+      fetchWxofficialQrcode (startNum, endNum, length) {
+        this.isLoading = true
+        axios.post(`${config.host}/wxofficial/qrcode`, qs.stringify({
+          start_num: startNum,
+          end_num: endNum
+        }), {
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          }
+        }).then((res) => {
+            let data = res.data
+            if (data.respcd === config.code.OK) {
+              let qrcodeUrlList = data.data.qrcode_list
+              for (let i = 0; i < length + 1; i++) {
+                this.tabelNumbers[i] = i === 0 ? startNum : this.tabelNumbers[i - 1] + 1
+                this.urlToQrcode(this.tabelNumbers[i], qrcodeUrlList[i].qrcode)
+              }
+              this.isPreview = false
+            } else {
+              this.$message.error(data.respmsg)
+            }
+            this.isLoading = false
           })
           .catch(() => {
             this.isLoading = false
@@ -123,12 +186,17 @@
         }
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            for (let i = 0; i < length + 1; i++) {
-              this.tabelNumbers[i] = i === 0 ? startNum : this.tabelNumbers[i - 1] + 1
-              this.urlToQrcode(this.tabelNumbers[i])
+            if (this.wechatNotAuth) {
+              for (let i = 0; i < length + 1; i++) {
+                this.tabelNumbers[i] = i === 0 ? startNum : this.tabelNumbers[i - 1] + 1
+                this.urlToQrcode(this.tabelNumbers[i])
+              }
+              this.isPreview = false
+            } else {
+              this.fetchWxofficialQrcode(startNum, endNum, length)
             }
-            this.isPreview = false
           } else {
+            this.createBtnDisabled = false
             return false
           }
         })
@@ -153,10 +221,10 @@
         let imgData = qrcodeCtx.getImageData(0, 0, qrcode.width, qrcode.height)
         ctx.putImageData(imgData, 0, 0)
       },
-      urlToQrcode (tableNumber) {
-        let dcUrl = `${config.ohost}/dc/?/#/merchant/${this.uid}/${tableNumber}`
+      urlToQrcode (tableNumber, qrcodeUrl) {
+        let _qrcodeUrl = !qrcodeUrl ? `${config.ohost}/dc/?/#/merchant/${this.uid}/${tableNumber}` : qrcodeUrl
         let qrcode = document.createElement('canvas')
-        QRCode.toCanvas(qrcode, dcUrl, {scale: 8, margin: 0}, function (err) {
+        QRCode.toCanvas(qrcode, _qrcodeUrl, {scale: 8, margin: 0}, function (err) {
           if (err) throw err
         })
         this.drawTableCanvas(qrcode, tableNumber)

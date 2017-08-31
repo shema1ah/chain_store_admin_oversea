@@ -93,6 +93,9 @@
               }, {
                 val: this.$t('nav.shopMng'),
                 pathname: 'chainmanage'
+              }, {
+                val: '二维码',
+                pathname: 'dcqrcode'
               }
             ];
             break;
@@ -160,6 +163,9 @@
               }, {
                 val: '门店管理',
                 pathname: 'chainmanage'
+              }, {
+                val: '二维码',
+                pathname: 'dcqrcode'
               }
             ];
             break;
@@ -192,6 +198,9 @@
               }, {
                 val: '门店管理',
                 pathname: 'singlemanage'
+              }, {
+                val: '二维码',
+                pathname: 'dcqrcode'
               }
             ];
             break;
@@ -252,9 +261,6 @@
               }, {
                 val: this.$t('nav.setup'),
                 pathname: 'settings'
-              }, {
-                val: '二维码',
-                pathname: 'dcqrcode'
               }
             ];
             break;
