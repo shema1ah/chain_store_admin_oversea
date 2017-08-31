@@ -164,7 +164,6 @@
   import axios from 'axios'
   import config from 'config'
   import Store from '../../common/js/store'
-  // import { getCookie } from '../../common/js/util';
   export default {
     data() {
       return {
@@ -184,14 +183,6 @@
       this.fetchDashboardData()
       this.fetchActivityData()
     },
-    mounted() {
-//      let bicon = new Image();
-//      let sid = getCookie('sessionid') || '';
-//      if(sid) {
-//        bicon.style.display = 'none';
-//        bicon.src = `${config.ohost}/mchnt/set_cookie?sessionid=${sid}`;
-//      }
-    },
     methods: {
       fetchDashboardData() {
         this.loading1 = true;
@@ -205,9 +196,9 @@
               this.$message.error(data.respmsg)
             }
           })
-          .catch(() => {
+          .catch((err) => {
             this.loading1 = false;
-            this.$message.error(this.$t('common.netError'))
+            console.log(err && err.respmsg)
           });
       },
       fetchActivityData() {
@@ -222,9 +213,10 @@
               this.$message.error(data.respmsg)
             }
           })
-          .catch(() => {
+          .catch((err) => {
             this.loading2 = false;
-            this.$message.error(this.$t('common.netError'))
+//            this.$message.error(this.$t('common.netError'))
+            console.log(err && err.respmsg)
           })
       },
       openDetail(type) {
