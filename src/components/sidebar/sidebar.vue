@@ -29,12 +29,12 @@
         <transition name="collpase">
           <ul v-show="isShow2" class="collpase">
             <li>
-              <router-link class="sidebar-nav__item sidebar-nav__subitem" :to="{ name: 'dcqrcode', params: {has: 'yes'}}">
+              <router-link class="sidebar-nav__item sidebar-nav__subitem" :to="{ name: 'dcqrcode', params: {hasPublic: 'yes'}}">
                 有公众号二维码
               </router-link>
             </li>
             <li>
-              <router-link class="sidebar-nav__item sidebar-nav__subitem" :to="{ name: 'dcqrcode', params: {has: 'no'}}">
+              <router-link class="sidebar-nav__item sidebar-nav__subitem" :to="{ name: 'dcqrcode', params: {hasPublic: 'no'}}">
                 无公众号二维码
               </router-link>
             </li>

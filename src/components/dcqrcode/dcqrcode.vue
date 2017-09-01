@@ -74,7 +74,7 @@
       return {
         isLoading1: false,
         isLoading2: false,
-        wechatNotAuth: false,
+        hasPublic: false,
         tabelForm: {
           areaName: '',
           startNum: '',
@@ -93,7 +93,9 @@
       if (!this.uid) {
         this.fetchMerchantIds()
       }
-      this.fetchPublicInfo()
+      if (this.$route.params.hasPublic === 'yes') {
+        this.fetchPublicInfo()
+      }
     },
     methods: {
       reset() {
@@ -112,9 +114,9 @@
             this.isLoading1 = false
             if (data.respcd === config.code.OK) {
               if (data.data.offical_status === false) {
-                this.wechatNotAuth = true
+                this.hasPublic = false
               } else {
-                this.wechatNotAuth = false
+                this.hasPublic = true
               }
             } else {
               this.$message.error(data.respmsg)
@@ -146,6 +148,10 @@
       },
       fetchWxofficialQrcode (startNum, endNum, length) {
         this.isLoading = true
+        if (this.hasPublic === false) {
+          this.$message.error('您还没有绑定微信公众号，请到公众号授权页面绑定公众号!')
+          return
+        }
         axios.post(`${config.host}/wxofficial/qrcode`, qs.stringify({
           start_num: startNum,
           end_num: endNum
@@ -186,7 +192,7 @@
         }
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            if (this.wechatNotAuth) {
+            if (this.$route.params.hasPublic === 'no') {
               for (let i = 0; i < length + 1; i++) {
                 this.tabelNumbers[i] = i === 0 ? startNum : this.tabelNumbers[i - 1] + 1
                 this.urlToQrcode(this.tabelNumbers[i])

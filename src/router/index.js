@@ -226,7 +226,7 @@ export default new Router({
           component: settings
         },
         {
-          path: 'dcqrcode/:has',
+          path: 'dcqrcode/:hasPublic',
           name: 'dcqrcode',
           component: dcqrcode
         }
