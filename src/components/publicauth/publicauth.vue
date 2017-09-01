@@ -108,7 +108,7 @@
             </li>
             <li>
               <span @click="selectext($event)">集点链接</span>
-              <p>http://m.haojin.in/v2/app.html?mchnt_id={{uid}}#!/card</p>
+              <p>http://m.haojin.in/v2/app.html?mchnt_id={{hashid}}#!/card</p>
               <button @click="copylink($event)" type="button" class="el-button el-button&#45;&#45;text">
                 <img src="./img/ic_copy.png" alt="icon">复制链接
               </button>
