@@ -12,7 +12,7 @@ let formatObj = (obj) => {
 // 获取params的key对应的value
 const getParams = (key) => {
   // 获取参数
-  let url = window.location.hash.split('?')[1] || {};
+  let url = window.location.hash.split('?')[1] || '';
   // 正则筛选地址栏
   let reg = new RegExp('(^|&)' + key + '=([^&]*)(&|$)')
   // 匹配目标参数
@@ -201,7 +201,11 @@ const setCookie = (name, value) => {
     exp.setTime(exp.getTime() + Days * 24 * 60 * 60 * 1000);
     document.cookie = name + "=" + escape(value) + ";path=/;expires=" + exp.toGMTString();
 }
-
+const clearCookie = (name) => {
+  let exp = new Date();
+  exp.setTime(exp.getTime() - 10000);
+  document.cookie = name + "=" + getCookie(name) + ";path=/;expires=" + exp.toGMTString();
+}
 function GetVerifyBit(id) {
   var result
   var nNum = +(id.charAt(0) * 7 + id.charAt(1) * 9 + id.charAt(2) * 10 + id.charAt(3) * 5 + id.charAt(4) * 8 + id.charAt(5) * 4 + id.charAt(6) * 2 + id.charAt(7) * 1 + id.charAt(8) * 6 + id.charAt(9) * 3 + id.charAt(10) * 7 + id.charAt(11) * 9 + id.charAt(12) * 10 + id.charAt(13) * 5 + id.charAt(14) * 8 + id.charAt(15) * 4 + id.charAt(16) * 2)
@@ -369,6 +373,7 @@ module.exports = {
   formatData,
   getCookie,
   setCookie,
+  clearCookie,
   cardValid,
   mobileValid
 }

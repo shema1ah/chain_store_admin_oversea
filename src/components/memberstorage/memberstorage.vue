@@ -1,5 +1,5 @@
 <template>
-  <div class="redpacket">
+  <div class="memberStorage">
     <div class="banner_wrapper">
       <div class="banner-breadcrumb">
         <span>会员功能</span>
@@ -24,7 +24,17 @@
               </el-option>
             </el-select>
           </div>
+
+          <div class="btn-group">
+            <div class="panel-header-btn">
+              <router-link :to="{ name: 'storagelist'}">储值会员</router-link>
+            </div>
+            <div class="panel-header-btn">
+              <router-link :to="{ name: 'storagebill'}">储值账单</router-link>
+            </div>
+          </div>
         </div>
+
       </div>
       <div class="panel-body">
         <el-table
@@ -47,10 +57,7 @@
             label="活动状态">
             <template scope="scope">{{ storageDict[scope.row.activity_status.status] }}</template>
           </el-table-column>
-          <el-table-column
-            prop="activity_stat.user_num"
-            label="储值人数">
-          </el-table-column>
+          <el-table-column prop="activity_stat.user_num" label="储值人数"></el-table-column>
           <el-table-column
             label="储值金额">
             <template scope="scope">{{ scope.row.activity_stat.total_pay_amt | formatCurrency }}元</template>
@@ -65,12 +72,12 @@
               </div>
             </template>
           </el-table-column>
+          <el-table-column label="创建来源" prop="who_create"></el-table-column>
           <el-table-column
-            width="300"
+            width="160"
             label="操作">
             <template scope="scope">
               <el-button type="text" size="small" class="el-button__fix" @click="getDetailData(scope.row.activity_info.activity_id)">查看详情</el-button>
-    <!--           <el-button type="text" size="small" class="el-button__fix">下载物料</el-button> -->
               <el-dropdown>
                 <span class="el-dropdown-link el-dropdown-link__fix">
                   更多<i class="el-icon-caret-bottom el-icon--right"></i>
@@ -102,8 +109,8 @@
         <el-row class="mb-5" v-if="!role.single">
           <el-col :span="5" class="title">适用门店</el-col>
           <el-col :span="19" class="desc">
-            <div v-if="shopData.length > 0">
-              <span  v-for="(shop,index) in shopData">{{ shop.shop_name }}{{ index < shopData.length - 1?"、":"" }}</span>
+            <div v-if="shopList.length > 0">
+              <span  v-for="(shop,index) in shopList">{{ shop.shop_name }}{{ index < shopList.length - 1?"、":"" }}</span>
             </div>
             <div v-else>无</div>
             <div class="remark mt-0 lh-16">注：请确保以上门店均已开通储值服务，否则无法正常储值！</div>
@@ -194,7 +201,8 @@
         isShowDetail: false,
         pageSize: 10,
         loading: false,
-        currentpage: 1
+        currentpage: 1,
+        shopList: []
       };
     },
     computed: {
@@ -202,9 +210,9 @@
         return this.$store.state.storageData;
       },
       shopData() {
-        let shopData = deepClone(this.$store.state.shopData);
-        shopData.list.shift();
-        return shopData.list;
+        let shopData = deepClone(this.$store.state.shopData || {});
+        let list = (shopData.list || []).shift();
+        return list;
       },
       basicParams() {
         return {
@@ -216,8 +224,28 @@
     },
     methods: {
       stateChange() {
-        this.currentChange();
+        this.handleSizeChange();
       },
+
+      // 格式化门店列表
+      getshopList() {
+        let list = this.shopData;
+        let ids = this.detailData.shop_list || [];
+        let lists = [];
+        if(ids[0] === '') {
+          lists = list;
+        }else {
+          for(let i of ids) {
+            for(let val of list) {
+              if(val.uid === i) {
+                lists.push(val);
+              }
+            }
+          }
+        }
+        return lists;
+      },
+
       currentChange(current) {
         if(!current && this.currentpage !== 1) {
           this.currentpage = 1;
@@ -233,7 +261,8 @@
         }
         console.log(this.basicParams);
       },
-      handleSizeChange(size) {
+
+      handleSizeChange(size = 10) {
         this.pageSize = size;
         this.currentChange();
       },
@@ -338,6 +367,9 @@
           let data = res.data;
           if(data.respcd === config.code.OK) {
             this.detailData = data.data;
+
+            // 获取适用门店
+            this.shopList = this.getshopList();
             this.isShowDetail = true;
           } else {
             this.$message.error(data.resperr);
@@ -366,5 +398,23 @@
   }
   .mb-5 {
     margin-bottom: 5px;
+  }
+
+  .memberStorage {
+    .panel-select-group {
+      justify-content: space-between;
+    }
+    .btn-group {
+      padding-right: 10px;
+
+      .panel-header-btn {
+        a {
+          color: #FE9B20;
+        }
+        &:not(:last-child) {
+          margin-right: 10px;
+        }
+      }
+    }
   }
 </style>

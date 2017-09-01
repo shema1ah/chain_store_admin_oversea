@@ -27,7 +27,7 @@ exports.default = {
     all: '全部',
     netError: 'ネットワークエラー',
     loading: '一生懸命ローディング中です',
-    modSucc: '改正に成功する!',
+    modSucc: '変更しました!',
     modFailed: '訂正できませんでした',
     logout: 'ログアウト',
     msg: {
@@ -175,7 +175,7 @@ exports.default = {
       operator: 'キャッシャー',
       moreFilter: '選択します',
       noLimit: '全部',
-      dd: '明細をキャンセスします', // 撤销明细
+      dd: '取り消し可能な取引だけを表示する', // 撤销明细 
       sNum: 'シリアル番号', // 流水号
       tip: 'シリアル番号を入力してください',
       btn: {
@@ -208,7 +208,7 @@ exports.default = {
       plat: 'をプラートフォームから支給', // 平台补贴
       btn: {
         downDetail: '取引明細をダウンロードします',
-        downTrade: '取引纏めをダウンロードします'
+        downTrade: '要約レポートをダウンロードします'
       }
     },
     dialog: {
@@ -232,7 +232,7 @@ exports.default = {
       L1: 'トップページ'
     },
     title: {
-      t1: '会員及び取引のデータ統計',
+      t1: '取引のデータ統計',
       t2: 'イベント運営データ統計'
     },
     panel: {

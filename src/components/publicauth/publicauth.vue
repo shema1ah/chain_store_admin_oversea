@@ -70,7 +70,7 @@
           </div>
         </div>
       </div>
-      <div class="panel" v-if="!role.haiwai">
+      <!--<div class="panel" v-if="!role.haiwai">
         <div class="panel-header panel-header__fix">
           <div class="panel-select-group">
             <span class="panel-header__desc">微信菜单链接</span>
@@ -81,62 +81,62 @@
             <li v-if="role.single">
               <span @click="selectext($event)">点餐链接</span>
               <p>https://o.qfpay.com/dc/?/#!/merchant/{{uid}}</p>
-              <button @click="copylink($event)" type="button" class="el-button el-button--text">
+              <button @click="copylink($event)" type="button" class="el-button el-button&#45;&#45;text">
                 <img src="./img/ic_copy.png" alt="icon">复制链接
               </button>
             </li>
             <li v-if="role.single">
               <span @click="selectext($event)">外卖链接</span>
               <p>https://o.qfpay.com/dc/take-out.html?/#!/merchant/{{uid}}</p>
-              <button @click="copylink($event)" type="button" class="el-button el-button--text">
+              <button @click="copylink($event)" type="button" class="el-button el-button&#45;&#45;text">
                 <img src="./img/ic_copy.png" alt="icon">复制链接
               </button>
             </li>
             <li v-else>
               <span @click="selectext($event)">外卖链接</span>
               <p>https://o.qfpay.com/dc/store-list.html?/#!/merchant/{{uid}}</p>
-              <button @click="copylink($event)" type="button" class="el-button el-button--text">
+              <button @click="copylink($event)" type="button" class="el-button el-button&#45;&#45;text">
                 <img src="./img/ic_copy.png" alt="icon">复制链接
               </button>
             </li>
             <li>
               <span @click="selectext($event)">订单链接</span>
               <p>https://o.qfpay.com/dc/order-list.html?mchnt_id={{uid}}</p>
-              <button @click="copylink($event)" type="button" class="el-button el-button--text">
+              <button @click="copylink($event)" type="button" class="el-button el-button&#45;&#45;text">
                 <img src="./img/ic_copy.png" alt="icon">复制链接
               </button>
             </li>
             <li>
               <span @click="selectext($event)">集点链接</span>
               <p>http://m.haojin.in/v2/app.html?mchnt_id={{uid}}#!/card</p>
-              <button @click="copylink($event)" type="button" class="el-button el-button--text">
+              <button @click="copylink($event)" type="button" class="el-button el-button&#45;&#45;text">
                 <img src="./img/ic_copy.png" alt="icon">复制链接
               </button>
             </li>
             <li>
               <span @click="selectext($event)">红包链接</span>
               <p>http://m.haojin.in/v2/app.html?mchnt_id={{uid}}#!/coupon</p>
-              <button @click="copylink($event)" type="button" class="el-button el-button--text">
+              <button @click="copylink($event)" type="button" class="el-button el-button&#45;&#45;text">
                 <img src="./img/ic_copy.png" alt="icon">复制链接
               </button>
             </li>
             <li>
               <span @click="selectext($event)">储值链接</span>
               <p>https://o2.qfpay.com/prepaid/v1/page/c/usercenter/merchant.html?h={{hashid}}</p>
-              <button @click="copylink($event)" type="button" class="el-button el-button--text">
+              <button @click="copylink($event)" type="button" class="el-button el-button&#45;&#45;text">
                 <img src="./img/ic_copy.png" alt="icon">复制链接
               </button>
             </li>
             <li>
               <span @click="selectext($event)">会员中心</span>
               <p>http://m.haojin.in/v2/app.html#!/carddetail/{{hashid}}</p>
-              <button @click="copylink($event)" type="button" class="el-button el-button--text">
+              <button @click="copylink($event)" type="button" class="el-button el-button&#45;&#45;text">
                 <img src="./img/ic_copy.png" alt="icon">复制链接
               </button>
             </li>
           </ul>
         </div>
-      </div>
+      </div>-->
       <el-dialog :title="$t('pubSignal.dialog.m1')" v-model="dialogVisible" size="tiny" :show-close="false">
         <el-form>
           <el-checkbox-group v-model="checkedStores" @change="handleCheckedStoresChange">

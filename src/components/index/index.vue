@@ -196,9 +196,9 @@
               this.$message.error(data.respmsg)
             }
           })
-          .catch(() => {
+          .catch((err) => {
             this.loading1 = false;
-            this.$message.error(this.$t('common.netError'))
+            console.log(err && err.respmsg)
           });
       },
       fetchActivityData() {
@@ -213,9 +213,10 @@
               this.$message.error(data.respmsg)
             }
           })
-          .catch(() => {
+          .catch((err) => {
             this.loading2 = false;
-            this.$message.error(this.$t('common.netError'))
+//            this.$message.error(this.$t('common.netError'))
+            console.log(err && err.respmsg)
           })
       },
       openDetail(type) {
@@ -249,7 +250,7 @@
         width: 48%;
         display: inline-block;
         text-align: center;
-        &:first-child {
+        &:first-child:not(:only-child) {
           border-right: 1px solid #E8E7E6;
         }
         > strong {

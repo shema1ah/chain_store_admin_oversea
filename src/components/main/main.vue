@@ -68,7 +68,7 @@ export default {
         if (data.respcd === config.code.OK) {
           // 清除本地cookie
           document.cookie = "sessionid=''; expires=" + new Date(0).toUTCString();
-          // 清除所有localStorage
+          (new Image()).src = `${config.ohost}/mchnt/set_cookie?sessionid=`; // 登出时删除本域cookie
           localStorage.clear();
           var toRemoved = document.getElementById('unique_map');
           if(toRemoved) {
@@ -79,9 +79,10 @@ export default {
         } else {
           this.$message.error(data.respmsg);
         }
-      }).catch(() => {
+      }).catch((err) => {
         this.loading = false;
-        this.$message.error('请求失败');
+//        this.$message.error('请求失败');
+        console.log(err);
       });
     },
 
@@ -103,8 +104,9 @@ export default {
             this.$message.error(data.respmsg);
           }
         })
-        .catch(() => {
-          this.$message.error('网络错误!');
+        .catch((err) => {
+//          this.$message.error('网络错误!');
+          console.log(err && err.respmsg)
         });
     }
 

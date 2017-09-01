@@ -18,16 +18,22 @@
       <div class="panel-body">
         <div class="myform_wrapper">
           <el-form :rules="formrules" :model="form" ref="form" >
-            <!-- <el-form-item label="适用门店" prop="sub_mchnt_list">
-              <el-select v-model="form.sub_mchnt_list" placeholder="请选择门店" size="small">
-                <el-option v-for="shop in shopData.list" :label="shop.shop_name" :value="shop.uid">
-                </el-option>
-              </el-select>
-            </el-form-item> -->
-            <div v-if="state === 0">
-              <el-form-item label="适用门店" v-if="!role.single">
-                <span>全部</span>
+            <el-form-item label="适用门店" v-if="!role.single">
+              <el-form-item prop="mchnt_ids">
+                <el-select v-model="form.mchnt_ids" placeholder="请选择门店" disabled multiple size="small">
+                  <el-option v-for="shop in shopList" :label="shop.shop_name" :key="shop.uid" :value="shop.uid">
+                  </el-option>
+                </el-select>
               </el-form-item>
+              <div class="remark">注：请确保以上门店均已开通储值服务，否则无法正常储值</div>
+            </el-form-item>
+            <div v-if="state === 0">
+              <!--<el-form-item label="适用门店" prop="mchnt_ids" v-if="!role.single">
+                <el-select v-model="form.mchnt_ids" placeholder="请选择门店" multiple size="small">
+                  <el-option v-for="shop in shopList" :label="shop.shop_name" :key="shop.uid" :value="shop.uid">
+                  </el-option>
+                </el-select>
+              </el-form-item>-->
               <el-form-item label="开始时间" prop="start_time">
                 <el-date-picker v-model="form.start_time" type="date" placeholder="请选择开始时间"size="small" :clearable="false" :picker-options="dateRange">
                 </el-date-picker>
@@ -59,9 +65,6 @@
               </el-form-item>
             </div>
             <div v-if="state === 1">
-              <el-form-item label="适用门店" v-if="!role.single">
-                <span>全部</span>
-              </el-form-item>
               <el-form-item label="开始时间" prop="start_time">
                 <el-date-picker v-model="form.start_time" type="date" placeholder="请选择开始时间" size="small" :clearable="false" :disabled="true" :picker-options="dateRange">
                 </el-date-picker>
@@ -106,7 +109,7 @@
   </div>
 </template>
 <script>
-  import {formatDate} from '../../common/js/util';
+  import { formatDate, deepClone } from '../../common/js/util';
   import Validator from '../../validator';
   import Store from '../../common/js/store';
 
@@ -129,6 +132,7 @@
         vm.form = {
           start_time: new Date(info.start_time),
           end_time: new Date(info.end_time),
+          mchnt_ids: info.shop_list || [],
           mobile: info.mch_mobile,
           desc: info.desc,
           pay_amt0: rules[0] ? rules[0].pay_amt : '',
@@ -173,6 +177,9 @@
           end_time: [
             { validator: expireValid }
           ],
+          mchnt_ids: [
+            {required: true, message: '请选择适用门店'}
+          ],
           desc: [
             { required: true, message: '请输入储值规则描述' }
           ],
@@ -206,11 +213,13 @@
         }
       };
     },
+
     computed: {
       data() {
         return {
           start_time: this.form.start_time && formatDate(this.form.start_time),
           end_time: this.form.end_time && formatDate(this.form.end_time),
+          mchnt_ids: this.form.mchnt_ids || [],
           mobile: this.form.mobile,
           desc: this.form.desc,
           rules: this.form.rulesData,
@@ -218,18 +227,23 @@
           activity_id: this.form.id
         };
       },
+
       len() {
-        return this.form.rulesData.length;
+        return this.form.rulesData.length || [];
+      },
+
+      shopList() {
+        let shopData = deepClone(this.$store.state.shopData || {});
+        return shopData.list || [];
       }
     },
 
     methods: {
       cancelAlteration() {
-        console.log(this.$refs['form']);
         this.$router.push('/main/memberstorage');
       },
+
       preview() {
-        console.log(this.data);
         this.$refs['form'].validate((valid) => {
           if (valid) {
             Store.set('storagedata', this.data);

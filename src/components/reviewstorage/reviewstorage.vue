@@ -21,7 +21,7 @@
             <span class="info-title">适用门店</span>
             <div class="info-desc__wrapper">
               <div class="info-desc">
-                <div><span v-for="(shop,index) in shopData">{{ shop.shop_name }}{{ index < shopData.length - 1?"、":"" }}</span></div>
+                <div><span v-for="(shop,index) in shopList">{{ shop.shop_name }}{{ index < shopList.length - 1?"、":"" }}</span></div>
                 <div class="info-desc remark mt-0 lh-16 ml-0">注：请确保以上门店均已开通储值服务，否则无法正常储值</div>
               </div>
             </div>
@@ -86,16 +86,34 @@
       };
     },
     computed: {
-      shopData() {
-        let shopData = deepClone(this.$store.state.shopData);
-        shopData.list && shopData.list.shift();
-        return shopData.list;
+      shopList() {
+        let shopData = deepClone(this.$store.state.shopData || {});
+        return this.getshopList(shopData.list || []);
       }
     },
     methods: {
       backToEdit() {
         this.$router.go(-1);
       },
+
+      getshopList(list) {
+        let ids = this.data.mchnt_ids || [];
+        let lists = [];
+        if(ids[0] === '') {
+          lists = list;
+          lists.shift();
+        }else {
+          for(let i of ids) {
+           for(let val of list) {
+             if(val.uid === i) {
+               lists.push(val);
+             }
+           }
+          }
+        }
+        return lists;
+      },
+
       fixData() {
         var data = deepClone(this.data);
         data.rules.forEach((v) => {
@@ -107,6 +125,7 @@
       submit() {
         let data = this.fixData();
         this.iconShow = true;
+        // 新建
         if(!this.data.flag) {
           axios.post(`${config.host}/merchant/prepaid/create`, data)
           .then((res) => {
@@ -127,6 +146,7 @@
             this.$message.error('创建储值活动失败');
           });
         } else {
+          // 编辑活动
           axios.post(`${config.host}/merchant/prepaid/alter`, data)
           .then((res) => {
             this.iconShow = false;

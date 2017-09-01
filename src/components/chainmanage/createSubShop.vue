@@ -1147,7 +1147,7 @@
           script.id = 'unique_map';
           script.type = "text/javascript";
           script.src = "https://webapi.amap.com/maps?v=1.3&key=0500da1f6f0d37a6683b590aee534b8b";
-          document.body.insertBefore(script, document.querySelectorAll('script')[document.querySelectorAll('script').length - 1]);
+          document.body.insertBefore(script, document.body.querySelectorAll('script')[0]);
           script.onload = function() {
             _self.initMapAPI();
           }
@@ -1160,7 +1160,7 @@
         if ('el-tree-node'.indexOf(evt.target.className) == -1) {
           if (_self.shopInfo.isShowTree) this.shopInfo.isShowTree = false;
         }
-        if (evt.target.parentElement.id === 'op_type' && evt.target.className.indexOf('el-input__icon el-icon-caret-bottom') === -1) {
+        if (evt.target.parentNode && evt.target.parentNode.id === 'op_type' && evt.target.className.indexOf('el-input__icon el-icon-caret-bottom') === -1) {
           evt.preventDefault();
           _self.showTreeComponent(evt);
         }

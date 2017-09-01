@@ -232,7 +232,7 @@ exports.default = {
       L1: 'Homepage'
     },
     title: {
-      t1: 'Membership And Payment Data Statistics',
+      t1: 'Payment Data Statistics',
       t2: 'Event Operation Statistics'
     },
     panel: {

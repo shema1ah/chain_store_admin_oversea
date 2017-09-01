@@ -76,10 +76,10 @@
     methods: {
       // 登录
       login() {
+        var _this = this;
         this.$refs['form'].validate((valid) => {
           if(!this.loading && valid) {
             this.loading = true;
-
             axios.post(`${config.host}/merchant/login`, this.form).then((res) => {
               this.loading = false;
               let data = res.data;
@@ -90,9 +90,15 @@
                 Store.set('flag', false);
 
                 // 当前域名下设置cookie
-                // setCookie('sessionid', data.data.session_id);
-
-                this.$router.push('/main/index')
+                let bicon = new Image();
+                let sid = getCookie('sessionid') || '';
+                if(sid) {
+                  bicon.style.display = 'none';
+                  bicon.src = `${config.ohost}/mchnt/set_cookie?sessionid=${sid}`;
+                }
+                setTimeout(function() {
+                  _this.$router.push('/main/index')
+                }, 0)
               } else {
                 this.$message.error(data.resperr);
               }
