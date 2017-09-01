@@ -64,6 +64,7 @@ export default new Router({
     {
       path: '/main',
       component: main,
+      redirect: '/main/index',
       children: [
         {
           path: 'index',
