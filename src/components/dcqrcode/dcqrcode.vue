@@ -97,7 +97,6 @@
         uid: Store.get('uid'),
         rules: {
           'startNum': [
-            {required: true, message: '起始桌号不能为空'},
             {pattern: /^(0|[1-9][0-9]*)$/, message: '桌号必须为数字'}
           ],
           'endNum': [
@@ -200,11 +199,17 @@
         let startNum = this.tabelForm.startNum
         let endNum = this.tabelForm.endNum
         let length = endNum ? endNum - startNum : 0 // 桌号数组长度
-        if (endNum && startNum > endNum) {
+        if (!this.tabelForm.areaName && !startNum) {
+          this.$message('区域名称、桌号 不能都为空')
+          this.createBtnDisabled = false
+          return false
+        } else if (endNum && startNum > endNum) {
           this.$message('起始桌号必须小于结尾桌号')
+          this.createBtnDisabled = false
           return false
         } else if (length > 49) {
           this.$message('单次最多生成50个二维码')
+          this.createBtnDisabled = false
           return false
         }
         this.$refs[formName].validate((valid) => {
@@ -224,6 +229,15 @@
           }
         })
       },
+      qrcodeText (areaName, tableNumber) {
+        let qrcodeText = ''
+        if (areaName) {
+          qrcodeText = tableNumber ? `${areaName} ${tableNumber}` : `${areaName}`
+        } else {
+          qrcodeText = `${tableNumber}`
+        }
+        return qrcodeText
+      },
       drawPreviewCanvas (qrcode, hasFrame, tableNumber) {
         let domName = hasFrame ? 'tablePreview' : 'qrcodePreview'
         let canvas = document.getElementById(domName).firstElementChild
@@ -237,7 +251,7 @@
         ctx.fillStyle = '#fe9b20'
         ctx.font = 'bold 22px 黑体'
         ctx.textAlign = 'center'
-        let text = this.tabelForm.areaName ? `${this.tabelForm.areaName} ${tableNumber}` : `${tableNumber}`
+        let text = this.qrcodeText(this.tabelForm.areaName, tableNumber)
         ctx.fillText(text, qrcode.width / 2, qrcode.height + 30)
 
         let qrcodeCtx = qrcode.getContext("2d")
@@ -245,7 +259,7 @@
         ctx.putImageData(imgData, 0, 0)
       },
       urlToQrcode (tableNumber, qrcodeUrl) {
-        let text = this.tabelForm.areaName ? `${this.tabelForm.areaName} ${tableNumber}` : `${tableNumber}`
+        let text = this.qrcodeText(this.tabelForm.areaName, tableNumber)
         let _qrcodeUrl = !qrcodeUrl ? `${config.ohost}/dc/?/#/merchant/${this.uid}/${text}` : qrcodeUrl
         let qrcode = document.createElement('canvas')
         QRCode.toCanvas(qrcode, _qrcodeUrl, {scale: 8, margin: 0}, function (err) {
