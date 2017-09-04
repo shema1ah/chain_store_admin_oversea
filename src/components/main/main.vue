@@ -66,23 +66,24 @@ export default {
         let data = res.data;
         this.loading = false;
         if (data.respcd === config.code.OK) {
-          // 清除本地cookie
-          document.cookie = "sessionid=''; expires=" + new Date(0).toUTCString();
-          (new Image()).src = `${config.ohost}/mchnt/set_cookie?sessionid=`; // 登出时删除本域cookie
-          localStorage.clear();
+          // 登出时删除本域cookie
+          (new Image()).src = `${config.ohost}/mchnt/set_cookie?sessionid=`;
+          window.localStorage.clear();
+          window.localStorage.setItem('flag', true);
+
           var toRemoved = document.getElementById('unique_map');
           if(toRemoved) {
             toRemoved.onload = null;
             document.body.removeChild(toRemoved);
           }
+
           this.$router.push(`/login?from=logout&haiwai=${this.role.haiwai}`);
         } else {
           this.$message.error(data.respmsg);
         }
-      }).catch((err) => {
+      }).catch(() => {
         this.loading = false;
-//        this.$message.error('请求失败');
-        console.log(err);
+        this.$message.error(this.$t('common.netError'));
       });
     },
 
@@ -104,9 +105,9 @@ export default {
             this.$message.error(data.respmsg);
           }
         })
-        .catch((err) => {
-//          this.$message.error('网络错误!');
-          console.log(err && err.respmsg)
+        .catch(() => {
+        this.$message.error(this.$t('common.netError'));
+        // console.log(err && err.respmsg)
         });
     }
 

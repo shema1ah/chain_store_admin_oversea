@@ -13,21 +13,23 @@
         <div class="panel-body" style="padding:30px 0">
           <el-row>
             <el-col :span="10" style="padding:80px 12% 0 8%;">
-              <el-form label-position="top" label-width="80px" :model="tabelForm" ref="tabelForm">
+              <el-form label-position="top" label-width="80px" :model="tabelForm" ref="tabelForm" :rules="rules">
                 <el-form-item label="区域名称">
-                  <el-input v-model="tabelForm.areaName" placeholder="例：2楼A区"></el-input>
+                  <el-form-item prop="areaName" style="margin-bottom: 10px">
+                    <el-input v-model="tabelForm.areaName" placeholder="例：2楼A区"></el-input>
+                  </el-form-item>
+                  <div class="explain">此内容展示在桌号之前，选填</div>
                 </el-form-item>
-                <el-form-item label="桌号范围" prop="startNum" :rules="[
-                  { required: true, message: '起始桌号不能为空'},
-                  { type: 'number', message: '桌号必须为数字'}
-                ]">
+                <el-form-item label="桌号范围" prop="startNum">
                   <el-input type="startNum" v-model.number="tabelForm.startNum" placeholder="起始桌号"></el-input>
                 </el-form-item>
-                <el-form-item label="至" prop="endNum" :rules="[
-                  { pattern: /^(0|[1-9][0-9]*)$/,  message:'桌号必须为数字'}
-                ]">
-                  <el-input v-model.number="tabelForm.endNum" placeholder="结尾桌号"></el-input>
+                <el-form-item label="至">
+                  <el-form-item prop="endNum">
+                    <el-input v-model.number="tabelForm.endNum" placeholder="结尾桌号"></el-input>
+                  </el-form-item>
+                  <div class="explain">请填写纯数字，如只需生成一张二维码，则不必填写结尾桌号</div>
                 </el-form-item>
+
                 <el-form-item>
                   <el-button type="primary" :disabled="createBtnDisabled" @click="submitForm('tabelForm')">生成二维码</el-button>
                   <el-button @click="reset()">重置</el-button>
@@ -70,6 +72,12 @@
   import Store from '../../common/js/store'
 
   export default {
+    beforeRouteEnter (to, from, next) {
+      next((vm) => {
+        vm.reset();
+      });
+    },
+
     data () {
       return {
         isLoading1: false,
@@ -86,7 +94,16 @@
         createBtnDisabled: false,
         downloadTabelBtnDisabled: false,
         downloadQrcodeBtnDisabled: false,
-        uid: Store.get('uid')
+        uid: Store.get('uid'),
+        rules: {
+          'startNum': [
+            {required: true, message: '起始桌号不能为空'},
+            {pattern: /^(0|[1-9][0-9]*)$/, message: '桌号必须为数字'}
+          ],
+          'endNum': [
+            {pattern: /^(0|[1-9][0-9]*)$/, message: '桌号必须为数字'}
+          ]
+        }
       }
     },
     created () {
@@ -220,7 +237,7 @@
         ctx.fillStyle = '#fe9b20'
         ctx.font = 'bold 22px 黑体'
         ctx.textAlign = 'center'
-        let text = this.tabelForm.areaName ? `${this.tabelForm.areaName} ${tableNumber}号桌` : `${tableNumber}号桌`
+        let text = this.tabelForm.areaName ? `${this.tabelForm.areaName} ${tableNumber}` : `${tableNumber}`
         ctx.fillText(text, qrcode.width / 2, qrcode.height + 30)
 
         let qrcodeCtx = qrcode.getContext("2d")
@@ -257,7 +274,7 @@
         ctx.fillStyle = '#fe9b20'
         ctx.font = 'bold 22px 黑体'
         ctx.textAlign = 'center'
-        let text = this.tabelForm.areaName ? `${this.tabelForm.areaName} ${tableNumber}号桌` : `${tableNumber}号桌`
+        let text = this.tabelForm.areaName ? `${this.tabelForm.areaName} ${tableNumber}` : `${tableNumber}`
         ctx.fillText(text, 228, 460)
 
         let qrcodeCtx = qrcode.getContext("2d")
@@ -279,7 +296,7 @@
         ctx.fillStyle = '#fe9b20'
         ctx.font = 'bold 22px 黑体'
         ctx.textAlign = 'center'
-        let text = this.tabelForm.areaName ? `${this.tabelForm.areaName} ${tableNumber}号桌` : `${tableNumber}号桌`
+        let text = this.tabelForm.areaName ? `${this.tabelForm.areaName} ${tableNumber}` : `${tableNumber}`
         ctx.fillText(text, qrcode.width / 2, qrcode.height + 30)
 
         let qrcodeCtx = qrcode.getContext("2d")
@@ -316,6 +333,18 @@
   .el-form-item {
     margin-bottom: 22px;
   }
+
+  .el-form-item__label {
+    font-size: 20px;
+    color: #262424;
+  }
+
+  .explain {
+    color: #98989e;
+    line-height: 20px;
+    font-size: 15px;
+  }
+
   .realQrcode {
     figure {
       width: 45%;

@@ -18,7 +18,7 @@
           row-class-name="el-table__row_fix"
           :row-style="rowStyle"
           v-loading="loading">
-          <el-table-column label="图像" width="70">
+          <el-table-column label="头像" width="70">
             <template scope="scope">
               <img v-if="scope.row.c_avatar" :src="scope.row.c_avatar" alt="" width="44" height="44" />
               <img src="./img/default.png" height="44" width="44" v-else />

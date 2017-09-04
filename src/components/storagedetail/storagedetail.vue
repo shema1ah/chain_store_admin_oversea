@@ -23,8 +23,8 @@
           <div class="info-header">
             <div class="info-left">
               <div class="info-img">
-                <img v-if="storeData.avatar" :src="storeData.avatar" alt="图像">
-                <img src="./img/default.png" alt="图像" v-else>
+                <img v-if="storeData.avatar" :src="storeData.avatar" alt="头像">
+                <img src="./img/default.png" alt="头像" v-else>
               </div>
               <div class="information">
                 <p class="info-title">{{ storeData.name }}</p>
@@ -60,7 +60,7 @@
     <div class="panel">
       <div class="panel-header">
         <div class="panel-select-group">
-          <span class="panel-header__desc">储值会员资料</span>
+          <span class="panel-header__desc">储值交易记录</span>
         </div>
       </div>
       <div class="panel-body">
@@ -70,12 +70,6 @@
           row-class-name="el-table__row_fix"
           :row-style="rowStyle"
           v-loading="loading">
-          <el-table-column label="图像">
-            <template scope="scope">
-              <img v-if="scope.row.c_avatar || scope.row.avatar" :src="scope.row.c_avatar || scope.row.avatar" alt="" width="44" height="44" />
-              <img src="./img/default.png" height="44" width="44" v-else/>
-            </template>
-          </el-table-column>
           <el-table-column label="交易类型">
             <template scope="scope">{{ scope.row.biz_type | formatType }}</template>
           </el-table-column>
@@ -88,7 +82,7 @@
               <span v-show="scope.row.present_amt" class="table-content">(赠送￥{{ scope.row.present_amt | formatCurrency }}元)</span>
             </template>
           </el-table-column>
-          <el-table-column min-width="100" label="交易门店" prop="shopname">
+          <el-table-column min-width="200" label="交易门店" prop="shopname">
           </el-table-column>
         </el-table>
       </div>

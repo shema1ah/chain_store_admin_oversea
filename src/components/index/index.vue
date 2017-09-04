@@ -196,9 +196,9 @@
               this.$message.error(data.respmsg)
             }
           })
-          .catch((err) => {
+          .catch(() => {
             this.loading1 = false;
-            console.log(err && err.respmsg)
+            this.$message.error(this.$t('common.netError'))
           });
       },
       fetchActivityData() {
@@ -213,10 +213,9 @@
               this.$message.error(data.respmsg)
             }
           })
-          .catch((err) => {
+          .catch(() => {
             this.loading2 = false;
-//            this.$message.error(this.$t('common.netError'))
-            console.log(err && err.respmsg)
+            this.$message.error(this.$t('common.netError'))
           })
       },
       openDetail(type) {

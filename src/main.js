@@ -78,17 +78,18 @@ axios.interceptors.response.use((res) => {
   let data = res.data
   if (data.respcd == config.code.SESSIONERR || data.respcd == config.code.LOGINERR) {
     // 清除本地cookie
-    document.cookie = "sessionid=''; expires=" + new Date(0).toUTCString();
     (new Image()).src = `${config.ohost}/mchnt/set_cookie?sessionid=`;
+    document.cookie = "sessionid=''; expires=" + new Date(0).toUTCString();
+    let role = Store.get('role') || {};
+    window.localStorage.clear();
+    window.localStorage.setItem('flag', true);
 
-    localStorage.getItem('lang') && localStorage.removeItem('lang');
-    Store.set('flag', true);
     var toRemoved = document.getElementById('unique_map');
     if(toRemoved) {
       toRemoved.onload = null;
       document.body.removeChild(toRemoved);
     }
-    location.replace(`#/?from=logout&haiwai=${Store.get('role').haiwai}`);
+    location.replace(`/#/?from=logout&haiwai=${role.haiwai}`);
   } else {
     return res
   }

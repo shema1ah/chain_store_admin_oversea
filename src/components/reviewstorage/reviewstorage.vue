@@ -57,9 +57,8 @@
         <div class="form-submit_wrapper">
           <span class="cancel" @click="backToEdit">返回修改</span>
           <div class="panel-btn__download panel-btn__download_detail" @click="submit">
-            <i class="el-icon-loading" v-if="iconShow"></i>
-            <i class="icon-create"></i>
-            <span>确认提交</span>
+            <span class="el-icon-loading" v-if="iconShow"></span>
+            <span v-else><i class="icon-create"></i>确认提交</span>
           </div>
         </div>
       </div>
@@ -124,50 +123,53 @@
       },
       submit() {
         let data = this.fixData();
-        this.iconShow = true;
-        // 新建
-        if(!this.data.flag) {
-          axios.post(`${config.host}/merchant/prepaid/create`, data)
-          .then((res) => {
-            this.iconShow = false;
-            let data = res.data;
-            if(data.respcd === config.code.OK) {
-              this.$message({
-                type: 'success',
-                message: '创建储值活动成功'
+        if(!this.iconShow) {
+          this.iconShow = true;
+          if(this.data.flag || this.role.single) {
+            delete data['mchnt_ids'];
+          }
+          // 新建
+          if(!this.data.flag) {
+            axios.post(`${config.host}/merchant/prepaid/create`, data)
+              .then((res) => {
+                this.iconShow = false;
+                let data = res.data;
+                if(data.respcd === config.code.OK) {
+                  this.$message({
+                    type: 'success',
+                    message: '创建储值活动成功'
+                  });
+                  this.$router.push('/main/memberstorage');
+                } else {
+                  this.$message.error(data.resperr);
+                }
+              })
+              .catch(() => {
+                this.iconShow = false;
+                this.$message.error('创建储值活动失败');
               });
-              this.$router.push('/main/memberstorage');
-            } else {
-              this.$message.error(data.resperr);
-            }
-          })
-          .catch(() => {
-            this.iconShow = false;
-            this.$message.error('创建储值活动失败');
-          });
-        } else {
-          // 编辑活动
-          axios.post(`${config.host}/merchant/prepaid/alter`, data)
-          .then((res) => {
-            this.iconShow = false;
-            let data = res.data;
-            if(data.respcd === config.code.OK) {
-              this.$message({
-                type: 'success',
-                message: '修改储值活动成功'
+          } else {
+            // 编辑活动
+            axios.post(`${config.host}/merchant/prepaid/alter`, data)
+              .then((res) => {
+                this.iconShow = false;
+                let data = res.data;
+                if(data.respcd === config.code.OK) {
+                  this.$message({
+                    type: 'success',
+                    message: '修改储值活动成功'
+                  });
+                  this.$router.push('/main/memberstorage');
+                } else {
+                  this.$message.error(data.resperr);
+                }
+              })
+              .catch(() => {
+                this.iconShow = false;
+                this.$message.error('修改储值活动失败');
               });
-              this.$store.dispatch('getStorageData');
-              this.$router.push('/main/memberstorage');
-            } else {
-              this.$message.error(data.resperr);
-            }
-          })
-          .catch(() => {
-            this.iconShow = false;
-            this.$message.error('修改储值活动失败');
-          });
+          }
         }
-
       }
     }
 };
