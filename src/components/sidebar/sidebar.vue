@@ -21,7 +21,7 @@
           </ul>
         </transition>
       </li>
-      <li class="dark" v-if="role.diancan">
+      <li :class="{'dark': $route.fullPath.indexOf('dcqrcode') != -1}" v-if="role.diancan">
         <a class="sidebar-nav__item" @click="toggle(2)">
           智慧餐厅
           <i class="icon-down_arrow" :class="{'icon-down_arrow__rotate': isRotate2}"></i>
@@ -29,12 +29,12 @@
         <transition name="collpase">
           <ul v-show="isShow2" class="collpase">
             <li>
-              <router-link class="sidebar-nav__item sidebar-nav__subitem" :to="{ name: 'dcqrcode', params: {hasPublic: 'yes'}}">
+              <router-link class="sidebar-nav__item sidebar-nav__subitem" :to="{ name: 'noPublic', params: {hasPublic: 'yes'}}">
                 有公众号二维码
               </router-link>
             </li>
             <li>
-              <router-link class="sidebar-nav__item sidebar-nav__subitem" :to="{ name: 'dcqrcode', params: {hasPublic: 'no'}}">
+              <router-link class="sidebar-nav__item sidebar-nav__subitem" :to="{ name: 'hasPublic', params: {hasPublic: 'no'}}">
                 无公众号二维码
               </router-link>
             </li>

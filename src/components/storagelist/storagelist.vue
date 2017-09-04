@@ -17,7 +17,7 @@
           style="width: 100%"
           row-class-name="el-table__row_fix"
           v-loading="loading">
-          <el-table-column label="图像">
+          <el-table-column label="头像">
             <template scope="scope">
               <img v-if="scope.row.avatar" :src="scope.row.avatar" alt="" width="44" height="44" />
               <img src="./img/default.png" height="44" width="44" v-else />
@@ -36,7 +36,7 @@
           </el-table-column>
           <el-table-column label="操作" min-width="100">
             <template scope="scope">
-              <el-button type="text" size="small" class="el-button__fix" @click="goDetail(scope.row.c)">查看详情</el-button>
+              <el-button type="text" size="small" class="el-button__fix" @click="goDetail(scope.row)">查看详情</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -143,10 +143,10 @@
       },
 
       // 详情页
-      goDetail(id) {
-        Store.set('storeData', this.storeData);
+      goDetail(data) {
+        Store.set('storeData', data);
 
-        this.$router.push({path: 'storagedetail', query: {id: id}});
+        this.$router.push({path: 'storagedetail', query: {id: data.c}});
       }
     }
   };

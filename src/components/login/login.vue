@@ -51,7 +51,7 @@
 
     created() {
       // cookie存在跳转首页
-      if(getCookie('sessionid') && !Store.get("flag")) {
+      if(getCookie('sessionid') && Store.get('flag') === false) {
        this.$router.push('/main/index');
        }
     },

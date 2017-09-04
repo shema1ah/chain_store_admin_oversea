@@ -510,10 +510,10 @@
           .then((res) => {
             let data = res.data;
             if (data.respcd === config.code.OK) {
-              // 清除本地cookie
-              document.cookie = "sessionid=''; expires=" + new Date(0).toUTCString();
-              (new Image()).src = `${config.ohost}/mchnt/set_cookie?sessionid=`; // 登出时删除.qfpay.com域下cookie
-              localStorage.clear();
+              // 登出时删除.qfpay.com域下cookie
+              (new Image()).src = `${config.ohost}/mchnt/set_cookie?sessionid=`;
+              window.localStorage.clear();
+              window.localStorage.setItem('flag', true);
               var toRemoved = document.getElementById('unique_map');
               if(toRemoved) {
                 toRemoved.onload = null;
