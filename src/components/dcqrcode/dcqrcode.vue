@@ -228,7 +228,8 @@
         ctx.putImageData(imgData, 0, 0)
       },
       urlToQrcode (tableNumber, qrcodeUrl) {
-        let _qrcodeUrl = !qrcodeUrl ? `${config.ohost}/dc/?/#/merchant/${this.uid}/${tableNumber}` : qrcodeUrl
+        let text = this.tabelForm.areaName ? `${this.tabelForm.areaName} ${tableNumber}` : `${tableNumber}`
+        let _qrcodeUrl = !qrcodeUrl ? `${config.ohost}/dc/?/#/merchant/${this.uid}/${text}` : qrcodeUrl
         let qrcode = document.createElement('canvas')
         QRCode.toCanvas(qrcode, _qrcodeUrl, {scale: 8, margin: 0}, function (err) {
           if (err) throw err
