@@ -34,13 +34,13 @@ let filters = {
   // 交易类型选填: 1储值(充值) 或 2(消费) 或3(消费退款) 或4(手动储值)
   formatType (type) {
     switch (type) {
-      case '1':
+      case 1:
         return '储值充值'
-      case '2':
+      case 2:
         return '储值消费'
-      case '3':
+      case 3:
         return '消费退款'
-      case '4':
+      case 4:
         return '手动储值'
       default:
         return '储值充值'

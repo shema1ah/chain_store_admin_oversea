@@ -49,7 +49,7 @@
               </div>
               <div>
                 <p class="right-title">储值次数</p>
-                <p class="right-count">{{ storeData.recharge_times | formatCurrency }}</p>
+                <p class="right-count">{{ storeData.recharge_times }}</p>
               </div>
             </div>
           </div>
@@ -77,7 +77,8 @@
           </el-table-column>
           <el-table-column min-width="100" label="交易金额">
             <template scope="scope">
-              <span class="table-title">{{ scope.row.txamt | formatCurrency }}元</span>
+              <span v-if="scope.row.biz_type === 2 || scope.row.biz_type === 3" class="table-title1">-{{ scope.row.txamt | formatCurrency }}元</span>
+              <span v-else class="table-title2">+{{ scope.row.txamt | formatCurrency }}元</span>
               <span v-show="scope.row.status === 4">(已撤销)</span>
               <span v-show="scope.row.present_amt" class="table-content">(赠送￥{{ scope.row.present_amt | formatCurrency }}元)</span>
             </template>
@@ -274,8 +275,12 @@
       }
     }
 
-    .table-title {
+    .table-title1 {
+      font-size: 16px;
+    }
+    .table-title2 {
       color: #FE9B20;
+      font-size: 16px;
     }
     .head-content {
       color: #777a7d;
