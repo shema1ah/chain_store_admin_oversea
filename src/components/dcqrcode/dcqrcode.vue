@@ -74,8 +74,8 @@
   export default {
     beforeRouteEnter (to, from, next) {
       next((vm) => {
-        vm.reset();
-      });
+        vm.reset()
+      })
     },
 
     data () {
@@ -89,7 +89,6 @@
           endNum: ''
         },
         tabelNumbers: [],
-        qrcodeUrlList: [],
         isPreview: true,
         createBtnDisabled: false,
         downloadTabelBtnDisabled: false,
@@ -121,6 +120,14 @@
         this.createBtnDisabled = false
         this.downloadTabelBtnDisabled = false
         this.downloadQrcodeBtnDisabled = false
+        let tableNode = document.getElementById('tableQrcodeContainer')
+        while (tableNode.firstChild) {
+          tableNode.removeChild(tableNode.firstChild)
+        }
+        let qrcodeNode = document.getElementById('qrcodeContainer')
+        while (qrcodeNode.firstChild) {
+          qrcodeNode.removeChild(qrcodeNode.firstChild)
+        }
       },
       fetchPublicInfo () {
         this.isLoading1 = true
@@ -291,7 +298,7 @@
         let text = this.tabelForm.areaName ? `${this.tabelForm.areaName} ${tableNumber}` : `${tableNumber}`
         ctx.fillText(text, 228, 460)
 
-        let qrcodeCtx = qrcode.getContext("2d")
+        let qrcodeCtx = qrcode.getContext('2d')
         let imgData = qrcodeCtx.getImageData(0, 0, qrcode.width, qrcode.height)
         ctx.putImageData(imgData, 97, 162)
 
@@ -313,7 +320,7 @@
         let text = this.tabelForm.areaName ? `${this.tabelForm.areaName} ${tableNumber}` : `${tableNumber}`
         ctx.fillText(text, qrcode.width / 2, qrcode.height + 30)
 
-        let qrcodeCtx = qrcode.getContext("2d")
+        let qrcodeCtx = qrcode.getContext('2d')
         let imgData = qrcodeCtx.getImageData(0, 0, qrcode.width, qrcode.height)
         ctx.putImageData(imgData, 0, 0)
 
