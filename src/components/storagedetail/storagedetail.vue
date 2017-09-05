@@ -41,15 +41,15 @@
             <div class="info-right">
               <div>
                 <p class="right-title">余额</p>
-                <p class="right-count">{{ storeData.balance | formatCurrency }}</p>
+                <p class="right-count">￥{{ storeData.balance | formatCurrency }}</p>
               </div>
               <div>
                 <p class="right-title">累计储值</p>
-                <p class="right-count">{{ storeData.recharge_amt | formatCurrency }}</p>
+                <p class="right-count">￥{{ storeData.pay_amt | formatCurrency }}</p>
               </div>
               <div>
                 <p class="right-title">储值次数</p>
-                <p class="right-count">{{ storeData.recharge_times | formatCurrency }}</p>
+                <p class="right-count">{{ storeData.recharge_times }}</p>
               </div>
             </div>
           </div>
@@ -77,7 +77,8 @@
           </el-table-column>
           <el-table-column min-width="100" label="交易金额">
             <template scope="scope">
-              <span class="table-title">{{ scope.row.txamt | formatCurrency }}元</span>
+              <span v-if="scope.row.biz_type === 2 || scope.row.biz_type === 3" class="table-title1">-{{ scope.row.txamt | formatCurrency }}元</span>
+              <span v-else class="table-title2">+{{ scope.row.txamt | formatCurrency }}元</span>
               <span v-show="scope.row.status === 4">(已撤销)</span>
               <span v-show="scope.row.present_amt" class="table-content">(赠送￥{{ scope.row.present_amt | formatCurrency }}元)</span>
             </template>
@@ -117,7 +118,7 @@
           flag: false
         });
 
-        vm.id = vm.$route.query.id;
+        vm.storeData = Store.get('storeData') || {}
         vm.getData();
 
         setTimeout(() => {
@@ -133,20 +134,17 @@
         pageSize: 7,
         loading: false,
         currentPage: 1,
-        listData: {}
+        listData: {},
+        storeData: {}
       };
     },
 
     computed: {
-      storeData() {
-        return Store.get('storeData') || {};
-      },
-
       basicParams() {
         return {
           curpage: this.currentPage,
           length: this.pageSize,
-          cid: this.id,
+          cid: this.$route.query.id,
           format: 'cors'
         };
       }
@@ -274,8 +272,12 @@
       }
     }
 
-    .table-title {
+    .table-title1 {
+      font-size: 16px;
+    }
+    .table-title2 {
       color: #FE9B20;
+      font-size: 16px;
     }
     .head-content {
       color: #777a7d;

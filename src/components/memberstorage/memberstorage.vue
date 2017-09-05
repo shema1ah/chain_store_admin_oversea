@@ -72,7 +72,7 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column label="创建来源" prop="who_create"></el-table-column>
+          <el-table-column min-width="180" label="创建来源" prop="who_create"></el-table-column>
           <el-table-column
             width="160"
             label="操作">
@@ -211,8 +211,8 @@
       },
       shopData() {
         let shopData = deepClone(this.$store.state.shopData || {});
-        let list = (shopData.list || []).shift();
-        return list;
+        (shopData.list || []).shift();
+        return shopData.list || [];
       },
       basicParams() {
         return {
@@ -361,21 +361,21 @@
           params: {
             activity_id: id
           }
-        })
-        .then((res) => {
+        }).then((res) => {
           this.loading = false;
           let data = res.data;
           if(data.respcd === config.code.OK) {
             this.detailData = data.data;
 
             // 获取适用门店
-            this.shopList = this.getshopList();
+            if(!this.role.single) {
+              this.shopList = this.getshopList();
+            }
             this.isShowDetail = true;
           } else {
             this.$message.error(data.resperr);
           }
-        })
-        .catch(() => {
+        }).catch((res) => {
           this.loading = false;
           this.$message.error('获取储值详情失败');
         });
