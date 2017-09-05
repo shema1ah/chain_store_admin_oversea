@@ -41,11 +41,11 @@
             <div class="info-right">
               <div>
                 <p class="right-title">余额</p>
-                <p class="right-count">{{ storeData.balance | formatCurrency }}</p>
+                <p class="right-count">￥{{ storeData.balance | formatCurrency }}</p>
               </div>
               <div>
                 <p class="right-title">累计储值</p>
-                <p class="right-count">{{ storeData.recharge_amt | formatCurrency }}</p>
+                <p class="right-count">￥{{ storeData.pay_amt | formatCurrency }}</p>
               </div>
               <div>
                 <p class="right-title">储值次数</p>
@@ -118,7 +118,7 @@
           flag: false
         });
 
-        vm.id = vm.$route.query.id;
+        vm.storeData = Store.get('storeData') || {}
         vm.getData();
 
         setTimeout(() => {
@@ -134,20 +134,17 @@
         pageSize: 7,
         loading: false,
         currentPage: 1,
-        listData: {}
+        listData: {},
+        storeData: {}
       };
     },
 
     computed: {
-      storeData() {
-        return Store.get('storeData') || {};
-      },
-
       basicParams() {
         return {
           curpage: this.currentPage,
           length: this.pageSize,
-          cid: this.id,
+          cid: this.$route.query.id,
           format: 'cors'
         };
       }
