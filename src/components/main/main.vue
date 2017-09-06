@@ -76,8 +76,8 @@ export default {
             toRemoved.onload = null;
             document.body.removeChild(toRemoved);
           }
-
           this.$router.push(`/login?from=logout&haiwai=${this.role.haiwai}`);
+
         } else {
           this.$message.error(data.respmsg);
         }

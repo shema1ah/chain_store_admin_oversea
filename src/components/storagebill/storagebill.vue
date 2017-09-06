@@ -20,7 +20,7 @@
           v-loading="loading">
           <el-table-column label="头像" width="70">
             <template scope="scope">
-              <img v-if="scope.row.avatar" :src="scope.row.avatar" alt="" width="44" height="44" />
+              <img v-if="scope.row.avatar || scope.row.c_avatar" :src="scope.row.avatar || scope.row.c_avatar" alt="" width="44" height="44" />
               <img src="./img/default.png" height="44" width="44" v-else />
             </template>
           </el-table-column>
@@ -34,7 +34,7 @@
           <el-table-column label="金额" min-width="80">
             <template scope="scope">
               <span v-if="scope.row.biz_type === 2 || scope.row.biz_type === 3" class="table-title1">-{{ scope.row.txamt | formatCurrency }}元</span>
-              <span v-else class="table-title2">+{{ scope.row.txamt | formatCurrency }}元</span>
+              <span v-else class="table-title2">+{{ (scope.row.txamt - scope.row.present_amt) | formatCurrency }}元</span>
               <span v-show="scope.row.status === 4">(已撤销)</span>
               <span v-show="scope.row.present_amt" class="table-content">(赠送￥{{ scope.row.present_amt | formatCurrency }}元)</span>
             </template>

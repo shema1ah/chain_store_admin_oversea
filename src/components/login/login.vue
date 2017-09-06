@@ -26,7 +26,7 @@
 <script>
   import axios from 'axios';
   import config from 'config';
-  import { getRole, getCookie } from '../../common/js/util';
+  import { getRole, getCookie, clearCookie } from '../../common/js/util';
   import Store from '../../common/js/store';
   export default {
     data() {
@@ -53,6 +53,10 @@
       // cookie存在跳转首页
       if(getCookie('sessionid') && Store.get('flag') === false) {
        this.$router.push('/main/index');
+       }
+
+       if(getCookie('sessionid') && Store.get('flag') === true) {
+         clearCookie('sessionid', config.ohost);
        }
     },
     mounted() {

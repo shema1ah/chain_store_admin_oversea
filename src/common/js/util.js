@@ -195,16 +195,12 @@ const getCookie = (sName) => {
   return null
 }
 
-const setCookie = (name, value) => {
-    let Days = 2;
-    let exp = new Date();
-    exp.setTime(exp.getTime() + Days * 24 * 60 * 60 * 1000);
-    document.cookie = name + "=" + escape(value) + ";path=/;expires=" + exp.toGMTString();
-}
-const clearCookie = (name) => {
+const clearCookie = (name, dom) => {
+  let domain = dom.split('.').slice(-2).join('.');
   let exp = new Date();
   exp.setTime(exp.getTime() - 10000);
-  document.cookie = name + "=" + getCookie(name) + ";path=/;expires=" + exp.toGMTString();
+  document.cookie = name + "=''" + ";path=/;expires=" + exp.toGMTString();
+  document.cookie = name + "=''" + ";Domain=." + domain + ";path=/;expires=" + exp.toGMTString();
 }
 function GetVerifyBit(id) {
   var result
@@ -372,7 +368,6 @@ module.exports = {
   setformateDate,
   formatData,
   getCookie,
-  setCookie,
   clearCookie,
   cardValid,
   mobileValid
