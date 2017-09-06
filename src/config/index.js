@@ -22,7 +22,7 @@ if (test) {
 }
 // 本地配置
 if (dev) {
-  host = 'api';
+  host = 'api'; 
   ohost = 'https://o.qa.qfpay.net';
   o2host = 'https://o2.qa.qfpay.net';
   payHost = 'https://openapi.qa.qfpay.net';

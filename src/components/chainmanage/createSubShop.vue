@@ -973,7 +973,7 @@
         console.log('定位错误信息：', e);
       },
       onLocationComplete(loc, flag) {
-        console.log(loc)
+        console.log(loc);
         let _adcode = loc.addressComponent.adcode;
         let _province = loc.addressComponent.province;
         let _city = loc.addressComponent.city;
@@ -1122,6 +1122,7 @@
             let data = res.data;
             if (data.respcd === config.code.OK) {
               console.log('获取商户类型列表成功')
+              // console.log(data.data.shop_types);
               this.shopInfo.shop_types = data.data.shop_types;
             } else {
               this.$message.error(data.resperr);
@@ -1136,8 +1137,11 @@
         e.stopPropagation();
       },
       handleNodeClick(node) {
+        console.log(node);
         this.shopInfo.shoptype_id = node.id;
-        this.shopInfo.shoptype_name = node.name;
+        if(node.shoptypes.length == 0) {
+          this.shopInfo.shoptype_name = node.name;
+        }
       },
       addMapScript() {
         // 引用地图相关js
