@@ -106,7 +106,7 @@
     </div>
     <el-dialog v-if="detailData.activity_info" v-model="isShowDetail" class="detail_dialog" title="储值活动详情">
       <template>
-        <el-row class="mb-5" v-if="!role.single">
+        <el-row class="mb-5" v-if="!this.role.single">
           <el-col :span="5" class="title">适用门店</el-col>
           <el-col :span="19" class="desc">
             <div v-if="shopList.length > 0">
@@ -211,8 +211,9 @@
       },
       shopData() {
         let shopData = deepClone(this.$store.state.shopData || {});
-        (shopData.list || []).shift();
-        return shopData.list || [];
+        let list = shopData.list || [];
+        list.shift();
+        return list;
       },
       basicParams() {
         return {
@@ -367,10 +368,10 @@
           if(data.respcd === config.code.OK) {
             this.detailData = data.data;
 
-            // 获取适用门店
             if(!this.role.single) {
               this.shopList = this.getshopList();
             }
+
             this.isShowDetail = true;
           } else {
             this.$message.error(data.resperr);

@@ -79,7 +79,6 @@ axios.interceptors.response.use((res) => {
   if (data.respcd == config.code.SESSIONERR || data.respcd == config.code.LOGINERR) {
     // 清除本地cookie
     (new Image()).src = `${config.ohost}/mchnt/set_cookie?sessionid=`;
-    document.cookie = "sessionid=''; expires=" + new Date(0).toUTCString();
     let role = Store.get('role') || {};
     window.localStorage.clear();
     window.localStorage.setItem('flag', true);

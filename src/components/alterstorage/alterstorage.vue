@@ -132,7 +132,7 @@
         vm.form = {
           start_time: new Date(info.start_time),
           end_time: new Date(info.end_time),
-          mchnt_ids: info.shop_list || [],
+          mchnt_ids: alterData.shop_list || [],
           mobile: info.mch_mobile,
           desc: info.desc,
           pay_amt0: rules[0] ? rules[0].pay_amt : '',
@@ -229,7 +229,7 @@
       },
 
       len() {
-        return this.form.rulesData.length || [];
+        return (this.form.rulesData || []).length;
       },
 
       shopList() {
