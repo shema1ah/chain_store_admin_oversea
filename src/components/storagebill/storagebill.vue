@@ -96,8 +96,7 @@
       basicParams() {
         return {
           curpage: this.currentPage,
-          length: this.pageSize,
-          format: 'cors'
+          length: this.pageSize
         };
       }
     },
