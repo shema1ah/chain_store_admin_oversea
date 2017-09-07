@@ -1,9 +1,12 @@
 <template class="main">
   <div class="index">
-    <div class="mydialog" v-show="isShowMap" id="geolocation_mask" @click="hideMapDialog"></div>
+    <div class="mydialog" v-show="isShowMap" id="geolocation_mask"  @click="hideMapDialog">
+       <span id="hideMapBtn"  v-show="isShowMapBtn" @click="hideMapDialog">X</span> 
+    </div>
     <!--sandbox="allow-scripts allow-popups allow-forms allow-same-origin"-->
     <iframe sandbox="allow-scripts allow-same-origin" id="miframe" v-if="isShowMap" :src="mapComponentURL"
-            frameborder="0" scrolling="no" width="100%" height="100%"></iframe>
+            frameborder="0" scrolling="no" width="100%" height="100%" @mouseleave="isShowMapBtn = true" @mouseenter="isShowMapBtn = false"></iframe>
+    <!-- 关闭按钮 -->
     <!-- 地图弹窗-->
     <div class="banner_wrapper">
       <div class="banner-breadcrumb">
@@ -564,6 +567,7 @@
         isShowCommitDone: false,
         btnLocked: false,
         isShowMap: false,
+        isShowMapBtn: false,
         infoPage: true, // 子商户信息填写页
         uploadInterface: `${config.imgUpload}/util/v1/uploadfile`, // 上传接口
         shopInfo: {
@@ -756,6 +760,7 @@
       hideMapDialog() {
         this.isShowMap = false;
         this.mapComponentURL = '';
+        this.isShowMapBtn = false;
         window.removeEventListener('message', this.getMessageFromRemote);
       },
       showMap(e) {
@@ -1278,6 +1283,25 @@
     /*top: 6px;*/
     /*right: 8px;*/
     /*}*/
+
+  }
+  #hideMapBtn {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    line-height: 30px;
+    border-radius: 50%;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.2);
+    position: fixed;
+    top: 130px;
+    left:  1020px;
+  }
+  #hideMapBtn:hover{
+    background-color:  white;
+    color: #333;
+    cursor:pointer;
   }
 
   /*.map-dialog {*/
