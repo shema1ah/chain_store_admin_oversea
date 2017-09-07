@@ -1,5 +1,5 @@
 <template>
-  <div class="createpacket">
+  <div class="createpacket" v-loading="loading">
     <div class="banner_wrapper">
       <div class="banner-breadcrumb">
         <span>会员功能</span>
@@ -29,7 +29,8 @@
             <el-form-item label="适用门店" v-if="!role.single">
               <el-form-item prop="mchnt_ids">
                 <el-select v-model="form.mchnt_ids" placeholder="请选择门店" multiple size="small">
-                  <el-option v-for="shop in shopList" :label="shop.shop_name" :key="shop.uid" :value="shop.uid">
+                  <el-option label="全部" value="" :disabled="state"></el-option>
+                  <el-option v-for="shop in shopList" :label="shop.shopname" :key="shop.h" :value="shop.h" :disabled="shop.status == 0 || shop.status == 1">
                   </el-option>
                 </el-select>
               </el-form-item>
@@ -72,11 +73,19 @@
   </div>
 </template>
 <script>
+  import axios from 'axios';
+  import config from 'config';
   import {formatDate} from '../../common/js/util';
   import Validator from '../../validator';
   import Store from '../../common/js/store';
 
   export default {
+    beforeRouteEnter (to, from, next) {
+      next((vm) => {
+        vm.getShopList();
+      });
+    },
+
     data() {
       let expireValid = (rule, val, cb) => {
         if(val === '') {
@@ -114,6 +123,9 @@
           }
         },
         role: Store.get('role') || {},
+        loading: false,
+        state: false,
+        shopList: [],
         form: {
           start_time: '',
           end_time: '',
@@ -204,13 +216,35 @@
       },
       len() {
         return this.form.rulesData.length;
-      },
-      shopList() {
-        let shopData = this.$store.state.shopData || {};
-        return shopData.list || [];
       }
     },
     methods: {
+      getShopList() {
+        if(!this.role.single) {
+          this.loading = true;
+          axios.get(`${config.host}/merchant/prepaid/activity`).then((res) => {
+            this.loading = false;
+            let data = res.data;
+            if (data.respcd === config.code.OK) {
+              this.shopList = data.data || [];
+
+              for(let val of this.shopList) {
+                // 0未开始1进行中2已结束3已终止
+                if(val.status === 0 || val.status === 1) {
+                  this.state = true;
+                  this.form.mchnt_ids = [];
+                }
+              }
+            } else {
+              this.$message.error(data.respmsg);
+            }
+          }).catch(() => {
+            this.loading = false;
+            this.$message.error('获取店铺数据失败!');
+          });
+        }
+      },
+
       cancelCreation() {
         this.$router.push('/main/memberstorage');
       },

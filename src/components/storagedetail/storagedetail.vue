@@ -145,14 +145,6 @@
           length: this.pageSize,
           cid: this.$route.query.id
         };
-      },
-
-      infoParams() {
-        return {
-          curpage: 1,
-          length: 1,
-          cid: this.$route.query.id
-        }
       }
     },
 
@@ -182,8 +174,10 @@
       getInfoData() {
         if(!this.loading2) {
           this.loading2 = true;
-          axios.get(`${config.host}/merchant/prepaid/members`, {
-            params: this.infoParams
+          axios.get(`${config.host}/merchant/prepaid/member`, {
+            params: {
+              cid: this.$route.query.id
+            }
           }).then((res) => {
             this.loading2 = false;
             let data = res.data;

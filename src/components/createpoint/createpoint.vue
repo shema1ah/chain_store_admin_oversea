@@ -1,5 +1,5 @@
 <template>
-  <div class="createcollect">
+  <div class="createcollect" v-loading="loading">
     <div class="banner_wrapper">
       <div class="banner-breadcrumb">
         <span>会员功能</span>
@@ -127,6 +127,7 @@
         checked: false,
         role: Store.get('role') || {},
         shopData: [],
+        loading: false,
         state: true,
         form: {
           exchange_pt: null,
@@ -202,7 +203,6 @@
       preview() {
         this.$refs['form'].validate((valid) => {
           if (valid) {
-            console.log(this.data);
             Store.set('pointData', this.data);
             this.$router.push('/main/memberredpoint/reviewpoint?type=create');
           } else {
@@ -213,7 +213,9 @@
 
       // 获取店铺列表信息
       getData() {
+        this.loading = true;
         axios.get(`${config.host}/merchant/card/active_state`).then((res) => {
+          this.loading = false;
           let data = res.data;
           if (data.respcd === config.code.OK) {
             this.shopData = data.data || [];
@@ -228,6 +230,7 @@
             this.$message.error(data.respmsg);
           }
         }).catch(() => {
+          this.loading = false;
           this.$message.error('获取店铺数据失败!');
         });
       }
