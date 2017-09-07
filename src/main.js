@@ -71,7 +71,7 @@ Object.keys(localePackage).forEach(function (lang) {
   return Promise.reject(err);
 }); */
 
-// axios.defaults.withCredentials = true; // 允许跨域请求携带凭据
+axios.defaults.withCredentials = true; // 允许跨域请求携带凭据
 axios.defaults.headers.common['lang'] = JSON.parse(switchlang).value;
 
 axios.interceptors.response.use((res) => {
