@@ -22,8 +22,8 @@ if (test) {
 }
 // 本地配置
 if (dev) {
-  host = 'api'; 
-  ohost = 'https://o.qa.qfpay.net';
+  host = 'http://172.100.116.101:9099'; // api
+  ohost = 'https://o.qa.qfpay.net';// 
   o2host = 'https://o2.qa.qfpay.net';
   payHost = 'https://openapi.qa.qfpay.net';
   imgUpload = 'https://o2.qfpay.com';
