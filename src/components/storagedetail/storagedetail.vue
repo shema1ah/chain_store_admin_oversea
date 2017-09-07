@@ -45,7 +45,7 @@
               </div>
               <div>
                 <p class="right-title">累计储值</p>
-                <p class="right-count">￥{{ storeData.pay_amt | formatCurrency }}</p>
+                <p class="right-count">￥{{ (storeData.pay_amt || storeData.recharge_amt) | formatCurrency }}</p>
               </div>
               <div>
                 <p class="right-title">储值次数</p>
