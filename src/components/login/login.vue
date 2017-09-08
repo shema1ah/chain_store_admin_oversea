@@ -52,12 +52,12 @@
     created() {
       // cookie存在跳转首页
       if(getCookie('sessionid') && Store.get('flag') === false) {
-       this.$router.push('/main/index');
-       }
+        this.$router.push('/main/index');
+      }
 
-       if(getCookie('sessionid') && Store.get('flag') === true) {
-         clearCookie('sessionid', config.ohost);
-       }
+      if(getCookie('sessionid') && Store.get('flag') === true) {
+        clearCookie('sessionid', config.ohost);
+      }
     },
     mounted() {
       var getQuery = function (href) {
