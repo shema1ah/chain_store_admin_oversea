@@ -267,6 +267,7 @@
         this.pageSize = size;
         this.currentChange();
       },
+
       cancelStorage(id) {
         this.$confirm('是否要取消此活动?', '提示', {
           confirmButtonText: '确定',
@@ -383,7 +384,11 @@
       },
 
       createStorage() {
-        this.hasPending();
+        if(!this.role.single) {
+          this.$router.push('/main/memberstorage/createstorage');
+        }else {
+          this.hasPending();
+        }
       }
     }
   };

@@ -36,7 +36,7 @@
           </el-table-column>
           <el-table-column label="操作" min-width="100">
             <template scope="scope">
-              <el-button type="text" size="small" class="el-button__fix" @click="goDetail(scope.row)">查看详情</el-button>
+              <el-button type="text" size="small" class="el-button__fix" @click="goDetail(scope.row.c)">查看详情</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -61,7 +61,6 @@
 <script>
   import axios from 'axios';
   import config from 'config';
-  import Store from '../../common/js/store'
 
   export default {
     beforeRouteEnter (to, from, next) {
@@ -95,8 +94,7 @@
       basicParams() {
         return {
           curpage: this.currentPage,
-          length: this.pageSize,
-          format: 'cors'
+          length: this.pageSize
         };
       }
     },
@@ -143,10 +141,8 @@
       },
 
       // 详情页
-      goDetail(data) {
-        Store.set('storeData', data);
-
-        this.$router.push({path: 'storagedetail', query: {id: data.c}});
+      goDetail(id) {
+        this.$router.push({path: 'storagedetail', query: {id: id}});
       }
     }
   };

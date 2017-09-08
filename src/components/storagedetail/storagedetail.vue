@@ -1,5 +1,5 @@
 <template>
-  <div class="storagedetail">
+  <div class="storagedetail" v-loading="loading1 || loading2">
     <div class="banner_wrapper">
       <div class="banner-breadcrumb">
         <span>会员功能</span>
@@ -45,7 +45,7 @@
               </div>
               <div>
                 <p class="right-title">累计储值</p>
-                <p class="right-count">￥{{ storeData.pay_amt | formatCurrency }}</p>
+                <p class="right-count">￥{{ (storeData.pay_amt || storeData.recharge_amt) | formatCurrency }}</p>
               </div>
               <div>
                 <p class="right-title">储值次数</p>
@@ -68,8 +68,7 @@
           :data="listData.data"
           style="width: 100%"
           row-class-name="el-table__row_fix"
-          :row-style="rowStyle"
-          v-loading="loading">
+          :row-style="rowStyle">
           <el-table-column label="交易类型">
             <template scope="scope">{{ scope.row.biz_type | formatType }}</template>
           </el-table-column>
@@ -107,7 +106,6 @@
 <script>
   import axios from 'axios';
   import config from 'config';
-  import Store from "../../common/js/store";
 
   export default {
     beforeRouteEnter (to, from, next) {
@@ -118,7 +116,7 @@
           flag: false
         });
 
-        vm.storeData = Store.get('storeData') || {}
+        vm.getInfoData();
         vm.getData();
 
         setTimeout(() => {
@@ -132,7 +130,8 @@
     data() {
       return {
         pageSize: 7,
-        loading: false,
+        loading1: false,
+        loading2: false,
         currentPage: 1,
         listData: {},
         storeData: {}
@@ -144,8 +143,7 @@
         return {
           curpage: this.currentPage,
           length: this.pageSize,
-          cid: this.$route.query.id,
-          format: 'cors'
+          cid: this.$route.query.id
         };
       }
     },
@@ -167,6 +165,29 @@
             }
           }).catch(() => {
             this.loading = false;
+            this.$message.error('获取数据失败');
+          });
+        }
+      },
+
+      // 获取数据
+      getInfoData() {
+        if(!this.loading2) {
+          this.loading2 = true;
+          axios.get(`${config.host}/merchant/prepaid/member`, {
+            params: {
+              cid: this.$route.query.id
+            }
+          }).then((res) => {
+            this.loading2 = false;
+            let data = res.data;
+            if(data.respcd === config.code.OK) {
+              this.storeData = data.data;
+            } else {
+              this.$message.error(data.resperr);
+            }
+          }).catch(() => {
+            this.loading2 = false;
             this.$message.error('获取数据失败');
           });
         }
