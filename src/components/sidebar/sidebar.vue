@@ -69,6 +69,7 @@
     },
 
     created() {
+      console.log(this.role);
       this.getPath();
     },
 
