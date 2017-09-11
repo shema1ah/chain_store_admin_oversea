@@ -366,7 +366,7 @@
     },
     created() {
       this.$store.dispatch('getPageShopData');
-//      this.$store.dispatch('getShopList');
+      // this.$store.dispatch('getShopList');
     },
     mounted() {
     },

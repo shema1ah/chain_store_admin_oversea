@@ -1,7 +1,7 @@
 <template class="main">
   <div class="index">
     <div class="mydialog" v-show="isShowMap" id="geolocation_mask"  @click="hideMapDialog">
-       <span id="hideMapBtn"  v-show="isShowMapBtn" @click="hideMapDialog">X</span> 
+       <span id="hideMapBtn"  v-show="isShowMapBtn" @click="hideMapDialog">X</span>
     </div>
     <!--sandbox="allow-scripts allow-popups allow-forms allow-same-origin"-->
     <iframe sandbox="allow-scripts allow-same-origin" id="miframe" v-if="isShowMap" :src="mapComponentURL"
@@ -1127,7 +1127,6 @@
             let data = res.data;
             if (data.respcd === config.code.OK) {
               console.log('获取商户类型列表成功')
-              // console.log(data.data.shop_types);
               this.shopInfo.shop_types = data.data.shop_types;
             } else {
               this.$message.error(data.resperr);
@@ -1146,6 +1145,7 @@
         this.shopInfo.shoptype_id = node.id;
         if(node.shoptypes.length == 0) {
           this.shopInfo.shoptype_name = node.name;
+          this.shopInfo.isShowTree = false;
         }
       },
       addMapScript() {
