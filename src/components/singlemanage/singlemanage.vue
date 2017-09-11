@@ -26,27 +26,23 @@
             <div class="info__title">{{$t('shopmng.dialog.address')}}</div>
             <div class="info__desc">{{ shop.address }}</div>
           </div>
-          <div class="info">
-            <div class="info__title">{{$t('shopmng.dialog.mobile')}}</div>
-            <div class="info__desc">{{ shop.telephone || '无' }}</div>
-          </div>
-          <div class="info">
-            <div class="info__title">{{$t('shopmng.dialog.cardHolder')}}</div>
-            <div class="info__desc">{{ shop.bankuser }}</div>
-          </div>
-          <div class="info">
-            <div class="info__title">{{$t('shopmng.dialog.bankAccount')}}</div>
-            <div class="info__desc">{{ shop.bankaccount }} </div>
-          </div>
-          <!--
-           <div class="info" style="margin-bottom: 0">
-            <div class="info__title">{{$t('shopmng.dialog.bankName')}}</div>
-            <div class="info__desc">{{ shop.headbankname }} </div>
-          </div>
-          -->
-          <div class="info">
-            <div class="info__title" >{{$t('shopmng.dialog.bankName')}}</div>
-            <div class="info__desc">{{ shop.bankname }}</div>
+          <div v-if="role.type !== 'id'">
+            <div class="info">
+              <div class="info__title">{{$t('shopmng.dialog.mobile')}}</div>
+              <div class="info__desc">{{ shop.telephone || '无' }}</div>
+            </div>
+            <div class="info">
+              <div class="info__title">{{$t('shopmng.dialog.cardHolder')}}</div>
+              <div class="info__desc">{{ shop.bankuser }}</div>
+            </div>
+            <div class="info">
+              <div class="info__title">{{$t('shopmng.dialog.bankAccount')}}</div>
+              <div class="info__desc">{{ shop.bankaccount }} </div>
+            </div>
+            <div class="info">
+              <div class="info__title" >{{$t('shopmng.dialog.bankName')}}</div>
+              <div class="info__desc">{{ shop.bankname }}</div>
+            </div>
           </div>
           <div class="panel-btn-group__wrapper">
             <div class="panel-header-btn panel-header-btn__fill" @click="changePass(shop.mobile)">{{$t('shopmng.panel.table.editPwd')}}</div>
@@ -118,6 +114,7 @@
       };
       return {
         lang: config.lang,
+        role: Store.get('role') || {},
         loading: false,
         iconShow: false,
         showChangePass: false,
@@ -172,7 +169,7 @@
                 toRemoved.onload = null;
                 document.body.removeChild(toRemoved);
               }
-              this.$router.push(`/login?from=logout&haiwai=${Store.get('role').haiwai}`);
+              this.$router.push(`/login?from=logout&haiwai=${this.role.haiwai}`);
             } else {
               this.$message.error(data.respmsg);
             }

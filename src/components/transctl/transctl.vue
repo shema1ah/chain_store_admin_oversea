@@ -31,7 +31,7 @@
             </div>
           </div>
           <div class="panel-select-group">
-            <div class="panel-select__wrapper" v-show="!role.single">
+            <div class="panel-select__wrapper" v-if="!role.single">
               <span class="panel-select__desc">{{$t('tradeMng.panel.shopName')}}</span>
               <el-form-item prop="selectShopUid">
                 <el-select v-model="form.selectShopUid" :placeholder="lang==='en'? 'All':'全部'" size="small" @change="getOperators(form.selectShopUid)">
@@ -43,7 +43,7 @@
                 </el-select>
               </el-form-item>
             </div>
-            <div class="panel-select__wrapper">
+            <div class="panel-select__wrapper" v-if="!role.haiwai">
               <span class="panel-select__desc">{{$t('tradeMng.panel.operator')}}</span>
               <el-form-item>
                 <el-select v-model="form.operaValue" :placeholder="$t('tradeMng.table.all')" size="small" @change="operaChange" :disabled="form.selectShopUid === ''">
@@ -56,7 +56,7 @@
               </el-form-item>
             </div>
           </div>
-          <div class="panel-select-group" v-show="!role.haiwai">
+          <div class="panel-select-group" v-if="!role.haiwai">
             <div class="panel-select__wrapper">
               <span class="panel-select__desc">{{$t('tradeMng.table.colWay')}}</span>
               <el-form-item prop="checkAll1">
@@ -147,7 +147,7 @@
             </template>
           </el-table-column>
           <el-table-column
-            :label="$t('tradeMng.table.operator')">
+            :label="$t('tradeMng.table.operator')" v-if="!role.haiwai">
             <template scope="scope">{{ scope.row.opuser || '-' }}</template>
           </el-table-column>
           <el-table-column
@@ -533,21 +533,23 @@
 
       // 查询操作员列表
       getOperators(uid) {
-        this.form.operaValue = '';
-        axios.get(`${config.host}/merchant/sub/opusers`, {
-          params: {
-            userid: uid
-          }
-        }).then((res) => {
-          let data = res.data;
-          if(data.respcd === config.code.OK) {
-            this.operaList = data.data;
-          } else {
-            this.$message.error(data.resperr);
-          }
-        }).catch(() => {
-          this.$message.error(this.$t('tradeMng.msg.m5'));
-        });
+        if(!this.role.haiwai) {
+          this.form.operaValue = '';
+          axios.get(`${config.host}/merchant/sub/opusers`, {
+            params: {
+              userid: uid
+            }
+          }).then((res) => {
+            let data = res.data;
+            if(data.respcd === config.code.OK) {
+              this.operaList = data.data;
+            } else {
+              this.$message.error(data.resperr);
+            }
+          }).catch(() => {
+            this.$message.error(this.$t('tradeMng.msg.m5'));
+          });
+        }
       },
 
       currentChange(current) {

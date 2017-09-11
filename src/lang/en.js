@@ -13,7 +13,7 @@ exports.default = {
   },
   nav: {
     mmp: 'Shop Management Platform',
-    index: 'HomePage',
+    index: 'Home',
     tradeMng: 'Transaction Mgmt',
     billMng: 'Bill Mgmt',
     publicAuth: 'Official Account Auth',
@@ -94,7 +94,7 @@ exports.default = {
       cardHolder: 'Account Owner',
       bankAccount: 'Bank Account',
       bankName: 'Bank Name',
-      editSubTag: 'Edit Branch Shop Number',
+      editSubTag: 'Edit Customized ID',
       diaTip: 'Branch number would be shown at the exported payment detail and payment summary.',
       validateText: 'Please enter charactors within 20',
       validateText2: 'Please enter the login password of master account',
@@ -163,7 +163,7 @@ exports.default = {
   },
   tradeMng: { // 交易管理
     crumbs: {
-      L1: 'Payment Management'
+      L1: 'Transaction Management'
     },
     panel: {
       time: 'Date',
@@ -173,11 +173,11 @@ exports.default = {
       near30: 'Last 30 days',
       shopName: 'Shop Name',
       operator: 'Cashier',
-      moreFilter: 'Choose More',
+      moreFilter: 'More option',
       noLimit: 'All',
       dd: 'Canceled', // 撤销明细
-      sNum: 'Serial Number', // 流水号
-      tip: 'Please enter the serial number',
+      sNum: 'Transaction ID', // 流水号
+      tip: 'Please enter the transaction id',
       btn: {
         query: 'Search',
         reset: 'Reset'
@@ -242,8 +242,8 @@ exports.default = {
       cmnew: 'New Customers This Month',
       cumulativeMembership: 'Total Customers',
       tta: 'Payment Today',
-      tincome: 'Actual Amount Today',
-      cmincome: 'Actual Amount This Month',
+      tincome: 'Amount Received Today',
+      cmincome: 'Amount Received This Month',
       noActivity: 'No Promotion'
     }
   },
@@ -261,12 +261,12 @@ exports.default = {
   },
   setting: { // 邮箱设置页
     crumbs: {
-      L1: 'Report Setting'
+      L1: 'Setting'
     },
     panel: {
       mailSetup: 'Email setting',
       mail: 'Email Address',
-      explain: 'A daily payment report will send to this address every morning 7 a.m.',
+      explain: 'A daily payment report will be delivered to this email address every morning at 7 a.m.',
       dailySend: 'Turn On Daily Report',
       modi: 'Change',
       confirm: 'Confirm'

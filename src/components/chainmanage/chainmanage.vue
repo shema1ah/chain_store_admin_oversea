@@ -119,7 +119,7 @@
         <el-col :span="6" class="title">{{$t('shopmng.dialog.loginAccount')}}</el-col>
         <el-col :span="10" class="desc">{{ detailData.mobile }}</el-col>
       </el-row>
-      <el-row class="">
+      <el-row>
         <el-col :span="6" class="title">{{$t('shopmng.dialog.shopName')}}</el-col>
         <el-col :span="10" class="desc">{{ detailData.shopname }}</el-col>
       </el-row>
@@ -128,25 +128,27 @@
         <el-col :span="10" class="desc">{{ detailData.address }}</el-col>
       </el-row>
 
-      <el-row>
-        <el-col :span="6" class="title">{{$t('shopmng.dialog.mobile')}}</el-col>
-        <el-col :span="10" class="desc">{{ detailData.telephone || '无' }}</el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="6" class="title">{{$t('shopmng.dialog.cardHolder')}}</el-col>
-        <el-col :span="10" class="desc">{{ detailData.bankuser }}</el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="6" class="title">{{$t('shopmng.dialog.bankAccount')}}</el-col>
-        <el-col :span="10" class="desc">{{ detailData.bankaccount }}</el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="6" class="title">{{$t('shopmng.dialog.bankName')}}</el-col>
-        <el-col :span="14" class="desc">
-          <div>{{ detailData.headbankname }}</div>
-          <div>{{ detailData.bankname }}</div>
-        </el-col>
-      </el-row>
+      <div v-if="role.type !== 'id'">
+        <el-row>
+          <el-col :span="6" class="title">{{$t('shopmng.dialog.mobile')}}</el-col>
+          <el-col :span="10" class="desc">{{ detailData.telephone || '无' }}</el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="6" class="title">{{$t('shopmng.dialog.cardHolder')}}</el-col>
+          <el-col :span="10" class="desc">{{ detailData.bankuser }}</el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="6" class="title">{{$t('shopmng.dialog.bankAccount')}}</el-col>
+          <el-col :span="10" class="desc">{{ detailData.bankaccount }}</el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="6" class="title">{{$t('shopmng.dialog.bankName')}}</el-col>
+          <el-col :span="14" class="desc">
+            <div>{{ detailData.headbankname }}</div>
+            <div>{{ detailData.bankname }}</div>
+          </el-col>
+        </el-row>
+      </div>
     </el-dialog>
     <el-dialog :title="$t('shopmng.dialog.editPwd')" :visible.sync="showChangePass" @close="handleClose('form')" custom-class="mydialog"
                top="20%" :show-close="false">

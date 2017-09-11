@@ -69,7 +69,6 @@
     },
 
     created() {
-      console.log(this.role);
       this.getPath();
     },
 
@@ -264,6 +263,7 @@
             ];
             break;
           case 'japan':
+          case 'id':
             this.navs = [
               {
                 val: this.$t('nav.index'),

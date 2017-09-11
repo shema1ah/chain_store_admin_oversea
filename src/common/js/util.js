@@ -144,6 +144,13 @@ const getRole = (data) => {
           role.single = true
         }
         break;
+      case 'ID':
+        role.type = 'id'
+        if (data.cate !== 'bigmerchant') {
+          role.type = 'id_single'
+          role.single = true
+        }
+        break;
       case 'HK':
         role.type = 'hongkong'
         if (data.cate !== 'bigmerchant') {
