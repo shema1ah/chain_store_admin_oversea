@@ -514,9 +514,10 @@
             if (data.respcd === config.code.OK) {
               // 登出时删除.qfpay.com域下cookie
               (new Image()).src = `${config.ohost}/mchnt/set_cookie?sessionid=`;
-              window.localStorage.clear();
               Store.set('flag', true);
-              Store.set('role', this.role);
+              localStorage.removeItem('lang');
+              localStorage.removeItem('hashid');
+              localStorage.removeItem('uid');
 
               var toRemoved = document.getElementById('unique_map');
               if(toRemoved) {

@@ -16,7 +16,7 @@ exports.default = {
     index: 'Home',
     tradeMng: 'Transaction Mgmt',
     billMng: 'Bill Mgmt',
-    publicAuth: 'Official Account Auth',
+    publicAuth: 'Official Account',
     shopMng: 'Shop Mgmt',
     setup: 'Setting'
   },
@@ -104,8 +104,8 @@ exports.default = {
   },
   pubSignal: { // 公众号授权
     crumbs: {
-      authorizedPS: 'Authorized Official Account',
-      unauthorized: 'You haven’t bound your Wechat account yet, please bind your Wechat account to get more service.'
+      authorizedPS: 'Official Account',
+      unauthorized: 'You haven’t bound your Official Account yet, please bind your Official Account for more services.'
     },
     title: {
       psInfo: 'Basic information of Official Account',

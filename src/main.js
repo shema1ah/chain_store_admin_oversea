@@ -80,9 +80,11 @@ axios.interceptors.response.use((res) => {
     // 清除本地cookie
     (new Image()).src = `${config.ohost}/mchnt/set_cookie?sessionid=`;
     let role = Store.get('role') || {};
-    window.localStorage.clear();
+
     Store.set('flag', true);
-    Store.set('role', role);
+    localStorage.removeItem('lang');
+    localStorage.removeItem('hashid');
+    localStorage.removeItem('uid');
 
     var toRemoved = document.getElementById('unique_map');
     if(toRemoved) {
