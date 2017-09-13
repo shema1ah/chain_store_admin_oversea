@@ -69,7 +69,8 @@ export default {
           // 登出时删除本域cookie
           (new Image()).src = `${config.ohost}/mchnt/set_cookie?sessionid=`;
           window.localStorage.clear();
-          window.localStorage.setItem('flag', true);
+          Store.set('flag', true);
+          Store.set('role', this.role);
 
           var toRemoved = document.getElementById('unique_map');
           if(toRemoved) {

@@ -163,7 +163,6 @@ const getRole = (data) => {
           role.type = 'single'
           role.single = true
         }
-        break;
     }
   }
 

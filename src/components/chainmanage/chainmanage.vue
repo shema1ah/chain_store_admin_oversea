@@ -128,7 +128,7 @@
         <el-col :span="10" class="desc">{{ detailData.address }}</el-col>
       </el-row>
 
-      <div v-if="role.type !== 'id'">
+      <div v-if="role.country !== 'ID'">
         <el-row>
           <el-col :span="6" class="title">{{$t('shopmng.dialog.mobile')}}</el-col>
           <el-col :span="10" class="desc">{{ detailData.telephone || '无' }}</el-col>
@@ -515,7 +515,9 @@
               // 登出时删除.qfpay.com域下cookie
               (new Image()).src = `${config.ohost}/mchnt/set_cookie?sessionid=`;
               window.localStorage.clear();
-              window.localStorage.setItem('flag', true);
+              Store.set('flag', true);
+              Store.set('role', this.role);
+
               var toRemoved = document.getElementById('unique_map');
               if(toRemoved) {
                 toRemoved.onload = null;

@@ -81,7 +81,8 @@ axios.interceptors.response.use((res) => {
     (new Image()).src = `${config.ohost}/mchnt/set_cookie?sessionid=`;
     let role = Store.get('role') || {};
     window.localStorage.clear();
-    window.localStorage.setItem('flag', true);
+    Store.set('flag', true);
+    Store.set('role', role);
 
     var toRemoved = document.getElementById('unique_map');
     if(toRemoved) {

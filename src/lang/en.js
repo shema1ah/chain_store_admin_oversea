@@ -48,7 +48,7 @@ exports.default = {
       btn: {
         editPwd: 'Change Password',
         editSub: 'Edit Branch Shop',
-        editSubTag: 'Edit Branch',
+        editSubTag: 'Edit Customized ID',
         down: 'Shop QR Code',
         downTip: 'Click to download QR code'
       },
@@ -56,7 +56,7 @@ exports.default = {
         subName: 'Branch Shop Name',
         loginAccount: 'Account',
         regTime: 'Register Time',
-        subTag: 'Branch Shop Number',
+        subTag: 'Customized ID',
         op: 'Operation',
         detail: 'Details',
         more: 'More',
@@ -95,7 +95,7 @@ exports.default = {
       bankAccount: 'Bank Account',
       bankName: 'Bank Name',
       editSubTag: 'Edit Customized ID',
-      diaTip: 'Branch number would be shown at the exported payment detail and payment summary.',
+      diaTip: 'Customized ID would be shown at the exported payment detail and payment summary.',
       validateText: 'Please enter charactors within 20',
       validateText2: 'Please enter the login password of master account',
       notice: 'Be Awared!',
@@ -173,11 +173,11 @@ exports.default = {
       near30: 'Last 30 days',
       shopName: 'Shop Name',
       operator: 'Cashier',
-      moreFilter: 'More option',
+      moreFilter: 'More Options',
       noLimit: 'All',
       dd: 'Canceled', // 撤销明细
       sNum: 'Transaction ID', // 流水号
-      tip: 'Please enter the transaction id',
+      tip: 'Please enter the transaction ID',
       btn: {
         query: 'Search',
         reset: 'Reset'
@@ -200,7 +200,7 @@ exports.default = {
       tradeAmount: 'Amount',
       tradeState: 'Status',
       redpacket: 'Red Envelope Discount', // 红包优惠
-      sNum: 'Serial Number',
+      sNum: 'Transaction ID',
       op: 'Operation',
       cancel: 'cancel',
       ac: 'Actually Collected', // 实收
@@ -215,21 +215,21 @@ exports.default = {
       d1: 'If you want to cancel the payment, please operate it after entering the password of the account to confirm'
     },
     msg: {
-      m1: 'Serial number must be figures!',
-      m2: 'At least 14 digits are necessary for the payment serial number!',
+      m1: 'Transaction ID must be figures!',
+      m2: 'At least 14 digits are necessary for the payment Transaction ID!',
       m3: 'Failed to get the payment list at the first time.',
       m4: 'Failed to get the payment data.',
       m5: 'Failed to get the cashier information.',
       m6: 'Successfully cancelled.',
       m7: 'Failed to cancel.',
-      m8: 'Please enter the serial number.',
+      m8: 'Please enter the Transaction ID.',
       m9: "Please enter the account's password.",
       m10: 'invalidate password.'
     }
   },
   home: { // 首页概览
     crumbs: {
-      L1: 'Homepage'
+      L1: 'Home'
     },
     title: {
       t1: 'Payment Data Statistics',

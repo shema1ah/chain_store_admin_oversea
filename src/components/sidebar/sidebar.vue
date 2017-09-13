@@ -293,7 +293,6 @@
                 pathname: 'singlemanage'
               }
             ];
-            break;
         }
       },
 

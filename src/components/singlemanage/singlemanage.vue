@@ -26,7 +26,7 @@
             <div class="info__title">{{$t('shopmng.dialog.address')}}</div>
             <div class="info__desc">{{ shop.address }}</div>
           </div>
-          <div v-if="role.type !== 'id'">
+          <div v-if="role.country !== 'ID'">
             <div class="info">
               <div class="info__title">{{$t('shopmng.dialog.mobile')}}</div>
               <div class="info__desc">{{ shop.telephone || '无' }}</div>
@@ -46,7 +46,7 @@
           </div>
           <div class="panel-btn-group__wrapper">
             <div class="panel-header-btn panel-header-btn__fill" @click="changePass(shop.mobile)">{{$t('shopmng.panel.table.editPwd')}}</div>
-            <el-tooltip class="item" effect="dark" :content="$t('shopmng.panel.btn.downTip')" placement="right">
+            <el-tooltip v-if="role.country !== 'JP' && role.country !== 'ID'" class="item" effect="dark" :content="$t('shopmng.panel.btn.downTip')" placement="right">
               <a :href="downHref" download>
                 <div class="panel-header-btn">
                   <span>{{$t('shopmng.panel.btn.down')}}</span>
@@ -163,7 +163,8 @@
               // 登出时删除.qfpay.com域下cookie
               (new Image()).src = `${config.ohost}/mchnt/set_cookie?sessionid=`;
               window.localStorage.clear();
-              window.localStorage.setItem('flag', true);
+              Store.set('flag', true);
+              Store.set('role', this.role);
               var toRemoved = document.getElementById('unique_map');
               if(toRemoved) {
                 toRemoved.onload = null;
