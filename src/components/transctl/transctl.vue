@@ -210,7 +210,7 @@
       <div style="margin-bottom: 20px;">{{$t('tradeMng.dialog.d1')}}</div>
       <el-form :model="formpwd" :rules="pwdrules" ref="formpwd">
         <el-form-item prop="pwd">
-          <el-input v-model="formpwd.pwd" :placeholder="$t('tradeMng.msg.m9')" type="password"></el-input>
+          <el-input v-model="formpwd.pwd" :placeholder="$t('tradeMng.msg.m9')" type="password" @keyup.enter.native="onEnter"></el-input>
         </el-form-item>
 
       </el-form>
@@ -394,7 +394,7 @@
         let val = this.checkValue;
         let params = {
           format: 'cors',
-          txamt: val.txamt,
+          txamt: val.total_amt,
           txdtm: formatDate(val.sysdtm, 'yyyy-MM-dd HH:mm:ss'),
           syssn: val.syssn,
           out_trade_no: "",
@@ -424,6 +424,11 @@
           this.iconLoading = false;
           this.$message.error(this.$t('tradeMng.msg.m7'));
         });
+      },
+
+      // 点击enter键提交
+      onEnter() {
+        this.checkPwd();
       },
 
       // 验证密码

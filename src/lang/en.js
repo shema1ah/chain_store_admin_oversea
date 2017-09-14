@@ -105,11 +105,11 @@ exports.default = {
   pubSignal: { // 公众号授权
     crumbs: {
       authorizedPS: 'Official Account',
-      unauthorized: 'You haven’t bound your Official Account yet, please bind your Official Account for more services.'
+      unauthorized: 'Authenticate your Official Account for more services.'
     },
     title: {
       psInfo: 'Basic information of Official Account',
-      bind: 'Bind With Wechat Official Account'
+      bind: 'Authenticate the Official Account'
     },
     panel: {
       avatar: 'Head Portrait',
@@ -117,14 +117,14 @@ exports.default = {
       id: 'ID(Wechat Account)',
       psType: 'Official Account Type',
       authType: 'Authentication Type',
-      wechatScan: 'Scan QR code with a personal wechat account',
-      adminAuthConfirm: 'Confirm to authorize by the administrator of the official account',
-      authSucc: 'Authorization success, start to operate the official account',
+      wechatScan: 'Use your WeChat account to scan',
+      adminAuthConfirm: 'Confirm the authentication process',
+      authSucc: 'Authentication completes',
       btn: {
         subAuthMng: 'Branch Auth',
         deAuth: 'Cancel The Authorization For The Account',
         dePrimeAuth: 'Release Auth',
-        freeAdd: 'Add Wechat Official Account For Free',
+        freeAdd: 'Start',
         releaseAuth: 'Release Auth'
       }
     },
@@ -175,7 +175,7 @@ exports.default = {
       operator: 'Cashier',
       moreFilter: 'More Options',
       noLimit: 'All',
-      dd: 'Canceled', // 撤销明细
+      dd: 'Refunded', // 撤销明细
       sNum: 'Transaction ID', // 流水号
       tip: 'Please enter the transaction ID',
       btn: {
@@ -187,9 +187,9 @@ exports.default = {
       total: 'Total Amount',
       realrec: 'Payment Real Received',
       succ: 'Success',
-      undoNum: 'Canceled',
+      undoNum: 'Refunded',
       bi: 'times',
-      undo: 'Cancel The Details',
+      undo: 'Refund The Details',
       shopName: 'Shop Name/ID',
       operator: 'Cashier ',
       all: 'All',
@@ -202,7 +202,7 @@ exports.default = {
       redpacket: 'Red Envelope Discount', // 红包优惠
       sNum: 'Transaction ID',
       op: 'Operation',
-      cancel: 'cancel',
+      cancel: 'refund',
       ac: 'Actually Collected', // 实收
       red: 'paid from the red envelope', // 商家红包
       plat: 'paid from the platform', // 平台补贴
@@ -212,7 +212,7 @@ exports.default = {
       }
     },
     dialog: {
-      d1: 'If you want to cancel the payment, please operate it after entering the password of the account to confirm'
+      d1: 'If you want to refund the payment, please operate it after entering the password of the account to confirm'
     },
     msg: {
       m1: 'Transaction ID must be figures!',
@@ -220,8 +220,8 @@ exports.default = {
       m3: 'Failed to get the payment list at the first time.',
       m4: 'Failed to get the payment data.',
       m5: 'Failed to get the cashier information.',
-      m6: 'Successfully cancelled.',
-      m7: 'Failed to cancel.',
+      m6: 'Successfully refunded.',
+      m7: 'Failed to refund.',
       m8: 'Please enter the Transaction ID.',
       m9: "Please enter the account's password.",
       m10: 'invalidate password.'
