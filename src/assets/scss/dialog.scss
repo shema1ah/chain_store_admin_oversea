@@ -25,7 +25,6 @@
     margin-bottom: 20px;
   }
   .el-form-item {
-    display: flex;
     margin-bottom: 20px;
   }
   .el-input__inner {
@@ -33,15 +32,11 @@
   }
   .el-form-item__label {
     font-size: 15px;
-    width: 80px;
     padding: 0px;
     text-align: left;
     line-height: 36px;
     color: #262323;
     flex-shrink: 0;
-  }
-  .el-form-item__content {
-    width: 100%;
   }
   .el-dialog__footer {
     padding: 20px 30px;

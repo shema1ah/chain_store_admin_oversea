@@ -55,7 +55,7 @@
               <el-input type="textarea" placeholder="请输入储值规则" v-model="form.desc" :autosize="{ minRows: 3, maxRows: 7 }" max-length="200" class="w-500"></el-input>
               <div class="stro-info mt-20 error-42"><p>例如:</p> <p>1、一旦储值不予退款；</p> <p>2、储值用户可享所有商品优惠；</p></div>
             </el-form-item>
-            <el-form-item label="预留手机号" prop="mobile">
+            <el-form-item label="预留电话" prop="mobile">
               <el-input size="small" type="number" v-model.trim="form.mobile" class="panel-select-input-220"></el-input>
             </el-form-item>
           </el-form>
@@ -109,7 +109,7 @@
       let descValid = (rule, val, cb) => {
         if(val === '') {
           cb('请输入储值规则描述');
-        } else if(val.length >= 40) {
+        } else if(val.length >= 140) {
           cb('请不要超过40个字符');
         } else {
           cb();
@@ -162,7 +162,7 @@
             { validator: descValid }
           ],
           mobile: [
-            { validator: Validator.mobileValid }
+            { required: true, message: '请输入预留电话' }
           ],
           pay_amt0: [
             { validator: Validator.stoAmtValid }

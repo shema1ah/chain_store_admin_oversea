@@ -60,7 +60,7 @@
               <el-form-item label="储值规则备注" prop="desc">
                 <el-input type="textarea" placeholder="请输入储值规则" v-model="form.desc" :autosize="{ minRows: 3 }" class="w-500"></el-input>
               </el-form-item>
-              <el-form-item label="预留手机号" prop="mobile">
+              <el-form-item label="预留电话" prop="mobile">
                 <el-input size="small" v-model="form.mobile" class="panel-select-input-220"></el-input>
               </el-form-item>
             </div>
@@ -90,7 +90,7 @@
                 <el-input type="textarea" placeholder="请输入储值规则" v-model="form.desc" :autosize="{ minRows: 3 }" class="w-500"></el-input>
                 <div class="stro-info"><p>例如:</p> <p>1、一旦储值不予退款；</p> <p>2、储值用户可享所有商品优惠；</p></div>
               </el-form-item>
-              <el-form-item label="预留手机号" prop="mobile">
+              <el-form-item label="预留电话" prop="mobile">
                 <el-input size="small" v-model="form.mobile" class="panel-select-input-220" :disabled="true"></el-input>
               </el-form-item>
             </div>
@@ -184,7 +184,7 @@
             { required: true, message: '请输入储值规则描述' }
           ],
           mobile: [
-            { validator: Validator.mobileValid }
+            { required: true, message: '请输入预留电话' }
           ],
           pay_amt0: [
             { validator: Validator.stoAmtValid }

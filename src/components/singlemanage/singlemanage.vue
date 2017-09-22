@@ -59,7 +59,7 @@
     </div>
 
     <el-dialog :title="$t('shopmng.dialog.editPwd')" :visible.sync="showChangePass" @close="handleClose" custom-class="mydialog" top="20%" :show-close="false">
-      <el-form :model="form" :rules="formrules" ref="form">
+      <el-form :model="form" :rules="formrules" ref="form" label-width="80px">
         <el-form-item :label="$t('shopmng.dialog.loginAccount')">
           <div>{{ userName }}</div>
         </el-form-item>

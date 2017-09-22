@@ -366,7 +366,6 @@
 }
   .collectPacket {
     .btn-wrap {
-      display: -webkit-flex;
       display: flex;
       .panel-edit-btn__subshopnum {
         margin-right: 15px;

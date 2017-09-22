@@ -1,5 +1,5 @@
 <template class="main">
-  <div class="index">
+  <div class="index" v-loading="loading">
     <div class="mydialog" v-show="isShowMap" id="geolocation_mask"  @click="hideMapDialog">
        <!--<span id="hideMapBtn"  v-show="isShowMapBtn" class="el-icon-close" @click="hideMapDialog"></span>-->
     </div>
@@ -19,8 +19,11 @@
 
     <div class="panel" v-show="infoPage">
       <div class="panel-header panel-header__fix">
-        <div class="panel-select-group panel-select-group__justify">
-          <span class="panel-header__desc">分店账户信息设置</span>
+        <div class="panel-select-group">
+          <div class="panel-select-group panel-select-group__justify">
+            <span class="panel-header__desc">分店账户信息设置</span>
+          </div>
+          <div class="banner-btn" style="width:190px" @click="fastEntry">一键录入基础信息</div>
         </div>
       </div>
       <div class="csup-panel-body">
@@ -558,6 +561,7 @@
 
       return {
         role: Store.get('role') || {},
+        loading: false,
         shopphotoloading: false,
         goodsphotoloading: false,
         idcardfrontloading: false,
@@ -717,9 +721,32 @@
     },
     created() {
       this.getOperationType();
-//      this.initMapAPI();
+      // this.initMapAPI();
     },
     methods: {
+      // 快速录入基础信息
+      fastEntry() {
+        if(!this.loading) {
+          this.loading = true;
+          axios.get(`${config.host}/merchant/latestshop/info`).then((res) => {
+            this.loading = false;
+            let data = res.data;
+            if(data.respcd === config.code.OK) {
+              Object.assign(this.shopInfo, data.data || {}, {
+                idcardfront_url: '',
+                idcardback_url: '',
+                idcardinhand_url: ''
+              });
+            }else {
+              this.$message.error(data.resperr);
+            }
+          }).catch(() => {
+            this.loading = false;
+            this.$message.error('请求失败');
+          })
+        }
+      },
+
       startAvatarUpload(event, file, fileList) {
         this[file['__ob__'].dep.subs[0].vm.data.tag + 'loading'] = true;
       },
@@ -897,6 +924,7 @@
                   this.shopInfo.userid = data.data.userid;
                   this.shopInfo.username = data.data.username;
                   this.infoPage = !this.infoPage;
+
                   Vue.nextTick(function () {
                     document.querySelectorAll('.user_name')[0].scrollIntoView();
                   })
@@ -916,6 +944,7 @@
         })
 
       },
+
       signUp() { // 最终提交
         var _this = this;
         this.$refs['upload_info'].validate((valid) => {

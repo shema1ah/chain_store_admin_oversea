@@ -28,7 +28,7 @@
             </div>
           </div>
           <div class="panel-btn-group__wrapper">
-            <a :href="detailHref" download="true">
+            <a :href="detailHref" download="true" style="float: left">
               <div class="panel-btn__download panel-btn__download_detail">
                 <i class="icon-download"></i>
                 <span>{{$t('billMng.btn.downDetail')}}</span>

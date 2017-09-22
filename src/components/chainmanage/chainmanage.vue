@@ -37,7 +37,7 @@
             <i class="icon-create"></i>
             <span>关联分店</span>
           </div> -->
-          <div style="align-items: center;display: flex;">
+          <div class="btn-group">
             <el-button type="primary" class="panel-edit-btn__subshopnum" @click.native="editSubShopNum">{{$t('shopmng.panel.btn.editSubTag')}}</el-button>
             <el-dropdown :hide-on-click="true" style="margin-left:10px;" v-if="!role.isBaoshang && !role.haiwai">
               <div class="panel-header-btn__associate">
@@ -152,7 +152,7 @@
     </el-dialog>
     <el-dialog :title="$t('shopmng.dialog.editPwd')" :visible.sync="showChangePass" @close="handleClose('form')" custom-class="mydialog"
                top="20%" :show-close="false">
-      <el-form :model="form" :rules="formrules" ref="form">
+      <el-form :model="form" :rules="formrules" ref="form" label-width="80px">
         <el-form-item :label="$t('shopmng.dialog.loginAccount')">
           <div>{{ userName }}</div>
         </el-form-item>
@@ -207,7 +207,7 @@
     </el-dialog>
 
     <el-dialog title="关联分店" :visible.sync="visible" class="mydialog" @close="handleClose('associate_form')">
-      <el-form :model="associate_form" :rules="formrules" ref="associate_form">
+      <el-form :model="associate_form" :rules="formrules" ref="associate_form" label-width="80px">
         <div class="desc">
           <p>请输入您的分店信息，以做关联。</p>
           <p>如您的分店还没有账号，请联系客服或者业务员为您的分店入网。</p>
@@ -750,8 +750,9 @@
         width: auto !important;
       }
     }
-    .panel-header-btn__associate {
-      float:right;
-    }
+  }
+  .btn-group {
+    display: flex;
+    align-items: center;
   }
 </style>
