@@ -51,8 +51,10 @@
                 <el-button size="small" v-if="index !== 0" @click="removeRule(item)" class="ml-15" :plain="true" type="danger">删除</el-button>
               </div>
             </el-form-item>
-            <el-form-item label="储值规则备注" prop="desc">
-              <el-input type="textarea" placeholder="请输入储值规则" v-model="form.desc" :autosize="{ minRows: 3, maxRows: 7 }" max-length="200" class="w-500"></el-input>
+            <el-form-item label="储值规则备注">
+              <el-form-item prop="desc">
+                <el-input type="textarea" placeholder="请输入储值规则" v-model="form.desc" :autosize="{ minRows: 3, maxRows: 7 }" class="w-500"></el-input>
+              </el-form-item>
               <div class="stro-info mt-20 error-42"><p>例如:</p> <p>1、一旦储值不予退款；</p> <p>2、储值用户可享所有商品优惠；</p></div>
             </el-form-item>
             <el-form-item label="预留电话" prop="mobile">
@@ -110,7 +112,7 @@
         if(val === '') {
           cb('请输入储值规则描述');
         } else if(val.length >= 140) {
-          cb('请不要超过40个字符');
+          cb('请不要超过140个字符');
         } else {
           cb();
         }
@@ -300,11 +302,6 @@
   }
   .mt-20 {
     margin-top: 20px;
-  }
-  .error-42 {
-    & + .el-form-item__error {
-      top: 42%;
-    }
   }
   .lh-16 {
     line-height: 16px;

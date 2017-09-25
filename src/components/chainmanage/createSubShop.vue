@@ -732,7 +732,10 @@
             this.loading = false;
             let data = res.data;
             if(data.respcd === config.code.OK) {
-              Object.assign(this.shopInfo, data.data || {}, {
+              let info = data.data || {};
+              Object.assign(this.shopInfo, info, {
+                idstatdate: new Date(info.idstatdate),
+                idenddate: new Date(info.idenddate),
                 idcardfront_url: '',
                 idcardback_url: '',
                 idcardinhand_url: ''

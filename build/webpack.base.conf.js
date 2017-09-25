@@ -55,18 +55,6 @@ module.exports = {
         options: vueLoaderConfig,
       },
       {
-        test: /\.scss$/,
-        loader: 'style-loader!css-loader!sass-loader',
-        options: vueLoaderConfig,
-        exclude: /node_modules|theme/
-      },
-      {
-        test: /\.css/,
-        loader: 'style-loader!css-loader',
-        options: vueLoaderConfig,
-        exclude: /node_modules|theme/
-      },
-      {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
         loader: 'url-loader',
         query: {

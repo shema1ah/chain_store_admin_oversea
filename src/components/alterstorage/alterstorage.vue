@@ -86,8 +86,10 @@
                   <span>元</span>
                 </div>
               </el-form-item>
-              <el-form-item label="储值规则备注" prop="desc">
-                <el-input type="textarea" placeholder="请输入储值规则" v-model="form.desc" :autosize="{ minRows: 3 }" class="w-500"></el-input>
+              <el-form-item label="储值规则备注">
+                <el-form-item prop="desc">
+                  <el-input type="textarea" placeholder="请输入储值规则" v-model="form.desc" :autosize="{ minRows: 3 }" class="w-500"></el-input>
+                </el-form-item>
                 <div class="stro-info"><p>例如:</p> <p>1、一旦储值不予退款；</p> <p>2、储值用户可享所有商品优惠；</p></div>
               </el-form-item>
               <el-form-item label="预留电话" prop="mobile">
@@ -160,6 +162,16 @@
         }
       };
 
+      let descValid = (rule, val, cb) => {
+        if(val === '') {
+          cb('请输入储值规则描述');
+        } else if(val.length >= 140) {
+          cb('请不要超过140个字符');
+        } else {
+          cb();
+        }
+      };
+
       return {
         dateRange: {
           disabledDate: (time) => {
@@ -181,7 +193,7 @@
             {required: true, message: '请选择适用门店'}
           ],
           desc: [
-            { required: true, message: '请输入储值规则描述' }
+            { validator: descValid }
           ],
           mobile: [
             { required: true, message: '请输入预留电话' }
