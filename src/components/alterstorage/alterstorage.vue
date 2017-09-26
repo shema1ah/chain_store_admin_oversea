@@ -196,7 +196,7 @@
             { validator: descValid }
           ],
           mobile: [
-            { required: true, message: '请输入预留电话' }
+            { validator: Validator.mobileValid }
           ],
           pay_amt0: [
             { validator: Validator.stoAmtValid }

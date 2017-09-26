@@ -137,7 +137,7 @@
           <el-col :span="19" class="desc">{{ detailData.activity_info.end_time }}</el-col>
         </el-row>
         <el-row>
-          <el-col :span="5" class="title">预留手机号码</el-col>
+          <el-col :span="5" class="title">预留电话</el-col>
           <el-col :span="19" class="desc">{{ detailData.activity_info.mch_mobile }}</el-col>
         </el-row>
 

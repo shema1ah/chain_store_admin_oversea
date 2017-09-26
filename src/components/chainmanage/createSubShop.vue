@@ -562,6 +562,7 @@
       return {
         role: Store.get('role') || {},
         loading: false,
+        flag: false,
         shopphotoloading: false,
         goodsphotoloading: false,
         idcardfrontloading: false,
@@ -732,13 +733,12 @@
             this.loading = false;
             let data = res.data;
             if(data.respcd === config.code.OK) {
+              this.flag = true;
+
               let info = data.data || {};
               Object.assign(this.shopInfo, info, {
                 idstatdate: new Date(info.idstatdate),
-                idenddate: new Date(info.idenddate),
-                idcardfront_url: '',
-                idcardback_url: '',
-                idcardinhand_url: ''
+                idenddate: new Date(info.idenddate)
               });
             }else {
               this.$message.error(data.resperr);
@@ -908,6 +908,30 @@
         // 自动滚动到顶部
         document.body.scrollTop = 0;
       },
+
+      // 下一步，图片异步上传
+      imgUpload(name) {
+        if(this.flag && this.shopInfo[name]) {
+          axios.post(`${config.imgUpload}/util/v1/cpfile`, qs.stringify({
+            enuserid: this.shopInfo.userid,
+            imgurl: this.shopInfo[name],
+            format: 'cors'
+          }), {
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+            }
+          }).then((res) => {
+            let data = res.data;
+            if (data.respcd !== config.code.OK) {
+              this.shopInfo[name] = '';
+            }
+          }).catch(() => {
+            console.log('请求失败');
+            this.shopInfo[name] = '';
+          })
+        }
+      },
+
       preSignUp() { // 预注册
         this.$refs['shop_info'].validate((valid) => {
           if (valid) {
@@ -928,6 +952,9 @@
                   this.shopInfo.username = data.data.username;
                   this.infoPage = !this.infoPage;
 
+                  ['idcardfront_url', 'idcardback_url', 'idcardinhand_url'].forEach((value) => {
+                    this.imgUpload(value);
+                  });
                   Vue.nextTick(function () {
                     document.querySelectorAll('.user_name')[0].scrollIntoView();
                   })

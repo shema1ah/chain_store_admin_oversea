@@ -49,7 +49,7 @@
             <span class="info-desc"><span class="highlight ml-0">{{ data.desc }}</span></span>
           </p>
           <p class="review-info">
-            <span class="info-title">预留手机号</span>
+            <span class="info-title">预留电话</span>
             <span class="info-desc"><span class="highlight ml-0">{{ data.mobile }}</span></span>
           </p>
         </div>
