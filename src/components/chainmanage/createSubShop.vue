@@ -755,7 +755,6 @@
               });
 
               this.getTypeName(this.shopInfo.shop_types);
-
             }else {
               this.$message.error(data.resperr);
             }
@@ -877,23 +876,12 @@
         this.$refs['shop_info'].resetFields();
         this.$router.push('/main/chainmanage');
       },
+
+      // 继续创建，页面刷新
       continueToCreateSubShop() {
-          this.$refs['upload_info'].resetFields();
-          this.$refs['shop_info'].resetFields();
-          this.shopInfo.shopphoto_url = ''; // 经营场所/经营场所外景照片url
-          this.shopInfo.shopphoto_name = ''; // 经营场所/经营场所外景照片名
-          this.shopInfo.goodsphoto_url = ''; // 所售商品/经营场所内景照片url
-          this.shopInfo.goodsphoto_name = '';
-          this.shopInfo.idcardfront_url = ''; // 身份证正面/法人身份证正面url
-          this.shopInfo.idcardfront_name = '';
-          this.shopInfo.idcardback_url =  ''; // 身份证背面/法人身份证背面url
-          this.shopInfo.idcardback_name = '';
-          this.shopInfo.idcardinhand_url = ''; // 手持身份证合照url
-          this.shopInfo.idcardinhand_name = '';
-          this.shopInfo.userid = '';
-          this.shopInfo.username = '';
-          this.backToPrePage();
-          this.isShowCommitDone = false;
+        this.$router.go(0);
+        // 自动滚动到顶部
+        document.body.scrollTop = document.documentElement.scrollTop = 0;
       },
 
       beforeAvatarUpload(file) {
@@ -935,7 +923,7 @@
       backToPrePage() {
         this.infoPage = !this.infoPage;
         // 自动滚动到顶部
-        document.body.scrollTop = 0;
+        document.body.scrollTop = document.documentElement.scrollTop = 0;
       },
 
       // 下一步，图片异步上传
@@ -1193,6 +1181,10 @@
       },
       switchHeadBank(value, label, index) {
         if (label) {
+          Object.assign(this.fastInfo, {
+            bankname: '',
+            bankcode: ''
+          });
           this.shopInfo.headbankname = label;
         }
         if (index) {
