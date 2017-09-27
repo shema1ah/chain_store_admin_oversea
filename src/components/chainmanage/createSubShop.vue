@@ -194,8 +194,7 @@
                   v-for="(hbank, index) in shopInfo.headbanks"
                   :key="hbank.headbankid + '@' + index"
                   :label="hbank.headbankname"
-                  :value="hbank.headbankid"
-                >
+                  :value="hbank.headbankid">
                 </el-option>
               </el-select>
             </el-form-item>
@@ -450,7 +449,7 @@
               <el-col :span="4">
                 <el-button type="primary" style="width:155px;" @click="backToPrePage">返回上一页</el-button>
               </el-col>
-              <el-col :span="4">
+              <el-col :span="4" :offset="1">
                 <el-button type="success" style="width:155px;" @click="signUp" :disabled="btnLocked">确认提交</el-button>
               </el-col>
             </el-form-item>
@@ -563,6 +562,8 @@
         role: Store.get('role') || {},
         loading: false,
         flag: false,
+        changeFlag: false,
+        fastInfo: {},
         shopphotoloading: false,
         goodsphotoloading: false,
         idcardfrontloading: false,
@@ -734,12 +735,27 @@
             let data = res.data;
             if(data.respcd === config.code.OK) {
               this.flag = true;
+              this.changeFlag = true;
 
-              let info = data.data || {};
-              Object.assign(this.shopInfo, info, {
+              let info = this.fastInfo = data.data || {};
+              Object.assign(this.shopInfo, {
+                address: info.address,
+                bankaccount: info.bankaccount,
+                bankmobile: info.bankmobile,
+                banktype: info.banktype,
+                bankuser: info.bankuser,
+                idcardback_url: info.idcardback_url,
+                idcardfront_url: info.idcardfront_url,
+                idcardinhand_url: info.idcardinhand_url,
+                idnumber: info.idnumber,
                 idstatdate: new Date(info.idstatdate),
-                idenddate: new Date(info.idenddate)
+                idenddate: new Date(info.idenddate),
+                shoptype_id: info.shoptype_id,
+                city_id: info.city_id
               });
+
+              this.getTypeName(this.shopInfo.shop_types);
+
             }else {
               this.$message.error(data.resperr);
             }
@@ -747,6 +763,19 @@
             this.loading = false;
             this.$message.error('请求失败');
           })
+        }
+      },
+
+      getTypeName(list) {
+        for(let l of list) {
+          if(l.shoptypes.length > 0) {
+            this.getTypeName(l.shoptypes);
+          }else {
+            if(l.id === this.shopInfo.shoptype_id) {
+              this.shopInfo.shoptype_name = l.name;
+              return;
+            }
+          }
         }
       },
 
@@ -819,7 +848,7 @@
           console.log(e.data);
           let lng = +e.data.location.split(',')[0];
           let lat = +e.data.location.split(',')[1];
-//          this.shopInfo.location = e.data.address + e.data.name;
+          // this.shopInfo.location = e.data.address + e.data.name;
           geocoder && geocoder.getAddress([lng, lat], (status, result) => {
             if (status === 'complete' && result.info === 'OK') {
               _this.shopInfo.headbanks.length = 0;
@@ -911,10 +940,10 @@
 
       // 下一步，图片异步上传
       imgUpload(name) {
-        if(this.flag && this.shopInfo[name]) {
+        if(this.flag && this.shopInfo[name + '_url']) {
           axios.post(`${config.imgUpload}/util/v1/cpfile`, qs.stringify({
             enuserid: this.shopInfo.userid,
-            imgurl: this.shopInfo[name],
+            imgurl: this.shopInfo[name + '_url'],
             format: 'cors'
           }), {
             headers: {
@@ -922,8 +951,11 @@
             }
           }).then((res) => {
             let data = res.data;
-            if (data.respcd !== config.code.OK) {
-              this.shopInfo[name] = '';
+            if (data.respcd === config.code.OK) {
+              this.shopInfo[name + '_name'] = data.data.name;
+              console.log('上传成功' + this.shopInfo);
+            }else {
+              this.shopInfo[name + '_url'] = '';
             }
           }).catch(() => {
             console.log('请求失败');
@@ -932,7 +964,8 @@
         }
       },
 
-      preSignUp() { // 预注册
+      // 预注册
+      preSignUp() {
         this.$refs['shop_info'].validate((valid) => {
           if (valid) {
             if (this.shopInfo.userid) {
@@ -952,7 +985,7 @@
                   this.shopInfo.username = data.data.username;
                   this.infoPage = !this.infoPage;
 
-                  ['idcardfront_url', 'idcardback_url', 'idcardinhand_url'].forEach((value) => {
+                  ['idcardfront', 'idcardback', 'idcardinhand'].forEach((value) => {
                     this.imgUpload(value);
                   });
                   Vue.nextTick(function () {
@@ -975,7 +1008,8 @@
 
       },
 
-      signUp() { // 最终提交
+      // 最终提交
+      signUp() {
         var _this = this;
         this.$refs['upload_info'].validate((valid) => {
           if (valid) {
@@ -1081,6 +1115,8 @@
             this.$message.error(e);
           });
       },
+
+      // 获取开户地
       getBankLocation() {
         axios.get(`${config.ohost}/mchnt/tool/cities`, {
           params: {
@@ -1098,7 +1134,7 @@
               this.shopInfo.headbankid = '';
               this.shopInfo.headbankname = '';
               this.shopInfo.bankcity = "";
-              this.shopInfo.city_id = "";
+              this.shopInfo.city_id = '';
             } else {
               this.$message.error(data.resperr);
             }
@@ -1107,9 +1143,15 @@
             this.$message.error(e);
           });
       },
-      switchBankLocation(value, label) { // 切换开户地 获取开户行总行
-        if (label) this.shopInfo.bankcity = label;
-        this.shopInfo.city_id = value;
+
+      // 切换开户地 获取开户行总行
+      switchBankLocation(value, label) {
+        if (label) {
+          this.shopInfo.bankcity = label;
+        }
+        if(value) {
+          this.shopInfo.city_id = value;
+        }
         let _this = this;
         axios.get(`${config.ohost}/mchnt/tool/headbanks`, {
           params: {
@@ -1119,18 +1161,33 @@
           .then((res) => {
             let data = res.data;
             if (data.respcd === config.code.OK) {
-              console.log('获取获取银行总行成功');
-              _this.shopInfo.headbanks = data.data.records;
-              _this.shopInfo.headbankname = '';
-              _this.shopInfo.headbankid = '';
+              console.log('获取银行总行成功');
+              if(!_this.changeFlag) {
+                Object.assign(_this.fastInfo, {
+                  headbankid: '',
+                  headbankname: '',
+                  bankname: '',
+                  bankcode: ''
+                });
+              }
+
+              Object.assign(_this.shopInfo, {
+                headbanks: data.data.records,
+                headbankid: _this.fastInfo.headbankid || '',
+                headbankname: _this.fastInfo.headbankname || '',
+                bankcode: '',
+                bankname: ''
+              });
               _this.shopInfo.branchBanks.length = 0;
-              _this.shopInfo.bankname = '';
-              _this.shopInfo.bankcode = '';
+
+              _this.changeFlag = false;
             } else {
+              _this.changeFlag = false;
               _this.$message.error(data.resperr);
             }
           })
           .catch((e) => {
+            _this.changeFlag = false;
             _this.$message.error(e);
           });
       },
@@ -1141,8 +1198,11 @@
         if (index) {
           this.shopInfo.csphone = this.shopInfo.headbanks[index].csphone;
         }
-        this.shopInfo.headbankid = value;
+        if(value) {
+          this.shopInfo.headbankid = value;
+        }
 
+        let _this = this;
         axios.get(`${config.ohost}/mchnt/tool/branchbanks`, {
           params: {
             cityid: this.shopInfo.city_id,
@@ -1154,29 +1214,37 @@
             let data = res.data;
             if (data.respcd === config.code.OK) {
               if (data.data.records.length) {
-                console.log('获取获取银行支行成功');
-                this.shopInfo.branchBanks = data.data.records;
-                this.shopInfo.bankname = "";
-                this.shopInfo.bankcode = "";
+                console.log('获取银行支行成功');
+                _this.shopInfo.branchBanks = data.data.records;
+                _this.shopInfo.bankcode = _this.fastInfo.bankcode || '';
+                _this.shopInfo.bankname = _this.fastInfo.bankname || '';
               } else {
-                this.shopInfo.branchBanks.length = 0;
-//                this.$message.error('该开户总行下无支行，请重新选择开户总行');
+                _this.shopInfo.branchBanks.length = 0;
+                // this.$message.error('该开户总行下无支行，请重新选择开户总行');
               }
             } else {
-              this.$message.error(data.resperr);
+              _this.$message.error(data.resperr);
             }
           })
           .catch((e) => {
-            this.$message.error(e);
+            _this.$message.error(e);
           });
       },
       switchBranchBank(value, label) {
-        if (label) this.shopInfo.bankname = label;
-        this.shopInfo.bankcode = value;
-        console.log('所有设置完毕：', this.shopInfo);
+        if (label) {
+          this.shopInfo.bankname = label;
+        }
+        if(value) {
+          this.shopInfo.bankcode = value;
+        }
+
+        console.log('所有设置完毕', this.shopInfo);
       },
-      getOperationType() { // 获取经营类型 传0
-        axios.get(`${config.ohost}/mchnt/tool/shoptypes`, {
+
+      // 获取经营类型 传0
+      getOperationType() {
+        // axios.get(`${config.ohost}/mchnt/tool/shoptypes`, {
+        axios.get(`https://o.qfpay.com/mchnt/tool/shoptypes`, {
           params: {
             pid: 0,
             format: 'cors'
@@ -1200,9 +1268,9 @@
         e.stopPropagation();
       },
       handleNodeClick(node) {
-        console.log(node);
-        this.shopInfo.shoptype_id = node.id;
         if(node.shoptypes.length == 0) {
+          console.log(node, node.id);
+          this.shopInfo.shoptype_id = node.id;
           this.shopInfo.shoptype_name = node.name;
           this.shopInfo.isShowTree = false;
         }
