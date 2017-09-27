@@ -1243,8 +1243,7 @@
 
       // 获取经营类型 传0
       getOperationType() {
-        // axios.get(`${config.ohost}/mchnt/tool/shoptypes`, {
-        axios.get(`https://o.qfpay.com/mchnt/tool/shoptypes`, {
+        axios.get(`${config.ohost}/mchnt/tool/shoptypes`, {
           params: {
             pid: 0,
             format: 'cors'
