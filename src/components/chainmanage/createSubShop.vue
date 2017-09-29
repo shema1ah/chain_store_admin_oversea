@@ -739,7 +739,6 @@
 
               let info = this.fastInfo = data.data || {};
               Object.assign(this.shopInfo, {
-                address: info.address,
                 bankaccount: info.bankaccount,
                 bankmobile: info.bankmobile,
                 banktype: info.banktype,
