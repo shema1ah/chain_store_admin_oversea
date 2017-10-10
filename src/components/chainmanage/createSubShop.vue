@@ -562,6 +562,7 @@
         role: Store.get('role') || {},
         loading: false,
         flag: false,
+        forFlag: false,
         changeFlag: false,
         fastInfo: {},
         shopphotoloading: false,
@@ -735,6 +736,7 @@
             let data = res.data;
             if(data.respcd === config.code.OK) {
               this.flag = true;
+              this.forFlag = false;
               this.changeFlag = true;
 
               let info = this.fastInfo = data.data || {};
@@ -747,8 +749,8 @@
                 idcardfront_url: info.idcardfront_url,
                 idcardinhand_url: info.idcardinhand_url,
                 idnumber: info.idnumber,
-                idstatdate: new Date(info.idstatdate),
-                idenddate: new Date(info.idenddate),
+                idstatdate: info.idstatdate?new Date(info.idstatdate):'',
+                idenddate: info.idenddate?new Date(info.idenddate):'',
                 shoptype_id: info.shoptype_id,
                 city_id: info.city_id
               });
@@ -771,8 +773,12 @@
           }else {
             if(l.id === this.shopInfo.shoptype_id) {
               this.shopInfo.shoptype_name = l.name;
+              this.forFlag = true;
               return;
             }
+          }
+          if(this.forFlag) {
+            return;
           }
         }
       },
@@ -1391,37 +1397,8 @@
     position: fixed !important;
     z-index: 9;
     background-color: rgba(0, 0, 0, 0.5);
-    /*#close-geo {*/
-    /*width: 16px;*/
-    /*height: 16px;*/
-    /*line-height: 16px;*/
-    /*z-index: 9999;*/
-    /*position: absolute;*/
-    /*top: 6px;*/
-    /*right: 8px;*/
-    /*}*/
-
   }
 
-  /*.map-dialog {*/
-  /*width:660px;*/
-  /*height:420px;*/
-  /*.el-dialog__header {*/
-  /*padding:0;*/
-  /*}*/
-  /*.el-dialog__body {*/
-  /*padding:0;*/
-  /*width:660px;*/
-  /*height:420px;*/
-  /*}*/
-  /*}*/
-  /*.el-message-box {*/
-  /*.el-message-box__title {*/
-  /*.el-message-box__headerbtn {*/
-  /*visibility: hidden !important;*/
-  /*}*/
-  /*}*/
-  /*}*/
   .backToSMBtn {
     color: #fe9b20;
     border: 1px solid #fe9b20;
