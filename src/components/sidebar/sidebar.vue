@@ -220,49 +220,8 @@
             ];
             break;
           case 'hongkong':
-            this.navs = [
-              {
-                val: this.$t('nav.index'),
-                pathname: 'index'
-              }, {
-                val: this.$t('nav.tradeMng'),
-                pathname: 'transctl'
-              }, {
-                val: this.$t('nav.billMng'),
-                pathname: 'billctl'
-              }, {
-                val: this.$t('nav.publicAuth'),
-                pathname: 'publicauth'
-              }, {
-                val: this.$t('nav.shopMng'),
-                pathname: 'chainmanage'
-              }, {
-                val: this.$t('nav.setup'),
-                pathname: 'settings'
-              }
-            ];
-            break;
-          case 'hongkong_single':
-            this.navs = [
-              {
-                val: this.$t('nav.index'),
-                pathname: 'index'
-              }, {
-                val: this.$t('nav.tradeMng'),
-                pathname: 'transctl'
-              }, {
-                val: this.$t('nav.billMng'),
-                pathname: 'billctl'
-              }, {
-                val: this.$t('nav.publicAuth'),
-                pathname: 'publicauth'
-              }, {
-                val: this.$t('nav.shopMng'),
-                pathname: 'singlemanage'
-              }
-            ];
-            break;
           case 'japan':
+          case 'ar':
           case 'id':
             this.navs = [
               {

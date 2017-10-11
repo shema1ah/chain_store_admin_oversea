@@ -14,7 +14,7 @@
       </div>
 
       <div class="panel-body panel-today">
-        <div class="member" v-if="role.country !== 'JP' && role.country !== 'ID'">
+        <div class="member" v-if="!role.haiwai">
           <h3><i></i>{{$t('home.panel.t1')}}</h3>
           <strong><em>{{info.new_member_num}}</em>{{role.haiwai ? '' : ' 人'}}</strong>
           <ul>

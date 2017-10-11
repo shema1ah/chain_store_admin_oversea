@@ -126,7 +126,7 @@ const getRole = (data) => {
     diancan: false
   }
 
-  // 包商baoshang 日本japan 香港hongkong ''代表是其他group
+  // 包商baoshang 日本japan 香港hongkong 印尼id 迪拜ar
   // bigmerchant:大商户 submerchant:子商户 merchant:商户
   if(data.group_name === 'baoshang') {
     role.isBaoshang = true
@@ -148,6 +148,13 @@ const getRole = (data) => {
         role.type = 'id'
         if (data.cate !== 'bigmerchant') {
           role.type = 'id_single'
+          role.single = true
+        }
+        break;
+      case 'AR':
+        role.type = 'ar'
+        if (data.cate !== 'bigmerchant') {
+          role.type = 'ar_single'
           role.single = true
         }
         break;
@@ -188,6 +195,25 @@ const formatData = (arg1, arg2) => {
 
   return Number(s1.replace(".", "")) * Number(s2.replace(".", "")) / Math.pow(10, m)
 }
+
+const formatLength = (val) => {
+  let len;
+  let num = (val || 0).toString();
+  if(num && num.indexOf('.') > -1) {
+    len = num.split('.')[1];
+    num = num.split('.')[0];
+  }
+
+  let result = '';
+  while (num.length > 3) {
+    result = ',' + num.slice(-3) + result;
+    num = num.slice(0, num.length - 3);
+  }
+  if (num) {
+    result = num + result;
+  }
+  return len ? result + '.' + len : result;
+};
 
 const getCookie = (sName) => {
   var aCookie = document.cookie.split(';')
@@ -373,6 +399,7 @@ module.exports = {
   getRole,
   setformateDate,
   formatData,
+  formatLength,
   getCookie,
   clearCookie,
   cardValid,
