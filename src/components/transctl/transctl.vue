@@ -43,7 +43,7 @@
                 </el-select>
               </el-form-item>
             </div>
-            <div class="panel-select__wrapper" v-if="!role.haiwai">
+            <div class="panel-select__wrapper">
               <span class="panel-select__desc">{{$t('tradeMng.panel.operator')}}</span>
               <el-form-item>
                 <el-select v-model="form.operaValue" :placeholder="$t('tradeMng.table.all')" size="small" @change="operaChange" :disabled="form.selectShopUid === ''">
@@ -147,7 +147,7 @@
             </template>
           </el-table-column>
           <el-table-column
-            :label="$t('tradeMng.table.operator')" v-if="!role.haiwai">
+            :label="$t('tradeMng.table.operator')">
             <template scope="scope">{{ scope.row.opuser || '-' }}</template>
           </el-table-column>
           <el-table-column
@@ -356,7 +356,7 @@
 
     created() {
       this.changeTime('1');
-      // 子商户查询其操作员
+      // 子商户查询其收营员
       if(this.role.single) {
         this.form.selectShopUid = this.shop.uid;
         this.getOperators(this.shop.uid);
@@ -536,11 +536,10 @@
         this.basicParams.opuid = opuid;
       },
 
-      // 查询操作员列表
+      // 查询收营员列表
       getOperators(uid) {
-        if(!this.role.haiwai) {
-          this.form.operaValue = '';
-          axios.get(`${config.host}/merchant/sub/opusers`, {
+        this.form.operaValue = '';
+        axios.get(`${config.host}/merchant/sub/opusers`, {
             params: {
               userid: uid
             }
@@ -554,7 +553,6 @@
           }).catch(() => {
             this.$message.error(this.$t('tradeMng.msg.m5'));
           });
-        }
       },
 
       currentChange(current) {

@@ -212,7 +212,7 @@ const formatLength = (val) => {
   if (num) {
     result = num + result;
   }
-  return len ? result + '.' + len : result;
+  return len ? `${result}.${len}` : result;
 };
 
 const getCookie = (sName) => {
