@@ -356,7 +356,7 @@
 
     created() {
       this.changeTime('1');
-      // 子商户查询其收营员
+      // 子商户查询其收银员
       if(this.role.single) {
         this.form.selectShopUid = this.shop.uid;
         this.getOperators(this.shop.uid);
@@ -536,7 +536,7 @@
         this.basicParams.opuid = opuid;
       },
 
-      // 查询收营员列表
+      // 查询收银员列表
       getOperators(uid) {
         this.form.operaValue = '';
         axios.get(`${config.host}/merchant/sub/opusers`, {

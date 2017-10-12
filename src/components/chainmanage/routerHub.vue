@@ -1,6 +1,5 @@
 <template>
-  <router-view :shop="shop" @associate="associate">
-    <!--<router-view name="createsubshop"></router-view> -->
+  <router-view :shop="shop">
   </router-view>
 </template>
 <script>
@@ -8,12 +7,6 @@
       props: {
         shop: {
           type: Object
-        }
-      },
-
-      methods: {
-        associate() {
-          this.$emit('associate');
         }
       }
     };

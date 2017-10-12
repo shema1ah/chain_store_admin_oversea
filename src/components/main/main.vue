@@ -34,21 +34,7 @@ export default {
     return {
       role: Store.get('role') || {},
       loading: false,
-      shop: {},
-      formrules: {
-        account: [
-          { required: true, message: '请输入分店登录手机号!' }
-        ],
-        password: [
-          { required: true, message: '请输入分店登录密码!' }
-        ],
-        bankuser: [
-          { required: true, message: '请输入分店收款人姓名!' }
-        ],
-        bankaccount: [
-          { required: true, message: '请输入分店收款银行卡号!' }
-        ]
-      }
+      shop: {}
     };
   },
   components: {
