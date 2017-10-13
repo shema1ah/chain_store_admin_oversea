@@ -203,7 +203,7 @@ exports.default = {
       redpacket: 'Red Envelope Discount', // 红包优惠
       sNum: 'Transaction ID',
       op: 'Operation',
-      cancel: 'refund',
+      cancel: 'Refund',
       ac: 'Actually Collected', // 实收
       red: 'paid from the red envelope', // 商家红包
       plat: 'paid from the platform', // 平台补贴

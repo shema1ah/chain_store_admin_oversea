@@ -114,7 +114,7 @@ let deepClone = (obj) => {
 }
 
 // 角色判断 大商户、子商户、海外商户
-const getRole = (data) => {
+const getRole = (data = {}) => {
   let role = {
     type: 'chain',
     haiwai: false,
