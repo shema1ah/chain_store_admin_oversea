@@ -16,7 +16,8 @@ import VueI18n from 'vue-i18n'
 import locale from 'element-ui/lib/locale'
 let langAdaptor = function(lang) {
   if(~lang.indexOf('en')) return 'en'
-  if(~lang.indexOf('zh')) return 'zh-CN'
+  if(lang.toLowerCase() === 'zh-tw') return 'zh-TW'
+  if(lang.toLowerCase() === 'zh-cn') return 'zh-CN'
   if(~lang.indexOf('ja')) return 'ja'
   return 'en';
 }
@@ -56,6 +57,7 @@ Vue.use(Switch)
 locale.use(targetLang.default); // elementUI组件的多语言
 var localePackage = { // 静态模板文案多语言
   'zh-CN': require(`lang/${(JSON.parse(switchlang).value)}.js`)['default'],
+  'zh-TW': require(`lang/${(JSON.parse(switchlang).value)}.js`)['default'],
   en: require(`lang/${(JSON.parse(switchlang).value)}.js`)['default'],
   ja: require(`lang/${(JSON.parse(switchlang).value)}.js`)['default']
 };
