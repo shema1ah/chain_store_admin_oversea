@@ -7,7 +7,8 @@
 exports.__esModule = true;
 exports.default = {
   lang: {
-    zh: 'Chinese',
+    tw: 'Traditional Chinese',
+    zh: 'Simplified Chinese',
     en: 'English',
     ja: 'Japanese'
   },
