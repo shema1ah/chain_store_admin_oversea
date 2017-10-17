@@ -17,10 +17,7 @@
           <div class="panel-select__wrapper">
             <span class="panel-select__desc">活动状态</span>
             <el-select v-model="stateValue" placeholder="全部" size="small" @change="stateChange">
-              <el-option
-                v-for="item in stateOptions"
-                :label="item.label"
-                :value="item.value">
+              <el-option v-for="item in stateOptions" :label="item.label" :value="item.value" :key="item.value">
               </el-option>
             </el-select>
           </div>

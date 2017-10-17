@@ -140,7 +140,7 @@
       <el-dialog :title="$t('pubSignal.dialog.m1')" v-model="dialogVisible" size="tiny" :show-close="false">
         <el-form>
           <el-checkbox-group v-model="checkedStores" @change="handleCheckedStoresChange">
-            <el-checkbox v-for="store in stores" :label="store.userid">
+            <el-checkbox v-for="store in stores" :label="store.userid" :key="store.userid">
               {{store.shop_name}}
             </el-checkbox>
           </el-checkbox-group>

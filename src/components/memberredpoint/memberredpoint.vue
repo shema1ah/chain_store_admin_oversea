@@ -20,14 +20,14 @@
           <div class="panel-select__wrapper">
             <span class="panel-select__desc">活动状态</span>
             <el-select v-model="stateValue" placeholder="全部" size="small" @change="stateChange">
-              <el-option v-for="item in stateLists" :label="item.name" :value="item.value">
+              <el-option v-for="item in stateLists" :label="item.name" :value="item.value" :key="item.value">
               </el-option>
             </el-select>
           </div>
           <div class="panel-select__wrapper" v-if="!role.single">
             <span class="panel-select__desc">店铺名称</span>
             <el-select v-model="nameValue" placeholder="全部" size="small" @change="nameChange">
-              <el-option v-for="shop in shopData.list" :label="shop.shop_name" :value="shop.uid">
+              <el-option v-for="shop in shopData.list" :label="shop.shop_name" :value="shop.uid" :key="shop.uid">
               </el-option>
             </el-select>
           </div>

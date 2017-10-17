@@ -25,7 +25,7 @@
             <div class="panel-select__wrapper">
               <el-form-item prop="choosetime">
                 <el-radio-group v-model="form.choosetime" @change="changeTime">
-                  <el-radio-button v-for="item in choosetimes" :label="item.value">{{ item.name }}</el-radio-button>
+                  <el-radio-button v-for="item in choosetimes" :label="item.value" :key="item.value">{{ item.name }}</el-radio-button>
                 </el-radio-group>
               </el-form-item>
             </div>
@@ -35,10 +35,7 @@
               <span class="panel-select__desc">{{$t('tradeMng.panel.shopName')}}</span>
               <el-form-item prop="selectShopUid">
                 <el-select v-model="form.selectShopUid" :placeholder="lang==='en'? 'All':'全部'" size="small" @change="getOperators(form.selectShopUid)">
-                  <el-option
-                    v-for="shop in shopData.list"
-                    :label="shop.shop_name"
-                    :value="shop.uid">
+                  <el-option v-for="shop in shopData.list" :label="shop.shop_name" :value="shop.uid" :key="shop.uid">
                   </el-option>
                 </el-select>
               </el-form-item>

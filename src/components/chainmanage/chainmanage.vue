@@ -177,7 +177,7 @@
         <div class="desc" style="text-align: left">
           {{$t('shopmng.dialog.diaTip')}}
         </div>
-        <el-form-item v-for="(shop, index) in shopData.list" v-if="index !== 0">
+        <el-form-item v-for="(shop, index) in shopData.list" v-if="index !== 0" :key="index">
           <el-tooltip placement="bottom" :content="shop.shop_name" class="subshoptip">
             <label style="width:140px">{{shop.shop_name}}</label>
           </el-tooltip>
