@@ -6,12 +6,6 @@
 
 exports.__esModule = true;
 exports.default = {
-  lang: {
-    tw: '繁體中国語',
-    zh: '簡體中国語',
-    en: '英語',
-    ja: '日本語'
-  },
   nav: {
     mmp: '商店管理コンソール',
     index: 'トップ',

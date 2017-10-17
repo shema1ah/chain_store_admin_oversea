@@ -47,7 +47,7 @@
     </ul>
     <div class="copyright_wrapper" v-if="role.haiwai">
       <el-select v-model="lang"  icon="caret-bottom" @change="switchLanguage" size="small" popperClass="popperBg" style="width:80%;">
-        <el-option v-for="item in [{label: $t('lang.ja'), value:'ja'}, {label: $t('lang.en'), value:'en'}, {label: $t('lang.tw'), value:'zh-TW'}, {label: $t('lang.zh'), value:'zh-CN'}]" :key="item.value" :label="item.label" :value="item.value"></el-option>
+        <el-option v-for="item in langLists" :key="item.value" :label="item.label" :value="item.value"></el-option>
       </el-select>
     </div>
   </div>
@@ -64,7 +64,13 @@
         isShow1: true,
         isRotate1: false,
         isShow2: true,
-        isRotate2: false
+        isRotate2: false,
+        langLists: [
+          {label: '日本語', value: 'ja'},
+          {label: 'English', value: 'en'},
+          {label: '繁體中文', value: 'zh-TW'},
+          {label: '简体中文', value: 'zh-CN'}
+          ]
       };
     },
 

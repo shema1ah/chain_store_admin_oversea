@@ -6,12 +6,6 @@
 
 exports.__esModule = true;
 exports.default = {
-  lang: {
-    tw: 'Traditional Chinese',
-    zh: 'Simplified Chinese',
-    en: 'English',
-    ja: 'Japanese'
-  },
   nav: {
     mmp: 'Shop Management Platform',
     index: 'Home',

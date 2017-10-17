@@ -2,12 +2,6 @@
 
 exports.__esModule = true;
 exports.default = {
-  lang: {
-    tw: '繁體中文',
-    zh: '簡體中文',
-    en: '英文',
-    ja: '日文'
-  },
   nav: {
     mmp: '商戶管理後台',
     index: '首頁概覽',
@@ -229,7 +223,7 @@ exports.default = {
       L1: '首頁概覽'
     },
     title: {
-      t1: '會員及交易數據統計',
+      t1: '交易數據統計',
       t2: '活動運營數據統計'
     },
     panel: {

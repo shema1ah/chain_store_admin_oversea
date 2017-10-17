@@ -2,12 +2,6 @@
 
 exports.__esModule = true;
 exports.default = {
-  lang: {
-    tw: '繁体中文',
-    zh: '简体中文',
-    en: '英文',
-    ja: '日文'
-  },
   nav: {
     mmp: '商户管理后台',
     index: '首页概览',
