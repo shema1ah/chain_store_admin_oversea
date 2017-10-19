@@ -151,10 +151,7 @@
             prop="busicd_info"
             :label="$t('tradeMng.table.tradeType')">
           </el-table-column>
-          <el-table-column
-            prop="sysdtm"
-            min-width="150"
-            :label="$t('tradeMng.table.tradeTime')">
+          <el-table-column prop="sysdtm" min-width="150" :label="$t('tradeMng.table.tradeTime')">
             <template scope="scope">{{ scope.row.sysdtm }}</template>
           </el-table-column>
           <el-table-column
@@ -228,7 +225,7 @@
   import {formatDate} from '../../common/js/util';
   import Store from '../../common/js/store';
 
-  let typeLists = ['wxpay', 'alipay', 'jdpay', 'qqpay', 'card'];
+  let typeLists = ['wxpay', 'alipay', 'qqpay', 'card'];
   let otherLists = ['prepaid_recharge', 'prepaid', 'coupon', 'cancel'];
 
   // cancel 0未撤销 1撤销 status  0:交易中 1:交易成功 2:交易失败 3:交易超时
@@ -259,7 +256,6 @@
         typeList: [
           {'name': '微信收款', 'value': 'wxpay'},
           {'name': '支付宝收款', 'value': 'alipay'},
-          {'name': '京东收款', 'value': 'jdpay'},
           {'name': 'QQ收款', 'value': 'qqpay'},
           {'name': '刷卡收款', 'value': 'card'}
         ],
@@ -362,10 +358,9 @@
       if(this.role.isBaoshang) {
           this.typeList = [
           {'name': '微信收款', 'value': 'wxpay'},
-          {'name': '支付宝收款', 'value': 'alipay'},
-          {'name': '京东收款', 'value': 'jdpay'}
+          {'name': '支付宝收款', 'value': 'alipay'}
         ];
-        typeLists = ['wxpay', 'alipay', 'jdpay'];
+        typeLists = ['wxpay', 'alipay'];
       }
 
       // 海外更多筛选特殊处理
