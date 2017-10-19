@@ -7,12 +7,12 @@
     <ul class="left-nav">
       <li v-for="nav in navs" :class="{'dark': $route.fullPath.indexOf('member') != -1 && nav.sub}">
         <router-link class="sidebar-nav__item" v-if="nav.pathname" :to="router('main/' + nav.pathname)">{{ nav.val }}</router-link>
-        <a v-else class="sidebar-nav__item" @click="toggle">
+        <a v-else class="sidebar-nav__item" @click="toggle(1)">
           {{ nav.val }}
-          <i v-if="nav.sub" class="icon-down_arrow" :class="{'icon-down_arrow__rotate': isRotate}"></i>
+          <i v-if="nav.sub" class="icon-down_arrow" :class="{'icon-down_arrow__rotate': isRotate1}"></i>
         </a>
         <transition name="collpase">
-          <ul v-if="nav.sub" v-show="isShow" class="collpase">
+          <ul v-if="nav.sub" v-show="isShow1" class="collpase">
             <li v-for="subnav in nav.sub">
               <router-link class="sidebar-nav__item sidebar-nav__subitem" :to="router('main/' + subnav.pathname)">
                 {{ subnav.val }}
@@ -21,11 +21,33 @@
           </ul>
         </transition>
       </li>
-      <li v-if="this.role.diancan"><a href="/wxofficial/setting" class="sidebar-nav__item">智慧餐厅</a></li>
+      <li :class="{'dark': $route.fullPath.indexOf('Public') != -1}" v-if="role.diancan">
+        <a class="sidebar-nav__item" @click="toggle(2)">
+          智慧餐厅
+          <i class="icon-down_arrow" :class="{'icon-down_arrow__rotate': isRotate2}"></i>
+        </a>
+        <transition name="collpase">
+          <ul v-show="isShow2" class="collpase">
+            <li>
+              <router-link class="sidebar-nav__item sidebar-nav__subitem" :to="{ name: 'noPublic', params: {hasPublic: 'yes'}}">
+                有公众号二维码
+              </router-link>
+            </li>
+            <li>
+              <router-link class="sidebar-nav__item sidebar-nav__subitem" :to="{ name: 'hasPublic', params: {hasPublic: 'no'}}">
+                无公众号二维码
+              </router-link>
+            </li>
+            <li>
+              <a href="/wxofficial/setting#!/goods-management" class="sidebar-nav__item sidebar-nav__subitem">商品管理</a>
+            </li>
+          </ul>
+        </transition>
+      </li>
     </ul>
     <div class="copyright_wrapper" v-if="role.haiwai">
       <el-select v-model="lang"  icon="caret-bottom" @change="switchLanguage" size="small" popperClass="popperBg" style="width:80%;">
-        <el-option v-for="item in [{label: $t('lang.ja'), value:'ja'}, {label: $t('lang.en'), value:'en'}, {label: $t('lang.zh'), value:'zh-CN'}]" :key="item.value" :label="item.label" :value="item.value"></el-option>
+        <el-option v-for="item in langLists" :key="item.value" :label="item.label" :value="item.value"></el-option>
       </el-select>
     </div>
   </div>
@@ -39,8 +61,16 @@
         lang: config.lang,
         role: Store.get('role') || {},
         navs: [],
-        isShow: true,
-        isRotate: false
+        isShow1: true,
+        isRotate1: false,
+        isShow2: true,
+        isRotate2: false,
+        langLists: [
+          {label: '日本語', value: 'ja'},
+          {label: 'English', value: 'en'},
+          {label: '繁體中文', value: 'zh-TW'},
+          {label: '简体中文', value: 'zh-CN'}
+          ]
       };
     },
 
@@ -196,49 +226,9 @@
             ];
             break;
           case 'hongkong':
-            this.navs = [
-              {
-                val: this.$t('nav.index'),
-                pathname: 'index'
-              }, {
-                val: this.$t('nav.tradeMng'),
-                pathname: 'transctl'
-              }, {
-                val: this.$t('nav.billMng'),
-                pathname: 'billctl'
-              }, {
-                val: this.$t('nav.publicAuth'),
-                pathname: 'publicauth'
-              }, {
-                val: this.$t('nav.shopMng'),
-                pathname: 'chainmanage'
-              }, {
-                val: this.$t('nav.setup'),
-                pathname: 'settings'
-              }
-            ];
-            break;
-          case 'hongkong_single':
-            this.navs = [
-              {
-                val: this.$t('nav.index'),
-                pathname: 'index'
-              }, {
-                val: this.$t('nav.tradeMng'),
-                pathname: 'transctl'
-              }, {
-                val: this.$t('nav.billMng'),
-                pathname: 'billctl'
-              }, {
-                val: this.$t('nav.publicAuth'),
-                pathname: 'publicauth'
-              }, {
-                val: this.$t('nav.shopMng'),
-                pathname: 'singlemanage'
-              }
-            ];
-            break;
           case 'japan':
+          case 'ar':
+          case 'id':
             this.navs = [
               {
                 val: this.$t('nav.index'),
@@ -268,13 +258,17 @@
                 pathname: 'singlemanage'
               }
             ];
-            break;
         }
       },
 
-      toggle() {
-        this.isRotate = !this.isRotate;
-        this.isShow = !this.isShow;
+      toggle(i) {
+        if(i === 1) {
+          this.isRotate1 = !this.isRotate1;
+          this.isShow1 = !this.isShow1;
+        }else {
+          this.isRotate2 = !this.isRotate2;
+          this.isShow2 = !this.isShow2;
+        }
       }
     }
   };

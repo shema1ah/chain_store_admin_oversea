@@ -6,11 +6,6 @@
 
 exports.__esModule = true;
 exports.default = {
-  lang: {
-    zh: '中国語',
-    en: '英語',
-    ja: '日本語'
-  },
   nav: {
     mmp: '商店管理コンソール',
     index: 'トップ',
@@ -175,7 +170,7 @@ exports.default = {
       operator: 'キャッシャー',
       moreFilter: '選択します',
       noLimit: '全部',
-      dd: '取り消し可能な取引だけを表示する', // 撤销明细 
+      dd: '取り消し可能な取引だけを表示する', // 撤销明细
       sNum: 'シリアル番号', // 流水号
       tip: 'シリアル番号を入力してください',
       btn: {

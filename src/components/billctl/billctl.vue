@@ -21,14 +21,14 @@
               <span class="panel-select__desc">{{$t('billMng.panel.shopName')}}</span>
               <el-form-item prop="selectShopUid">
                 <el-select v-model="form.selectShopUid" :placeholder="$t('common.all')" size="small">
-                  <el-option v-for="shop in shopData.list" :label="shop.shop_name" :value="shop.uid">
+                  <el-option v-for="shop in shopData.list" :label="shop.shop_name" :value="shop.uid" :key="shop.uid">
                   </el-option>
                 </el-select>
               </el-form-item>
             </div>
           </div>
           <div class="panel-btn-group__wrapper">
-            <a :href="detailHref" download="true">
+            <a :href="detailHref" download="true" style="float: left">
               <div class="panel-btn__download panel-btn__download_detail">
                 <i class="icon-download"></i>
                 <span>{{$t('billMng.btn.downDetail')}}</span>

@@ -13,10 +13,7 @@
     </el-form-item>
     <el-form-item label="适用门店" prop="sub_mchnt_list" v-if="!role.single">
       <el-select v-model="form.sub_mchnt_list" placeholder="请选择门店" multiple size="small">
-        <el-option
-          v-for="shop in shopList"
-          :label="shop.shop_name"
-          :value="shop.uid">
+        <el-option v-for="shop in shopList" :label="shop.shop_name" :value="shop.uid" :key="shop.uid">
         </el-option>
       </el-select>
     </el-form-item>

@@ -25,20 +25,17 @@
             <div class="panel-select__wrapper">
               <el-form-item prop="choosetime">
                 <el-radio-group v-model="form.choosetime" @change="changeTime">
-                  <el-radio-button v-for="item in choosetimes" :label="item.value">{{ item.name }}</el-radio-button>
+                  <el-radio-button v-for="item in choosetimes" :label="item.value" :key="item.value">{{ item.name }}</el-radio-button>
                 </el-radio-group>
               </el-form-item>
             </div>
           </div>
           <div class="panel-select-group">
-            <div class="panel-select__wrapper" v-show="!role.single">
+            <div class="panel-select__wrapper" v-if="!role.single">
               <span class="panel-select__desc">{{$t('tradeMng.panel.shopName')}}</span>
               <el-form-item prop="selectShopUid">
                 <el-select v-model="form.selectShopUid" :placeholder="lang==='en'? 'All':'全部'" size="small" @change="getOperators(form.selectShopUid)">
-                  <el-option
-                    v-for="shop in shopData.list"
-                    :label="shop.shop_name"
-                    :value="shop.uid">
+                  <el-option v-for="shop in shopData.list" :label="shop.shop_name" :value="shop.uid" :key="shop.uid">
                   </el-option>
                 </el-select>
               </el-form-item>
@@ -56,7 +53,7 @@
               </el-form-item>
             </div>
           </div>
-          <div class="panel-select-group" v-show="!role.haiwai">
+          <div class="panel-select-group" v-if="!role.haiwai">
             <div class="panel-select__wrapper">
               <span class="panel-select__desc">{{$t('tradeMng.table.colWay')}}</span>
               <el-form-item prop="checkAll1">
@@ -91,7 +88,7 @@
               </el-form-item>
             </div>
             <div class="panel-header-btn-group">
-              <div class="panel-header-btn panel-header-btn__fill" @click="getTransData">
+              <div class="panel-header-btn panel-header-btn__fill" @click="search">
                 <span class="el-icon-loading" v-if="loading"></span>
                 <span v-else>{{$t('tradeMng.panel.btn.query')}}</span>
               </div>
@@ -154,10 +151,7 @@
             prop="busicd_info"
             :label="$t('tradeMng.table.tradeType')">
           </el-table-column>
-          <el-table-column
-            prop="sysdtm"
-            min-width="150"
-            :label="$t('tradeMng.table.tradeTime')">
+          <el-table-column prop="sysdtm" min-width="150" :label="$t('tradeMng.table.tradeTime')">
             <template scope="scope">{{ scope.row.sysdtm }}</template>
           </el-table-column>
           <el-table-column
@@ -198,7 +192,8 @@
           :page-size="pageSize"
           @size-change="handleSizeChange"
           :total="transData.num"
-          @current-change="currentChange">
+          @current-change="currentChange"
+          :current-page="currentPage">
         </el-pagination>
       </div>
       <div class="table_placeholder" v-else></div>
@@ -209,7 +204,7 @@
       <div style="margin-bottom: 20px;">{{$t('tradeMng.dialog.d1')}}</div>
       <el-form :model="formpwd" :rules="pwdrules" ref="formpwd">
         <el-form-item prop="pwd">
-          <el-input v-model="formpwd.pwd" :placeholder="$t('tradeMng.msg.m9')" type="password"></el-input>
+          <el-input v-model="formpwd.pwd" :placeholder="$t('tradeMng.msg.m9')" type="password" @keyup.enter.native="onEnter"></el-input>
         </el-form-item>
 
       </el-form>
@@ -230,7 +225,7 @@
   import {formatDate} from '../../common/js/util';
   import Store from '../../common/js/store';
 
-  let typeLists = ['wxpay', 'alipay', 'jdpay', 'qqpay', 'card'];
+  let typeLists = ['wxpay', 'alipay', 'qqpay', 'card'];
   let otherLists = ['prepaid_recharge', 'prepaid', 'coupon', 'cancel'];
 
   // cancel 0未撤销 1撤销 status  0:交易中 1:交易成功 2:交易失败 3:交易超时
@@ -261,7 +256,6 @@
         typeList: [
           {'name': '微信收款', 'value': 'wxpay'},
           {'name': '支付宝收款', 'value': 'alipay'},
-          {'name': '京东收款', 'value': 'jdpay'},
           {'name': 'QQ收款', 'value': 'qqpay'},
           {'name': '刷卡收款', 'value': 'card'}
         ],
@@ -334,7 +328,7 @@
           orderno: this.form.orderno,
           charset: 'utf-8',
           isdownload: false,
-          page: 1,
+          page: this.currentPage,
           maxnum: this.pageSize,
           paytypes: this.form.type.join(','),
           filters: this.form.other.join(','),
@@ -355,7 +349,7 @@
 
     created() {
       this.changeTime('1');
-      // 子商户查询其操作员
+      // 子商户查询其收银员
       if(this.role.single) {
         this.form.selectShopUid = this.shop.uid;
         this.getOperators(this.shop.uid);
@@ -364,10 +358,9 @@
       if(this.role.isBaoshang) {
           this.typeList = [
           {'name': '微信收款', 'value': 'wxpay'},
-          {'name': '支付宝收款', 'value': 'alipay'},
-          {'name': '京东收款', 'value': 'jdpay'}
+          {'name': '支付宝收款', 'value': 'alipay'}
         ];
-        typeLists = ['wxpay', 'alipay', 'jdpay'];
+        typeLists = ['wxpay', 'alipay'];
       }
 
       // 海外更多筛选特殊处理
@@ -378,21 +371,7 @@
         otherLists = ['cancel'];
       }
 
-      this.loading = true;
-      axios.get(`${config.host}/merchant/trade/info`, {
-        params: this.basicParams
-      }).then((res) => {
-        this.loading = false;
-        let data = res.data;
-        if(data.respcd === config.code.OK) {
-          this.transData = data.data;
-        } else {
-          this.$message.error(data.resperr);
-        }
-      }).catch(() => {
-        this.loading = false;
-        this.$message.error(this.$t('tradeMng.msg.m3'));
-      });
+      this.getTransData();
     },
 
     methods: {
@@ -407,7 +386,7 @@
         let val = this.checkValue;
         let params = {
           format: 'cors',
-          txamt: val.txamt,
+          txamt: val.total_amt,
           txdtm: formatDate(val.sysdtm, 'yyyy-MM-dd HH:mm:ss'),
           syssn: val.syssn,
           out_trade_no: "",
@@ -437,6 +416,11 @@
           this.iconLoading = false;
           this.$message.error(this.$t('tradeMng.msg.m7'));
         });
+      },
+
+      // 点击enter键提交
+      onEnter() {
+        this.checkPwd();
       },
 
       // 验证密码
@@ -514,61 +498,65 @@
       },
 
       // 点击查询
-      getTransData(params) {
+      search() {
         this.downHref = 'javascript:;';
-        if(params && params.which && this.$refs['page']) {
-          this.$refs['page'].internalCurrentPage = 1;
+        this.handleSizeChange();
+      },
+
+      // 获取数据
+      getTransData() {
+        if(!this.loading) {
+          this.loading = true;
+          axios.get(`${config.host}/merchant/trade/info`, {
+            params: this.basicParams
+          }).then((res) => {
+            this.loading = false;
+            let data = res.data;
+            if(data.respcd === config.code.OK) {
+              this.transData = data.data;
+            } else {
+              this.$message.error(data.resperr);
+            }
+          }).catch(() => {
+            this.loading = false;
+            this.$message.error(this.$t('tradeMng.msg.m4'));
+          });
         }
-        this.$refs['form'].validate((valid) => {
-          if(valid && !this.loading) {
-            this.loading = true;
-            axios.get(`${config.host}/merchant/trade/info`, {
-              params: Object.assign({}, this.basicParams, params)
-            }).then((res) => {
-              this.loading = false;
-              let data = res.data;
-              if(data.respcd === config.code.OK) {
-                this.transData = data.data;
-              } else {
-                this.$message.error(data.resperr);
-              }
-            }).catch(() => {
-              this.loading = false;
-              this.$message.error(this.$t('tradeMng.msg.m4'));
-            });
-          }
-        });
       },
 
       operaChange(opuid) {
         this.basicParams.opuid = opuid;
       },
 
-      // 查询操作员列表
+      // 查询收银员列表
       getOperators(uid) {
         this.form.operaValue = '';
         axios.get(`${config.host}/merchant/sub/opusers`, {
-          params: {
-            userid: uid
-          }
-        }).then((res) => {
-          let data = res.data;
-          if(data.respcd === config.code.OK) {
-            this.operaList = data.data;
-          } else {
-            this.$message.error(data.resperr);
-          }
-        }).catch(() => {
-          this.$message.error(this.$t('tradeMng.msg.m5'));
-        });
+            params: {
+              userid: uid
+            }
+          }).then((res) => {
+            let data = res.data;
+            if(data.respcd === config.code.OK) {
+              this.operaList = data.data;
+            } else {
+              this.$message.error(data.resperr);
+            }
+          }).catch(() => {
+            this.$message.error(this.$t('tradeMng.msg.m5'));
+          });
       },
 
       currentChange(current) {
-        this.currentPage = current;
-        console.log(current);
-        this.getTransData({
-          page: current
-        });
+        if (!current && this.currentPage !== 1) {
+          this.currentPage = 1;
+          return;
+        }
+        if (current) {
+          this.currentPage = current;
+        }
+
+        this.getTransData();
       },
 
       // 重置表单
@@ -577,10 +565,9 @@
         this.$refs['form'].resetFields();
       },
 
-      handleSizeChange(size) {
+      handleSizeChange(size = 10) {
         this.pageSize = size;
-        this.basicParams.page = 1;
-        this.getTransData({which: 1});
+        this.currentChange();
       }
     }
   };

@@ -19,14 +19,14 @@
           <div class="panel-select__wrapper" v-show="!role.single">
             <span class="panel-select__desc">店铺名称</span>
             <el-select v-model="nameValue" placeholder="全部" size="small" @change="nameChange">
-              <el-option v-for="shop in shopData.list" :label="shop.shop_name" :value="shop.uid">
+              <el-option v-for="shop in shopData.list" :label="shop.shop_name" :value="shop.uid" :key="shop.uid">
               </el-option>
             </el-select>
           </div>
           <div class="panel-select__wrapper">
             <span class="panel-select__desc">红包类型</span>
             <el-select v-model="packetValue" placeholder="全部" size="small" @change="packetChange">
-              <el-option v-for="packet in packetList" :label="packet.label" :value="packet.value">
+              <el-option v-for="item in packetList" :label="item.label" :value="item.value" :key="item.value">
               </el-option>
             </el-select>
           </div>

@@ -37,7 +37,7 @@
             <i class="icon-create"></i>
             <span>关联分店</span>
           </div> -->
-          <div style="align-items: center;display: flex;">
+          <div class="btn-group">
             <el-button type="primary" class="panel-edit-btn__subshopnum" @click.native="editSubShopNum">{{$t('shopmng.panel.btn.editSubTag')}}</el-button>
             <el-dropdown :hide-on-click="true" style="margin-left:10px;" v-if="!role.isBaoshang && !role.haiwai">
               <div class="panel-header-btn__associate">
@@ -119,7 +119,7 @@
         <el-col :span="6" class="title">{{$t('shopmng.dialog.loginAccount')}}</el-col>
         <el-col :span="10" class="desc">{{ detailData.mobile }}</el-col>
       </el-row>
-      <el-row class="">
+      <el-row>
         <el-col :span="6" class="title">{{$t('shopmng.dialog.shopName')}}</el-col>
         <el-col :span="10" class="desc">{{ detailData.shopname }}</el-col>
       </el-row>
@@ -128,29 +128,31 @@
         <el-col :span="10" class="desc">{{ detailData.address }}</el-col>
       </el-row>
 
-      <el-row>
-        <el-col :span="6" class="title">{{$t('shopmng.dialog.mobile')}}</el-col>
-        <el-col :span="10" class="desc">{{ detailData.telephone || '无' }}</el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="6" class="title">{{$t('shopmng.dialog.cardHolder')}}</el-col>
-        <el-col :span="10" class="desc">{{ detailData.bankuser }}</el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="6" class="title">{{$t('shopmng.dialog.bankAccount')}}</el-col>
-        <el-col :span="10" class="desc">{{ detailData.bankaccount }}</el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="6" class="title">{{$t('shopmng.dialog.bankName')}}</el-col>
-        <el-col :span="14" class="desc">
-          <div>{{ detailData.headbankname }}</div>
-          <div>{{ detailData.bankname }}</div>
-        </el-col>
-      </el-row>
+      <div v-if="role.country !== 'ID'">
+        <el-row>
+          <el-col :span="6" class="title">{{$t('shopmng.dialog.mobile')}}</el-col>
+          <el-col :span="10" class="desc">{{ detailData.telephone || '无' }}</el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="6" class="title">{{$t('shopmng.dialog.cardHolder')}}</el-col>
+          <el-col :span="10" class="desc">{{ detailData.bankuser }}</el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="6" class="title">{{$t('shopmng.dialog.bankAccount')}}</el-col>
+          <el-col :span="10" class="desc">{{ detailData.bankaccount }}</el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="6" class="title">{{$t('shopmng.dialog.bankName')}}</el-col>
+          <el-col :span="14" class="desc">
+            <div>{{ detailData.headbankname }}</div>
+            <div>{{ detailData.bankname }}</div>
+          </el-col>
+        </el-row>
+      </div>
     </el-dialog>
     <el-dialog :title="$t('shopmng.dialog.editPwd')" :visible.sync="showChangePass" @close="handleClose('form')" custom-class="mydialog"
                top="20%" :show-close="false">
-      <el-form :model="form" :rules="formrules" ref="form">
+      <el-form :model="form" :rules="formrules" ref="form" label-width="80px">
         <el-form-item :label="$t('shopmng.dialog.loginAccount')">
           <div>{{ userName }}</div>
         </el-form-item>
@@ -175,7 +177,7 @@
         <div class="desc" style="text-align: left">
           {{$t('shopmng.dialog.diaTip')}}
         </div>
-        <el-form-item v-for="(shop, index) in shopData.list" v-if="index !== 0">
+        <el-form-item v-for="(shop, index) in shopData.list" v-if="index !== 0" :key="index">
           <el-tooltip placement="bottom" :content="shop.shop_name" class="subshoptip">
             <label style="width:140px">{{shop.shop_name}}</label>
           </el-tooltip>
@@ -205,7 +207,7 @@
     </el-dialog>
 
     <el-dialog title="关联分店" :visible.sync="visible" class="mydialog" @close="handleClose('associate_form')">
-      <el-form :model="associate_form" :rules="formrules" ref="associate_form">
+      <el-form :model="associate_form" :rules="formrules" ref="associate_form" label-width="80px">
         <div class="desc">
           <p>请输入您的分店信息，以做关联。</p>
           <p>如您的分店还没有账号，请联系客服或者业务员为您的分店入网。</p>
@@ -364,7 +366,7 @@
     },
     created() {
       this.$store.dispatch('getPageShopData');
-//      this.$store.dispatch('getShopList');
+      // this.$store.dispatch('getShopList');
     },
     mounted() {
     },
@@ -510,10 +512,13 @@
           .then((res) => {
             let data = res.data;
             if (data.respcd === config.code.OK) {
-              // 清除本地cookie
-              document.cookie = "sessionid=''; expires=" + new Date(0).toUTCString();
+              // 登出时删除.qfpay.com域下cookie
+              (new Image()).src = `${config.ohost}/mchnt/set_cookie?sessionid=`;
+              Store.set('flag', true);
+              localStorage.removeItem('lang');
+              localStorage.removeItem('hashid');
+              localStorage.removeItem('uid');
 
-              localStorage.getItem('lang') && localStorage.removeItem('lang');
               var toRemoved = document.getElementById('unique_map');
               if(toRemoved) {
                 toRemoved.onload = null;
@@ -745,8 +750,9 @@
         width: auto !important;
       }
     }
-    .panel-header-btn__associate {
-      float:right;
-    }
+  }
+  .btn-group {
+    display: flex;
+    align-items: center;
   }
 </style>

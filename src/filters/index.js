@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Store from '../common/js/store'
+import { formatLength } from '../common/js/util'
 
 let filters = {
 
@@ -11,9 +12,9 @@ let filters = {
     }
     let role = Store.get('role') || {};
     if(role.haiwai) {
-      return (number / role.rate)
+      return formatLength(number / role.rate)
     }else {
-      return (number / role.rate).toFixed(2)
+      return formatLength((number / role.rate).toFixed(2))
     }
   },
 
@@ -25,9 +26,25 @@ let filters = {
     }
     let role = Store.get('role') || {};
     if(role.haiwai) {
-      return (string / role.rate)
+      return formatLength(string / role.rate)
     }else {
-      return (string / role.rate).toFixed(2)
+      return formatLength((string / role.rate).toFixed(2))
+    }
+  },
+
+  // 交易类型选填: 1储值(充值) 或 2(消费) 或3(消费退款) 或4(手动储值)
+  formatType (type) {
+    switch (type) {
+      case 1:
+        return '储值充值'
+      case 2:
+        return '储值消费'
+      case 3:
+        return '消费退款'
+      case 4:
+        return '手动储值'
+      default:
+        return '储值充值'
     }
   },
 

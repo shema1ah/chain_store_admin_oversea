@@ -6,17 +6,12 @@
 
 exports.__esModule = true;
 exports.default = {
-  lang: {
-    zh: 'Chinese',
-    en: 'English',
-    ja: 'Japanese'
-  },
   nav: {
     mmp: 'Shop Management Platform',
-    index: 'HomePage',
+    index: 'Home',
     tradeMng: 'Transaction Mgmt',
     billMng: 'Bill Mgmt',
-    publicAuth: 'Official Account Auth',
+    publicAuth: 'Official Account',
     shopMng: 'Shop Mgmt',
     setup: 'Setting'
   },
@@ -48,7 +43,7 @@ exports.default = {
       btn: {
         editPwd: 'Change Password',
         editSub: 'Edit Branch Shop',
-        editSubTag: 'Edit Branch',
+        editSubTag: 'Edit Customized ID',
         down: 'Shop QR Code',
         downTip: 'Click to download QR code'
       },
@@ -56,7 +51,7 @@ exports.default = {
         subName: 'Branch Shop Name',
         loginAccount: 'Account',
         regTime: 'Register Time',
-        subTag: 'Branch Shop Number',
+        subTag: 'Customized ID',
         op: 'Operation',
         detail: 'Details',
         more: 'More',
@@ -94,8 +89,8 @@ exports.default = {
       cardHolder: 'Account Owner',
       bankAccount: 'Bank Account',
       bankName: 'Bank Name',
-      editSubTag: 'Edit Branch Shop Number',
-      diaTip: 'Branch number would be shown at the exported payment detail and payment summary.',
+      editSubTag: 'Edit Customized ID',
+      diaTip: 'Customized ID would be shown at the exported payment detail and payment summary.',
       validateText: 'Please enter charactors within 20',
       validateText2: 'Please enter the login password of master account',
       notice: 'Be Awared!',
@@ -104,12 +99,12 @@ exports.default = {
   },
   pubSignal: { // 公众号授权
     crumbs: {
-      authorizedPS: 'Authorized Official Account',
-      unauthorized: 'You haven’t bound your Wechat account yet, please bind your Wechat account to get more service.'
+      authorizedPS: 'Official Account',
+      unauthorized: 'Authenticate your Official Account for more services.'
     },
     title: {
       psInfo: 'Basic information of Official Account',
-      bind: 'Bind With Wechat Official Account'
+      bind: 'Authenticate the Official Account'
     },
     panel: {
       avatar: 'Head Portrait',
@@ -117,14 +112,14 @@ exports.default = {
       id: 'ID(Wechat Account)',
       psType: 'Official Account Type',
       authType: 'Authentication Type',
-      wechatScan: 'Scan QR code with a personal wechat account',
-      adminAuthConfirm: 'Confirm to authorize by the administrator of the official account',
-      authSucc: 'Authorization success, start to operate the official account',
+      wechatScan: 'Use your WeChat account to scan',
+      adminAuthConfirm: 'Confirm the authentication process',
+      authSucc: 'Authentication completes',
       btn: {
         subAuthMng: 'Branch Auth',
         deAuth: 'Cancel The Authorization For The Account',
         dePrimeAuth: 'Release Auth',
-        freeAdd: 'Add Wechat Official Account For Free',
+        freeAdd: 'Start',
         releaseAuth: 'Release Auth'
       }
     },
@@ -163,7 +158,7 @@ exports.default = {
   },
   tradeMng: { // 交易管理
     crumbs: {
-      L1: 'Payment Management'
+      L1: 'Transaction Management'
     },
     panel: {
       time: 'Date',
@@ -173,11 +168,11 @@ exports.default = {
       near30: 'Last 30 days',
       shopName: 'Shop Name',
       operator: 'Cashier',
-      moreFilter: 'Choose More',
+      moreFilter: 'More Options',
       noLimit: 'All',
-      dd: 'Canceled', // 撤销明细
-      sNum: 'Serial Number', // 流水号
-      tip: 'Please enter the serial number',
+      dd: 'Refunded', // 撤销明细
+      sNum: 'Transaction ID', // 流水号
+      tip: 'Please enter the transaction ID',
       btn: {
         query: 'Search',
         reset: 'Reset'
@@ -187,9 +182,9 @@ exports.default = {
       total: 'Total Amount',
       realrec: 'Payment Real Received',
       succ: 'Success',
-      undoNum: 'Canceled',
+      undoNum: 'Refunded',
       bi: 'times',
-      undo: 'Cancel The Details',
+      undo: 'Refund The Details',
       shopName: 'Shop Name/ID',
       operator: 'Cashier ',
       all: 'All',
@@ -200,9 +195,9 @@ exports.default = {
       tradeAmount: 'Amount',
       tradeState: 'Status',
       redpacket: 'Red Envelope Discount', // 红包优惠
-      sNum: 'Serial Number',
+      sNum: 'Transaction ID',
       op: 'Operation',
-      cancel: 'cancel',
+      cancel: 'Refund',
       ac: 'Actually Collected', // 实收
       red: 'paid from the red envelope', // 商家红包
       plat: 'paid from the platform', // 平台补贴
@@ -212,24 +207,24 @@ exports.default = {
       }
     },
     dialog: {
-      d1: 'If you want to cancel the payment, please operate it after entering the password of the account to confirm'
+      d1: 'If you want to refund the payment, please operate it after entering the password of the account to confirm'
     },
     msg: {
-      m1: 'Serial number must be figures!',
-      m2: 'At least 14 digits are necessary for the payment serial number!',
+      m1: 'Transaction ID must be figures!',
+      m2: 'At least 14 digits are necessary for the payment Transaction ID!',
       m3: 'Failed to get the payment list at the first time.',
       m4: 'Failed to get the payment data.',
       m5: 'Failed to get the cashier information.',
-      m6: 'Successfully cancelled.',
-      m7: 'Failed to cancel.',
-      m8: 'Please enter the serial number.',
+      m6: 'Successfully refunded.',
+      m7: 'Failed to refund.',
+      m8: 'Please enter the Transaction ID.',
       m9: "Please enter the account's password.",
       m10: 'invalidate password.'
     }
   },
   home: { // 首页概览
     crumbs: {
-      L1: 'Homepage'
+      L1: 'Home'
     },
     title: {
       t1: 'Payment Data Statistics',
@@ -242,8 +237,8 @@ exports.default = {
       cmnew: 'New Customers This Month',
       cumulativeMembership: 'Total Customers',
       tta: 'Payment Today',
-      tincome: 'Actual Amount Today',
-      cmincome: 'Actual Amount This Month',
+      tincome: 'Amount Received Today',
+      cmincome: 'Amount Received This Month',
       noActivity: 'No Promotion'
     }
   },
@@ -261,12 +256,12 @@ exports.default = {
   },
   setting: { // 邮箱设置页
     crumbs: {
-      L1: 'Report Setting'
+      L1: 'Setting'
     },
     panel: {
       mailSetup: 'Email setting',
       mail: 'Email Address',
-      explain: 'A daily payment report will send to this address every morning 7 a.m.',
+      explain: 'A daily payment report will be delivered to this email address every morning at 7 a.m.',
       dailySend: 'Turn On Daily Report',
       modi: 'Change',
       confirm: 'Confirm'

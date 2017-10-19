@@ -26,31 +26,27 @@
             <div class="info__title">{{$t('shopmng.dialog.address')}}</div>
             <div class="info__desc">{{ shop.address }}</div>
           </div>
-          <div class="info">
-            <div class="info__title">{{$t('shopmng.dialog.mobile')}}</div>
-            <div class="info__desc">{{ shop.telephone || '无' }}</div>
-          </div>
-          <div class="info">
-            <div class="info__title">{{$t('shopmng.dialog.cardHolder')}}</div>
-            <div class="info__desc">{{ shop.bankuser }}</div>
-          </div>
-          <div class="info">
-            <div class="info__title">{{$t('shopmng.dialog.bankAccount')}}</div>
-            <div class="info__desc">{{ shop.bankaccount }} </div>
-          </div>
-          <!--
-           <div class="info" style="margin-bottom: 0">
-            <div class="info__title">{{$t('shopmng.dialog.bankName')}}</div>
-            <div class="info__desc">{{ shop.headbankname }} </div>
-          </div>
-          -->
-          <div class="info">
-            <div class="info__title" >{{$t('shopmng.dialog.bankName')}}</div>
-            <div class="info__desc">{{ shop.bankname }}</div>
+          <div v-if="role.country !== 'ID'">
+            <div class="info">
+              <div class="info__title">{{$t('shopmng.dialog.mobile')}}</div>
+              <div class="info__desc">{{ shop.telephone || '无' }}</div>
+            </div>
+            <div class="info">
+              <div class="info__title">{{$t('shopmng.dialog.cardHolder')}}</div>
+              <div class="info__desc">{{ shop.bankuser }}</div>
+            </div>
+            <div class="info">
+              <div class="info__title">{{$t('shopmng.dialog.bankAccount')}}</div>
+              <div class="info__desc">{{ shop.bankaccount }} </div>
+            </div>
+            <div class="info">
+              <div class="info__title" >{{$t('shopmng.dialog.bankName')}}</div>
+              <div class="info__desc">{{ shop.bankname }}</div>
+            </div>
           </div>
           <div class="panel-btn-group__wrapper">
             <div class="panel-header-btn panel-header-btn__fill" @click="changePass(shop.mobile)">{{$t('shopmng.panel.table.editPwd')}}</div>
-            <el-tooltip class="item" effect="dark" :content="$t('shopmng.panel.btn.downTip')" placement="right">
+            <el-tooltip v-if="!role.haiwai || role.country === 'HK'" class="item" effect="dark" :content="$t('shopmng.panel.btn.downTip')" placement="right">
               <a :href="downHref" download>
                 <div class="panel-header-btn">
                   <span>{{$t('shopmng.panel.btn.down')}}</span>
@@ -63,7 +59,7 @@
     </div>
 
     <el-dialog :title="$t('shopmng.dialog.editPwd')" :visible.sync="showChangePass" @close="handleClose" custom-class="mydialog" top="20%" :show-close="false">
-      <el-form :model="form" :rules="formrules" ref="form">
+      <el-form :model="form" :rules="formrules" ref="form" label-width="80px">
         <el-form-item :label="$t('shopmng.dialog.loginAccount')">
           <div>{{ userName }}</div>
         </el-form-item>
@@ -118,6 +114,7 @@
       };
       return {
         lang: config.lang,
+        role: Store.get('role') || {},
         loading: false,
         iconShow: false,
         showChangePass: false,
@@ -163,16 +160,18 @@
           .then((res) => {
             let data = res.data;
             if (data.respcd === config.code.OK) {
-              // 清除本地cookie
-              document.cookie = "sessionid=''; expires=" + new Date(0).toUTCString();
-
-              localStorage.getItem('lang') && localStorage.removeItem('lang');
+              // 登出时删除.qfpay.com域下cookie
+              (new Image()).src = `${config.ohost}/mchnt/set_cookie?sessionid=`;
+              Store.set('flag', true);
+              localStorage.removeItem('lang');
+              localStorage.removeItem('hashid');
+              localStorage.removeItem('uid');
               var toRemoved = document.getElementById('unique_map');
               if(toRemoved) {
                 toRemoved.onload = null;
                 document.body.removeChild(toRemoved);
               }
-              this.$router.push(`/login?from=logout&haiwai=${Store.get('role').haiwai}`);
+              this.$router.push(`/login?from=logout&haiwai=${this.role.haiwai}`);
             } else {
               this.$message.error(data.respmsg);
             }

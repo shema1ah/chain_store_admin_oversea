@@ -26,7 +26,7 @@
 <script>
   import axios from 'axios';
   import config from 'config';
-  import { getRole, getCookie } from '../../common/js/util';
+  import { getRole, getCookie, clearCookie } from '../../common/js/util';
   import Store from '../../common/js/store';
   export default {
     data() {
@@ -50,10 +50,23 @@
     },
 
     created() {
+      // 浏览器兼容模式下，提示
+      if(this.isIe() && !this.checkBrowser()) {
+          this.$message({
+            message: '为保证系统的正常使用，建议您将浏览器升级到最新版本并且切换至急速模式。',
+            duration: 0,
+            type: 'error'
+          });
+      }
+
       // cookie存在跳转首页
-      if(getCookie('sessionid') && !Store.get("flag")) {
-       this.$router.push('/main/index');
-       }
+      if(getCookie('sessionid') && Store.get('flag') === false) {
+        this.$router.push('/main/index');
+      }
+
+      if(getCookie('sessionid') && Store.get('flag') === true) {
+        clearCookie('sessionid', config.ohost);
+      }
     },
     mounted() {
       var getQuery = function (href) {
@@ -76,10 +89,10 @@
     methods: {
       // 登录
       login() {
+        var _this = this;
         this.$refs['form'].validate((valid) => {
           if(!this.loading && valid) {
             this.loading = true;
-
             axios.post(`${config.host}/merchant/login`, this.form).then((res) => {
               this.loading = false;
               let data = res.data;
@@ -90,9 +103,15 @@
                 Store.set('flag', false);
 
                 // 当前域名下设置cookie
-                // setCookie('sessionid', data.data.session_id);
-
-                this.$router.push('/main/index')
+                let bicon = new Image();
+                let sid = getCookie('sessionid') || '';
+                if(sid) {
+                  bicon.style.display = 'none';
+                  bicon.src = `${config.ohost}/mchnt/set_cookie?sessionid=${sid}`;
+                }
+                setTimeout(function() {
+                  _this.$router.push('/main/index')
+                }, 0)
               } else {
                 this.$message.error(data.resperr);
               }
@@ -107,6 +126,21 @@
       // 点击enter键调用登录
       onEnter() {
           this.login();
+      },
+
+      // 是否为IE内核
+      isIe() {
+        return ("ActiveXObject" in window);
+      },
+
+      // IE还是兼容模式
+      checkBrowser() {
+          let lastInfo = navigator.userAgent.split(";").pop();
+          if(lastInfo.indexOf("NET") > -1) {
+            return true;
+          }else {
+            return false;
+          }
       }
     }
   };

@@ -20,14 +20,14 @@
           <div class="panel-select__wrapper">
             <span class="panel-select__desc">活动状态</span>
             <el-select v-model="stateValue" placeholder="全部" size="small" @change="stateChange">
-              <el-option v-for="item in stateLists" :label="item.name" :value="item.value">
+              <el-option v-for="item in stateLists" :label="item.name" :value="item.value" :key="item.value">
               </el-option>
             </el-select>
           </div>
           <div class="panel-select__wrapper" v-if="!role.single">
             <span class="panel-select__desc">店铺名称</span>
             <el-select v-model="nameValue" placeholder="全部" size="small" @change="nameChange">
-              <el-option v-for="shop in shopData.list" :label="shop.shop_name" :value="shop.uid">
+              <el-option v-for="shop in shopData.list" :label="shop.shop_name" :value="shop.uid" :key="shop.uid">
               </el-option>
             </el-select>
           </div>
@@ -94,7 +94,7 @@
           @size-change="handleSizeChange"
           :total="+collectData.count"
           @current-change="currentChange"
-          :current-page="currentpage">
+          :current-page="currentPage">
         </el-pagination>
       </div>
       <div class="table_placeholder" v-else></div>
@@ -149,7 +149,7 @@
       next((vm) => {
         Object.assign(vm, {
           flag: false,
-          currentpage: 1,
+          currentPage: 1,
           pageSize: 10,
           nameValue: '',
           stateValue: ''
@@ -175,7 +175,7 @@
         nameValue: '',
         stateValue: '',
         loading: false,
-        currentpage: 1,
+        currentPage: 1,
         detailData: {},
         stateLists: [
           {
@@ -207,7 +207,7 @@
           sub_uid: this.nameValue,
           stateOptions: this.stateValue,
           length: this.pageSize,
-          curpage: this.currentpage,
+          curpage: this.currentPage,
           format: 'cors'
         };
       },
@@ -223,12 +223,12 @@
       },
       // 改变活动状态
       stateChange() {
-        this.currentChange();
+        this.handleSizeChange();
       },
 
       // 改变店铺名称
       nameChange() {
-        this.currentChange();
+        this.handleSizeChange();
       },
 
       // 请求数据
@@ -251,19 +251,19 @@
       },
 
       // 改变size
-      handleSizeChange(size) {
+      handleSizeChange(size = 10) {
         this.pageSize = size;
         this.currentChange();
       },
 
       // 改变当前页
       currentChange(current) {
-        if (!current && this.currentpage !== 1) {
-          this.currentpage = 1;
+        if (!current && this.currentPage !== 1) {
+          this.currentPage = 1;
           return;
         }
         if (current) {
-          this.currentpage = current;
+          this.currentPage = current;
         }
         if (this.flag) {
           this.getData();
@@ -286,11 +286,6 @@
                 type: 'success',
                 message: '集点活动停止成功'
               });
-
-              this.currentpage = 1;
-              this.pageSize = 10;
-              this.nameValue = '';
-              this.stateValue = '';
 
               this.getData();
             } else {
@@ -371,7 +366,6 @@
 }
   .collectPacket {
     .btn-wrap {
-      display: -webkit-flex;
       display: flex;
       .panel-edit-btn__subshopnum {
         margin-right: 15px;

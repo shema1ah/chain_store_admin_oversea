@@ -12,7 +12,7 @@ let formatObj = (obj) => {
 // 获取params的key对应的value
 const getParams = (key) => {
   // 获取参数
-  let url = window.location.hash.split('?')[1] || {};
+  let url = window.location.hash.split('?')[1] || '';
   // 正则筛选地址栏
   let reg = new RegExp('(^|&)' + key + '=([^&]*)(&|$)')
   // 匹配目标参数
@@ -114,7 +114,7 @@ let deepClone = (obj) => {
 }
 
 // 角色判断 大商户、子商户、海外商户
-const getRole = (data) => {
+const getRole = (data = {}) => {
   let role = {
     type: 'chain',
     haiwai: false,
@@ -126,7 +126,7 @@ const getRole = (data) => {
     diancan: false
   }
 
-  // 包商baoshang 日本japan 香港hongkong ''代表是其他group
+  // 包商baoshang 日本japan 香港hongkong 印尼id 迪拜ar
   // bigmerchant:大商户 submerchant:子商户 merchant:商户
   if(data.group_name === 'baoshang') {
     role.isBaoshang = true
@@ -144,6 +144,20 @@ const getRole = (data) => {
           role.single = true
         }
         break;
+      case 'ID':
+        role.type = 'id'
+        if (data.cate !== 'bigmerchant') {
+          role.type = 'id_single'
+          role.single = true
+        }
+        break;
+      case 'AR':
+        role.type = 'ar'
+        if (data.cate !== 'bigmerchant') {
+          role.type = 'ar_single'
+          role.single = true
+        }
+        break;
       case 'HK':
         role.type = 'hongkong'
         if (data.cate !== 'bigmerchant') {
@@ -156,7 +170,6 @@ const getRole = (data) => {
           role.type = 'single'
           role.single = true
         }
-        break;
     }
   }
 
@@ -183,6 +196,25 @@ const formatData = (arg1, arg2) => {
   return Number(s1.replace(".", "")) * Number(s2.replace(".", "")) / Math.pow(10, m)
 }
 
+const formatLength = (val) => {
+  let len;
+  let num = (val || 0).toString();
+  if(num && num.indexOf('.') > -1) {
+    len = num.split('.')[1];
+    num = num.split('.')[0];
+  }
+
+  let result = '';
+  while (num.length > 3) {
+    result = ',' + num.slice(-3) + result;
+    num = num.slice(0, num.length - 3);
+  }
+  if (num) {
+    result = num + result;
+  }
+  return len ? `${result}.${len}` : result;
+};
+
 const getCookie = (sName) => {
   var aCookie = document.cookie.split(';')
 
@@ -195,16 +227,12 @@ const getCookie = (sName) => {
   return null
 }
 
-const setCookie = (name, value) => {
-    let Days = 2;
-    let exp = new Date();
-    exp.setTime(exp.getTime() + Days * 24 * 60 * 60 * 1000);
-    document.cookie = name + "=" + escape(value) + ";path=/;expires=" + exp.toGMTString();
-}
-const clearCookie = (name) => {
+const clearCookie = (name, dom) => {
+  let domain = dom.split('.').slice(-2).join('.');
   let exp = new Date();
   exp.setTime(exp.getTime() - 10000);
-  document.cookie = name + "=" + getCookie(name) + ";path=/;expires=" + exp.toGMTString();
+  document.cookie = name + "=''" + ";path=/;expires=" + exp.toGMTString();
+  document.cookie = name + "=''" + ";Domain=." + domain + ";path=/;expires=" + exp.toGMTString();
 }
 function GetVerifyBit(id) {
   var result
@@ -371,8 +399,8 @@ module.exports = {
   getRole,
   setformateDate,
   formatData,
+  formatLength,
   getCookie,
-  setCookie,
   clearCookie,
   cardValid,
   mobileValid

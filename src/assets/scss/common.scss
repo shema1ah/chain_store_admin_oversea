@@ -1,14 +1,11 @@
-@import 'element';
-@import 'button';
-@import 'dialog';
 
 @font-face {
   font-family: 'myicon';
-  src:  url('../fonts/myicon.eot?36815y');
-  src:  url('../fonts/myicon.eot?36815y#iefix') format('embedded-opentype'),
-  url('../fonts/myicon.ttf?36815y') format('truetype'),
-  url('../fonts/myicon.woff?36815y') format('woff'),
-  url('../fonts/myicon.svg?36815y#myicon') format('svg');
+  src:  url('../fonts/myicon.eot');
+  src:  url('../fonts/myicon.eot?#iefix') format('embedded-opentype'),
+  url('../fonts/myicon.ttf') format('truetype'),
+  url('../fonts/myicon.woff') format('woff'),
+  url('../fonts/myicon.svg?#myicon') format('svg');
   font-weight: normal;
   font-style: normal;
 }

@@ -1,5 +1,5 @@
 <template>
-  <div class="createpacket">
+  <div class="createpacket" v-loading="loading">
     <div class="banner_wrapper">
       <div class="banner-breadcrumb">
         <span>会员功能</span>
@@ -18,13 +18,6 @@
       <div class="panel-body">
         <div class="myform_wrapper">
           <el-form :rules="formrules" :model="form" ref="form">
-            <el-form-item label="适用门店" v-if="!role.single">
-              <div v-if="shopData.length > 0">
-                <span v-for="(shop,index) in shopData">{{ shop.shop_name }}{{ index < shopData.length - 1?"、":"" }}</span>
-              </div>
-              <div v-else>无</div>
-              <div class="remark mt-0 lh-16">注：请确保以上门店均已开通储值服务，否则无法正常储值</div>
-            </el-form-item>
             <el-form-item label="开始时间" prop="start_time">
               <el-date-picker v-model="form.start_time" type="date" placeholder="请选择开始时间" size="small" :editable="false" :clearable="false" :picker-options="dateRange">
               </el-date-picker>
@@ -32,6 +25,16 @@
             <el-form-item label="结束时间" prop="end_time">
               <el-date-picker v-model="form.end_time" type="date" placeholder="请选结束时间" size="small" :editable="false" :clearable="false" :picker-options="dateRange">
               </el-date-picker>
+            </el-form-item>
+            <el-form-item label="适用门店" v-if="!role.single">
+              <el-form-item prop="mchnt_ids">
+                <el-select v-model="form.mchnt_ids" placeholder="请选择门店" multiple size="small">
+                  <el-option label="全部" value="" :disabled="state"></el-option>
+                  <el-option v-for="shop in shopList" :label="shop.shopname" :key="shop.h" :value="shop.h" :disabled="shop.status == 0 || shop.status == 1">
+                  </el-option>
+                </el-select>
+              </el-form-item>
+              <div class="remark">注：请确保以上门店均已开通储值服务，否则无法正常储值</div>
             </el-form-item>
             <el-form-item label="设置规则" min-width="150">
               <div class="storage-item" v-for="(item, index) in form.rulesData">
@@ -48,11 +51,13 @@
                 <el-button size="small" v-if="index !== 0" @click="removeRule(item)" class="ml-15" :plain="true" type="danger">删除</el-button>
               </div>
             </el-form-item>
-            <el-form-item label="储值规则备注" prop="desc">
-              <el-input type="textarea" placeholder="请输入储值规则" v-model="form.desc" :autosize="{ minRows: 3, maxRows: 7 }" max-length="200" class="w-500"></el-input>
+            <el-form-item label="储值规则备注">
+              <el-form-item prop="desc">
+                <el-input type="textarea" placeholder="请输入储值规则" v-model="form.desc" :autosize="{ minRows: 3, maxRows: 7 }" class="w-500"></el-input>
+              </el-form-item>
               <div class="stro-info mt-20 error-42"><p>例如:</p> <p>1、一旦储值不予退款；</p> <p>2、储值用户可享所有商品优惠；</p></div>
             </el-form-item>
-            <el-form-item label="预留手机号" prop="mobile">
+            <el-form-item label="预留电话" prop="mobile">
               <el-input size="small" type="number" v-model.trim="form.mobile" class="panel-select-input-220"></el-input>
             </el-form-item>
           </el-form>
@@ -70,11 +75,19 @@
   </div>
 </template>
 <script>
-  import {formatDate, deepClone} from '../../common/js/util';
+  import axios from 'axios';
+  import config from 'config';
+  import {formatDate} from '../../common/js/util';
   import Validator from '../../validator';
   import Store from '../../common/js/store';
 
   export default {
+    beforeRouteEnter (to, from, next) {
+      next((vm) => {
+        vm.getShopList();
+      });
+    },
+
     data() {
       let expireValid = (rule, val, cb) => {
         if(val === '') {
@@ -98,8 +111,8 @@
       let descValid = (rule, val, cb) => {
         if(val === '') {
           cb('请输入储值规则描述');
-        } else if(val.length >= 40) {
-          cb('请不要超过40个字符');
+        } else if(val.length >= 140) {
+          cb('请不要超过140个字符');
         } else {
           cb();
         }
@@ -112,9 +125,13 @@
           }
         },
         role: Store.get('role') || {},
+        loading: false,
+        state: false,
+        shopList: [],
         form: {
           start_time: '',
           end_time: '',
+          mchnt_ids: [''],
           mobile: '',
           desc: '',
           pay_amt0: null,
@@ -139,6 +156,9 @@
           ],
           end_time: [
             { validator: expireValid }
+          ],
+          mchnt_ids: [
+            {required: true, message: '请选择适用门店'}
           ],
           desc: [
             { validator: descValid }
@@ -173,11 +193,24 @@
         }
       };
     },
+    watch: {
+      'form.mchnt_ids': function (val, oldval) {
+        if(val.length > oldval.length) {
+          if(val.indexOf('') > 0) {
+            this.form.mchnt_ids = [''];
+          }else if(oldval.indexOf('') > -1) {
+            this.form.mchnt_ids.shift();
+          }
+        }
+      }
+    },
+
     computed: {
       data() {
         return {
           start_time: this.form.start_time && formatDate(this.form.start_time),
           end_time: this.form.end_time && formatDate(this.form.end_time),
+          mchnt_ids: this.form.mchnt_ids,
           mobile: this.form.mobile,
           desc: this.form.desc,
           rules: this.form.rulesData
@@ -185,14 +218,35 @@
       },
       len() {
         return this.form.rulesData.length;
-      },
-      shopData() {
-        let shopData = deepClone(this.$store.state.shopData);
-        shopData.length !== 0 && shopData.list.shift();
-        return shopData.list;
       }
     },
     methods: {
+      getShopList() {
+        if(!this.role.single) {
+          this.loading = true;
+          axios.get(`${config.host}/merchant/prepaid/activity`).then((res) => {
+            this.loading = false;
+            let data = res.data;
+            if (data.respcd === config.code.OK) {
+              this.shopList = data.data || [];
+
+              for(let val of this.shopList) {
+                // 0未开始1进行中2已结束3已终止
+                if(val.status === 0 || val.status === 1) {
+                  this.state = true;
+                  this.form.mchnt_ids = [];
+                }
+              }
+            } else {
+              this.$message.error(data.respmsg);
+            }
+          }).catch(() => {
+            this.loading = false;
+            this.$message.error('获取店铺数据失败!');
+          });
+        }
+      },
+
       cancelCreation() {
         this.$router.push('/main/memberstorage');
       },
@@ -248,11 +302,6 @@
   }
   .mt-20 {
     margin-top: 20px;
-  }
-  .error-42 {
-    & + .el-form-item__error {
-      top: 42%;
-    }
   }
   .lh-16 {
     line-height: 16px;

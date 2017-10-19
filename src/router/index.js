@@ -27,6 +27,9 @@ import member from 'components/member/member'
 import packetnotify from 'components/packetnotify/packetnotify'
 import packetshare from 'components/packetshare/packetshare'
 import packetspend from 'components/packetspend/packetspend'
+import storagelist from 'components/storagelist/storagelist'
+import storagedetail from 'components/storagedetail/storagedetail'
+import storagebill from 'components/storagebill/storagebill'
 import createstorage from 'components/createstorage/createstorage'
 import reviewstorage from 'components/reviewstorage/reviewstorage'
 import alterstorage from 'components/alterstorage/alterstorage'
@@ -34,6 +37,7 @@ import membersto from 'components/membersto/membersto'
 import publicauth from 'components/publicauth/publicauth'
 import failed from 'components/publicauth/failed'
 import settings from 'components/settings/settings'
+import dcqrcode from 'components/dcqrcode/dcqrcode'
 
 Vue.use(Router)
 
@@ -60,6 +64,7 @@ export default new Router({
     {
       path: '/main',
       component: main,
+      redirect: '/main/index',
       children: [
         {
           path: 'index',
@@ -110,6 +115,21 @@ export default new Router({
             {
               path: '',
               component: memberstorage
+            },
+            {
+              path: 'storagelist',
+              name: 'storagelist',
+              component: storagelist
+            },
+            {
+              path: 'storagedetail',
+              name: 'storagedetail',
+              component: storagedetail
+            },
+            {
+              path: 'storagebill',
+              name: 'storagebill',
+              component: storagebill
             },
             {
               path: 'createstorage',
@@ -205,6 +225,16 @@ export default new Router({
         {
           path: 'settings',
           component: settings
+        },
+        {
+          path: 'noPublic/:hasPublic',
+          name: 'noPublic',
+          component: dcqrcode
+        },
+        {
+          path: 'hasPublic/:hasPublic',
+          name: 'hasPublic',
+          component: dcqrcode
         }
       ]
     }

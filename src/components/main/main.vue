@@ -34,21 +34,7 @@ export default {
     return {
       role: Store.get('role') || {},
       loading: false,
-      shop: {},
-      formrules: {
-        account: [
-          { required: true, message: '请输入分店登录手机号!' }
-        ],
-        password: [
-          { required: true, message: '请输入分店登录密码!' }
-        ],
-        bankuser: [
-          { required: true, message: '请输入分店收款人姓名!' }
-        ],
-        bankaccount: [
-          { required: true, message: '请输入分店收款银行卡号!' }
-        ]
-      }
+      shop: {}
     };
   },
   components: {
@@ -66,22 +52,26 @@ export default {
         let data = res.data;
         this.loading = false;
         if (data.respcd === config.code.OK) {
-          // 清除本地cookie
-          document.cookie = "sessionid=''; expires=" + new Date(0).toUTCString();
+          // 登出时删除本域cookie
           (new Image()).src = `${config.ohost}/mchnt/set_cookie?sessionid=`;
-          localStorage.getItem('lang') && localStorage.removeItem('lang');
+          Store.set('flag', true);
+          localStorage.removeItem('lang');
+          localStorage.removeItem('hashid');
+          localStorage.removeItem('uid');
+
           var toRemoved = document.getElementById('unique_map');
           if(toRemoved) {
             toRemoved.onload = null;
             document.body.removeChild(toRemoved);
           }
           this.$router.push(`/login?from=logout&haiwai=${this.role.haiwai}`);
+
         } else {
           this.$message.error(data.respmsg);
         }
       }).catch(() => {
         this.loading = false;
-        this.$message.error('请求失败');
+        this.$message.error(this.$t('common.netError'));
       });
     },
 
@@ -104,7 +94,8 @@ export default {
           }
         })
         .catch(() => {
-          this.$message.error('网络错误!');
+        this.$message.error(this.$t('common.netError'));
+        // console.log(err && err.respmsg)
         });
     }
 
@@ -114,6 +105,8 @@ export default {
 
 <style lang="scss">
   @import "../../assets/scss/dialog.scss";
+  @import "../../assets/scss/button.scss";
+  @import "../../assets/scss/element.scss";
   .responsive_img {
     max-width: 100%;
     height: auto;

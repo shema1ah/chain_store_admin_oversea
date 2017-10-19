@@ -21,7 +21,7 @@
             <span class="info-title">适用门店</span>
             <div class="info-desc__wrapper">
               <div class="info-desc">
-                <div><span v-for="(shop,index) in shopData">{{ shop.shop_name }}{{ index < shopData.length - 1?"、":"" }}</span></div>
+                <div><span v-for="(shop,index) in shopList">{{ shop.shop_name }}{{ index < shopList.length - 1?"、":"" }}</span></div>
                 <div class="info-desc remark mt-0 lh-16 ml-0">注：请确保以上门店均已开通储值服务，否则无法正常储值</div>
               </div>
             </div>
@@ -49,7 +49,7 @@
             <span class="info-desc"><span class="highlight ml-0">{{ data.desc }}</span></span>
           </p>
           <p class="review-info">
-            <span class="info-title">预留手机号</span>
+            <span class="info-title">预留电话</span>
             <span class="info-desc"><span class="highlight ml-0">{{ data.mobile }}</span></span>
           </p>
         </div>
@@ -57,9 +57,8 @@
         <div class="form-submit_wrapper">
           <span class="cancel" @click="backToEdit">返回修改</span>
           <div class="panel-btn__download panel-btn__download_detail" @click="submit">
-            <i class="el-icon-loading" v-if="iconShow"></i>
-            <i class="icon-create"></i>
-            <span>确认提交</span>
+            <span class="el-icon-loading" v-if="iconShow"></span>
+            <span v-else><i class="icon-create"></i>确认提交</span>
           </div>
         </div>
       </div>
@@ -86,16 +85,34 @@
       };
     },
     computed: {
-      shopData() {
-        let shopData = deepClone(this.$store.state.shopData);
-        shopData.list && shopData.list.shift();
-        return shopData.list;
+      shopList() {
+        let shopData = deepClone(this.$store.state.shopData || {});
+        return this.getshopList(shopData.list || []);
       }
     },
     methods: {
       backToEdit() {
         this.$router.go(-1);
       },
+
+      getshopList(list) {
+        let ids = this.data.mchnt_ids || [];
+        let lists = [];
+        if(ids[0] === '') {
+          lists = list;
+          lists.shift();
+        }else {
+          for(let i of ids) {
+           for(let val of list) {
+             if(val.uid === i) {
+               lists.push(val);
+             }
+           }
+          }
+        }
+        return lists;
+      },
+
       fixData() {
         var data = deepClone(this.data);
         data.rules.forEach((v) => {
@@ -106,48 +123,53 @@
       },
       submit() {
         let data = this.fixData();
-        this.iconShow = true;
-        if(!this.data.flag) {
-          axios.post(`${config.host}/merchant/prepaid/create`, data)
-          .then((res) => {
-            this.iconShow = false;
-            let data = res.data;
-            if(data.respcd === config.code.OK) {
-              this.$message({
-                type: 'success',
-                message: '创建储值活动成功'
+        if(!this.iconShow) {
+          this.iconShow = true;
+          if(this.data.flag || this.role.single) {
+            delete data['mchnt_ids'];
+          }
+          // 新建
+          if(!this.data.flag) {
+            axios.post(`${config.host}/merchant/prepaid/create`, data)
+              .then((res) => {
+                this.iconShow = false;
+                let data = res.data;
+                if(data.respcd === config.code.OK) {
+                  this.$message({
+                    type: 'success',
+                    message: '创建储值活动成功'
+                  });
+                  this.$router.push('/main/memberstorage');
+                } else {
+                  this.$message.error(data.resperr);
+                }
+              })
+              .catch(() => {
+                this.iconShow = false;
+                this.$message.error('创建储值活动失败');
               });
-              this.$router.push('/main/memberstorage');
-            } else {
-              this.$message.error(data.resperr);
-            }
-          })
-          .catch(() => {
-            this.iconShow = false;
-            this.$message.error('创建储值活动失败');
-          });
-        } else {
-          axios.post(`${config.host}/merchant/prepaid/alter`, data)
-          .then((res) => {
-            this.iconShow = false;
-            let data = res.data;
-            if(data.respcd === config.code.OK) {
-              this.$message({
-                type: 'success',
-                message: '修改储值活动成功'
+          } else {
+            // 编辑活动
+            axios.post(`${config.host}/merchant/prepaid/alter`, data)
+              .then((res) => {
+                this.iconShow = false;
+                let data = res.data;
+                if(data.respcd === config.code.OK) {
+                  this.$message({
+                    type: 'success',
+                    message: '修改储值活动成功'
+                  });
+                  this.$router.push('/main/memberstorage');
+                } else {
+                  this.$message.error(data.resperr);
+                }
+              })
+              .catch(() => {
+                this.iconShow = false;
+                this.$message.error('修改储值活动失败');
               });
-              this.$store.dispatch('getStorageData');
-              this.$router.push('/main/memberstorage');
-            } else {
-              this.$message.error(data.resperr);
-            }
-          })
-          .catch(() => {
-            this.iconShow = false;
-            this.$message.error('修改储值活动失败');
-          });
+          }
         }
-
       }
     }
 };
