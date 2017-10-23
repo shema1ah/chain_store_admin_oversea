@@ -140,7 +140,6 @@
             :label="$t('tradeMng.table.shopName')">
             <template scope="scope">
               <div>{{ scope.row.username }}</div>
-              <div>{{ scope.row.userid }}</div>
             </template>
           </el-table-column>
           <el-table-column
