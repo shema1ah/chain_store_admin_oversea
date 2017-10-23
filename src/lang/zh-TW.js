@@ -181,7 +181,7 @@ exports.default = {
       undoNum: '撤銷次數',
       bi: '次',
       undo: '撤銷詳情',
-      shopName: '店鋪名稱/ID',
+      shopName: '店鋪名稱',
       operator: '收銀員',
       all: '全部',
       colWay: '收款方式',

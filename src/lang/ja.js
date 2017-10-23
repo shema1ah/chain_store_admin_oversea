@@ -185,7 +185,7 @@ exports.default = {
       undoNum: '取消し数',
       bi: '',
       undo: '取消',
-      shopName: '店舗名/ID',
+      shopName: '店舗名',
       operator: 'キャッシャー',
       all: '全部',
       colWay: '集金方式',

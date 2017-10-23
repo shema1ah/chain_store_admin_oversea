@@ -35,7 +35,7 @@ exports.default = {
     },
     title: {
       baseInfo: 'Basic Information',
-      subInfo: 'Branch Shop Information'
+      subInfo: 'Branch Information'
     },
     panel: {
       shopName: 'Shop Name',
@@ -48,7 +48,7 @@ exports.default = {
         downTip: 'Click to download QR code'
       },
       table: {
-        subName: 'Branch Shop Name',
+        subName: 'Branch Name',
         loginAccount: 'Account',
         regTime: 'Register Time',
         subTag: 'Customized ID',
@@ -182,15 +182,15 @@ exports.default = {
       total: 'Total Amount',
       realrec: 'Payment Real Received',
       succ: 'Success',
-      undoNum: 'Refunded',
+      undoNum: 'Refund',
       bi: 'times',
       undo: 'Refund The Details',
-      shopName: 'Shop Name/ID',
+      shopName: 'Shop Name',
       operator: 'Cashier ',
       all: 'All',
       colWay: 'Collection Method',
       wechatCollect: 'Collect by Wechat',
-      tradeType: 'Type',
+      tradeType: 'WeChat Pay',
       tradeTime: 'Time',
       tradeAmount: 'Amount',
       tradeState: 'Status',
@@ -202,8 +202,8 @@ exports.default = {
       red: 'paid from the red envelope', // 商家红包
       plat: 'paid from the platform', // 平台补贴
       btn: {
-        downDetail: 'Download The Payment Details',
-        downTrade: 'Download The Payment Summary'
+        downDetail: 'Download The Transaction Details',
+        downTrade: 'Download The Transaction Summary'
       }
     },
     dialog: {

@@ -551,7 +551,7 @@
       };
 
       let shopValid = (rule, val, cb) => {
-        if (!/^[\u4e00-\u9fa5A-Za-z\s\d]*$/.test(val)) {
+        if (!/^[\u4e00-\u9fa5A-Za-z\d\(\（\)\）]*$/.test(val)) {
           cb('请不要输入特殊字符');
         } else {
           cb();
@@ -640,6 +640,7 @@
           ],
           shopname: [
             {required: true, message: '请输入分店名称', trigger: 'blur'},
+            { max: 10, message: '最多输入10个字符' },
             {validator: shopValid}
           ],
           shoptype_name: [
@@ -649,7 +650,8 @@
             {required: true, message: '请从地图中定位店铺地址'}
           ],
           address: [
-            {required: true, message: '请输入详细门牌号'}
+            {required: true, message: '请输入详细门牌号'},
+            {validator: shopValid}
           ],
           idnumber: [
             {required: true, message: '请输入身份证号', trigger: 'blur'},
