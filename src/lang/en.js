@@ -170,7 +170,7 @@ exports.default = {
       operator: 'Cashier',
       moreFilter: 'More Options',
       noLimit: 'All',
-      dd: 'Refunded', // 撤销明细
+      dd: 'Refund', // 撤销明细
       sNum: 'Transaction ID', // 流水号
       tip: 'Please enter the transaction ID',
       btn: {

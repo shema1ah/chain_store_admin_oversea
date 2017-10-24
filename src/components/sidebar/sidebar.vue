@@ -21,7 +21,7 @@
           </ul>
         </transition>
       </li>
-      <li :class="{'dark': $route.fullPath.indexOf('Public') != -1}" v-if="role.diancan">
+      <li :class="{'dark': $route.fullPath.indexOf('Public') != -1}" v-if="role.diancan && !role.haiwai">
         <a class="sidebar-nav__item" @click="toggle(2)">
           智慧餐厅
           <i class="icon-down_arrow" :class="{'icon-down_arrow__rotate': isRotate2}"></i>

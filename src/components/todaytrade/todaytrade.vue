@@ -90,7 +90,7 @@
       fetchData() {
         this.loading = true
         this.trades = []
-        axios.get(`${config.o2host}/trade/v1/tradelist?busicd=000000,700000,800101,800107,800108,800201,800207,800208,800401,800407,800408,800501,800507,800508,800601,800607,800608&start=1&len=10&respcd=0000&fix=1&stat=0&format=cors`)
+        axios.get(`${config.o2host}/trade/v1/tradelist?busicd=000000,700000,700003,800101,800107,800108,800201,800207,800208,800401,800407,800408,800501,800507,800508,800601,800607,800608&start=1&len=10&respcd=0000&fix=1&stat=0&format=cors`)
         .then((res) => {
           let data = res.data
           if (data.respcd === config.code.OK) {
