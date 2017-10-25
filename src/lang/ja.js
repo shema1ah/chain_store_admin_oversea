@@ -90,7 +90,7 @@ exports.default = {
       bankAccount: '口座番号',
       bankName: '銀行名',
       editSubTag: '支店番号を編集します',
-      diaTip: '支店番号が設定済みになったらダウンロードされた取引明細と取引纏めの中に表示されます',
+      diaTip: '支店番号が設定済みになったらダウンロードされた取引明細と取引要約の中に表示されます',
       validateText: '20桁以内の文字かアルファベットを入力してください',
       validateText2: 'マスターアカウントのログインパスワードを入力してください',
       notice: 'ヒント',
@@ -203,7 +203,7 @@ exports.default = {
       plat: 'をプラートフォームから支給', // 平台补贴
       btn: {
         downDetail: '取引明細をダウンロードします',
-        downTrade: '要約レポートをダウンロードします'
+        downTrade: '取引要約をダウンロードします'
       }
     },
     dialog: {
