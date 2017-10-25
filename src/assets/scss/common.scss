@@ -108,3 +108,9 @@ input:-webkit-autofill { box-shadow: 0 0 0px 1000px white inset !important;}
   overflow: hidden;
 }
 
+// 英文换行处理
+.desc, .info-desc {
+  word-wrap: break-word;
+  word-break: break-all;
+}
+
