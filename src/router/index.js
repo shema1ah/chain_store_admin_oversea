@@ -38,6 +38,7 @@ import publicauth from 'components/publicauth/publicauth'
 import failed from 'components/publicauth/failed'
 import settings from 'components/settings/settings'
 import dcqrcode from 'components/dcqrcode/dcqrcode'
+import merchandise from 'components/merchandise/merchandise'
 
 Vue.use(Router)
 
@@ -235,6 +236,11 @@ export default new Router({
           path: 'hasPublic/:hasPublic',
           name: 'hasPublic',
           component: dcqrcode
+        },
+        {
+          path: 'merchandise',
+          name: 'merchandise',
+          component: merchandise
         }
       ]
     }

@@ -21,7 +21,7 @@
           </ul>
         </transition>
       </li>
-      <li :class="{'dark': $route.fullPath.indexOf('Public') != -1}" v-if="role.diancan">
+      <li :class="{'dark': $route.fullPath.indexOf('Public') != -1 || $route.fullPath.indexOf('merchandise') != -1}" v-if="role.diancan">
         <a class="sidebar-nav__item" @click="toggle(2)">
           智慧餐厅
           <i class="icon-down_arrow" :class="{'icon-down_arrow__rotate': isRotate2}"></i>
@@ -39,7 +39,10 @@
               </router-link>
             </li>
             <li>
-              <a href="/wxofficial/setting#!/goods-management" class="sidebar-nav__item sidebar-nav__subitem">商品管理</a>
+              <router-link class="sidebar-nav__item sidebar-nav__subitem" :to="{ path: '/main/merchandise' }">
+                商品管理
+              </router-link>
+              <!--<a href="/wxofficial/setting#!/goods-management" class="sidebar-nav__item sidebar-nav__subitem">商品管理</a>-->
             </li>
           </ul>
         </transition>

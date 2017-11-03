@@ -169,7 +169,7 @@
       return {
         role: Store.get('role') || {},
         isCreat: false,
-        collectData: [],
+        collectData: {},
         isShowDetail: false,
         pageSize: 10,
         nameValue: '',
