@@ -68,23 +68,12 @@
                 :data="merchantData.list"
                 style="width: 100%"
                 row-class-name="el-table__row_fix"
-                v-loading="loading || imgLoading">
+                v-loading="loading">
                 <el-table-column label="ID" prop="id" min-width="150"></el-table-column>
                 <el-table-column label="图片" min-width="100">
                   <template scope="scope">
                     <img v-if="scope.row.img" :src="scope.row.img" alt="" width="44" height="44" />
-                    <el-upload
-                      v-else
-                      class="upload-img"
-                      v-loading="imgLoading"
-                      :show-file-list="false"
-                      :on-success="imgSuccess"
-                      :on-error="imgFailed"
-                      action="https://openapi.qfpay.com/tool/v1/qiniu_token"
-                      :data="{appcode: '40F12F92A55747B8AD759E05968A331D', func:	'upload', format:	'cors'}"
-                      accept="image/jpeg, image/png">
-                      <el-button @click="imgUpload(scope.row)" :id="scope.row.id" size="small" type="primary">上传图片</el-button>
-                    </el-upload>
+                    <el-button v-else :id="'img-id-' + scope.row.id" size="small" type="primary">上传图片</el-button>
                   </template>
                 </el-table-column>
                 <el-table-column label="商品名称" min-width="150" prop="name">
@@ -133,7 +122,6 @@
       return {
         loading: false,
         uploadLoading: false,
-        imgLoading: false,
         state: false,
         pageSize: 10,
         currentPage: 1,
@@ -167,6 +155,14 @@
           let data = res.data;
           if(data.respcd === config.code.OK) {
             this.merchantData = data.data;
+            let list = this.merchantData.list || [];
+            this.$nextTick(function () {
+              for(let item of list) {
+                if(!item.img) {
+                  this.imgUpload(item.unionid, item.id);
+                }
+              }
+            })
           } else {
             this.$message.error(data.resperr);
           }
@@ -223,124 +219,101 @@
         console.log(file);
       },
 
-      // 点击图片上传
-      imgUpload(row) {
-        this.rowInfo = row;
-      },
-
-      // 上传成功
-      imgSuccess(res, file) {
-        if (res.respcd === config.code.OK) {
-          let reps = res.data;
-          let rowInfo = this.rowInfo;
-          console.log(reps, Qiniu.uploader, 666)
-          var uploader = Qiniu.uploader({
-            runtimes: 'html5,flash,html4',    // 上传模式,依次退化
-            keyValue: reps.key,
-            browse_button: rowInfo.id,       // 上传选择的点选按钮，**必需**
-            uptoken: reps.token,
-            // uptoken : '', // 若未指定uptoken_url,则必须指定 uptoken ,uptoken由其他程序生成
-            // unique_names: true, // 默认 false，key为文件名。若开启该选项，SDK为自动生成上传成功后的key（文件名）。
-            // save_key: true,   // 默认 false。若在服务端生成uptoken的上传策略中指定了 `sava_key`，则开启，SDK会忽略对key的处理
-            domain: 'https://o95yi3b1h.qnssl.com/',   // bucket 域名，下载资源时用到，**必需**
-            get_new_uptoken: true,  // 设置上传文件的时候是否每次都重新获取新的token
-            // container: id,           // 上传区域DOM ID，默认是browser_button的父元素，
-            max_file_size: '10mb',           // 最大文件体积限制
-            flash_swf_url: './flash/Moxie.swf',  // 引入flash,相对路径
-            max_retries: 3,                   // 上传失败最大重试次数
-            dragdrop: false,                   // 开启可拖曳上传
-            // drop_element: rowInfo.id,        // 拖曳上传区域元素的ID，拖曳文件或文件夹后可触发上传
-            chunk_size: '4mb',                // 分块上传时，每片的体积
-            auto_start: true,                 // 选择文件后自动上传，若关闭需要自己绑定事件触发上传
-            init: {
-              'FilesAdded': function (up, files) {
-                // eslint-disable-next-line
-                plupload.each(files, function (file) {
-                  console.log(111111)
-                  // 文件添加进队列后,处理相关的事情
-                })
-              },
-              'BeforeUpload': function (up, file) {
-                console.log(22332323)
-                // 每个文件上传前,处理相关的事情
-              },
-              'UploadProgress': function (up, file) {
-              },
-              'FileUploaded': function (up, file, info) {
-                console.log(up, 77777)
-                let domain = up.getOption('domain');
-                let re = JSON.parse(info);
-                let sourceLink = domain + re.key;  // 获取上传成功后的文件的Url
-                console.log(sourceLink)
-
-                axios.post(`${config.host}/goods/setimg`, qs.stringify({
-                    unionid: rowInfo.unionid,
-                    img: sourceLink
-                  }),
-                  {
-                    headers: {
-                      'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
-                    }
-                  }).then((rp) => {
-                  console.log(rp, 2222)
-                  this.imgLoading = false;
-                  let data = rp.data;
-                  if(data.respcd === config.code.OK) {
-                    this.$message({
-                      type: 'success',
-                      message: '添加商品图片成功'
-                    });
-                    console.log(data, 3333)
-                    this.handleSizeChange();
-                  } else {
-                    this.$message.error('添加图片失败' + data.resperr);
-                  }
-                }).catch(() => {
-                  this.imgLoading = false;
-                  this.$message.error('添加图片失败');
-                })
-
-              },
-              'Error': function (up, err, errTip) {
-                // 上传出错时,处理相关的事情
-                console.log(333333)
-                this.$message.error(errTip);
-                // document.querySelector('#img_upload').removeClass('spinner')
-              },
-              'UploadComplete': function () {
-                // 队列文件处理完毕后,处理相关的事情
-              },
-              'Key': function (up, file) {
-                // 若想在前端对每个文件的key进行个性化处理，可以配置该函数
-                // 该配置必须要在 unique_names: false , save_key: false 时才生效
-                let key = '';
-                return key
-              }
-            }
-          })
-          }else {
-            this.imgLoading = false;
-            this.$message.error(res.resperr);
+      // 图片上传，先获取token，key
+      imgUpload(uid, id) {
+        axios.get(`https://openapi.qfpay.com/tool/v1/qiniu_token`, {
+          params: {
+            appcode:	'40F12F92A55747B8AD759E05968A331D',
+            func:	'upload',
+            format:	'cors'
           }
-      },
+        }).then((res) => {
+          let _this = this;
+          let reps = res.data;
+          if (reps.respcd === config.code.OK) {
+            var uploader = Qiniu.uploader({
+              runtimes: 'html5,flash,html4',    // 上传模式,依次退化
+              keyValue: reps.data.key,
+              browse_button: 'img-id-' + id,       // 上传选择的点选按钮，**必需**
+              uptoken: reps.data.token,
+              // uptoken : '', // 若未指定uptoken_url,则必须指定 uptoken ,uptoken由其他程序生成
+              // unique_names: true, // 默认 false，key为文件名。若开启该选项，SDK为自动生成上传成功后的key（文件名）。
+              // save_key: true,   // 默认 false。若在服务端生成uptoken的上传策略中指定了 `sava_key`，则开启，SDK会忽略对key的处理
+              domain: 'https://o95yi3b1h.qnssl.com/',   // bucket 域名，下载资源时用到，**必需**
+              get_new_uptoken: true,  // 设置上传文件的时候是否每次都重新获取新的token
+              // container: id,           // 上传区域DOM ID，默认是browser_button的父元素，
+              max_file_size: '10mb',           // 最大文件体积限制
+              // flash_swf_url: './flash/Moxie.swf',  // 引入flash,相对路径
+              max_retries: 3,                   // 上传失败最大重试次数
+              dragdrop: true,                   // 开启可拖曳上传
+              drop_element: 'img-id-' + id,        // 拖曳上传区域元素的ID，拖曳文件或文件夹后可触发上传
+              chunk_size: '4mb',                // 分块上传时，每片的体积
+              auto_start: true,                 // 选择文件后自动上传，若关闭需要自己绑定事件触发上传
+              init: {
+                'FilesAdded': function (up, files) {
+                  // eslint-disable-next-line
+                  plupload.each(files, function (file) {
+                    // 文件添加进队列后,处理相关的事情
+                  })
+                },
+                'BeforeUpload': function (up, file) {
+                  // 每个文件上传前,处理相关的事情
+                },
+                'UploadProgress': function (up, file) {
+                },
+                'FileUploaded': function (up, file, info) {
+                  let domain = up.getOption('domain');
+                  let re = JSON.parse(info);
+                  let sourceLink = domain + re.key;  // 获取上传成功后的文件的Url
 
-      // 上传失败
-      imgFailed(err, file) {
-        this.imgLoading = false;
-        this.$message.error(err);
-        console.log(file);
+                  axios.post(`${config.host}/goods/setimg`, qs.stringify({
+                      unionid: uid,
+                      img: sourceLink
+                    }),
+                    {
+                      headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+                      }
+                    }).then((rp) => {
+                    let data = rp.data;
+                    if(data.respcd === config.code.OK) {
+                      _this.$message({
+                        type: 'success',
+                        message: '添加商品图片成功'
+                      });
+                      _this.handleSizeChange();
+                    } else {
+                      _this.$message.error('添加图片失败' + data.resperr);
+                    }
+                  }).catch(() => {
+                    _this.$message.error('添加图片失败');
+                  })
+
+                },
+                'Error': function (up, err, errTip) {
+                  // 上传出错时,处理相关的事情
+                  _this.$message.error(errTip);
+                  // document.querySelector('#img_upload').removeClass('spinner')
+                },
+                'UploadComplete': function () {
+                  // 队列文件处理完毕后,处理相关的事情
+                },
+                'Key': function (up, file) {
+                  // 若想在前端对每个文件的key进行个性化处理，可以配置该函数
+                  // 该配置必须要在 unique_names: false , save_key: false 时才生效
+                  let key = up.getOption('keyValue')
+                  return key;
+                }
+              }
+            })
+          }else {
+            _this.$message.error(res.resperr);
+          }
+        }).catch(() => {
+          console.log('请求失败')
+        })
+
       }
-    },
-    mounted() {
-      let script1 = document.createElement('script');
-      script1.type = "text/javascript";
-      script1.src = "/static/plupload.full.min.js";
-      document.body.insertBefore(script1, document.body.querySelectorAll('script')[0]);
-
-      let script2 = document.createElement('script');
-      script2.type = "text/javascript";
-      script2.src = "/static/qiniu.js";
-      document.body.insertBefore(script2, document.body.querySelectorAll('script')[0]);
     }
   };
 </script>
