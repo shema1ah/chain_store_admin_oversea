@@ -190,26 +190,44 @@
 
       // 改变状态
       changeStatus(st) {
-        this.changeInfo({
-          status: st
-        });
+        if(!this.loading) {
+          this.loading = true;
+          axios.post(`${config.ohost}/mchnt/opuser/change`, {
+            opuid: this.opuid,
+            status: st,
+            format: 'cors'
+          }).then((res) => {
+            this.loading = false;
+            let data = res.data;
+            if (data.respcd === config.code.OK) {
+              this.$message({
+                type: 'success',
+                message: '修改成功'
+              });
+            } else {
+              this.$message.error(data.resperr);
+            }
+            // 页面重新请求数据
+            this.getInfo();
+          }).catch(() => {
+            this.loading = false;
+            this.$message.error('请求失败');
+            // 页面重新请求数据
+            this.getInfo();
+          })
+        }
       },
 
       // 改变权限
       changeRights(rg) {
-        this.changeBase({
-          refund: rg
-        });
-      },
-
-      // 状态，权限修改
-      changeBase(params) {
         if(!this.loading) {
           this.loading = true;
-          axios.post(`${config.ohost}/mchnt/opuser/change`, Object.assign({}, params, {
+          axios.post(`${config.ohost}/mchnt/opuser/perm/change`, {
             opuid: this.opuid,
+            type: 'refund',
+            status: rg,
             format: 'cors'
-          })).then((res) => {
+          }).then((res) => {
             this.loading = false;
             let data = res.data;
             if (data.respcd === config.code.OK) {

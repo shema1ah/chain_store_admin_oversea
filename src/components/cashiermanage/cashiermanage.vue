@@ -218,36 +218,54 @@
       changeStatus(id, st) {
         let s;
         if(st === '1') {
-          s = 0;
+          s = 0 + '';
         }else {
-          s = 1;
+          s = 1 + '';
         }
-        this.changeInfo({
-          status: s
-        });
+        if(!this.loading) {
+          this.loading = true;
+          axios.post(`${config.ohost}/mchnt/opuser/change`, {
+            opuid: id,
+            status: s,
+            format: 'cors'
+          }).then((res) => {
+            this.loading = false;
+            let data = res.data;
+            if (data.respcd === config.code.OK) {
+              this.$message({
+                type: 'success',
+                message: '修改成功'
+              });
+            } else {
+              this.$message.error(data.resperr);
+            }
+            // 页面重新请求数据
+            this.getData();
+          }).catch(() => {
+            this.loading = false;
+            this.$message.error('请求失败');
+            // 页面重新请求数据
+            this.getData();
+          })
+        }
       },
 
       // 修改权限
       changeRights(id, rg) {
         let s;
         if(rg === '1') {
-          s = 0;
+          s = 0 + '';
         }else {
-          s = 1;
+          s = 1 + '';
         }
-        this.changeInfo({
-          refund: s
-        });
-      },
-
-      // 状态，权限修改
-      changeInfo(params) {
         if(!this.loading) {
           this.loading = true;
-          axios.post(`${config.ohost}/mchnt/opuser/change`, Object.assign({}, params, {
-            opuid: this.opuid,
+          axios.post(`${config.ohost}/mchnt/opuser/perm/change`, {
+            opuid: id,
+            type: 'refund',
+            status: s,
             format: 'cors'
-          })).then((res) => {
+          }).then((res) => {
             this.loading = false;
             let data = res.data;
             if (data.respcd === config.code.OK) {

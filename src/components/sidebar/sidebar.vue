@@ -123,9 +123,6 @@
               }, {
                 val: this.$t('nav.shopMng'),
                 pathname: 'chainmanage'
-              }, {
-                val: this.$t('nav.cashMng'),
-                pathname: 'cashiermanage'
               }
             ];
             break;
@@ -193,6 +190,9 @@
                 }, {
                   val: this.$t('nav.shopMng'),
                   pathname: 'singlemanage'
+                }, {
+                  val: this.$t('nav.cashMng'),
+                  pathname: 'cashiermanage'
                 }
               ];
             }
@@ -223,9 +223,6 @@
               }, {
                 val: this.$t('nav.shopMng'),
                 pathname: 'chainmanage'
-              }, {
-                val: this.$t('nav.cashMng'),
-                pathname: 'cashiermanage'
               }
             ];
             break;
@@ -287,6 +284,9 @@
                 }, {
                   val: this.$t('nav.shopMng'),
                   pathname: 'singlemanage'
+                }, {
+                  val: this.$t('nav.cashMng'),
+                  pathname: 'cashiermanage'
                 }
               ];
             }

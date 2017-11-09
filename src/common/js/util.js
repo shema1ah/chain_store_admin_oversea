@@ -185,7 +185,7 @@ const getRole = (data = {}) => {
   }
 
   // 是否收银员角色
-  if(data.opinfo.opuid) {
+  if(data.opinfo && data.opinfo.opuid) {
     role.isCashier = true;
   }
   return role
