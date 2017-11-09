@@ -14,7 +14,6 @@ import singlemanage from 'components/singlemanage/singlemanage'
 import transctl from 'components/transctl/transctl'
 import memberctl from 'components/memberctl/memberctl'
 import memberredpoint from 'components/memberredpoint/memberredpoint'
-import memberpoint from 'components/memberpoint/memberpoint'
 import createpoint from 'components/createpoint/createpoint'
 import editpoint from 'components/editpoint/editpoint'
 import exchangecreditslist from 'components/exchangedcredits/exchangedcreditslist'
@@ -33,11 +32,13 @@ import storagebill from 'components/storagebill/storagebill'
 import createstorage from 'components/createstorage/createstorage'
 import reviewstorage from 'components/reviewstorage/reviewstorage'
 import alterstorage from 'components/alterstorage/alterstorage'
-import membersto from 'components/membersto/membersto'
 import publicauth from 'components/publicauth/publicauth'
 import failed from 'components/publicauth/failed'
 import settings from 'components/settings/settings'
 import dcqrcode from 'components/dcqrcode/dcqrcode'
+import cashiermanage from 'components/cashiermanage/cashiermanage'
+import addcashier from 'components/addcashier/addcashier'
+import cashierdetail from 'components/cashierdetail/cashierdetail'
 
 Vue.use(Router)
 
@@ -80,7 +81,7 @@ export default new Router({
         },
         {
           path: 'memberredpoint',
-          component: memberpoint,
+          component: member,
           children: [
             {
               path: '',
@@ -110,7 +111,7 @@ export default new Router({
         },
         {
           path: 'memberstorage',
-          component: membersto,
+          component: member,
           children: [
             {
               path: '',
@@ -193,10 +194,6 @@ export default new Router({
           component: billctl
         },
         {
-          path: 'createpacket',
-          component: createpacket
-        },
-        {
           path: 'chainmanage',
           component: routerhub,
           children: [
@@ -235,6 +232,26 @@ export default new Router({
           path: 'hasPublic/:hasPublic',
           name: 'hasPublic',
           component: dcqrcode
+        },
+        {
+          path: 'cashiermanage',
+          component: member,
+          children: [
+            {
+              path: '',
+              component: cashiermanage
+            },
+            {
+              path: 'addcashier',
+              name: 'addcashier',
+              component: addcashier
+            },
+            {
+              path: 'cashierdetail',
+              name: 'cashierdetail',
+              component: cashierdetail
+            }
+          ]
         }
       ]
     }

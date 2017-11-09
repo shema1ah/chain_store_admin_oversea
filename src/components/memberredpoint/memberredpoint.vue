@@ -168,7 +168,6 @@
     data() {
       return {
         role: Store.get('role') || {},
-        isCreat: false,
         collectData: [],
         isShowDetail: false,
         pageSize: 10,
@@ -272,52 +271,64 @@
 
       // 停止活动
       stopActivity(id) {
-        this.$confirm('活动停止后，顾客消费将不再获得集点，是否确认停止?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '关闭'
-        }).then(() => {
-          axios.post(`${config.ohost}/mchnt/card/v1/actv_close`, {
-            id: id,
-            format: 'cors'
-          }).then((res) => {
-            let data = res.data;
-            if (data.respcd === config.code.OK) {
-              this.$message({
-                type: 'success',
-                message: '集点活动停止成功'
-              });
+        if(this.role.isCashier) {
+          this.$message.error('您暂无权限执行此操作');
+        }else {
+          this.$confirm('活动停止后，顾客消费将不再获得集点，是否确认停止?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '关闭'
+          }).then(() => {
+            axios.post(`${config.ohost}/mchnt/card/v1/actv_close`, {
+              id: id,
+              format: 'cors'
+            }).then((res) => {
+              let data = res.data;
+              if (data.respcd === config.code.OK) {
+                this.$message({
+                  type: 'success',
+                  message: '集点活动停止成功'
+                });
 
-              this.getData();
-            } else {
-              this.$message.error(data.respmsg);
-            }
+                this.getData();
+              } else {
+                this.$message.error(data.respmsg);
+              }
+            }).catch(() => {
+              this.$message.error("停止活动失败");
+            });
           }).catch(() => {
-            this.$message.error("停止活动失败");
+            console.log("取消");
           });
-        }).catch(() => {
-          console.log("取消");
-        });
+        }
       },
 
       // 编辑活动
       editActivity(data) {
-        Store.set('pointData', Object.assign(data, {
-          obtain_amt: (data.obtain_amt) / 100,
-          goods_amt: (data.goods_amt) / 100
-        }));
-        this.$router.push("/main/memberredpoint/editpoint");
+        if(this.role.isCashier) {
+          this.$message.error('您暂无权限执行此操作');
+        }else {
+          Store.set('pointData', Object.assign(data, {
+            obtain_amt: (data.obtain_amt) / 100,
+            goods_amt: (data.goods_amt) / 100
+          }));
+          this.$router.push("/main/memberredpoint/editpoint");
+        }
       },
 
       // 新建集点，判断是否可以创建
       creatPoint() {
-        if(this.role.single) {
-          if(this.getCurrentShop()) {
-            this.$message.error('当前有活动正在进行，请终止后再创建');
+        if(this.role.isCashier) {
+          this.$message.error('您暂无权限执行此操作');
+        }else {
+          if(this.role.single) {
+            if(this.getCurrentShop()) {
+              this.$message.error('当前有活动正在进行，请终止后再创建');
+            }else {
+              this.$router.push("/main/memberredpoint/createpoint");
+            }
           }else {
             this.$router.push("/main/memberredpoint/createpoint");
           }
-        }else {
-          this.$router.push("/main/memberredpoint/createpoint");
         }
       },
 

@@ -6,7 +6,7 @@ import 'src/filters'
 import store from './store'
 import App from './App'
 import router from './router'
-import { Tree, Upload, Select, Option, TableColumn, Table, Button, Pagination, Dropdown, DropdownItem, DropdownMenu, Loading, DatePicker, Input, Message, Form, FormItem, Radio, RadioGroup, RadioButton, Dialog, Col, MessageBox, Row, CheckboxGroup, Checkbox, Rate, Tooltip, Switch } from 'element-ui'
+import { Tree, Upload, Select, Option, TableColumn, Table, Button, Pagination, Dropdown, DropdownItem, DropdownMenu, Loading, DatePicker, Input, Message, Form, FormItem, Radio, RadioGroup, RadioButton, Dialog, Col, MessageBox, Row, CheckboxGroup, Checkbox, Rate, Tooltip, Switch, Tabs, TabPane } from 'element-ui'
 import 'reset.css'
 import 'assets/scss/common.scss'
 import axios from 'axios'
@@ -53,6 +53,8 @@ Vue.use(Checkbox)
 Vue.use(Rate)
 Vue.use(Tooltip)
 Vue.use(Switch)
+Vue.use(Tabs)
+Vue.use(TabPane)
 
 locale.use(targetLang.default); // elementUI组件的多语言
 var localePackage = { // 静态模板文案多语言

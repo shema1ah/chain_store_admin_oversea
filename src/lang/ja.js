@@ -12,7 +12,8 @@ exports.default = {
     tradeMng: '取引管理',
     billMng: '勘定書管理',
     publicAuth: '公式アカウント',
-    shopMng: '店舗管理',
+    shopMng: 'アカウント',
+    cashMng: 'キャッシャー管理',
     setup: '設定'
   },
   common: {
@@ -31,7 +32,7 @@ exports.default = {
   },
   shopmng: { // 门店管理模块
     crumbs: {
-      L1: '店舗管理'
+      L1: 'アカウント'
     },
     title: {
       baseInfo: '基本情報',
@@ -166,6 +167,7 @@ exports.default = {
       yestoday: '昨日',
       near7: '最近の７日間',
       near30: '最近の３０日間',
+      near365: '最近年に1年近く',
       shopName: '店舗名',
       operator: 'キャッシャー',
       moreFilter: '選択します',
@@ -245,13 +247,17 @@ exports.default = {
   login: {
     head: '商店管理コンソール',
     reg: 'ログインアカウント',
+    user: 'マーチャントのアカウント',
+    cash: 'キャッシャーの番号',
     ltsix: '6ケタ以上',
     login: 'ログイン',
     forgetPwd: 'パスワードを忘れて',
     msg: {
       m1: 'ログインアカウントを入力してください',
       m2: 'パスワードを入力してください',
-      m3: 'ログイン失敗しました'
+      m3: 'ログイン失敗しました',
+      m4: 'マーチャントのアカウントを入力してください',
+      m5: 'キャッシャーの番号を入力してください'
     }
   },
   setting: { // 邮箱设置页

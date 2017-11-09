@@ -76,8 +76,10 @@ export default {
     },
 
     getData() {
+      this.loading = true;
       axios.get(`${config.host}/merchant/info?format=cors`)
         .then((res) => {
+          this.loading = false;
           let data = res.data;
           if(data.respcd === config.code.OK) {
             // 本地调试或者刷新页面时设置role
@@ -94,6 +96,7 @@ export default {
           }
         })
         .catch(() => {
+          this.loading = false;
         this.$message.error(this.$t('common.netError'));
         // console.log(err && err.respmsg)
         });

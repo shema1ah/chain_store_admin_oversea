@@ -12,7 +12,8 @@ exports.default = {
     tradeMng: 'Transaction Mgmt',
     billMng: 'Bill Mgmt',
     publicAuth: 'Official Account',
-    shopMng: 'Shop Mgmt',
+    shopMng: 'Account Info',
+    cashMng: 'Cashier Mgmt',
     setup: 'Setting'
   },
   common: {
@@ -31,7 +32,7 @@ exports.default = {
   },
   shopmng: { // 门店管理模块
     crumbs: {
-      L1: 'Shop Management'
+      L1: 'Account Info'
     },
     title: {
       baseInfo: 'Basic Information',
@@ -166,6 +167,7 @@ exports.default = {
       yestoday: 'Yesterday',
       near7: 'Last 7 days',
       near30: 'Last 30 days',
+      near365: 'Last 1 year',
       shopName: 'Shop Name',
       operator: 'Cashier',
       moreFilter: 'More Options',
@@ -245,13 +247,17 @@ exports.default = {
   login: { // 登录页
     head: 'Shop Management Platform',
     reg: 'Register a new account',
+    user: 'Shop Account',
+    cash: 'Cashier No.',
     ltsix: 'More than 6 digits.',
     login: 'Login',
     forgetPwd: 'Forget password?',
     msg: {
       m1: 'Please enter the account.',
       m2: 'Please enter the password.',
-      m3: 'Failed to log in.'
+      m3: 'Failed to log in.',
+      m4: 'Enter Shop Account',
+      m5: 'Enter Cashier No.'
     }
   },
   setting: { // 邮箱设置页

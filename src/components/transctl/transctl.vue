@@ -40,7 +40,7 @@
                 </el-select>
               </el-form-item>
             </div>
-            <div class="panel-select__wrapper">
+            <div class="panel-select__wrapper" v-if="!role.isCashier">
               <span class="panel-select__desc">{{$t('tradeMng.panel.operator')}}</span>
               <el-form-item>
                 <el-select v-model="form.operaValue" :placeholder="$t('tradeMng.table.all')" size="small" @change="operaChange" :disabled="form.selectShopUid === ''">
@@ -125,7 +125,7 @@
             <el-dropdown>
               <span class="el-dropdown-link"><img src="./img/download.png" alt="download"></span>
               <el-dropdown-menu slot="dropdown">
-                <a :href="detailHref" download><el-dropdown-item command=1>{{$t('tradeMng.table.btn.downDetail')}}</el-dropdown-item></a>
+                <a :href="detailHref" @click="downDetail" class="downDetail"><el-dropdown-item command=1>{{$t('tradeMng.table.btn.downDetail')}}</el-dropdown-item></a>
                 <a :href="collectionHref" download><el-dropdown-item command=2>{{$t('tradeMng.table.btn.downTrade')}}</el-dropdown-item></a>
               </el-dropdown-menu>
             </el-dropdown>
@@ -199,16 +199,32 @@
     </div>
 
     <el-dialog :title="$t('common.tip')" :visible.sync="showConfirm" custom-class="mydialog" top="20%"
-               :show-close="false" @close="handleClose">
+               :show-close="false" @close="handleClose('formpwd')">
       <div style="margin-bottom: 20px;">{{$t('tradeMng.dialog.d1')}}</div>
       <el-form :model="formpwd" :rules="pwdrules" ref="formpwd">
         <el-form-item prop="pwd">
           <el-input v-model="formpwd.pwd" :placeholder="$t('tradeMng.msg.m9')" type="password" @keyup.enter.native="onEnter"></el-input>
         </el-form-item>
-
       </el-form>
       <div slot="footer" class="dialog-footer">
         <div @click="checkPwd" class="submit">
+          <span class="el-icon-loading" v-if="iconLoading"></span>
+          <span v-else>{{$t('common.ok')}}</span>
+        </div>
+      </div>
+    </el-dialog>
+
+    <el-dialog title="流水下载提示" :visible.sync="showSend" custom-class="mydialog" top="20%"
+               :show-close="false" @close="handleClose('formSend')">
+      <div style="margin-bottom: 20px;">近一年的交易数据量较大，我们会以邮件的形式发送至您的邮箱，预计一小时内发送。</div>
+      <el-form :model="formSend" :rules="sendRules" ref="formSend">
+        <el-form-item prop="email">
+          <el-input v-model.trim="formSend.email" placeholder="请输入要接收的有效邮箱地址" type="text"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <div @click="showSend = false" class="cancel">关闭</div>
+        <div @click="sendEmail" class="submit">
           <span class="el-icon-loading" v-if="iconLoading"></span>
           <span v-else>{{$t('common.ok')}}</span>
         </div>
@@ -244,9 +260,14 @@
         lang: config.lang,
         role: Store.get('role') || {},
         showConfirm: false,
+        showSend: false,
+        detailHref: 'javascript:;',
         checkValue: {},
         formpwd: {
           pwd: ''
+        },
+        formSend: {
+          email: ''
         },
         iconLoading: false,
         pageSize: 10,
@@ -268,7 +289,8 @@
           {'name': this.$t('tradeMng.panel.today'), 'value': '1'},
           {'name': this.$t('tradeMng.panel.yestoday'), 'value': '2'},
           {'name': this.$t('tradeMng.panel.near7'), 'value': '7'},
-          {'name': this.$t('tradeMng.panel.near30'), 'value': '30'}
+          {'name': this.$t('tradeMng.panel.near30'), 'value': '30'},
+          {'name': this.$t('tradeMng.panel.near365'), 'value': '365'}
         ],
         form: {
           selectShopUid: '',
@@ -293,6 +315,12 @@
             pwd: [
               { required: true, message: this.$t('tradeMng.msg.m9') }
             ]
+        },
+        sendRules: {
+          email: [
+            { required: true, message: '请输入邮箱地址' },
+            {pattern: /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+$/, message: '请输入正确的邮箱地址'}
+          ]
         }
       };
     },
@@ -303,10 +331,6 @@
     },
 
     computed: {
-      detailHref() {
-        let detailParmas = Object.assign({}, this.basicParams, {isdownload: true});
-        return `${config.host}/merchant/trade/download?${qs.stringify(detailParmas)}`;
-      },
       collectionHref() {
         return `${config.host}/merchant/trade/total?${qs.stringify(this.basicParams)}`;
       },
@@ -343,6 +367,11 @@
           this.form.choosetime = '';
         }
         this.status = false;
+      },
+      'form.choosetime': function(val) {
+        if(val === '365') {
+          this.detailHref = 'javascript:;'
+        }
       }
     },
 
@@ -374,10 +403,24 @@
     },
 
     methods: {
+      // 下载交易明细
+      downDetail() {
+        if(this.form.choosetime === '365') {
+          this.showSend = true;
+        }else {
+          let detailParmas = Object.assign({}, this.basicParams, {isdownload: true});
+          this.detailHref = `${config.host}/merchant/trade/download?${qs.stringify(detailParmas)}`;
+        }
+      },
+
+      // 发送邮箱
+      sendEmail() {
+        console.log(22222)
+      },
 
       // 关闭弹出层
-      handleClose() {
-        this.$refs['formpwd'].resetFields();
+      handleClose(form) {
+        this.$refs[form].resetFields();
       },
 
       // 撤销操作

@@ -8,7 +8,8 @@ exports.default = {
     tradeMng: '交易管理',
     billMng: '账单管理',
     publicAuth: '公众号授权',
-    shopMng: '门店管理',
+    shopMng: '账户信息',
+    cashMng: '收银员管理',
     setup: '设置'
   },
   common: {
@@ -27,7 +28,7 @@ exports.default = {
   },
   shopmng: { // 门店管理模块
     crumbs: {
-      L1: '门店管理'
+      L1: '账户信息'
     },
     title: {
       baseInfo: '基本信息',
@@ -162,6 +163,7 @@ exports.default = {
       yestoday: '昨天',
       near7: '近7天',
       near30: '近30天',
+      near365: '近一年',
       shopName: '店铺名称',
       operator: '收银员',
       moreFilter: '更多筛选',
@@ -241,13 +243,17 @@ exports.default = {
   login: { // 登录页
     head: '商户管理后台',
     reg: '注册账号',
+    user: '主账号',
+    cash: '收银员编号',
     ltsix: '6位以上',
     login: '登录',
     forgetPwd: '忘记密码?',
     msg: {
       m1: '请输入账号',
       m2: '请输入密码',
-      m3: '登录失败'
+      m3: '登录失败',
+      m4: '请输入主账号',
+      m5: '请输入收银员编号'
     }
   },
   setting: { // 邮箱设置页

@@ -8,7 +8,8 @@ exports.default = {
     tradeMng: '交易管理',
     billMng: '清算管理',
     publicAuth: '公眾號授權',
-    shopMng: '店舖管理',
+    shopMng: '賬戶信息',
+    cashMng: '收銀員管理',
     setup: '設置'
   },
   common: {
@@ -27,7 +28,7 @@ exports.default = {
   },
   shopmng: { // 门店管理模块
     crumbs: {
-      L1: '店舖管理'
+      L1: '賬戶信息'
     },
     title: {
       baseInfo: '基本信息',
@@ -162,6 +163,7 @@ exports.default = {
       yestoday: '昨天',
       near7: '近7天',
       near30: '近30天',
+      near365: '近壹年',
       shopName: '店鋪名稱',
       operator: '收銀員',
       moreFilter: '更多篩選',
@@ -241,13 +243,17 @@ exports.default = {
   login: { // 登录页
     head: '商戶管理後台',
     reg: '註冊賬號',
+    user: '主賬號',
+    cash: '收銀員編號',
     ltsix: '6位以上',
     login: '登錄',
     forgetPwd: '忘記密碼?',
     msg: {
       m1: '請輸入賬號',
       m2: '請輸入密碼',
-      m3: '登錄失敗'
+      m3: '登錄失敗',
+      m4: '請輸入主賬號',
+      m5: '請輸入收銀員編號'
     }
   },
   setting: { // 邮箱设置页

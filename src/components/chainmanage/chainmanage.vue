@@ -368,8 +368,7 @@
       this.$store.dispatch('getPageShopData');
       // this.$store.dispatch('getShopList');
     },
-    mounted() {
-    },
+
     methods: {
       refreshSubShopData() {
         this.$store.dispatch('getPageShopData');
@@ -672,9 +671,9 @@
       }
 
       @at-root .info__title {
-        font-size: 20px;
-        color: #262323;
-        width: 85px !important;
+        font-size: 16px;
+        color: #8A8C92;
+        width: 100px !important;
         margin-right: 0 !important;
       }
       @at-root .info__title.info__title_en {
@@ -684,8 +683,8 @@
         margin: 0px 10px 0px 0px;
       }
       @at-root .info__desc {
-        font-size: 15px;
-        color: #98989E;
+        font-size: 16px;
+        color: #1F2D3D;
       }
     }
   }

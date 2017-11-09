@@ -123,46 +123,79 @@
               }, {
                 val: this.$t('nav.shopMng'),
                 pathname: 'chainmanage'
+              }, {
+                val: this.$t('nav.cashMng'),
+                pathname: 'cashiermanage'
               }
             ];
             break;
           case 'single':
-            this.navs = [
-              {
-                val: '首页概览',
-                pathname: 'index'
-              }, {
-                val: '实时收款',
-                pathname: 'todaytrade'
-              }, {
-                val: '会员功能',
-                sub: [{
-                  val: '会员管理',
-                  pathname: 'memberctl'
+            if(this.role.isCashier) {
+              this.navs = [
+                {
+                  val: '实时收款',
+                  pathname: 'todaytrade'
                 }, {
-                  val: '会员集点',
-                  pathname: 'memberredpoint'
+                  val: '会员功能',
+                  sub: [{
+                    val: '会员管理',
+                    pathname: 'memberctl'
+                  }, {
+                    val: '会员集点',
+                    pathname: 'memberredpoint'
+                  }, {
+                    val: '会员红包',
+                    pathname: 'memberredpacket'
+                  }, {
+                    val: '会员储值',
+                    pathname: 'memberstorage'
+                  }]
                 }, {
-                  val: '会员红包',
-                  pathname: 'memberredpacket'
+                  val: this.$t('nav.tradeMng'),
+                  pathname: 'transctl'
                 }, {
-                  val: '会员储值',
-                  pathname: 'memberstorage'
-                }]
-              }, {
-                val: '交易管理',
-                pathname: 'transctl'
-              }, {
-                val: '账单管理',
-                pathname: 'billctl'
-              }, {
-                val: '公众号授权',
-                pathname: 'publicauth'
-              }, {
-                val: '门店管理',
-                pathname: 'singlemanage'
-              }
-            ];
+                  val: this.$t('nav.shopMng'),
+                  pathname: 'singlemanage'
+                }
+              ];
+            }else {
+              this.navs = [
+                {
+                  val: this.$t('nav.index'),
+                  pathname: 'index'
+                }, {
+                  val: '实时收款',
+                  pathname: 'todaytrade'
+                }, {
+                  val: '会员功能',
+                  sub: [{
+                    val: '会员管理',
+                    pathname: 'memberctl'
+                  }, {
+                    val: '会员集点',
+                    pathname: 'memberredpoint'
+                  }, {
+                    val: '会员红包',
+                    pathname: 'memberredpacket'
+                  }, {
+                    val: '会员储值',
+                    pathname: 'memberstorage'
+                  }]
+                }, {
+                  val: this.$t('nav.tradeMng'),
+                  pathname: 'transctl'
+                }, {
+                  val: this.$t('nav.billMng'),
+                  pathname: 'billctl'
+                }, {
+                  val: this.$t('nav.publicAuth'),
+                  pathname: 'publicauth'
+                }, {
+                  val: this.$t('nav.shopMng'),
+                  pathname: 'singlemanage'
+                }
+              ];
+            }
             break;
           case 'baoshang':
             this.navs = [
@@ -188,42 +221,75 @@
                 val: '交易管理',
                 pathname: 'transctl'
               }, {
-                val: '门店管理',
+                val: this.$t('nav.shopMng'),
                 pathname: 'chainmanage'
+              }, {
+                val: this.$t('nav.cashMng'),
+                pathname: 'cashiermanage'
               }
             ];
             break;
           case 'baoshang_single':
-            this.navs = [
-              {
-                val: '首页概览',
-                pathname: 'index'
-              }, {
-                val: '实时收款',
-                pathname: 'todaytrade'
-              }, {
-                val: '会员功能',
-                sub: [{
-                  val: '会员管理',
-                  pathname: 'memberctl'
+            if(this.role.isCashier) {
+              this.navs = [
+                {
+                  val: '实时收款',
+                  pathname: 'todaytrade'
                 }, {
-                  val: '会员集点',
-                  pathname: 'memberredpoint'
+                  val: '会员功能',
+                  sub: [{
+                    val: '会员管理',
+                    pathname: 'memberctl'
+                  }, {
+                    val: '会员集点',
+                    pathname: 'memberredpoint'
+                  }, {
+                    val: '会员红包',
+                    pathname: 'memberredpacket'
+                  }, {
+                    val: '会员储值',
+                    pathname: 'memberstorage'
+                  }]
                 }, {
-                  val: '会员红包',
-                  pathname: 'memberredpacket'
+                  val: '交易管理',
+                  pathname: 'transctl'
                 }, {
-                  val: '会员储值',
-                  pathname: 'memberstorage'
-                }]
-              }, {
-                val: '交易管理',
-                pathname: 'transctl'
-              }, {
-                val: '门店管理',
-                pathname: 'singlemanage'
-              }
-            ];
+                  val: this.$t('nav.shopMng'),
+                  pathname: 'singlemanage'
+                }
+              ];
+            }else {
+              this.navs = [
+                {
+                  val: '首页概览',
+                  pathname: 'index'
+                }, {
+                  val: '实时收款',
+                  pathname: 'todaytrade'
+                }, {
+                  val: '会员功能',
+                  sub: [{
+                    val: '会员管理',
+                    pathname: 'memberctl'
+                  }, {
+                    val: '会员集点',
+                    pathname: 'memberredpoint'
+                  }, {
+                    val: '会员红包',
+                    pathname: 'memberredpacket'
+                  }, {
+                    val: '会员储值',
+                    pathname: 'memberstorage'
+                  }]
+                }, {
+                  val: '交易管理',
+                  pathname: 'transctl'
+                }, {
+                  val: this.$t('nav.shopMng'),
+                  pathname: 'singlemanage'
+                }
+              ];
+            }
             break;
           case 'hongkong':
           case 'japan':

@@ -12,7 +12,7 @@
           <span class="panel-header__desc">{{$t('shopmng.title.baseInfo')}}</span>
         </div>
       </div>
-      <div class="panel-body">
+      <div class="panel-body" v-if="!role.isCashier">
         <div class="info_wrapper">
           <div class="info">
             <div class="info__title">{{$t('shopmng.panel.loginAccount')}}</div>
@@ -45,10 +45,60 @@
             </div>
           </div>
           <div class="panel-btn-group__wrapper">
-            <div class="panel-header-btn panel-header-btn__fill" @click="changePass(shop.mobile)">{{$t('shopmng.panel.table.editPwd')}}</div>
+            <el-tooltip v-if="!role.haiwai || role.country === 'HK'" class="item" effect="dark" :content="$t('shopmng.panel.btn.downTip')" placement="right">
+              <a :href="downHref" download >
+                <div class="panel-btn__download panel-btn__download_detail">
+                  <i class="icon-download"></i>
+                  <span>{{$t('shopmng.panel.btn.down')}}</span>
+                </div>
+              </a>
+            </el-tooltip>
+            <div class="panel-btn__download panel-btn__download_record" @click="changePass(shop.mobile)">{{$t('shopmng.panel.table.editPwd')}}</div>
+          </div>
+        </div>
+      </div>
+      <div class="panel-body" v-else>
+        <div class="info_wrapper">
+          <div class="info">
+            <div class="info__title">账户状态</div>
+            <div class="info__desc">{{ opinfo.status?'已启用': '已禁用' }}</div>
+          </div>
+          <div class="info">
+            <div class="info__title">姓名</div>
+            <div class="info__desc">{{ opinfo.opname }}</div>
+          </div>
+          <div class="info">
+            <div class="info__title">电话</div>
+            <div class="info__desc">{{ opinfo.mobile }}</div>
+          </div>
+          <div class="info">
+            <div class="info__title">门店</div>
+            <div class="info__desc">{{ shop.shopname }}</div>
+          </div>
+          <div class="info">
+            <div class="info__title">主账号</div>
+            <div class="info__desc">{{ shop.mobile }}</div>
+          </div>
+          <div class="info next-bottom">
+            <div class="info__title">收银员编号</div>
+            <div class="info__desc">{{ opinfo.opuid }}</div>
+          </div>
+          <div class="info">
+            <div class="info__title"></div>
+            <div class="gray-explain">* 收银员登录方式为主账号+编号+收银员密码</div>
+          </div>
+          <div class="info next-bottom">
+            <div class="info__title">退款权限</div>
+            <div class="info__desc">{{ opinfo.refund?'有权限': '无权限'}}</div>
+          </div>
+          <div class="info">
+            <div class="info__title"></div>
+            <div class="gray-explain">* 目前收银员仅支持查看活动信息，不支持对红包、集点、储值活动、特卖、店铺公告、会员特权的增删改</div>
+          </div>
+          <div class="panel-btn-group__wrapper">
             <el-tooltip v-if="!role.haiwai || role.country === 'HK'" class="item" effect="dark" :content="$t('shopmng.panel.btn.downTip')" placement="right">
               <a :href="downHref" download>
-                <div class="panel-header-btn">
+                <div class="panel-header-btn panel-header-btn__fill">
                   <span>{{$t('shopmng.panel.btn.down')}}</span>
                 </div>
               </a>
@@ -115,6 +165,7 @@
       return {
         lang: config.lang,
         role: Store.get('role') || {},
+        opinfo: this.shop.opinfo || {},
         loading: false,
         iconShow: false,
         showChangePass: false,
@@ -138,7 +189,11 @@
 
     computed: {
       downHref() {
+        if(this.role.isCashier) {
+          return `${config.host}/merchant/qrcode?userid=${this.shop.uid}&opuid=${this.opuid}`;
+        }else {
           return `${config.host}/merchant/qrcode?userid=${this.shop.uid}&lang=${this.lang}`;
+        }
       }
     },
 
@@ -248,9 +303,9 @@
     align-items: center;
     margin-bottom: 18px;
     @at-root .info__title {
-      font-size: 20px;
-      color: #262323;
-      width: 140px;
+      font-size: 16px;
+      color: #8A8C92;
+      width: 100px;
       margin-right: 25px;
       text-align: left;
     }
@@ -259,7 +314,7 @@
     }
     @at-root .info__desc {
       font-size: 15px;
-      color: #98989E;
+      color: #1F2D3D;
     }
   }
   }
@@ -270,6 +325,12 @@
   .single {
     .panel-header-btn {
       width: 210px;
+    }
+    .next-bottom {
+      margin: 0;
+    }
+    .gray-explain {
+      margin: 0;
     }
   }
 </style>
