@@ -213,23 +213,6 @@
         </div>
       </div>
     </el-dialog>
-
-    <el-dialog title="流水下载提示" :visible.sync="showSend" custom-class="mydialog" top="20%"
-               :show-close="false" @close="handleClose('formSend')">
-      <div style="margin-bottom: 20px;">近一年的交易数据量较大，我们会以邮件的形式发送至您的邮箱，预计一小时内发送。</div>
-      <el-form :model="formSend" :rules="sendRules" ref="formSend">
-        <el-form-item prop="email">
-          <el-input v-model.trim="formSend.email" placeholder="请输入要接收的有效邮箱地址" type="text"></el-input>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <div @click="showSend = false" class="cancel">关闭</div>
-        <div @click="sendEmail" class="submit">
-          <span class="el-icon-loading" v-if="iconLoading"></span>
-          <span v-else>{{$t('common.ok')}}</span>
-        </div>
-      </div>
-    </el-dialog>
   </div>
 </template>
 
@@ -260,8 +243,6 @@
         lang: config.lang,
         role: Store.get('role') || {},
         showConfirm: false,
-        showSend: false,
-        detailHref: 'javascript:;',
         checkValue: {},
         formpwd: {
           pwd: ''
@@ -289,8 +270,7 @@
           {'name': this.$t('tradeMng.panel.today'), 'value': '1'},
           {'name': this.$t('tradeMng.panel.yestoday'), 'value': '2'},
           {'name': this.$t('tradeMng.panel.near7'), 'value': '7'},
-          {'name': this.$t('tradeMng.panel.near30'), 'value': '30'},
-          {'name': this.$t('tradeMng.panel.near365'), 'value': '365'}
+          {'name': this.$t('tradeMng.panel.near30'), 'value': '30'}
         ],
         form: {
           selectShopUid: '',
@@ -335,6 +315,11 @@
         return `${config.host}/merchant/trade/total?${qs.stringify(this.basicParams)}`;
       },
 
+      detailHref() {
+        let detailParmas = Object.assign({}, this.basicParams, {isdownload: true});
+        this.detailHref = `${config.host}/merchant/trade/download?${qs.stringify(detailParmas)}`;
+      },
+
       shopData() {
         return this.$store.state.shopData;
       },
@@ -367,11 +352,6 @@
           this.form.choosetime = '';
         }
         this.status = false;
-      },
-      'form.choosetime': function(val) {
-        if(val === '365') {
-          this.detailHref = 'javascript:;'
-        }
       }
     },
 
@@ -403,21 +383,6 @@
     },
 
     methods: {
-      // 下载交易明细
-      downDetail() {
-        if(this.form.choosetime === '365') {
-          this.showSend = true;
-        }else {
-          let detailParmas = Object.assign({}, this.basicParams, {isdownload: true});
-          this.detailHref = `${config.host}/merchant/trade/download?${qs.stringify(detailParmas)}`;
-        }
-      },
-
-      // 发送邮箱
-      sendEmail() {
-        console.log(22222)
-      },
-
       // 关闭弹出层
       handleClose(form) {
         this.$refs[form].resetFields();
