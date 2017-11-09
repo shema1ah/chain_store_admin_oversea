@@ -37,13 +37,15 @@
           <el-table-column prop="mobile" label="收银员电话"></el-table-column>
           <el-table-column label="账户状态">
             <template scope="scope">
-              <el-switch v-model="scope.row.status" on-text="" off-text="" on-color="#7ed321" off-color="#FF8100" on-value=1 off-value=0 @change="changeStatus(scope.row.opuid, scope.row.status)"></el-switch>
+              <el-switch v-model="scope.row.status" on-text="" off-text="" on-color="#FF8100" off-color="#d8d8d8" on-value=1 off-value=0 @change="changeStatus(scope.row.opuid, scope.row.status)"></el-switch>
+              <div class="explain">{{ scope.row.status == 1?'启用账户':'禁止账户' }}</div>
             </template>
           </el-table-column>
 
           <el-table-column prop="refund" label="退款权限状态">
             <template scope="scope">
-              <el-switch v-model="scope.row.refund" on-text="" off-text="" on-color="#7ed321" off-color="#FF8100" on-value=1 off-value=0 @change="changeRights(scope.row.opuid, scope.row.refund)"></el-switch>
+              <el-switch v-model="scope.row.refund" on-text="" off-text="" on-color="#7ed321" off-color="#d8d8d8" on-value=1 off-value=0 @change="changeRights(scope.row.opuid, scope.row.refund)"></el-switch>
+              <div class="explain">{{ scope.row.refund == 1?'开启退款':'关闭退款' }}</div>
             </template>
           </el-table-column>
 
@@ -76,11 +78,31 @@
   import Store from '../../common/js/store';
 
   export default {
+    beforeRouteEnter (to, from, next) {
+      next((vm) => {
+        Object.assign(vm, {
+          flag: false,
+          pageSize: 10,
+          rightsValue: '',
+          stateValue: '',
+          currentPage: 1
+        });
+
+        vm.getData();
+
+        // 延时改变
+        setTimeout(() => {
+          Object.assign(vm, {
+            flag: true
+          });
+        }, 200);
+      });
+    },
+
     data() {
       return {
         role: Store.get('role') || {},
         cashierData: [],
-        currentStatus: '',
         pageSize: 10,
         rightsValue: '',
         stateValue: '',
@@ -138,10 +160,6 @@
       }
     },
 
-    created() {
-      this.getData();
-    },
-
     methods: {
       // 改变活动状态
       stateChange() {
@@ -185,7 +203,7 @@
       // 改变size
       handleSizeChange(size = 10) {
         this.pageSize = size;
-        this.currentChange(1);
+        this.currentChange();
       },
 
       // 改变当前页
@@ -196,6 +214,8 @@
         }
         if (current) {
           this.currentPage = current;
+        }
+        if (this.flag) {
           this.getData();
         }
       },
@@ -216,11 +236,13 @@
 
       // 修改状态
       changeStatus(id, st) {
-        let s;
+        let s, message;
         if(st === '1') {
           s = 0 + '';
+          message = '账户已禁用';
         }else {
           s = 1 + '';
+          message = '账户已启用';
         }
         if(!this.loading) {
           this.loading = true;
@@ -234,7 +256,7 @@
             if (data.respcd === config.code.OK) {
               this.$message({
                 type: 'success',
-                message: '修改成功'
+                message: message
               });
             } else {
               this.$message.error(data.resperr);
@@ -252,11 +274,13 @@
 
       // 修改权限
       changeRights(id, rg) {
-        let s;
+        let s, message;
         if(rg === '1') {
           s = 0 + '';
-        }else {
+          message = '权限已关闭';
+        } else {
           s = 1 + '';
+          message = '权限已开启';
         }
         if(!this.loading) {
           this.loading = true;
@@ -271,7 +295,7 @@
             if (data.respcd === config.code.OK) {
               this.$message({
                 type: 'success',
-                message: '修改成功'
+                message: message
               });
             } else {
               this.$message.error(data.resperr);
@@ -291,6 +315,9 @@
 </script>
 <style lang="scss">
   .cashiermanage {
-
+    .explain {
+      color: #777A7D;
+      font-size: 12px;
+    }
   }
 </style>

@@ -2,7 +2,7 @@
   <div class="sidebar">
     <div class="sidebar-logo__wrapper">
       <img src="./img/logo.png" alt="logo" class="sidebar-img"/>
-      <h1 class="sidebar-logo__title">{{$t('nav.mmp')}}</h1>
+      <h1 class="sidebar-logo__title">{{ shop.shopname }}</h1>
     </div>
     <ul class="left-nav">
       <li v-for="nav in navs" :class="{'dark': $route.fullPath.indexOf('member') != -1 && nav.sub}">
@@ -21,7 +21,7 @@
           </ul>
         </transition>
       </li>
-      <li :class="{'dark': $route.fullPath.indexOf('Public') != -1}" v-if="role.diancan && !role.haiwai">
+      <li :class="{'dark': $route.fullPath.indexOf('Public') != -1}" v-if="role.diancan && !role.haiwai && !role.isCashier">
         <a class="sidebar-nav__item" @click="toggle(2)">
           智慧餐厅
           <i class="icon-down_arrow" :class="{'icon-down_arrow__rotate': isRotate2}"></i>
@@ -72,6 +72,12 @@
           {label: '简体中文', value: 'zh-CN'}
           ]
       };
+    },
+
+    props: {
+      shop: {
+        type: Object
+      }
     },
 
     created() {

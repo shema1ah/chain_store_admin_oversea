@@ -218,7 +218,11 @@
 
     methods: {
       jumpToPointsExchange() {
-        this.$router.push("/main/memberredpoint/exchangedcredits");
+        if(this.role.isCashier) {
+          this.$message.error('您暂无权限执行此操作');
+        }else {
+          this.$router.push("/main/memberredpoint/exchangedcredits");
+        }
       },
       // 改变活动状态
       stateChange() {

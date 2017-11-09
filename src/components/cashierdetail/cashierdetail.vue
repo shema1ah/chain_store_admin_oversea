@@ -19,7 +19,7 @@
           <div class="info">
             <div class="info__title">账户状态</div>
             <div class="info__desc">
-              <el-switch v-model="opinfo.status" on-text="" off-text="" on-color="#7ed321" off-color="#FF8100" on-value=1 off-value=0 @change="changeStatus"></el-switch>
+              <el-switch v-model="opinfo.status" on-text="" off-text="" on-color="#FF8100" off-color="#d8d8d8" on-value=1 off-value=0 @change="changeStatus"></el-switch>
             </div>
           </div>
           <div class="info">
@@ -53,7 +53,7 @@
           <div class="info next-bottom">
             <div class="info__title">退款权限</div>
             <div class="info__desc">
-              <el-switch v-model="opinfo.refund" on-text="" off-text="" on-color="#7ed321" off-color="#FF8100" on-value=1 off-value=0 @change="changeRights"></el-switch>
+              <el-switch v-model="opinfo.refund" on-text="" off-text="" on-color="#7ed321" off-color="#d8d8d8" on-value=1 off-value=0 @change="changeRights"></el-switch>
             </div>
           </div>
           <div class="info">
@@ -179,6 +179,11 @@
             this.opinfo = data.data || {};
             this.opinfo.status = this.opinfo.status + '';
             this.opinfo.refund = this.opinfo.refund + '';
+            this.form = {
+              opname: this.opinfo.opname,
+              mobile: this.opinfo.mobile,
+              password: '******'
+            }
           } else {
             this.$message.error(data.respmsg);
           }
@@ -200,9 +205,15 @@
             this.loading = false;
             let data = res.data;
             if (data.respcd === config.code.OK) {
+              let message;
+              if(st === 1) {
+                message = '账户已启用';
+              }else {
+                message = '账户已禁用';
+              }
               this.$message({
                 type: 'success',
-                message: '修改成功'
+                message: message
               });
             } else {
               this.$message.error(data.resperr);
@@ -231,9 +242,15 @@
             this.loading = false;
             let data = res.data;
             if (data.respcd === config.code.OK) {
+              let message;
+              if(rg === 1) {
+                message = '权限已开启';
+              }else {
+                message = '权限已关闭';
+              }
               this.$message({
                 type: 'success',
-                message: '修改成功'
+                message: message
               });
             } else {
               this.$message.error(data.resperr);

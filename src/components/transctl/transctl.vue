@@ -125,7 +125,7 @@
             <el-dropdown>
               <span class="el-dropdown-link"><img src="./img/download.png" alt="download"></span>
               <el-dropdown-menu slot="dropdown">
-                <a :href="detailHref" @click="downDetail" class="downDetail"><el-dropdown-item command=1>{{$t('tradeMng.table.btn.downDetail')}}</el-dropdown-item></a>
+                <a :href="detailHref" download class="downDetail"><el-dropdown-item command=1>{{$t('tradeMng.table.btn.downDetail')}}</el-dropdown-item></a>
                 <a :href="collectionHref" download><el-dropdown-item command=2>{{$t('tradeMng.table.btn.downTrade')}}</el-dropdown-item></a>
               </el-dropdown-menu>
             </el-dropdown>
@@ -295,12 +295,6 @@
             pwd: [
               { required: true, message: this.$t('tradeMng.msg.m9') }
             ]
-        },
-        sendRules: {
-          email: [
-            { required: true, message: '请输入邮箱地址' },
-            {pattern: /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+$/, message: '请输入正确的邮箱地址'}
-          ]
         }
       };
     },
@@ -317,7 +311,7 @@
 
       detailHref() {
         let detailParmas = Object.assign({}, this.basicParams, {isdownload: true});
-        this.detailHref = `${config.host}/merchant/trade/download?${qs.stringify(detailParmas)}`;
+        return `${config.host}/merchant/trade/download?${qs.stringify(detailParmas)}`;
       },
 
       shopData() {

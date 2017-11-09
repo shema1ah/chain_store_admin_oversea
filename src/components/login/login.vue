@@ -19,14 +19,14 @@
         </div>
       </el-form>
       <el-form :model="cash" :rules="cashRules" ref="cash" v-else>
-        <el-form-item prop="username" class="username">
-          <el-input v-model.trim="cash.username" size="small" type="text" :placeholder="$t('login.user')" @keyup.enter.native="onEnter"></el-input>
+        <el-form-item prop="name" class="username">
+          <el-input v-model.trim="cash.name" size="small" type="text" :placeholder="$t('login.user')" @keyup.enter.native="onEnter"></el-input>
         </el-form-item>
         <el-form-item prop="opuid" class="cashier">
           <el-input v-model.trim="cash.opuid" size="small" type="text" :placeholder="$t('login.cash')" @keyup.enter.native="onEnter"></el-input>
         </el-form-item>
-        <el-form-item prop="password" class="password">
-          <el-input v-model.trim="cash.password" size="small" type="password" :placeholder="$t('login.ltsix')" @keyup.enter.native="onEnter"></el-input>
+        <el-form-item prop="pass" class="password">
+          <el-input v-model.trim="cash.pass" size="small" type="password" :placeholder="$t('login.ltsix')" @keyup.enter.native="onEnter"></el-input>
         </el-form-item>
         <div class="panel-header-btn panel-header-btn__fill" @click="login">
           <span class="el-icon-loading" v-if="loading"></span>
@@ -67,18 +67,18 @@
           ]
         },
         cash: {
-          username: '',
+          name: '',
           opuid: '',
-          password: ''
+          pass: ''
         },
         cashRules: {
-          username: [
+          name: [
             { required: true, message: this.$t('login.msg.m4') }
           ],
           opuid: [
             { required: true, message: this.$t('login.msg.m5') }
           ],
-          password: [
+          pass: [
             { required: true, message: this.$t('login.msg.m2') }
           ]
         }
@@ -128,9 +128,19 @@
         var _this = this;
         _this.$refs[this.userType].validate((valid) => {
           if(!_this.loading && valid) {
-
+            let params;
+            if(this.userType === 'merchant') {
+              params = this.merchant;
+            }else {
+              let cash = this.cash;
+              params = {
+                username: cash.name,
+                opuid: cash.opuid,
+                password: cash.pass
+              };
+            }
             _this.loading = true;
-            axios.post(`${config.host}/merchant/login`, _this[_this.userType]).then((res) => {
+            axios.post(`${config.host}/merchant/login`, params).then((res) => {
               _this.loading = false;
               let data = res.data;
               if(data.respcd === config.code.OK) {

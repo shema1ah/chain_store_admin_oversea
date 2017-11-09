@@ -1,12 +1,12 @@
 <template>
   <div class="top_content" v-loading.fullscreen="loading" :element-loading-text="$t('common.loading')">
-    <sidebar></sidebar>
+    <sidebar :shop="shop"></sidebar>
     <div class="main">
       <div class="header">
 
         <div class="user_wrapper">
           <div class="user_name">
-            {{shop.shopname?'Welcome, '+shop.shopname:''}}
+            {{ role.isCashier?`Welcome,${(shop.opinfo || {}).opname}(${(shop.opinfo || {}).opuid})`:'Welcome'}}
           </div>
           <a href="javascript:;" @click="logout">
             <div class="user_operation">
