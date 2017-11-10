@@ -168,7 +168,7 @@
     data() {
       return {
         role: Store.get('role') || {},
-        collectData: [],
+        collectData: {},
         isShowDetail: false,
         pageSize: 10,
         nameValue: '',

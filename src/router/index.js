@@ -39,6 +39,7 @@ import dcqrcode from 'components/dcqrcode/dcqrcode'
 import cashiermanage from 'components/cashiermanage/cashiermanage'
 import addcashier from 'components/addcashier/addcashier'
 import cashierdetail from 'components/cashierdetail/cashierdetail'
+import merchandise from 'components/merchandise/merchandise'
 
 Vue.use(Router)
 
@@ -252,6 +253,11 @@ export default new Router({
               component: cashierdetail
             }
           ]
+        },
+        {
+          path: 'merchandise',
+          name: 'merchandise',
+          component: merchandise
         }
       ]
     }
