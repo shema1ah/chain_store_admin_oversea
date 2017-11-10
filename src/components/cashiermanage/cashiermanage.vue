@@ -38,21 +38,19 @@
           <el-table-column label="账户状态">
             <template scope="scope">
               <el-switch v-model="scope.row.status" on-text="" off-text="" on-color="#FF8100" off-color="#d8d8d8" on-value=1 off-value=0 @change="changeStatus(scope.row.opuid, scope.row.status)"></el-switch>
-              <div class="explain">{{ scope.row.status == 1?'启用账户':'禁止账户' }}</div>
+              <span class="explain">{{ scope.row.status == 1?'启用账户':'禁止账户' }}</span>
             </template>
           </el-table-column>
-
           <el-table-column prop="refund" label="退款权限状态">
             <template scope="scope">
               <el-switch v-model="scope.row.refund" on-text="" off-text="" on-color="#7ed321" off-color="#d8d8d8" on-value=1 off-value=0 @change="changeRights(scope.row.opuid, scope.row.refund)"></el-switch>
-              <div class="explain">{{ scope.row.refund == 1?'开启退款':'关闭退款' }}</div>
+              <span class="explain">{{ scope.row.refund == 1?'开启退款':'关闭退款' }}</span>
             </template>
           </el-table-column>
-
           <el-table-column min-width="150" label="操作">
             <template scope="scope">
               <el-button type="text" size="small" class="el-button__fix" @click="goDetail(scope.row.opuid)">查看详情</el-button>
-              <a :href="downHref + scope.row.opuid" download class="el-button__fix el-button--text" @click="getId(scope.row.opuid)">下载店铺收款码</a>
+              <a :href="downHref + scope.row.opuid" download class="el-button__fix el-button--text">下载店铺收款码</a>
             </template>
           </el-table-column>
         </el-table>

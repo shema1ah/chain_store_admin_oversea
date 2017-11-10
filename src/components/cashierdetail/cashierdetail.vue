@@ -76,7 +76,7 @@
     </div>
 
     <el-dialog title="编辑收银员资料" :visible.sync="showChangeInfo" @close="handleClose" custom-class="mydialog" top="20%" :show-close="false">
-      <el-form :model="form" :rules="formrules" ref="form" label-width="80px">
+      <el-form :model="form" :rules="formrules" ref="form" label-width="90px">
         <el-form-item label="姓名" prop="opname">
           <el-input v-model.trim="form.opname" size="small" type="text" placeholder="请输入收银员姓名"></el-input>
         </el-form-item>
@@ -94,7 +94,7 @@
           <div>{{ opuid }}</div>
         </el-form-item>
         <el-form-item label="密码" prop="password">
-          <el-input v-model="form.password" size="small" type="password" placeholder="请输入收银员密码"></el-input>
+          <el-input v-model="form.password" size="small" type="password" placeholder="请输入收银员密码" @keyup.delete.native="onDelete" @blur="passBlur"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -115,6 +115,13 @@
   import config from 'config';
 
   export default {
+    beforeRouteEnter (to, from, next) {
+      next((vm) => {
+        vm.opuid = vm.$route.query.id || '';
+        vm.getInfo();
+      });
+    },
+
     data() {
       return {
         lang: config.lang,
@@ -123,8 +130,9 @@
         opuid: '',
         loading: false,
         iconShow: false,
+        flag: false,
+        isChange: false,
         showChangeInfo: false,
-        userName: '',
         form: {
           opname: '',
           mobile: null,
@@ -157,11 +165,6 @@
       shop: {
         type: Object
       }
-    },
-
-    created() {
-      this.opuid = this.$route.query.id || '';
-      this.getInfo();
     },
 
     methods: {
@@ -206,7 +209,7 @@
             let data = res.data;
             if (data.respcd === config.code.OK) {
               let message;
-              if(st === 1) {
+              if(st === '1') {
                 message = '账户已启用';
               }else {
                 message = '账户已禁用';
@@ -243,7 +246,7 @@
             let data = res.data;
             if (data.respcd === config.code.OK) {
               let message;
-              if(rg === 1) {
+              if(rg === '1') {
                 message = '权限已开启';
               }else {
                 message = '权限已关闭';
@@ -266,8 +269,23 @@
         }
       },
 
+      // 基本信息弹层
       changeInfo() {
         this.showChangeInfo = true;
+      },
+
+      // 监听删除，退格按键
+      onDelete() {
+        this.isChange = true;
+        if(!this.flag) {
+          this.form.password = '';
+          this.flag = true;
+        }
+      },
+
+      // 失焦
+      passBlur() {
+        this.flag = false;
       },
 
       // 提交修改
@@ -275,11 +293,23 @@
         this.$refs['form'].validate((valid) => {
           if (valid && !this.iconShow) {
             this.iconShow = true;
-            axios.post(`${config.ohost}/mchnt/opuser/change`, Object.assign({}, this.form, {
-              opuid: this.opuid,
-              format: 'cors'
-            })).then((res) => {
+            let params;
+            if(this.isChange) {
+              params = Object.assign({}, this.form, {
+                opuid: this.opuid,
+                format: 'cors'
+            });
+            }else {
+              params = {
+                opname: this.form.opname,
+                mobile: this.form.mobile,
+                opuid: this.opuid,
+                format: 'cors'
+              }
+            }
+            axios.post(`${config.ohost}/mchnt/opuser/change`, params).then((res) => {
               this.iconShow = false;
+              this.showChangeInfo = false;
               let data = res.data;
               if (data.respcd === config.code.OK) {
                 this.$message({
@@ -287,12 +317,13 @@
                   message: '修改成功'
                 });
                 // 路由重新渲染
-                this.$router.go(0);
+                this.getInfo();
               } else {
                 this.$message.error(data.resperr);
               }
             }).catch(() => {
               this.iconShow = false;
+              this.showChangeInfo = false;
               this.$message.error('请求失败');
             })
           }

@@ -45,14 +45,12 @@
             </div>
           </div>
           <div class="panel-btn-group__wrapper">
-            <el-tooltip v-if="!role.haiwai || role.country === 'HK'" class="item" effect="dark" :content="$t('shopmng.panel.btn.downTip')" placement="right">
-              <a :href="downHref" download >
-                <div class="panel-btn__download panel-btn__download_detail">
-                  <i class="icon-download"></i>
-                  <span>{{$t('shopmng.panel.btn.down')}}</span>
-                </div>
-              </a>
-            </el-tooltip>
+            <a :href="downHref" download v-if="!role.haiwai || role.country === 'HK'">
+              <div class="panel-btn__download panel-btn__download_detail">
+                <i class="icon-download"></i>
+                <span>{{$t('shopmng.panel.btn.down')}}</span>
+              </div>
+            </a>
             <div class="panel-btn__download panel-btn__download_record" @click="changePass(shop.mobile)">{{$t('shopmng.panel.table.editPwd')}}</div>
           </div>
         </div>
@@ -96,13 +94,12 @@
             <div class="gray-explain">* 目前收银员仅支持查看活动信息，不支持对红包、集点、储值活动、特卖、店铺公告、会员特权的增删改</div>
           </div>
           <div class="panel-btn-group__wrapper">
-            <el-tooltip v-if="!role.haiwai || role.country === 'HK'" class="item" effect="dark" :content="$t('shopmng.panel.btn.downTip')" placement="right">
-              <a :href="downHref" download>
-                <div class="panel-header-btn panel-header-btn__fill">
-                  <span>{{$t('shopmng.panel.btn.down')}}</span>
-                </div>
-              </a>
-            </el-tooltip>
+            <a :href="downHref" download v-if="!role.haiwai || role.country === 'HK'">
+              <div class="panel-header-btn panel-header-btn__fill">
+                <i class="icon-download"></i>
+                <span>{{$t('shopmng.panel.btn.down')}}</span>
+              </div>
+            </a>
           </div>
         </div>
       </div>

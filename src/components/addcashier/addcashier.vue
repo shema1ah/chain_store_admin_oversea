@@ -54,6 +54,11 @@
   import Store from '../../common/js/store';
 
   export default {
+    beforeRouteEnter (to, from, next) {
+      next((vm) => {
+        vm.form.password = '';
+      });
+    },
     data() {
       return {
         role: Store.get('role') || {},
