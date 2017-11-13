@@ -257,7 +257,8 @@ exports.default = {
       m2: 'Please enter the password.',
       m3: 'Failed to log in.',
       m4: 'Enter Shop Account',
-      m5: 'Enter Cashier No.'
+      m5: 'Enter Cashier No.',
+      m6: 'Cashier management is coming soon……'
     }
   },
   setting: { // 邮箱设置页

@@ -57,6 +57,7 @@
     beforeRouteEnter (to, from, next) {
       next((vm) => {
         vm.$refs['form'].resetFields();
+        vm.getOpuid();
       });
     },
     data() {
@@ -90,10 +91,6 @@
       shop: {
         type: Object
       }
-    },
-
-    created() {
-      this.getOpuid();
     },
 
     methods: {
