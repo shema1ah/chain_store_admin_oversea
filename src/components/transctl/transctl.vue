@@ -451,8 +451,32 @@
 
       // 确认弹框
       confirm(val) {
-        this.checkValue = val;
-        this.showConfirm = true;
+        if(this.role.isCashier) {
+          this.cheekRefund(val);
+        }else {
+          this.checkValue = val;
+          this.showConfirm = true;
+        }
+      },
+
+      // 验证收银员退款权限
+      cheekRefund(value) {
+        axios.get(`${config.ohost}/mchnt/opuser/perms?format=cors`).then((res) => {
+          let data = res.data;
+          if(data.respcd === config.code.OK) {
+            let response = data.data || {};
+            if(response.refund === 1) {
+              this.checkValue = value;
+              this.showConfirm = true;
+            }else {
+              this.$message.error('您暂无权限执行此操作');
+            }
+          } else {
+            this.$message.error(data.resperr);
+          }
+        }).catch(() => {
+          this.$message.error('请求失败');
+        });
       },
 
       // 选择时间
