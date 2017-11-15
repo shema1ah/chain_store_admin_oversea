@@ -3,8 +3,8 @@
     <div class="content">
       <div class="head">{{$t('login.head')}}</div>
       <el-tabs v-model="userType" @tab-click="handleClick">
-        <el-tab-pane label="商户" name="merchant"></el-tab-pane>
-        <el-tab-pane label="收银员" name="cash"></el-tab-pane>
+        <el-tab-pane :label="$t('login.tab1')" name="merchant"></el-tab-pane>
+        <el-tab-pane :label="$t('login.tab2')" name="cash"></el-tab-pane>
       </el-tabs>
       <el-form :model="merchant" :rules="merchantRules" ref="merchant" v-if="userType === 'merchant'">
         <el-form-item prop="username" class="username">

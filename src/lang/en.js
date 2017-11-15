@@ -252,6 +252,8 @@ exports.default = {
     ltsix: 'More than 6 digits.',
     login: 'Login',
     forgetPwd: 'Forget password?',
+    tab1: 'Merchant',
+    tab2: 'Cashier',
     msg: {
       m1: 'Please enter the account.',
       m2: 'Please enter the password.',

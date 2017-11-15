@@ -248,6 +248,8 @@ exports.default = {
     ltsix: '6位以上',
     login: '登錄',
     forgetPwd: '忘記密碼?',
+    tab1: '商戶',
+    tab2: '收銀員',
     msg: {
       m1: '請輸入賬號',
       m2: '請輸入密碼',
