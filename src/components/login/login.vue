@@ -3,8 +3,8 @@
     <div class="content">
       <div class="head">{{$t('login.head')}}</div>
       <el-tabs v-model="userType" @tab-click="handleClick">
-        <el-tab-pane label="商户" name="merchant"></el-tab-pane>
-        <el-tab-pane label="收银员" name="cash"></el-tab-pane>
+        <el-tab-pane :label="$t('login.tab1')" name="merchant"></el-tab-pane>
+        <el-tab-pane :label="$t('login.tab2')" name="cash"></el-tab-pane>
       </el-tabs>
       <el-form :model="merchant" :rules="merchantRules" ref="merchant" v-if="userType === 'merchant'">
         <el-form-item prop="username" class="username">
@@ -147,18 +147,24 @@
                 let val = getRole(data.data) || '';
                 this.$store.state.role = val;
                 Store.set('role', val);
-                Store.set('flag', false);
+                // 海外收银员暂时关闭
+                let role = Store.get('role') || {}
+                if(role.haiwai && role.isCashier) {
+                  this.$message.error(this.$t('login.msg.m6'));
+                }else {
+                  Store.set('flag', false);
 
-                // 当前域名下设置cookie
-                let bicon = new Image();
-                let sid = getCookie('sessionid') || '';
-                if(sid) {
-                  bicon.style.display = 'none';
-                  bicon.src = `${config.ohost}/mchnt/set_cookie?sessionid=${sid}`;
+                  // 当前域名下设置cookie
+                  let bicon = new Image();
+                  let sid = getCookie('sessionid') || '';
+                  if(sid) {
+                    bicon.style.display = 'none';
+                    bicon.src = `${config.ohost}/mchnt/set_cookie?sessionid=${sid}`;
+                  }
+                  setTimeout(function() {
+                    _this.$router.push('/main/index');
+                  }, 0)
                 }
-                setTimeout(function() {
-                  _this.$router.push('/main/index');
-                }, 0)
               } else {
                 this.$message.error(data.resperr);
               }

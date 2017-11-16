@@ -83,7 +83,7 @@
           </div>
           <div class="info">
             <div class="info__title"></div>
-            <div class="gray-explain">* 收银员登录方式为主账号+编号+收银员密码</div>
+            <div class="gray-explain">* 收银员登陆方式为主账号+收银员编号+收银员密码</div>
           </div>
           <div class="info next-bottom">
             <div class="info__title">退款权限</div>
