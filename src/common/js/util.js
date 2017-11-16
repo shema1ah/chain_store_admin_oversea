@@ -29,6 +29,10 @@ const setformateDate = (date) => {
 // 日期格式化
 const formatDate = (parDate, formatStr) => {
 
+  if(parDate.constructor === String) {
+    parDate = parDate.replace(/-/g, "/");
+  }
+
   let date = new Date(parDate)
   /*
    函数：填充0字符

@@ -162,7 +162,6 @@
       return {
         lang: config.lang,
         role: Store.get('role') || {},
-        opinfo: this.shop.opinfo || {},
         loading: false,
         iconShow: false,
         showChangePass: false,
@@ -191,6 +190,9 @@
         }else {
           return `${config.host}/merchant/qrcode?userid=${this.shop.uid}&lang=${this.lang}`;
         }
+      },
+      opinfo() {
+        return this.shop.opinfo || {}
       }
     },
 
@@ -328,6 +330,7 @@
     }
     .gray-explain {
       margin: 0;
+      line-height: 1.4;
     }
   }
 </style>
