@@ -366,6 +366,10 @@
     @at-root .sidebar-logo__title {
       font-size: 20px;
       color: #fff;
+      word-break: break-all;
+      word-wrap: break-word;
+      line-height: 1.4;
+      padding: 0 27px;
     }
     .sidebar-nav__item {
       position: relative;

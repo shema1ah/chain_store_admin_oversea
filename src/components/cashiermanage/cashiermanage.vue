@@ -259,8 +259,8 @@
             } else {
               this.$message.error(data.resperr);
             }
-            // 页面重新请求数据
-            this.getData();
+            st = s;
+            // this.getData();
           }).catch(() => {
             this.loading = false;
             this.$message.error('请求失败');
@@ -298,8 +298,7 @@
             } else {
               this.$message.error(data.resperr);
             }
-            // 页面重新请求数据
-            this.getData();
+            rg = s;
           }).catch(() => {
             this.loading = false;
             this.$message.error('请求失败');

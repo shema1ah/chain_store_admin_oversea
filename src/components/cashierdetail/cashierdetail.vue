@@ -210,8 +210,10 @@
             if (data.respcd === config.code.OK) {
               let message;
               if(st === '1') {
+                st = '0';
                 message = '账户已启用';
               }else {
+                st = '1';
                 message = '账户已禁用';
               }
               this.$message({
@@ -221,8 +223,6 @@
             } else {
               this.$message.error(data.resperr);
             }
-            // 页面重新请求数据
-            this.getInfo();
           }).catch(() => {
             this.loading = false;
             this.$message.error('请求失败');
@@ -248,8 +248,10 @@
               let message;
               if(rg === '1') {
                 message = '权限已开启';
+                rg = '0';
               }else {
                 message = '权限已关闭';
+                rg = '1';
               }
               this.$message({
                 type: 'success',
@@ -258,13 +260,9 @@
             } else {
               this.$message.error(data.resperr);
             }
-            // 页面重新请求数据
-            this.getInfo();
           }).catch(() => {
             this.loading = false;
             this.$message.error('请求失败');
-            // 页面重新请求数据
-            this.getInfo();
           })
         }
       },
