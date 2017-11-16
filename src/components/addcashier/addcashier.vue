@@ -32,7 +32,7 @@
               <el-form-item prop="password">
                 <el-input size="small" type="password" v-model.trim="form.password" placeholder="请输入收银员密码" class="panel-select-input-220"></el-input>
               </el-form-item>
-              <div class="gray-explain">* 收银员登录方式为主账号+编号+收银员</div>
+              <div class="gray-explain">* 收银员登陆方式为主账号+收银员编号+收银员密码</div>
             </el-form-item>
           </el-form>
           <div class="divider"></div>
@@ -56,7 +56,8 @@
   export default {
     beforeRouteEnter (to, from, next) {
       next((vm) => {
-        vm.form.password = '';
+        vm.$refs['form'].resetFields();
+        vm.getOpuid();
       });
     },
     data() {
@@ -90,10 +91,6 @@
       shop: {
         type: Object
       }
-    },
-
-    created() {
-      this.getOpuid();
     },
 
     methods: {

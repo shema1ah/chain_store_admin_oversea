@@ -307,7 +307,7 @@
         if(this.role.isCashier) {
           this.$message.error('您暂无权限执行此操作');
         }else {
-          this.$route.push('/main/memberredpacket/createpacket');
+          this.$router.push('/main/memberredpacket/createpacket');
         }
       },
 

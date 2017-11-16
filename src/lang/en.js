@@ -252,12 +252,15 @@ exports.default = {
     ltsix: 'More than 6 digits.',
     login: 'Login',
     forgetPwd: 'Forget password?',
+    tab1: 'Merchant',
+    tab2: 'Cashier',
     msg: {
       m1: 'Please enter the account.',
       m2: 'Please enter the password.',
       m3: 'Failed to log in.',
       m4: 'Enter Shop Account',
-      m5: 'Enter Cashier No.'
+      m5: 'Enter Cashier No.',
+      m6: 'Cashier management is coming soon……'
     }
   },
   setting: { // 邮箱设置页

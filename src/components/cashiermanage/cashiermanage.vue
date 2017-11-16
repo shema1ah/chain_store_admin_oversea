@@ -112,12 +112,12 @@
             value: ''
           },
           {
-            name: '已禁用',
-            value: 0
-          },
-          {
             name: '已启用',
             value: 1
+          },
+          {
+            name: '已禁用',
+            value: 0
           }
         ],
         rightsLists: [
@@ -126,12 +126,12 @@
             value: ''
           },
           {
-            name: '无权限',
-            value: 0
-          },
-          {
             name: '有权限',
             value: 1
+          },
+          {
+            name: '无权限',
+            value: 0
           }
         ]
       };
