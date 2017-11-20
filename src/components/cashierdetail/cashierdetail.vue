@@ -210,10 +210,8 @@
             if (data.respcd === config.code.OK) {
               let message;
               if(st === '1') {
-                st = '0';
                 message = this.$t('cashMng.common.m2');
               }else {
-                st = '1';
                 message = this.$t('cashMng.common.m1');
               }
               this.$message({
@@ -245,11 +243,9 @@
             if (data.respcd === config.code.OK) {
               let message;
               if(rg === '1') {
-                message = '权限已关闭';
-                rg = '0';
-              }else {
                 message = '权限已开启';
-                rg = '1';
+              }else {
+                message = '权限已关闭';
               }
               this.$message({
                 type: 'success',

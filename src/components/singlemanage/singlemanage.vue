@@ -58,32 +58,32 @@
       <div class="panel-body" v-else>
         <div class="info_wrapper">
           <div class="info">
-            <div class="info__title">账户状态</div>
-            <div class="info__desc">{{ opinfo.status?'已启用': '已禁用' }}</div>
+            <div class="info__title">{{ $t('cashMng.common.status') }}</div>
+            <div class="info__desc">{{ opinfo.status? $t('cashMng.mng.status3') : $t('cashMng.mng.status4') }}</div>
           </div>
           <div class="info">
-            <div class="info__title">姓名</div>
+            <div class="info__title">{{ $t('cashMng.common.name') }}</div>
             <div class="info__desc">{{ opinfo.opname }}</div>
           </div>
           <div class="info">
-            <div class="info__title">电话</div>
+            <div class="info__title">{{ $t('cashMng.common.mobile') }}</div>
             <div class="info__desc">{{ opinfo.mobile }}</div>
           </div>
           <div class="info">
-            <div class="info__title">门店</div>
+            <div class="info__title">{{ $t('cashMng.common.shop') }}</div>
             <div class="info__desc">{{ shop.shopname }}</div>
           </div>
           <div class="info">
-            <div class="info__title">主账号</div>
+            <div class="info__title">{{ $t('cashMng.common.user') }}</div>
             <div class="info__desc">{{ shop.mobile }}</div>
           </div>
           <div class="info next-bottom">
-            <div class="info__title">收银员编号</div>
+            <div class="info__title">{{ $t('cashMng.common.number') }}</div>
             <div class="info__desc">{{ opinfo.opuid }}</div>
           </div>
           <div class="info">
             <div class="info__title"></div>
-            <div class="gray-explain">* 收银员登陆方式为主账号+收银员编号+收银员密码</div>
+            <div class="gray-explain">{{ $t('cashMng.common.tip1') }}</div>
           </div>
           <div class="info next-bottom" v-if="!role.haiwai">
             <div class="info__title">退款权限</div>
