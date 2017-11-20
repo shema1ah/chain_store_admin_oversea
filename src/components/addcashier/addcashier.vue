@@ -2,45 +2,45 @@
   <div class="addcashier" v-loading="loading">
     <div class="banner_wrapper">
       <div class="banner-breadcrumb">
-        <span>收银员管理</span>
+        <span>{{ $t('cashMng.crumbs.L1') }}</span>
         <i class="icon-right_arrow"></i>
-        <span>添加收银员</span>
+        <span>{{ $t('cashMng.crumbs.L3') }}</span>
       </div>
     </div>
     <div class="panel">
       <div class="panel-header panel-header__fix">
         <div class="panel-select-group">
-          <span class="panel-header__desc">输入收银员信息</span>
+          <span class="panel-header__desc">{{ $t('cashMng.add.title') }}</span>
         </div>
       </div>
       <div class="panel-body">
         <div class="myform_wrapper">
           <el-form :rules="formrules" :model="form" ref="form">
-            <el-form-item label="姓名" prop="opname">
-              <el-input size="small" v-model.trim="form.opname" type="text" placeholder="请输入收银员姓名" class="panel-select-input-220"></el-input>
+            <el-form-item :label="$t('cashMng.common.name')" prop="opname">
+              <el-input size="small" v-model.trim="form.opname" type="text" :placeholder="$t('cashMng.common.m5')" class="panel-select-input-220"></el-input>
             </el-form-item>
-            <el-form-item label="电话" prop="mobile">
-              <el-input size="small" v-model.trim="form.mobile" type="text" placeholder="请输入收银员电话" class="panel-select-input-220"></el-input>
+            <el-form-item :label="$t('cashMng.common.mobile')" prop="mobile">
+              <el-input size="small" v-model.trim="form.mobile" type="text" :placeholder="$t('cashMng.common.m6')" class="panel-select-input-220"></el-input>
             </el-form-item>
-            <el-form-item label="主账号">
+            <el-form-item :label="$t('cashMng.common.user')">
               <span class="input-content">{{ shop.mobile }}</span>
             </el-form-item>
-            <el-form-item label="收银员编号">
+            <el-form-item :label="$t('cashMng.common.number')">
               <span class="input-content">{{ opuid }}</span>
             </el-form-item>
-            <el-form-item label="收银员密码">
+            <el-form-item :label="$t('cashMng.common.password')">
               <el-form-item prop="password">
-                <el-input size="small" type="password" v-model.trim="form.password" placeholder="请输入收银员密码" class="panel-select-input-220"></el-input>
+                <el-input size="small" type="password" v-model.trim="form.password" :placeholder="$t('cashMng.common.m7')" class="panel-select-input-220"></el-input>
               </el-form-item>
-              <div class="gray-explain">* 收银员登陆方式为主账号+收银员编号+收银员密码</div>
+              <div class="gray-explain">{{ $t('cashMng.common.tip1') }}</div>
             </el-form-item>
           </el-form>
           <div class="divider"></div>
           <div class="form-submit_wrapper">
-            <span class="cancel" @click="cancelCreat">放弃添加</span>
+            <span class="cancel" @click="cancelCreat">{{ $t('cashMng.add.btn1') }}</span>
             <div class="panel-btn__download panel-btn__download_detail" @click="submit">
               <span class="el-icon-loading" v-if="loading1"></span>
-              <span v-else>提交</span>
+              <span v-else>{{ $t('cashMng.add.btn2') }}</span>
             </div>
           </div>
         </div>
@@ -73,16 +73,16 @@
         },
         formrules: {
           opname: [
-            { required: true, message: '请输入收银员姓名' },
-            { max: 20, min: 2, message: '请输入2~20位字符' }
+            { required: true, message: this.$t('cashMng.common.m5') },
+            { max: 20, min: 2, message: this.$t('cashMng.common.m8') }
           ],
           mobile: [
-            { required: true, message: '请输入收银员电话' },
-            { pattern: /^1[34578]\d{9}$/, message: '请输入正确的收银员电话' }
+            { required: true, message: this.$t('cashMng.common.m6') },
+            { pattern: /^1[34578]\d{9}$/, message: this.$t('cashMng.common.m9') }
           ],
           password: [
-            { required: true, message: '请输入收银员密码' },
-            { max: 20, min: 6, message: '请输入6~20位字符' }
+            { required: true, message: this.$t('cashMng.common.m7') },
+            { max: 20, min: 6, message: this.$t('cashMng.common.m10') }
           ]
         }
       };
@@ -113,7 +113,7 @@
               if(data.respcd === config.code.OK) {
                 this.$message({
                   type: 'success',
-                  message: '添加收银员成功'
+                  message: this.$t('cashMng.add.tip1')
                 });
                 this.$router.push('/main/cashiermanage');
               } else {
@@ -121,7 +121,7 @@
               }
             }).catch(() => {
               this.loading1 = false;
-              this.$message.error('请求失败');
+              this.$message.error(this.$t('common.netError'));
             })
           }
         });
@@ -140,7 +140,7 @@
           }
         }).catch(() => {
           this.loading = false;
-          this.$message.error('请求失败');
+          this.$message.error(this.$t('cashMng.add.tip2'));
         });
       }
     }

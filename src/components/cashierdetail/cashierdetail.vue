@@ -2,106 +2,106 @@
   <div class="cashierdetail" v-loading="loading">
     <div class="banner_wrapper">
       <div class="banner-breadcrumb">
-        <span>收银员管理</span>
+        <span>{{ $t('cashMng.crumbs.L1') }}</span>
         <i class="icon-right_arrow"></i>
-        <span>查看详情</span>
+        <span>{{ $t('cashMng.crumbs.L2') }}</span>
       </div>
     </div>
 
     <div class="panel">
       <div class="panel-header panel-header__fix">
         <div class="panel-select-group panel-select-group__justify">
-          <span class="panel-header__desc">收银员资料</span>
+          <span class="panel-header__desc">{{ $t('cashMng.detail.title') }}</span>
         </div>
       </div>
       <div class="panel-body" >
         <div class="info_wrapper">
           <div class="info">
-            <div class="info__title">账户状态</div>
+            <div class="info__title">{{ $t('cashMng.common.status') }}</div>
             <div class="info__desc">
               <el-switch v-model="opinfo.status" on-text="" off-text="" on-color="#FF8100" off-color="#d8d8d8" on-value=1 off-value=0 @change="changeStatus"></el-switch>
             </div>
           </div>
           <div class="info">
-            <div class="info__title">姓名</div>
+            <div class="info__title">{{ $t('cashMng.common.name') }}</div>
             <div class="info__desc">{{ opinfo.opname }}</div>
           </div>
           <div class="info">
-            <div class="info__title">电话</div>
+            <div class="info__title">{{ $t('cashMng.common.mobile') }}</div>
             <div class="info__desc">{{ opinfo.mobile }}</div>
           </div>
           <div class="info">
-            <div class="info__title">门店</div>
+            <div class="info__title">{{ $t('cashMng.common.shop') }}</div>
             <div class="info__desc">{{ shop.shopname }}</div>
           </div>
           <div class="info">
-            <div class="info__title">主账号</div>
+            <div class="info__title">{{ $t('cashMng.common.user') }}</div>
             <div class="info__desc">{{ shop.mobile }}</div>
           </div>
           <div class="info">
-            <div class="info__title">收银员编号</div>
+            <div class="info__title">{{ $t('cashMng.common.number') }}</div>
             <div class="info__desc">{{ opinfo.opuid }}</div>
           </div>
           <div class="info next-bottom">
-            <div class="info__title">密码</div>
+            <div class="info__title">{{ $t('cashMng.common.password') }}</div>
             <div class="info__desc">******</div>
           </div>
           <div class="info">
             <div class="info__title"></div>
-            <div class="gray-explain">* 收银员登陆方式为主账号+收银员编号+收银员密码</div>
+            <div class="gray-explain">{{ $t('cashMng.common.tip1') }}</div>
           </div>
-          <div class="info next-bottom">
+          <div class="info next-bottom" v-if="!role.haiwai">
             <div class="info__title">退款权限</div>
             <div class="info__desc">
               <el-switch v-model="opinfo.refund" on-text="" off-text="" on-color="#7ed321" off-color="#d8d8d8" on-value=1 off-value=0 @change="changeRights"></el-switch>
             </div>
           </div>
-          <div class="info">
+          <div class="info" v-if="!role.haiwai">
             <div class="info__title"></div>
             <div class="gray-explain">* 目前收银员仅支持查看活动信息，不支持对红包、集点、储值活动、特卖、店铺公告、会员特权的增删改</div>
           </div>
           <div class="panel-btn-group__wrapper">
-            <a :href="downHref" download v-if="!role.haiwai || role.country === 'HK'">
+            <a :href="downHref" download v-if="!role.haiwai">
               <div class="panel-btn__download panel-btn__download_detail">
                 <i class="icon-download"></i>
-                <span>下载店铺收款码</span>
+                <span>下载收款码</span>
               </div>
             </a>
             <div class="panel-btn__download panel-btn__download_record" @click="changeInfo">
-              <span>编辑收银员资料</span>
+              <span>{{ $t('cashMng.detail.btn') }}</span>
             </div>
           </div>
         </div>
       </div>
     </div>
 
-    <el-dialog title="编辑收银员资料" :visible.sync="showChangeInfo" @close="handleClose" custom-class="mydialog" top="20%" :show-close="false">
+    <el-dialog :title="$t('cashMng.detail.btn')" :visible.sync="showChangeInfo" @close="handleClose" custom-class="mydialog" top="20%" :show-close="false">
       <el-form :model="form" :rules="formrules" ref="form" label-width="90px">
-        <el-form-item label="姓名" prop="opname">
-          <el-input v-model.trim="form.opname" size="small" type="text" placeholder="请输入收银员姓名"></el-input>
+        <el-form-item :label="$t('cashMng.common.name')" prop="opname">
+          <el-input v-model.trim="form.opname" size="small" type="text" :placeholder="$t('cashMng.common.m5')"></el-input>
         </el-form-item>
-        <el-form-item label="电话" prop="mobile">
-          <el-input v-model.trim="form.mobile" size="small" type="text" placeholder="请输入收银员电话"></el-input>
+        <el-form-item :label="$t('cashMng.common.mobile')" prop="mobile">
+          <el-input v-model.trim="form.mobile" size="small" type="text" :placeholder="$t('cashMng.common.m6')"></el-input>
         </el-form-item>
-        <el-form-item label="门店">
+        <el-form-item :label="$t('cashMng.common.shop')">
           <div>{{ shop.shopname }}</div>
         </el-form-item>
 
-        <el-form-item label="主账号">
+        <el-form-item :label="$t('cashMng.common.user')">
           <div>{{ shop.mobile }}</div>
         </el-form-item>
-        <el-form-item label="收银员编号">
+        <el-form-item :label="$t('cashMng.common.number')">
           <div>{{ opuid }}</div>
         </el-form-item>
-        <el-form-item label="密码" prop="password">
-          <el-input v-model="form.password" size="small" type="password" placeholder="请输入收银员密码" @keyup.delete.native="onDelete" @blur="passBlur"></el-input>
+        <el-form-item :label="$t('cashMng.common.password')" prop="password">
+          <el-input v-model="form.password" size="small" type="password" :placeholder="$t('cashMng.common.m7')" @keyup.delete.native="onDelete" @blur="passBlur"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <div @click="showChangeInfo = false" class="cancel">关闭</div>
+        <div @click="showChangeInfo = false" class="cancel">{{ $t('common.close') }}</div>
         <div @click="submit" class="submit">
           <span class="el-icon-loading" v-if="iconShow"></span>
-          <span v-else>确认</span>
+          <span v-else>{{ $t('common.confirm') }}</span>
         </div>
       </div>
     </el-dialog>
@@ -140,16 +140,16 @@
         },
         formrules: {
           opname: [
-            { required: true, message: '请输入收银员姓名' },
-            { max: 20, min: 2, message: '请输入2~20位字符' }
+            { required: true, message: this.$t('cashMng.common.m5') },
+            { max: 20, min: 2, message: this.$t('cashMng.common.m8') }
           ],
           mobile: [
-            { required: true, message: '请输入收银员电话' },
-            { pattern: /^1[34578]\d{9}$/, message: '请输入正确的收银员电话' }
+            { required: true, message: this.$t('cashMng.common.m6') },
+            { pattern: /^1[34578]\d{9}$/, message: this.$t('cashMng.common.m9') }
           ],
           password: [
-            { required: true, message: '请输入收银员密码' },
-            { max: 20, min: 6, message: '请输入6~20位字符' }
+            { required: true, message: this.$t('cashMng.common.m7') },
+            { max: 20, min: 6, message: this.$t('cashMng.common.m10') }
           ]
         }
       };
@@ -192,7 +192,7 @@
           }
         }).catch(() => {
           this.loading = false;
-          this.$message.error('请求失败');
+          this.$message.error(this.$t('common.netError'));
         });
       },
 
@@ -211,10 +211,10 @@
               let message;
               if(st === '1') {
                 st = '0';
-                message = '账户已启用';
+                message = this.$t('cashMng.common.m2');
               }else {
                 st = '1';
-                message = '账户已禁用';
+                message = this.$t('cashMng.common.m1');
               }
               this.$message({
                 type: 'success',
@@ -225,9 +225,7 @@
             }
           }).catch(() => {
             this.loading = false;
-            this.$message.error('请求失败');
-            // 页面重新请求数据
-            this.getInfo();
+            this.$message.error(this.$t('common.netError'));
           })
         }
       },
@@ -247,10 +245,10 @@
             if (data.respcd === config.code.OK) {
               let message;
               if(rg === '1') {
-                message = '权限已开启';
+                message = '权限已关闭';
                 rg = '0';
               }else {
-                message = '权限已关闭';
+                message = '权限已开启';
                 rg = '1';
               }
               this.$message({
@@ -262,7 +260,7 @@
             }
           }).catch(() => {
             this.loading = false;
-            this.$message.error('请求失败');
+            this.$message.error(this.$t('common.netError'));
           })
         }
       },
@@ -312,7 +310,7 @@
               if (data.respcd === config.code.OK) {
                 this.$message({
                   type: 'success',
-                  message: '修改成功'
+                  message: this.$t('common.modSucc')
                 });
                 // 路由重新渲染
                 this.getInfo();
@@ -322,7 +320,7 @@
             }).catch(() => {
               this.iconShow = false;
               this.showChangeInfo = false;
-              this.$message.error('请求失败');
+              this.$message.error(this.$t('common.netError'));
             })
           }
         });
@@ -337,6 +335,3 @@
   };
 </script>
 
-<style lang="scss">
-
-</style>

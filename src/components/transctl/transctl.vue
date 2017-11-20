@@ -466,13 +466,13 @@
               this.checkValue = value;
               this.showConfirm = true;
             }else {
-              this.$message.error('您暂无权限执行此操作');
+              this.$message.error(this.$t('tradeMng.msg.m11'));
             }
           } else {
             this.$message.error(data.resperr);
           }
         }).catch(() => {
-          this.$message.error('请求失败');
+          this.$message.error(this.$t('common.netError'));
         });
       },
 

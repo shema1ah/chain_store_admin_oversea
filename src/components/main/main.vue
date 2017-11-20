@@ -117,6 +117,8 @@ export default {
   .main {
     padding-left: 220px;
     min-height: 100%;
+    display: flex;
+    flex-direction: column;
     @at-root .header {
       display: flex;
       height: 50px;
@@ -156,5 +158,9 @@ export default {
         }
       }
     }
+  }
+
+  .top_content {
+    height: 100%;
   }
 </style>

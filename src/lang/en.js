@@ -19,6 +19,8 @@ exports.default = {
   common: {
     ok: 'OK',
     cancel: 'Cancel',
+    close: 'Close',
+    confirm: 'Confirm',
     tip: 'Tips',
     all: 'All',
     netError: 'Net error',
@@ -45,8 +47,7 @@ exports.default = {
         editPwd: 'Change Password',
         editSub: 'Edit Branch Shop',
         editSubTag: 'Edit Customized ID',
-        down: 'Shop QR Code',
-        downTip: 'Click to download QR code'
+        down: 'Shop QR Code'
       },
       table: {
         subName: 'Branch Name',
@@ -221,7 +222,8 @@ exports.default = {
       m7: 'Failed to refund.',
       m8: 'Please enter the Transaction ID.',
       m9: "Please enter the account's password.",
-      m10: 'invalidate password.'
+      m10: 'invalidate password.',
+      m11: 'You don’t have the authority to proceed.'
     }
   },
   home: { // 首页概览
@@ -280,6 +282,52 @@ exports.default = {
       m2: 'Please enter correct email address.',
       m3: 'Fetch email address failed!'
     }
+  },
+  cashMng: { // 收银员管理
+    crumbs: {
+      L1: 'Cashier Management',
+      L2: 'Details',
+      L3: 'Add Cashier'
+    },
+    common: {
+      status: 'Status',
+      number: 'Cashier No.',
+      name: 'Name',
+      mobile: 'Phone Number',
+      shop: 'Shop Name',
+      user: 'Shop Account',
+      password: 'Cashier Password',
+      m1: 'Account is deactivated',
+      m2: 'Account is activated',
+      m5: 'Cashier Name',
+      m6: 'Cashier Contact',
+      m7: 'Cashier Password',
+      m8: 'Please enter 2-20 characters',
+      m9: 'Please input a valid phone number',
+      m10: 'Please enter 6-20 characters',
+      tip1: '* Cashier can login with Shop Account, Cashier No. and Cashier Password'
+    },
+    mng: {
+      status1: 'Active',
+      status2: 'Inactive',
+      status3: 'Activate Account',
+      status4: 'Deactivate Account',
+      name: 'Cashier Name',
+      mobile: 'Cashier Contact',
+      op: 'Operation',
+      detail: 'Details',
+      m5: 'Fail to get cashier’s data'
+    },
+    detail: {
+      title: 'Cashier Info',
+      btn: 'Edit Cashier Info'
+    },
+    add: {
+      title: 'Add Cashier Info',
+      tip1: 'One cashier is added',
+      tip2: 'Fail to get cashier’s number',
+      btn1: 'Cancel',
+      btn2: 'Confirm'
+    }
   }
-
 }
