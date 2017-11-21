@@ -150,3 +150,15 @@ input:-webkit-autofill { box-shadow: 0 0 0px 1000px white inset !important;}
   }
 }
 
+// 下拉框换行样式
+.el-select .el-tag {
+  height: auto;
+  .el-select__tags-text {
+    height: 24px;
+    line-height: 24px;
+    white-space: pre-wrap;
+    word-break: break-all;
+    word-wrap: break-word;
+  }
+}
+
