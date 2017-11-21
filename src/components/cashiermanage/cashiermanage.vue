@@ -2,12 +2,12 @@
   <div class="cashiermanage">
     <div class="banner_wrapper">
       <el-breadcrumb separator=">">
-        <el-breadcrumb-item>收银员管理</el-breadcrumb-item>
+        <el-breadcrumb-item>{{ $t('cashMng.crumbs.L1') }}</el-breadcrumb-item>
       </el-breadcrumb>
       <div class="btn-wrap">
         <div class="banner-btn" @click="addCashier">
           <i class="icon-create"></i>
-          <span class="banner-btn__desc">添加收银员</span>
+          <span class="banner-btn__desc">{{ $t('cashMng.crumbs.L3') }}</span>
         </div>
       </div>
     </div>
@@ -15,15 +15,15 @@
       <div class="panel-header">
         <div class="panel-select-group">
           <div class="panel-select__wrapper">
-            <span class="panel-select__desc">账户状态</span>
-            <el-select v-model="stateValue" placeholder="全部" size="small" @change="stateChange">
+            <span class="panel-select__desc">{{ $t('cashMng.common.status') }}</span>
+            <el-select v-model="stateValue" :placeholder="$t('common.all')" size="small" @change="stateChange">
               <el-option v-for="item in stateLists" :label="item.name" :value="item.value" :key="item.value">
               </el-option>
             </el-select>
           </div>
-          <div class="panel-select__wrapper">
+          <div class="panel-select__wrapper" v-if="!role.haiwai">
             <span class="panel-select__desc">退款权限</span>
-            <el-select v-model="rightsValue" placeholder="全部" size="small" @change="rightsChange">
+            <el-select v-model="rightsValue" :placeholder="$t('common.all')" size="small" @change="rightsChange">
               <el-option v-for="item in rightsLists" :label="item.name" :value="item.value" :key="item.value">
               </el-option>
             </el-select>
@@ -32,25 +32,25 @@
       </div>
       <div class="panel-body">
         <el-table :data="cashierData.opusers" style="width: 100%" row-class-name="el-table__row_fix" v-loading="loading" id="memberredcollect">
-          <el-table-column prop="opuid" label="收银员编号"></el-table-column>
-          <el-table-column prop="opname" label="收银员名称"></el-table-column>
-          <el-table-column prop="mobile" label="收银员电话"></el-table-column>
-          <el-table-column label="账户状态">
+          <el-table-column prop="opuid" :label="$t('cashMng.common.number')"></el-table-column>
+          <el-table-column prop="opname" :label="$t('cashMng.mng.name')"></el-table-column>
+          <el-table-column prop="mobile" :label="$t('cashMng.mng.mobile')"></el-table-column>
+          <el-table-column :label="$t('cashMng.common.status')">
             <template scope="scope">
               <el-switch v-model="scope.row.status" on-text="" off-text="" on-color="#FF8100" off-color="#d8d8d8" on-value=1 off-value=0 @change="changeStatus(scope.row.opuid, scope.row.status)"></el-switch>
-              <span class="explain">{{ scope.row.status == 1?'启用账户':'禁止账户' }}</span>
+              <span class="explain">{{ scope.row.status == 1 ? $t('cashMng.mng.status3') : $t('cashMng.mng.status4') }}</span>
             </template>
           </el-table-column>
-          <el-table-column prop="refund" label="退款权限状态">
+          <el-table-column prop="refund" label="退款权限状态" v-if="!role.haiwai">
             <template scope="scope">
               <el-switch v-model="scope.row.refund" on-text="" off-text="" on-color="#7ed321" off-color="#d8d8d8" on-value=1 off-value=0 @change="changeRights(scope.row.opuid, scope.row.refund)"></el-switch>
-              <span class="explain">{{ scope.row.refund == 1?'开启退款':'关闭退款' }}</span>
+              <span class="explain">{{ scope.row.refund == 1 ? '开启退款' : '关闭退款' }}</span>
             </template>
           </el-table-column>
-          <el-table-column min-width="150" label="操作">
+          <el-table-column min-width="150" :label="$t('cashMng.mng.op')">
             <template scope="scope">
-              <el-button type="text" size="small" class="el-button__fix" @click="goDetail(scope.row.opuid)">查看详情</el-button>
-              <a :href="downHref + scope.row.opuid" download class="el-button__fix el-button--text">下载店铺收款码</a>
+              <el-button type="text" size="small" class="el-button__fix" @click="goDetail(scope.row.opuid)">{{ $t('cashMng.mng.detail') }}</el-button>
+              <a :href="downHref + scope.row.opuid" download v-if="!role.haiwai" class="el-button__fix el-button--text">下载收款码</a>
             </template>
           </el-table-column>
         </el-table>
@@ -108,21 +108,21 @@
         currentPage: 1,
         stateLists: [
           {
-            name: '全部',
+            name: this.$t('common.all'),
             value: ''
           },
           {
-            name: '已启用',
+            name: this.$t('cashMng.mng.status1'),
             value: 1
           },
           {
-            name: '已禁用',
+            name: this.$t('cashMng.mng.status2'),
             value: 0
           }
         ],
         rightsLists: [
           {
-            name: '全部',
+            name: this.$t('common.all'),
             value: ''
           },
           {
@@ -184,7 +184,7 @@
           }
         }).catch(() => {
           this.loading = false;
-          this.$message.error('获取收银员数据失败');
+          this.$message.error(this.$t('cashMng.mng.m5'));
         });
       },
 
@@ -237,10 +237,10 @@
         let s, message;
         if(st === '1') {
           s = 0 + '';
-          message = '账户已禁用';
+          message = this.$t('cashMng.common.m1');
         }else {
           s = 1 + '';
-          message = '账户已启用';
+          message = this.$t('cashMng.common.m2');
         }
         if(!this.loading) {
           this.loading = true;
@@ -263,9 +263,7 @@
             // this.getData();
           }).catch(() => {
             this.loading = false;
-            this.$message.error('请求失败');
-            // 页面重新请求数据
-            this.getData();
+            this.$message.error(this.$t('common.netError'));
           })
         }
       },
@@ -301,9 +299,7 @@
             rg = s;
           }).catch(() => {
             this.loading = false;
-            this.$message.error('请求失败');
-            // 页面重新请求数据
-            this.getData();
+            this.$message.error(this.$t('common.netError'));
           })
         }
       }
