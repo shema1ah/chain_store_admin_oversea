@@ -39,10 +39,7 @@
               </router-link>
             </li>
             <li>
-              <router-link class="sidebar-nav__item sidebar-nav__subitem" :to="{ path: '/main/merchandise' }">
-                商品管理
-              </router-link>
-              <!--<a href="/wxofficial/setting#!/goods-management" class="sidebar-nav__item sidebar-nav__subitem">商品管理</a>-->
+              <a href="/wxofficial/setting#!/goods-management" class="sidebar-nav__item sidebar-nav__subitem">商品管理</a>
             </li>
           </ul>
         </transition>
