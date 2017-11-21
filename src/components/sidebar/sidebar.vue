@@ -228,6 +228,9 @@
                 val: '交易管理',
                 pathname: 'transctl'
               }, {
+                val: this.$t('nav.publicAuth'),
+                pathname: 'publicauth'
+              }, {
                 val: this.$t('nav.shopMng'),
                 pathname: 'chainmanage'
               }
@@ -288,6 +291,9 @@
                 }, {
                   val: '交易管理',
                   pathname: 'transctl'
+                }, {
+                  val: this.$t('nav.publicAuth'),
+                  pathname: 'publicauth'
                 }, {
                   val: this.$t('nav.shopMng'),
                   pathname: 'singlemanage'

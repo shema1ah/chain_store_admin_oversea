@@ -24,7 +24,7 @@
             <div class="info-left">
               <div class="info-img">
                 <img v-if="storeData.avatar" :src="storeData.avatar" alt="头像">
-                <img src="./img/default.png" alt="头像" v-else>
+                <img src="../../assets/img/default.png" alt="头像" v-else>
               </div>
               <div class="information">
                 <p class="info-title">{{ storeData.name }}</p>
