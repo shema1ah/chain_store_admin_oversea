@@ -119,7 +119,6 @@
     beforeRouteEnter (to, from, next) {
       next((vm) => {
         let alterData = Store.get('alterstoredata');
-        console.log(alterData, 888)
         let info = alterData.activity_info;
 
         let rules = alterData.activity_info.rules || [];
@@ -251,7 +250,6 @@
 
       shopList() {
         let shopData = deepClone(this.$store.state.shopData || {});
-        console.log(shopData, 6666)
         return shopData.list || [];
       }
     },
