@@ -78,7 +78,7 @@
           ],
           mobile: [
             { required: true, message: this.$t('cashMng.common.m6') },
-            { pattern: /^1[34578]\d{9}$/, message: this.$t('cashMng.common.m9') }
+            { pattern: /^((\d{11})|^((\d{7,8})|(\d{4}|\d{3})-(\d{7,8})|(\d{4}|\d{3})-(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1})|(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1}))$)$/, message: this.$t('cashMng.common.m9') }
           ],
           password: [
             { required: true, message: this.$t('cashMng.common.m7') },
