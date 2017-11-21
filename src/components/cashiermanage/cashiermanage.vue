@@ -1,9 +1,9 @@
 <template>
   <div class="cashiermanage">
     <div class="banner_wrapper">
-      <div class="banner-breadcrumb">
-        <span>收银员管理</span>
-      </div>
+      <el-breadcrumb separator=">">
+        <el-breadcrumb-item>收银员管理</el-breadcrumb-item>
+      </el-breadcrumb>
       <div class="btn-wrap">
         <div class="banner-btn" @click="addCashier">
           <i class="icon-create"></i>

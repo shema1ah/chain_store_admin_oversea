@@ -1,11 +1,10 @@
 <template>
   <div class="cashierdetail" v-loading="loading">
     <div class="banner_wrapper">
-      <div class="banner-breadcrumb">
-        <span>收银员管理</span>
-        <i class="icon-right_arrow"></i>
-        <span>查看详情</span>
-      </div>
+      <el-breadcrumb separator=">">
+        <el-breadcrumb-item :to="{ path: '/main/cashiermanage' }" replace>收银员管理</el-breadcrumb-item>
+        <el-breadcrumb-item>查看详情</el-breadcrumb-item>
+      </el-breadcrumb>
     </div>
 
     <div class="panel">

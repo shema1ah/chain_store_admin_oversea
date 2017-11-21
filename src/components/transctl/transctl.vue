@@ -605,14 +605,7 @@
     justify-content: space-between;
     font-size: 18px;
     background-color: #fff;
-    .banner-breadcrumb {
-      display: flex;
-      align-items: center;
-      .icon-right_arrow {
-        font-size: 6px;
-        margin: 0px 8px;
-      }
-    }
+
     @at-root .banner-btn {
       display: flex;
       justify-content: center;
