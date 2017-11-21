@@ -147,24 +147,19 @@
                 let val = getRole(data.data) || '';
                 this.$store.state.role = val;
                 Store.set('role', val);
-                // 海外收银员暂时关闭
-                let role = Store.get('role') || {}
-                if(role.haiwai && role.isCashier) {
-                  this.$message.error(this.$t('login.msg.m6'));
-                }else {
-                  Store.set('flag', false);
+                Store.set('flag', false);
 
-                  // 当前域名下设置cookie
-                  let bicon = new Image();
-                  let sid = getCookie('sessionid') || '';
-                  if(sid) {
-                    bicon.style.display = 'none';
-                    bicon.src = `${config.ohost}/mchnt/set_cookie?sessionid=${sid}`;
-                  }
-                  setTimeout(function() {
-                    _this.$router.push('/main/index');
-                  }, 0)
+                // 当前域名下设置cookie
+                let bicon = new Image();
+                let sid = getCookie('sessionid') || '';
+                if(sid) {
+                  bicon.style.display = 'none';
+                  bicon.src = `${config.ohost}/mchnt/set_cookie?sessionid=${sid}`;
                 }
+                setTimeout(function() {
+                  _this.$router.push('/main/index');
+                }, 0)
+
               } else {
                 this.$message.error(data.resperr);
               }
