@@ -1,12 +1,12 @@
 <template>
   <div class="top_content" v-loading.fullscreen="loading" :element-loading-text="$t('common.loading')">
-    <sidebar></sidebar>
+    <sidebar :shop="shop"></sidebar>
     <div class="main">
       <div class="header">
 
         <div class="user_wrapper">
           <div class="user_name">
-            {{shop.shopname?'Welcome, '+shop.shopname:''}}
+            {{ role.isCashier?`Welcome,${(shop.opinfo || {}).opname}(${(shop.opinfo || {}).opuid})`:'Welcome'}}
           </div>
           <a href="javascript:;" @click="logout">
             <div class="user_operation">
@@ -76,8 +76,10 @@ export default {
     },
 
     getData() {
+      this.loading = true;
       axios.get(`${config.host}/merchant/info?format=cors`)
         .then((res) => {
+          this.loading = false;
           let data = res.data;
           if(data.respcd === config.code.OK) {
             // 本地调试或者刷新页面时设置role
@@ -94,6 +96,7 @@ export default {
           }
         })
         .catch(() => {
+          this.loading = false;
         this.$message.error(this.$t('common.netError'));
         // console.log(err && err.respmsg)
         });
@@ -114,6 +117,8 @@ export default {
   .main {
     padding-left: 220px;
     min-height: 100%;
+    display: flex;
+    flex-direction: column;
     @at-root .header {
       display: flex;
       height: 50px;
@@ -153,5 +158,9 @@ export default {
         }
       }
     }
+  }
+
+  .top_content {
+    height: 100%;
   }
 </style>

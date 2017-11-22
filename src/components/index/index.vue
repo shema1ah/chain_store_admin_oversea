@@ -180,8 +180,17 @@
       }
     },
     created() {
-      this.fetchDashboardData()
-      this.fetchActivityData()
+      // 收银员角色跳转实时收款
+      if(this.role.isCashier) {
+        if(this.role.haiwai) {
+          this.$router.push('/main/transctl');
+        }else {
+          this.$router.push('/main/todaytrade');
+        }
+      }else {
+        this.fetchDashboardData()
+        this.fetchActivityData()
+      }
     },
     methods: {
       fetchDashboardData() {

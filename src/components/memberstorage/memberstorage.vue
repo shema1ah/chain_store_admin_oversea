@@ -266,32 +266,36 @@
       },
 
       cancelStorage(id) {
-        this.$confirm('是否要取消此活动?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '关闭'
-        })
-        .then(() => {
-          axios.post(`${config.host}/merchant/prepaid/stop`, {
-            activity_id: id
-          }).then((res) => {
-            let data = res.data;
-            if(data.respcd === config.code.OK) {
-              this.$message({
-                type: 'success',
-                message: '取消储值活动成功'
+        if(this.role.isCashier) {
+          this.$message.error('您暂无权限执行此操作');
+        }else {
+          this.$confirm('是否要取消此活动?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '关闭'
+          })
+            .then(() => {
+              axios.post(`${config.host}/merchant/prepaid/stop`, {
+                activity_id: id
+              }).then((res) => {
+                let data = res.data;
+                if(data.respcd === config.code.OK) {
+                  this.$message({
+                    type: 'success',
+                    message: '取消储值活动成功'
+                  });
+                  this.$store.dispatch('getStorageData', {
+                    params: this.basicParams
+                  });
+                } else {
+                  this.$message.error(data.resperr);
+                }
+              }).catch(() => {
+                this.$message.error('取消储值活动失败');
               });
-              this.$store.dispatch('getStorageData', {
-                params: this.basicParams
-              });
-            } else {
-              this.$message.error(data.resperr);
-            }
-          }).catch(() => {
-            this.$message.error('取消储值活动失败');
+            }).catch(() => {
+            console.log("取消");
           });
-        }).catch(() => {
-          console.log("取消");
-        });
+        }
       },
 
       fixData(data) {
@@ -305,12 +309,15 @@
 
       // 编辑储值
       changeStorage(id) {
-        this.loading = true;
-        axios.get(`${config.host}/merchant/prepaid/detail`, {
-          params: {
-            activity_id: id
-          }
-        }).then((res) => {
+        if(this.role.isCashier) {
+          this.$message.error('您暂无权限执行此操作');
+        }else {
+          this.loading = true;
+          axios.get(`${config.host}/merchant/prepaid/detail`, {
+            params: {
+              activity_id: id
+            }
+          }).then((res) => {
             let data = res.data;
             this.loading = false;
             if(data.respcd === config.code.OK) {
@@ -320,10 +327,11 @@
               this.$message.error(data.resperr);
             }
           })
-          .catch(() => {
-            this.loading = false;
-            this.$message.error('获取储值详情失败');
-          });
+            .catch(() => {
+              this.loading = false;
+              this.$message.error('获取储值详情失败');
+            });
+        }
       },
 
       hasPending() {
@@ -381,10 +389,14 @@
       },
 
       createStorage() {
-        if(!this.role.single) {
-          this.$router.push('/main/memberstorage/createstorage');
+        if(this.role.isCashier) {
+          this.$message.error('您暂无权限执行此操作');
         }else {
-          this.hasPending();
+          if(!this.role.single) {
+            this.$router.push('/main/memberstorage/createstorage');
+          }else {
+            this.hasPending();
+          }
         }
       }
     }

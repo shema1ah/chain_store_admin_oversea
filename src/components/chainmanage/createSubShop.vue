@@ -101,8 +101,8 @@
               <span class="panel-header__desc">商户基础信息</span>
             </div>
 
-            <el-form-item label="店主姓名" prop="bankuser">
-              <el-input v-model.trim="shopInfo.bankuser" size="small" type="text" placeholder="请与收款卡号开户名一致"
+            <el-form-item label="店主姓名" prop="ownerName">
+              <el-input v-model.trim="shopInfo.ownerName" size="small" type="text" placeholder="请与收款卡号开户名一致"
                         auto-complete="off" class="sub-account-item-info"></el-input>
             </el-form-item>
 
@@ -542,14 +542,6 @@
         }
       };
 
-      let nameValid = (rule, val, cb) => {
-        if (!/^[\u4e00-\u9fa5A-Za-z\s]*$/.test(val)) {
-          cb('请输入汉字或字母');
-        } else {
-          cb();
-        }
-      };
-
       let shopValid = (rule, val, cb) => {
         if (!/^[\u4e00-\u9fa5A-Za-z\d\(\（\)\）]*$/.test(val)) {
           cb('请不要输入特殊字符');
@@ -592,6 +584,7 @@
           city_id: '', //  城市代号
           location: '', // 店铺地址
           address: '', // 详细门牌号
+          ownerName: '', // 店主姓名
           idnumber: '', // 店主身份证号
           idstatdate: '', // 身份证有效开始日期(格式：2016-01-05)
           idenddate: '', // 身份证有效截止日期(格式：2017-01-05)
@@ -663,9 +656,33 @@
           idenddate: [
             {validator: expireValid}
           ],
+          ownerName: [
+            {required: true, message: '请输入店主姓名', trigger: 'blur'},
+            {max: 25, message: '最多输入25个字符'},
+            {
+              validator: (rule, val, cb) => {
+                if (!/^[\u4e00-\u9fa5A-Za-z\s]*$/.test(val)) {
+                  cb('请输入汉字或字母');
+                } else {
+                  this.shopInfo.bankuser = val;
+                  cb();
+                }
+              }
+            }
+          ],
           bankuser: [
             {required: true, message: '请输入开户名', trigger: 'blur'},
-            {validator: nameValid}
+            {max: 25, message: '最多输入25个字符'},
+            {
+              validator: (rule, val, cb) => {
+                if (!/^[\u4e00-\u9fa5A-Za-z\s]*$/.test(val)) {
+                  cb('请输入汉字或字母');
+                } else {
+                  this.shopInfo.ownerName = val;
+                  cb();
+                }
+              }
+            }
           ],
           bankaccount: [
             {required: true, message: '请输入银行卡号', trigger: 'blur'},
@@ -1082,7 +1099,8 @@
           this.shopInfo.initlng = loc.position.lng;
           this.shopInfo.initlat = loc.position.lat;
         }
-        this.shopInfo.location = loc.formattedAddress;
+        // 地址格式化 字符必须是中英文或数字或中英文括号
+        this.shopInfo.location = loc.formattedAddress.replace(/[^\u4e00-\u9fa5A-Za-z\d\(\（\)\）]/g, '');
 
         if (_adcode) {
           this.getBankLocation();

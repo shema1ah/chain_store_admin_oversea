@@ -40,15 +40,12 @@
                 </el-select>
               </el-form-item>
             </div>
-            <div class="panel-select__wrapper">
+            <div class="panel-select__wrapper" v-if="!role.isCashier">
               <span class="panel-select__desc">{{$t('tradeMng.panel.operator')}}</span>
               <el-form-item>
                 <el-select v-model="form.operaValue" :placeholder="$t('tradeMng.table.all')" size="small" @change="operaChange" :disabled="form.selectShopUid === ''">
                   <el-option :label="$t('tradeMng.table.all')" value=""></el-option>
-                  <el-option
-                          v-for="(label, value) in operaList"
-                         :label="label" :value="value" :key="value">
-                  </el-option>
+                  <el-option v-for="(label, value) in operaList" :label="label" :value="value" :key="value"></el-option>
                 </el-select>
               </el-form-item>
             </div>
@@ -125,7 +122,7 @@
             <el-dropdown>
               <span class="el-dropdown-link"><img src="./img/download.png" alt="download"></span>
               <el-dropdown-menu slot="dropdown">
-                <a :href="detailHref" download><el-dropdown-item command=1>{{$t('tradeMng.table.btn.downDetail')}}</el-dropdown-item></a>
+                <a :href="detailHref" download class="downDetail"><el-dropdown-item command=1>{{$t('tradeMng.table.btn.downDetail')}}</el-dropdown-item></a>
                 <a :href="collectionHref" download><el-dropdown-item command=2>{{$t('tradeMng.table.btn.downTrade')}}</el-dropdown-item></a>
               </el-dropdown-menu>
             </el-dropdown>
@@ -199,13 +196,12 @@
     </div>
 
     <el-dialog :title="$t('common.tip')" :visible.sync="showConfirm" custom-class="mydialog" top="20%"
-               :show-close="false" @close="handleClose">
+               :show-close="false" @close="handleClose('formpwd')">
       <div style="margin-bottom: 20px;">{{$t('tradeMng.dialog.d1')}}</div>
       <el-form :model="formpwd" :rules="pwdrules" ref="formpwd">
         <el-form-item prop="pwd">
           <el-input v-model="formpwd.pwd" :placeholder="$t('tradeMng.msg.m9')" type="password" @keyup.enter.native="onEnter"></el-input>
         </el-form-item>
-
       </el-form>
       <div slot="footer" class="dialog-footer">
         <div @click="checkPwd" class="submit">
@@ -247,6 +243,9 @@
         checkValue: {},
         formpwd: {
           pwd: ''
+        },
+        formSend: {
+          email: ''
         },
         iconLoading: false,
         pageSize: 10,
@@ -303,12 +302,13 @@
     },
 
     computed: {
+      collectionHref() {
+        return `${config.host}/merchant/trade/total?${qs.stringify(this.basicParams)}`;
+      },
+
       detailHref() {
         let detailParmas = Object.assign({}, this.basicParams, {isdownload: true});
         return `${config.host}/merchant/trade/download?${qs.stringify(detailParmas)}`;
-      },
-      collectionHref() {
-        return `${config.host}/merchant/trade/total?${qs.stringify(this.basicParams)}`;
       },
 
       shopData() {
@@ -374,10 +374,9 @@
     },
 
     methods: {
-
       // 关闭弹出层
-      handleClose() {
-        this.$refs['formpwd'].resetFields();
+      handleClose(form) {
+        this.$refs[form].resetFields();
       },
 
       // 撤销操作
@@ -449,8 +448,32 @@
 
       // 确认弹框
       confirm(val) {
-        this.checkValue = val;
-        this.showConfirm = true;
+        if(this.role.isCashier) {
+          this.cheekRefund(val);
+        }else {
+          this.checkValue = val;
+          this.showConfirm = true;
+        }
+      },
+
+      // 验证收银员退款权限
+      cheekRefund(value) {
+        axios.get(`${config.ohost}/mchnt/opuser/perms?format=cors`).then((res) => {
+          let data = res.data;
+          if(data.respcd === config.code.OK) {
+            let response = data.data || {};
+            if(response.refund === 1) {
+              this.checkValue = value;
+              this.showConfirm = true;
+            }else {
+              this.$message.error(this.$t('tradeMng.msg.m11'));
+            }
+          } else {
+            this.$message.error(data.resperr);
+          }
+        }).catch(() => {
+          this.$message.error(this.$t('common.netError'));
+        });
       },
 
       // 选择时间

@@ -8,12 +8,15 @@ exports.default = {
     tradeMng: '交易管理',
     billMng: '账单管理',
     publicAuth: '公众号授权',
-    shopMng: '门店管理',
+    shopMng: '账户信息',
+    cashMng: '收银员管理',
     setup: '设置'
   },
   common: {
     ok: '确 定',
     cancel: '取 消',
+    close: '关 闭',
+    confirm: '确 认',
     tip: '提示',
     all: '全部',
     netError: '网络错误',
@@ -27,7 +30,7 @@ exports.default = {
   },
   shopmng: { // 门店管理模块
     crumbs: {
-      L1: '门店管理'
+      L1: '账户信息'
     },
     title: {
       baseInfo: '基本信息',
@@ -40,8 +43,7 @@ exports.default = {
         editPwd: '修改密码',
         editSub: '编辑分店',
         editSubTag: '编辑分店编号',
-        down: '下载店铺收款码',
-        downTip: '点击下载店铺收款二维码'
+        down: '下载店铺收款码'
       },
       table: {
         subName: '分店名称',
@@ -162,6 +164,7 @@ exports.default = {
       yestoday: '昨天',
       near7: '近7天',
       near30: '近30天',
+      near365: '近一年',
       shopName: '店铺名称',
       operator: '收银员',
       moreFilter: '更多筛选',
@@ -215,7 +218,8 @@ exports.default = {
       m7: '撤销失败',
       m8: '请输入流水号',
       m9: '请输入账户密码',
-      m10: '密码不正确'
+      m10: '密码不正确',
+      m11: '您暂无权限执行此操作'
     }
   },
   home: { // 首页概览
@@ -241,13 +245,19 @@ exports.default = {
   login: { // 登录页
     head: '商户管理后台',
     reg: '注册账号',
+    user: '主账号',
+    cash: '收银员编号',
     ltsix: '6位以上',
     login: '登录',
     forgetPwd: '忘记密码?',
+    tab1: '商户',
+    tab2: '收银员',
     msg: {
       m1: '请输入账号',
       m2: '请输入密码',
-      m3: '登录失败'
+      m3: '登录失败',
+      m4: '请输入主账号',
+      m5: '请输入收银员编号'
     }
   },
   setting: { // 邮箱设置页
@@ -267,5 +277,53 @@ exports.default = {
       m2: '请输入正确的邮箱地址',
       m3: '获取邮箱设置失败!'
     }
+  },
+  cashMng: { // 收银员管理
+    crumbs: {
+      L1: '收银员管理',
+      L2: '查看详情',
+      L3: '添加收银员'
+    },
+    common: {
+      status: '账户状态',
+      number: '收银员编号',
+      name: '姓名',
+      mobile: '电话',
+      shop: '门店',
+      user: '主账号',
+      password: '收银员密码',
+      m1: '账户已禁用',
+      m2: '账户已启用',
+      m5: '请输入收银员姓名',
+      m6: '请输入收银员电话',
+      m7: '请输入收银员密码',
+      m8: '请输入2~20位字符',
+      m9: '请输入正确的收银员电话',
+      m10: '请输入6~20位字符',
+      tip1: '* 收银员登陆方式为主账号+收银员编号+收银员密码'
+    },
+    mng: {
+      status1: '已启用',
+      status2: '已禁用',
+      status3: '启用账户',
+      status4: '禁用账户',
+      name: '收银员名称',
+      mobile: '收银员电话',
+      op: '操作',
+      detail: '查看详情',
+      m5: '获取收银员数据失败'
+    },
+    detail: {
+      title: '收银员资料',
+      btn: '编辑收银员资料'
+    },
+    add: {
+      title: '输入收银员信息',
+      tip1: '添加收银员成功',
+      tip2: '获取收银员编号失败',
+      btn1: '放弃添加',
+      btn2: '提交'
+    }
   }
 }
+

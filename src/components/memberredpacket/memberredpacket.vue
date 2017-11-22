@@ -6,12 +6,10 @@
         <i class="icon-right_arrow"></i>
         <span>会员红包</span>
       </div>
-      <router-link to="/main/memberredpacket/createpacket">
-        <div class="banner-btn">
-          <i class="icon-create"></i>
-          <span class="banner-btn__desc">新建红包</span>
-        </div>
-      </router-link>
+      <div class="banner-btn" @click="creatPackage">
+        <i class="icon-create"></i>
+        <span class="banner-btn__desc">新建红包</span>
+      </div>
     </div>
     <div class="panel">
       <div class="panel-header">
@@ -304,6 +302,15 @@
       }
     },
     methods: {
+      // 新建红包
+      creatPackage() {
+        if(this.role.isCashier) {
+          this.$message.error('您暂无权限执行此操作');
+        }else {
+          this.$router.push('/main/memberredpacket/createpacket');
+        }
+      },
+
       // 红包类型
       packetChange() {
         this.currentChange();
@@ -339,29 +346,33 @@
 
       // 取消活动
       cancelAct(scope) {
-        this.$confirm('是否要取消此活动?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '关闭'
-        }).then(() => {
-          axios.post(`${config.host}/merchant/activity/close`, {
-            act_id: scope.row.id
-          }).then((res) => {
-            let data = res.data;
-            if (data.respcd === config.code.OK) {
-              this.$message({
-                type: 'success',
-                message: '红包活动取消成功'
-              });
-              this.$store.dispatch('getRedpacketData', {
-                params: this.basicParams
-              });
-            } else {
-              this.$message.error(data.respmsg);
-            }
+        if(this.role.isCashier) {
+          this.$message.error('您暂无权限执行此操作');
+        }else {
+          this.$confirm('是否要取消此活动?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '关闭'
+          }).then(() => {
+            axios.post(`${config.host}/merchant/activity/close`, {
+              act_id: scope.row.id
+            }).then((res) => {
+              let data = res.data;
+              if (data.respcd === config.code.OK) {
+                this.$message({
+                  type: 'success',
+                  message: '红包活动取消成功'
+                });
+                this.$store.dispatch('getRedpacketData', {
+                  params: this.basicParams
+                });
+              } else {
+                this.$message.error(data.respmsg);
+              }
+            });
+          }).catch(() => {
+            console.log("取消");
           });
-        }).catch(() => {
-          console.log("取消");
-      });
+        }
       },
 
       showDetail(scope) {

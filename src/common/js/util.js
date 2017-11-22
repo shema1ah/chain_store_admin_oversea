@@ -29,6 +29,10 @@ const setformateDate = (date) => {
 // 日期格式化
 const formatDate = (parDate, formatStr) => {
 
+  if(parDate.constructor === String) {
+    parDate = parDate.replace(/-/g, "/");
+  }
+
   let date = new Date(parDate)
   /*
    函数：填充0字符
@@ -123,6 +127,7 @@ const getRole = (data = {}) => {
     rate: data.rate || 100,
     single: false,
     isBaoshang: false,
+    isCashier: false,
     diancan: false
   }
 
@@ -181,6 +186,11 @@ const getRole = (data = {}) => {
   // 是否展示智慧餐厅
   if (data.diancan_display === 1) {
     role.diancan = true;
+  }
+
+  // 是否收银员角色
+  if(data.opinfo && data.opinfo.opuid) {
+    role.isCashier = true;
   }
   return role
 }
@@ -276,15 +286,6 @@ function GetVerifyBit(id) {
   return result
 }
 
-const mobileValid = (Tel) => {
-  var re = new RegExp(/^((\d{11})|^((\d{7,8})|(\d{4}|\d{3})-(\d{7,8})|(\d{4}|\d{3})-(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1})|(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1}))$)$/);
-  var retu = Tel.match(re);
-  if (retu) {
-    return true;
-  } else {
-    return false;
-  }
-}
 const cardValid = (card) => {
   var aCity = {
     11: '北京',
@@ -402,6 +403,5 @@ module.exports = {
   formatLength,
   getCookie,
   clearCookie,
-  cardValid,
-  mobileValid
+  cardValid
 }

@@ -108,3 +108,57 @@ input:-webkit-autofill { box-shadow: 0 0 0px 1000px white inset !important;}
   overflow: hidden;
 }
 
+// 英文换行处理
+.desc, .info-desc {
+  word-wrap: break-word;
+  word-break: break-all;
+}
+
+// 说明文字样式
+.gray-explain {
+  color: #8A8C92;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+.black-explain {
+  color: #262424;
+  font-size: 14px;
+  margin-left: 20px;
+}
+
+.explain {
+  .el-form-item__content {
+    display: inline-block;
+    background: rgba(254, 155, 32,0.1);
+    padding: 10px 20px 10px 10px;
+
+    .el-checkbox {
+      margin: 0;
+      .el-checkbox__label {
+        color: #262424;
+        font-size: 16px;
+      }
+    }
+
+    .content {
+      font-size: 12px;
+      color: #8A8C92;
+      height: 18px;
+      line-height: 18px;
+    }
+  }
+}
+
+// 下拉框换行样式
+.el-select .el-tag {
+  height: auto;
+  .el-select__tags-text {
+    height: 24px;
+    line-height: 24px;
+    white-space: pre-wrap;
+    word-break: break-all;
+    word-wrap: break-word;
+  }
+}
+

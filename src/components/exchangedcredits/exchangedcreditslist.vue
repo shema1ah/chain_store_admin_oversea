@@ -153,26 +153,30 @@ import ElButton from "../../../node_modules/element-ui/packages/button/src/butto
       },
 
       exchangeHandler() {
-        axios.post(`${config.ohost}/mchnt/card/v1/exchange_goods`, {
-          id: this.activityId,
-          code: this.code,
-          format: 'cors'
-        }).then((res) => {
-          let data = res.data;
-          if (data.respcd === config.code.OK) {
-            this.code = '';
-            this.$message({
-              type: 'success',
-              message: '兑换成功!'
-            });
+        if(!this.code) {
+          this.$message.error('请输入兑换码');
+        }else {
+          axios.post(`${config.ohost}/mchnt/card/v1/exchange_goods`, {
+            id: this.activityId,
+            code: this.code,
+            format: 'cors'
+          }).then((res) => {
+            let data = res.data;
+            if (data.respcd === config.code.OK) {
+              this.code = '';
+              this.$message({
+                type: 'success',
+                message: '兑换成功!'
+              });
 
-            this.getExchangedCreditsList();
-          } else {
-            this.$message.error(data.respmsg);
-          }
-        }).catch(() => {
-          this.$message.error('获取集点兑换记录失败!');
-        });
+              this.getExchangedCreditsList();
+            } else {
+              this.$message.error(data.respmsg);
+            }
+          }).catch(() => {
+            this.$message.error('获取集点兑换记录失败!');
+          });
+        }
       },
 
       getExchangedCreditsList() {

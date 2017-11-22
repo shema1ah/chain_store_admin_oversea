@@ -5,9 +5,8 @@
   "author": "qfpay LLC.",
   "private": true,
   "scripts": {
-    "test": "standard --fix",
     "dev": "node build/dev-server.js development",
-    "build_test": "node build/build.js test",
+    "test": "node build/build.js test",
     "build": "node build/build.js production",
     "lint": "eslint --ext .js,.vue src"
   },
