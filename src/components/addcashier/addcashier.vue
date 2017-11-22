@@ -60,7 +60,18 @@
         vm.getOpuid();
       });
     },
+
     data() {
+      let mobileValid = (rule, val, cb) => {
+        if(val === '') {
+          cb(this.$t('cashMng.common.m6'));
+        } else if((!this.role.haiwai && !/^1[34578]\d{9}$/.test(val)) || (this.role.haiwai && val.length > 15)) {
+          cb(this.$t('cashMng.common.m9'));
+        } else {
+          cb();
+        }
+      };
+
       return {
         role: Store.get('role') || {},
         loading: false,
@@ -77,8 +88,7 @@
             { max: 20, min: 2, message: this.$t('cashMng.common.m8') }
           ],
           mobile: [
-            { required: true, message: this.$t('cashMng.common.m6') },
-            { pattern: /^((\d{11})|^((\d{7,8})|(\d{4}|\d{3})-(\d{7,8})|(\d{4}|\d{3})-(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1})|(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1}))$)$/, message: this.$t('cashMng.common.m9') }
+            { validator: mobileValid }
           ],
           password: [
             { required: true, message: this.$t('cashMng.common.m7') },

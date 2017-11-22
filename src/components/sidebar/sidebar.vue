@@ -324,18 +324,33 @@
             ];
             break;
           default:
-            this.navs = [
-              {
-                val: this.$t('nav.index'),
-                pathname: 'index'
-              }, {
-                val: this.$t('nav.tradeMng'),
-                pathname: 'transctl'
-              }, {
-                val: this.$t('nav.shopMng'),
-                pathname: 'singlemanage'
-              }
-            ];
+            if(this.role.isCashier) {
+              this.navs = [
+                {
+                  val: this.$t('nav.tradeMng'),
+                  pathname: 'transctl'
+                }, {
+                  val: this.$t('nav.shopMng'),
+                  pathname: 'singlemanage'
+                }
+              ];
+            }else {
+              this.navs = [
+                {
+                  val: this.$t('nav.index'),
+                  pathname: 'index'
+                }, {
+                  val: this.$t('nav.tradeMng'),
+                  pathname: 'transctl'
+                }, {
+                  val: this.$t('nav.shopMng'),
+                  pathname: 'singlemanage'
+                }, {
+                  val: this.$t('nav.cashMng'),
+                  pathname: 'cashiermanage'
+                }
+              ];
+            }
         }
       },
 
