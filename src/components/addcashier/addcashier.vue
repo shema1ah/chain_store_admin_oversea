@@ -1,18 +1,10 @@
 <template>
   <div class="addcashier" v-loading="loading">
     <div class="banner_wrapper">
-<<<<<<< HEAD
-      <div class="banner-breadcrumb">
-        <span>{{ $t('cashMng.crumbs.L1') }}</span>
-        <i class="icon-right_arrow"></i>
-        <span>{{ $t('cashMng.crumbs.L3') }}</span>
-      </div>
-=======
       <el-breadcrumb separator=">">
-        <el-breadcrumb-item :to="{ path: '/main/cashiermanage' }" replace>收银员管理</el-breadcrumb-item>
-        <el-breadcrumb-item>添加收银员</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ path: '/main/cashiermanage' }" replace>{{ $t('cashMng.crumbs.L1') }}</el-breadcrumb-item>
+        <el-breadcrumb-item>{{ $t('cashMng.crumbs.L3') }}</el-breadcrumb-item>
       </el-breadcrumb>
->>>>>>> f4effc116d6c528b2978e2c10e59361fc90a147e
     </div>
     <div class="panel">
       <div class="panel-header panel-header__fix">
@@ -67,7 +59,18 @@
         vm.getOpuid();
       });
     },
+
     data() {
+      let mobileValid = (rule, val, cb) => {
+        if(val === '') {
+          cb(this.$t('cashMng.common.m6'));
+        } else if((!this.role.haiwai && !/^1[34578]\d{9}$/.test(val)) || (this.role.haiwai && val.length > 15)) {
+          cb(this.$t('cashMng.common.m9'));
+        } else {
+          cb();
+        }
+      };
+
       return {
         role: Store.get('role') || {},
         loading: false,
@@ -84,8 +87,7 @@
             { max: 20, min: 2, message: this.$t('cashMng.common.m8') }
           ],
           mobile: [
-            { required: true, message: this.$t('cashMng.common.m6') },
-            { pattern: /^((\d{11})|^((\d{7,8})|(\d{4}|\d{3})-(\d{7,8})|(\d{4}|\d{3})-(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1})|(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1}))$)$/, message: this.$t('cashMng.common.m9') }
+            { validator: mobileValid }
           ],
           password: [
             { required: true, message: this.$t('cashMng.common.m7') },
