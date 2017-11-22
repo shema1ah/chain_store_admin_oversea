@@ -1,11 +1,10 @@
 <template>
   <div class="single">
     <div class="banner_wrapper">
-      <div class="banner-breadcrumb">
-        <span>{{$t('shopmng.crumbs.L1')}}</span>
-      </div>
+      <el-breadcrumb separator=">">
+        <el-breadcrumb-item>{{$t('shopmng.crumbs.L1')}}</el-breadcrumb-item>
+      </el-breadcrumb>
     </div>
-
     <div class="panel">
       <div class="panel-header panel-header__fix">
         <div class="panel-select-group panel-select-group__justify">

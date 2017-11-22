@@ -1,13 +1,11 @@
 <template>
   <div>
     <div class="banner_wrapper">
-      <div class="banner-breadcrumb">
-        <span>会员功能</span>
-        <i class="icon-right_arrow"></i>
-        <span>会员集点</span>
-        <i class="icon-right_arrow"></i>
-        <span>{{ type === 'create'?'创建集点':'修改集点'}}</span>
-      </div>
+      <el-breadcrumb separator=">">
+        <el-breadcrumb-item>会员功能</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ path: '/main/memberredpoint' }" replace>会员集点</el-breadcrumb-item>
+        <el-breadcrumb-item>{{ type === 'create'?'创建集点':'修改集点'}}</el-breadcrumb-item>
+      </el-breadcrumb>
     </div>
     <div class="panel">
       <div class="panel-header panel-header__fix">

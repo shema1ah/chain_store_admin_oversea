@@ -1,9 +1,9 @@
 <template>
   <div class="settings" v-loading="loading" :element-loading-text="$t('common.loading')">
     <div class="banner_wrapper">
-      <div class="banner-breadcrumb">
-        <span>{{$t('setting.crumbs.L1')}}</span>
-      </div>
+      <el-breadcrumb separator=">">
+        <el-breadcrumb-item>{{$t('setting.crumbs.L1')}}</el-breadcrumb-item>
+      </el-breadcrumb>
     </div>
     <div class="panel">
       <div class="panel-header panel-header__fix">

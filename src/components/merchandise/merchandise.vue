@@ -1,9 +1,9 @@
 <template>
   <div class="merchandise" v-loading="loading">
     <div class="banner_wrapper">
-      <div class="banner-breadcrumb">
-        <span>商品管理</span>
-      </div>
+      <el-breadcrumb separator=">">
+        <el-breadcrumb-item>商品管理</el-breadcrumb-item>
+      </el-breadcrumb>
     </div>
     <div class="panel">
       <div class="panel-header panel-header__fix">

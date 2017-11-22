@@ -2,7 +2,9 @@
   <div v-loading="isLoading1 || isLoading2" :element-loading-text="$t('common.loading')">
     <div class="warpper">
       <div class="banner_wrapper">
-        <p>生成有公众号桌牌二维码</p>
+        <el-breadcrumb separator=">">
+          <el-breadcrumb-item>{{ tab }}</el-breadcrumb-item>
+        </el-breadcrumb>
       </div>
       <div class="panel">
         <div class="panel-header">
@@ -74,6 +76,11 @@
   export default {
     beforeRouteEnter (to, from, next) {
       next((vm) => {
+        if (vm.$route.params.hasPublic === 'yes') {
+          vm.tab = '生成有公众号桌牌二维码'
+        }else {
+          vm.tab = '生成无公众号桌牌二维码'
+        }
         vm.reset()
       })
     },
@@ -88,6 +95,7 @@
           startNum: '',
           endNum: ''
         },
+        tab: '',
         tabelNumbers: [],
         isPreview: true,
         createBtnDisabled: false,
@@ -109,7 +117,10 @@
         this.fetchMerchantIds()
       }
       if (this.$route.params.hasPublic === 'yes') {
+        this.tab = '生成有公众号桌牌二维码'
         this.fetchPublicInfo()
+      }else {
+        this.tab = '生成无公众号桌牌二维码'
       }
     },
     methods: {

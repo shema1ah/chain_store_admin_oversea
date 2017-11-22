@@ -1,11 +1,10 @@
 <template>
   <div class="redpacket">
     <div class="banner_wrapper">
-      <div class="banner-breadcrumb">
-        <span>会员功能</span>
-        <i class="icon-right_arrow"></i>
-        <span>会员红包</span>
-      </div>
+      <el-breadcrumb separator=">">
+        <el-breadcrumb-item>会员功能</el-breadcrumb-item>
+        <el-breadcrumb-item>会员红包</el-breadcrumb-item>
+      </el-breadcrumb>
       <div class="banner-btn" @click="creatPackage">
         <i class="icon-create"></i>
         <span class="banner-btn__desc">新建红包</span>
