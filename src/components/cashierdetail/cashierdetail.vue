@@ -145,7 +145,7 @@
         showChangeInfo: false,
         form: {
           opname: '',
-          mobile: null,
+          mobile: '',
           password: ''
         },
         formrules: {
