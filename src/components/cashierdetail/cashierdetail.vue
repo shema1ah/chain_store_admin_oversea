@@ -334,7 +334,6 @@
       // 关闭弹出层,清除表单
       handleClose() {
         this.isChange = false;
-        console.log(this.isChange, 666)
         this.$refs['form'].resetFields();
       }
     }

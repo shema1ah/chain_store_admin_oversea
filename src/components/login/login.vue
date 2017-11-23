@@ -245,6 +245,7 @@
       }
       .username {
         background: url("./img/phone.png") no-repeat left center;
+        background-size: 24px;
       }
 
       .el-input__inner {
@@ -267,6 +268,7 @@
       }
       .password {
         background: url("./img/password.png") no-repeat left center;
+        background-size: 24px;
       }
       .panel-header-btn {
         width: 100%;
