@@ -1,11 +1,10 @@
 <template>
   <div class="addcashier" v-loading="loading">
     <div class="banner_wrapper">
-      <div class="banner-breadcrumb">
-        <span>{{ $t('cashMng.crumbs.L1') }}</span>
-        <i class="icon-right_arrow"></i>
-        <span>{{ $t('cashMng.crumbs.L3') }}</span>
-      </div>
+      <el-breadcrumb separator=">">
+        <el-breadcrumb-item :to="{ path: '/main/cashiermanage' }" replace>{{ $t('cashMng.crumbs.L1') }}</el-breadcrumb-item>
+        <el-breadcrumb-item>{{ $t('cashMng.crumbs.L3') }}</el-breadcrumb-item>
+      </el-breadcrumb>
     </div>
     <div class="panel">
       <div class="panel-header panel-header__fix">

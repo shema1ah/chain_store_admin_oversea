@@ -1,9 +1,9 @@
 <template>
   <div class="transctl">
     <div class="banner_wrapper">
-      <div class="banner-breadcrumb">
-        <span>{{$t('tradeMng.crumbs.L1')}}</span>
-      </div>
+      <el-breadcrumb separator=">">
+        <el-breadcrumb-item>{{$t('tradeMng.crumbs.L1')}}</el-breadcrumb-item>
+      </el-breadcrumb>
     </div>
     <div class="panel down">
       <div class="panel-header panel-header__auto">

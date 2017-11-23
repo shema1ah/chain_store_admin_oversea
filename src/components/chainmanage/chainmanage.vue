@@ -1,9 +1,9 @@
 <template>
   <div class="chain">
     <div class="banner_wrapper">
-      <div class="banner-breadcrumb">
-        <span>{{$t('shopmng.crumbs.L1')}}</span>
-      </div>
+      <el-breadcrumb separator=">">
+        <el-breadcrumb-item>{{$t('shopmng.crumbs.L1')}}</el-breadcrumb-item>
+      </el-breadcrumb>
     </div>
 
     <div class="panel">

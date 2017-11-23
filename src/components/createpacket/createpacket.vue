@@ -1,13 +1,11 @@
 <template>
   <div class="createpacket">
     <div class="banner_wrapper">
-      <div class="banner-breadcrumb">
-        <span>会员功能</span>
-        <i class="icon-right_arrow"></i>
-        <span>会员红包</span>
-        <i class="icon-right_arrow"></i>
-        <span>创建红包</span>
-      </div>
+      <el-breadcrumb separator=">">
+        <el-breadcrumb-item>会员功能</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ path: '/main/memberredpacket' }" replace>会员红包</el-breadcrumb-item>
+        <el-breadcrumb-item>创建红包</el-breadcrumb-item>
+      </el-breadcrumb>
     </div>
     <div class="panel">
       <div class="panel-header panel-header__fix">

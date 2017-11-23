@@ -1,11 +1,10 @@
 <template>
   <div class="collectPacket">
     <div class="banner_wrapper">
-      <div class="banner-breadcrumb">
-        <span>会员功能</span>
-        <i class="icon-right_arrow"></i>
-        <span>会员集点</span>
-      </div>
+      <el-breadcrumb separator=">">
+        <el-breadcrumb-item>会员功能</el-breadcrumb-item>
+        <el-breadcrumb-item>会员集点</el-breadcrumb-item>
+      </el-breadcrumb>
       <div class="btn-wrap">
         <el-button type="primary" class="panel-edit-btn__subshopnum" @click.native="jumpToPointsExchange" style="width:158px;">礼品兑换</el-button>
         <div class="banner-btn" @click="creatPoint">

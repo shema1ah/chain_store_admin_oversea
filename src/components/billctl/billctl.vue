@@ -1,9 +1,9 @@
 <template>
   <div class="redpacket">
     <div class="banner_wrapper">
-      <div class="banner-breadcrumb">
-        <span>{{$t('billMng.crumbs.L1')}}</span>
-      </div>
+      <el-breadcrumb separator=">">
+        <el-breadcrumb-item>{{$t('billMng.crumbs.L1')}}</el-breadcrumb-item>
+      </el-breadcrumb>
     </div>
     <div class="panel">
       <div class="panel-header panel-header__auto">

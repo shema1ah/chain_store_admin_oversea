@@ -1,11 +1,10 @@
 <template>
   <div class="redpacket">
     <div class="banner_wrapper">
-      <div class="banner-breadcrumb">
-        <span>会员功能</span>
-        <i class="icon-right_arrow"></i>
-        <span>会员管理</span>
-      </div>
+      <el-breadcrumb separator=">">
+        <el-breadcrumb-item>会员功能</el-breadcrumb-item>
+        <el-breadcrumb-item>会员管理</el-breadcrumb-item>
+      </el-breadcrumb>
       <!-- <div class="panel-btn-group__wrapper panel-header-download-btn-group">
           <div class="panel-btn__download panel-btn__download_detail">
             <i class="icon-create"></i>

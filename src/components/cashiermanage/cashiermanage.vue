@@ -1,9 +1,9 @@
 <template>
   <div class="cashiermanage">
     <div class="banner_wrapper">
-      <div class="banner-breadcrumb">
-        <span>{{ $t('cashMng.crumbs.L1') }}</span>
-      </div>
+      <el-breadcrumb separator=">">
+        <el-breadcrumb-item>{{ $t('cashMng.crumbs.L1') }}</el-breadcrumb-item>
+      </el-breadcrumb>
       <div class="btn-wrap">
         <div class="banner-btn" :class="{'banner-btn-ja': lang === 'ja'}" @click="addCashier">
           <i class="icon-create"></i>
