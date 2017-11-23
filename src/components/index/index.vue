@@ -180,7 +180,7 @@
       }
     },
     created() {
-      // 收银员角色跳转实时收款
+      // 收银员角色跳转实时收款，海外调整交易管理
       if(this.role.isCashier) {
         if(this.role.haiwai) {
           this.$router.push('/main/transctl');

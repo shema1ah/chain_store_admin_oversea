@@ -145,7 +145,7 @@ export default {
         align-items: center;
         justify-content: center;
         background-color: #F39118;
-        width: 123px;
+        padding: 0 20px;
         height: 50px;
         cursor: pointer;
         transition: .3s cubic-bezier(.645,.045,.355,1);

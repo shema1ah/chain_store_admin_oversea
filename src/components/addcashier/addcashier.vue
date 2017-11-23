@@ -14,7 +14,7 @@
         </div>
       </div>
       <div class="panel-body">
-        <div class="myform_wrapper">
+        <div class="myform_wrapper" :class="{'wrapper': lang === 'ja' || lang === 'en'}">
           <el-form :rules="formrules" :model="form" ref="form">
             <el-form-item :label="$t('cashMng.common.name')" prop="opname">
               <el-input size="small" v-model.trim="form.opname" type="text" :placeholder="$t('cashMng.common.m5')" class="panel-select-input-220"></el-input>
@@ -28,12 +28,10 @@
             <el-form-item :label="$t('cashMng.common.number')">
               <span class="input-content">{{ opuid }}</span>
             </el-form-item>
-            <el-form-item :label="$t('cashMng.common.password')">
-              <el-form-item prop="password">
-                <el-input size="small" type="password" v-model.trim="form.password" :placeholder="$t('cashMng.common.m7')" class="panel-select-input-220"></el-input>
-              </el-form-item>
-              <div class="gray-explain">{{ $t('cashMng.common.tip1') }}</div>
+            <el-form-item :label="$t('cashMng.common.password')" prop="password">
+              <el-input size="small" type="password" v-model.trim="form.password" :placeholder="$t('cashMng.common.m7')" class="panel-select-input-220"></el-input>
             </el-form-item>
+            <div class="gray-explain">{{ $t('cashMng.common.tip1') }}</div>
           </el-form>
           <div class="divider"></div>
           <div class="form-submit_wrapper">
@@ -74,6 +72,7 @@
 
       return {
         role: Store.get('role') || {},
+        lang: config.lang,
         loading: false,
         loading1: false,
         opuid: '',
@@ -161,6 +160,34 @@
     .input-content {
       color: #777A7D;
       font-size: 16px;
+    }
+    .wrapper {
+      .el-form-item {
+        display: flex;
+        align-items: center;
+
+        .el-form-item__label {
+          float: none;
+          width: 150px;
+          text-align: left;
+        }
+        .el-form-item__content {
+          padding: 0;
+          margin-left: 20px;
+        }
+        .panel-select-input-220 {
+          width: 300px;
+        }
+      }
+
+      .gray-explain {
+        margin-left: 190px;
+        margin-bottom: 20px;
+      }
+    }
+    .gray-explain {
+      margin-left: 120px;
+      margin-bottom: 20px;
     }
   }
 </style>

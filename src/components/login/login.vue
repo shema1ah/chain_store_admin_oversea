@@ -263,6 +263,7 @@
 
       .cashier {
         background: url("./img/cashier.png") no-repeat left center;
+        background-size: 24px;
       }
       .password {
         background: url("./img/password.png") no-repeat left center;

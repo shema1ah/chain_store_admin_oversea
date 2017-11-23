@@ -15,7 +15,7 @@
         </div>
       </div>
       <div class="panel-body" >
-        <div class="info_wrapper">
+        <div class="info_wrapper" :class="{'wrapper': lang === 'ja' || lang === 'en'}">
           <div class="info">
             <div class="info__title">{{ $t('cashMng.common.status') }}</div>
             <div class="info__desc">
@@ -75,8 +75,8 @@
       </div>
     </div>
 
-    <el-dialog :title="$t('cashMng.detail.btn')" :visible.sync="showChangeInfo" @close="handleClose" custom-class="mydialog" top="20%" :show-close="false">
-      <el-form :model="form" :rules="formrules" ref="form" label-width="90px">
+    <el-dialog :title="$t('cashMng.detail.btn')" :visible.sync="showChangeInfo" @close="handleClose" :custom-class="(lang === 'ja' || lang === 'en')?'mydialog haiwiadialog':'mydialog'" top="20%" :show-close="false">
+      <el-form :model="form" :rules="formrules" ref="form" :label-width="(lang === 'ja' || lang === 'en')?'135px':'90px'">
         <el-form-item :label="$t('cashMng.common.name')" prop="opname">
           <el-input v-model.trim="form.opname" size="small" type="text" :placeholder="$t('cashMng.common.m5')"></el-input>
         </el-form-item>
@@ -94,7 +94,7 @@
           <div>{{ opuid }}</div>
         </el-form-item>
         <el-form-item :label="$t('cashMng.common.password')" prop="password">
-          <el-input v-model="form.password" size="small" type="password" :placeholder="$t('cashMng.common.m7')" @keyup.delete.native="onDelete" @blur="passBlur"></el-input>
+          <el-input v-model="form.password" size="small" type="password" :placeholder="$t('cashMng.common.m7')" @change="passChange" @blur="passBlur"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -275,11 +275,11 @@
         this.showChangeInfo = true;
       },
 
-      // 监听删除，退格按键
-      onDelete() {
-        this.isChange = true;
+      // 输入框聚焦改变时清空
+      passChange(val) {
         if(!this.flag) {
-          this.form.password = '';
+          this.isChange = true;
+          this.form.password = val.substr(-1) || '';
           this.flag = true;
         }
       },
@@ -333,10 +333,27 @@
 
       // 关闭弹出层,清除表单
       handleClose() {
+        this.isChange = false;
+        console.log(this.isChange, 666)
         this.$refs['form'].resetFields();
       }
     }
 
   };
 </script>
-
+<style lang="scss">
+  .cashierdetail {
+    .wrapper {
+      .info {
+        height: auto;
+        line-height: 1.4;
+      }
+      .info__title {
+        width: 150px;
+      }
+    }
+    .next-bottom {
+      margin-bottom: 0;
+    }
+  }
+</style>

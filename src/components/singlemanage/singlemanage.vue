@@ -77,7 +77,7 @@
             <div class="info__title">{{ $t('cashMng.common.user') }}</div>
             <div class="info__desc">{{ shop.mobile }}</div>
           </div>
-          <div class="info next-bottom">
+          <div class="info next-bottom" :style="lang === 'ja'?{'margin-bottom': '10px'}:''">
             <div class="info__title">{{ $t('cashMng.common.number') }}</div>
             <div class="info__desc">{{ opinfo.opuid }}</div>
           </div>
