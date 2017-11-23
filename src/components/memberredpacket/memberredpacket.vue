@@ -433,7 +433,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 158px;
+    width: 140px;
+    padding: 0 10px;
     height: 40px;
     background-color: #7ED321;
     border-radius: 3px;
@@ -480,11 +481,6 @@
 
 .panel-body {
   padding: 10px 10px 0px;
-}
-
-.el-table__row_fix {
-  height: 62px;
-  min-height: 62px;
 }
 
 .pagination_wrapper {

@@ -2,6 +2,9 @@
   .mydialog {
     width: 420px;
   }
+  .haiwiadialog {
+    width: 490px;
+  }
 }
 .mydialog {
   .el-dialog {
@@ -79,5 +82,19 @@
 .changepwd {
   .el-form-item__error {
     white-space: nowrap;
+  }
+}
+
+.haiwiadialog {
+  .el-form-item {
+    display: flex;
+    align-items: center;
+  }
+  .el-form-item__label {
+    line-height: 1.4;
+  }
+  .el-form-item__content {
+    margin-left: 20px !important;
+    flex: 1;
   }
 }

@@ -121,7 +121,7 @@
         let alterData = Store.get('alterstoredata');
         let info = alterData.activity_info;
 
-        let rules = alterData.activity_info.rules;
+        let rules = alterData.activity_info.rules || [];
         rules.forEach((v) => {
           v.pay_amt = v.pay_amt / 100;
           v.present_amt = v.present_amt / 100;
@@ -181,6 +181,10 @@
         role: Store.get("role") || {},
         state: null,
         form: {
+          start_time: new Date(),
+          end_time: new Date(),
+          mchnt_ids: [],
+          rulesData: []
         },
         formrules: {
           start_time: [

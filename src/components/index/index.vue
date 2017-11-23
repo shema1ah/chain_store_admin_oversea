@@ -180,9 +180,13 @@
       }
     },
     created() {
-      // 收银员角色跳转实时收款
+      // 收银员角色跳转实时收款，海外调整交易管理
       if(this.role.isCashier) {
-        this.$router.push('/main/todaytrade');
+        if(this.role.haiwai) {
+          this.$router.push('/main/transctl');
+        }else {
+          this.$router.push('/main/todaytrade');
+        }
       }else {
         this.fetchDashboardData()
         this.fetchActivityData()

@@ -21,7 +21,6 @@
           </ul>
         </transition>
       </li>
-      <li><router-link class="sidebar-nav__item" :to="{name: 'clound'}">舞象云</router-link></li>
       <li :class="{'dark': $route.fullPath.indexOf('Public') != -1}" v-if="role.diancan && !role.haiwai && !role.isCashier">
         <a class="sidebar-nav__item" @click="toggle(2)">
           智慧餐厅
@@ -325,18 +324,33 @@
             ];
             break;
           default:
-            this.navs = [
-              {
-                val: this.$t('nav.index'),
-                pathname: 'index'
-              }, {
-                val: this.$t('nav.tradeMng'),
-                pathname: 'transctl'
-              }, {
-                val: this.$t('nav.shopMng'),
-                pathname: 'singlemanage'
-              }
-            ];
+            if(this.role.isCashier) {
+              this.navs = [
+                {
+                  val: this.$t('nav.tradeMng'),
+                  pathname: 'transctl'
+                }, {
+                  val: this.$t('nav.shopMng'),
+                  pathname: 'singlemanage'
+                }
+              ];
+            }else {
+              this.navs = [
+                {
+                  val: this.$t('nav.index'),
+                  pathname: 'index'
+                }, {
+                  val: this.$t('nav.tradeMng'),
+                  pathname: 'transctl'
+                }, {
+                  val: this.$t('nav.shopMng'),
+                  pathname: 'singlemanage'
+                }, {
+                  val: this.$t('nav.cashMng'),
+                  pathname: 'cashiermanage'
+                }
+              ];
+            }
         }
       },
 
