@@ -121,24 +121,24 @@ let deepClone = (obj) => {
 const getRole = (data = {}) => {
   let role = {
     type: 'chain',
-    haiwai: false,
-    currency: data.currency || '元',
-    country: data.country,
-    rate: data.rate || 100,
-    single: false,
-    isBaoshang: false,
-    isCashier: false,
-    diancan: false
+    haiwai: data.country !== 'CN', // 是否海外
+    currency: data.currency || '元', // 货币单位
+    country: data.country, // 国家
+    rate: data.rate || 100, // 汇率
+    single: data.cate !== 'bigmerchant', // 是否子商户或者直营
+    isBaoshang: data.group_name === 'baoshang', // 是否包商
+    isCashier: Boolean(data.opinfo && data.opinfo.opuid), // 是否收银员角色
+    diancan: data.diancan_display === 1, // 是否展示智慧餐厅
+    isClound: data.wuxiang_display === 1 // 是否展示舞项云
   }
+  console.log(role, 6666, data.opinfo && data.opinfo.opuid)
 
   // 包商baoshang 日本japan 香港hongkong 印尼id 迪拜ar
   // bigmerchant:大商户 submerchant:子商户 merchant:商户
   if(data.group_name === 'baoshang') {
-    role.isBaoshang = true
     role.type = 'baoshang'
     if (data.cate !== 'bigmerchant') {
       role.type = 'baoshang_single'
-      role.single = true
     }
   }else {
     switch (data.country) {
@@ -146,52 +146,33 @@ const getRole = (data = {}) => {
         role.type = 'japan'
         if (data.cate !== 'bigmerchant') {
           role.type = 'japan_single'
-          role.single = true
         }
         break;
       case 'ID':
         role.type = 'id'
         if (data.cate !== 'bigmerchant') {
           role.type = 'id_single'
-          role.single = true
         }
         break;
       case 'AR':
         role.type = 'ar'
         if (data.cate !== 'bigmerchant') {
           role.type = 'ar_single'
-          role.single = true
         }
         break;
       case 'HK':
         role.type = 'hongkong'
         if (data.cate !== 'bigmerchant') {
           role.type = 'hongkong_single'
-          role.single = true
         }
         break;
       default:
         if (data.cate !== 'bigmerchant') {
           role.type = 'single'
-          role.single = true
         }
     }
   }
 
-  // 是否海外
-  if (data.country !== 'CN') {
-    role.haiwai = true
-  }
-
-  // 是否展示智慧餐厅
-  if (data.diancan_display === 1) {
-    role.diancan = true;
-  }
-
-  // 是否收银员角色
-  if(data.opinfo && data.opinfo.opuid) {
-    role.isCashier = true;
-  }
   return role
 }
 
