@@ -179,9 +179,9 @@
       // 切换标签清除表单
       handleClick(event) {
         if(event.name === 'cash') {
-          this.$refs['merchant'].resetFields();
+          this.$refs['merchant'] && this.$refs['merchant'].resetFields();
         }else {
-          this.$refs['cash'].resetFields();
+          this.$refs['cash'] && this.$refs['cash'].resetFields();
         }
       },
 

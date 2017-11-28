@@ -1,3 +1,4 @@
+var path = require('path')
 var utils = require('./utils')
 var webpack = require('webpack')
 var config = require('../config')
@@ -27,8 +28,9 @@ module.exports = merge(baseWebpackConfig, {
     new HtmlWebpackPlugin({
       filename: 'index.html',
       template: 'index.html',
+      favicon: path.resolve(__dirname, '../src/assets/favicon.ico'),
       inject: true,
-      cache:false
+      cache: false
     })
   ]
 })

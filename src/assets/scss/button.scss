@@ -64,7 +64,7 @@
 
 .panel-btn__download_detail {
   background-color: #7ED321;
-  &:link,&:visited,&:hover,&:active {
+  &:hover,&:active {
     background-color: darken(#7ED321, 10%);
   }
 }
@@ -74,7 +74,7 @@
     .el-button--primary {
       background-color: #7ED321;
       border: none;
-      &:link,&:visited,&:hover,&:active {
+      &:hover,&:active {
         background-color: darken(#7ED321, 10%);
       }
     }
@@ -100,7 +100,7 @@
       cursor: pointer;
       color: #FE9B20;
       background-color: #fff;
-      &:link,&:visited,&:hover,&:active{
+      &:hover,&:active{
         background-color: darken(#fff, 10%);
       }
     }
@@ -108,7 +108,7 @@
       margin-right: 15px;
       color: #fff;
       background-color: #FE9B20;
-      &:link,&:visited,&:hover,&:active {
+      &:hover,&:active {
         background-color: darken(#FE9B20, 10%);
       }
     }
@@ -120,7 +120,7 @@
 // 下载
 .panel-btn__download_record {
   background-color: #FE9B20;
-  &:link,&:visited,&:hover,&:active {
+  &:hover,&:active {
     background-color: darken(#FE9B20, 10%);
   }
 }

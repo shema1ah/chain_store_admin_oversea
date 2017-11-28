@@ -40,6 +40,7 @@ import cashiermanage from 'components/cashiermanage/cashiermanage'
 import addcashier from 'components/addcashier/addcashier'
 import cashierdetail from 'components/cashierdetail/cashierdetail'
 import merchandise from 'components/merchandise/merchandise'
+import clound from 'components/clound/clound'
 
 Vue.use(Router)
 
@@ -233,6 +234,11 @@ export default new Router({
           path: 'hasPublic/:hasPublic',
           name: 'hasPublic',
           component: dcqrcode
+        },
+        {
+          path: 'clound',
+          name: 'clound',
+          component: clound
         },
         {
           path: 'cashiermanage',
