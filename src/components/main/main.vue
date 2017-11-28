@@ -107,9 +107,6 @@ export default {
 </script>
 
 <style lang="scss">
-  @import "../../assets/scss/dialog.scss";
-  @import "../../assets/scss/button.scss";
-  @import "../../assets/scss/element.scss";
   .responsive_img {
     max-width: 100%;
     height: auto;

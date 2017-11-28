@@ -21,7 +21,7 @@
           </ul>
         </transition>
       </li>
-      <li><router-link class="sidebar-nav__item" :to="{name: 'clound'}">舞象云</router-link></li>
+      <li v-if="role.isClound"><router-link class="sidebar-nav__item" :to="{name: 'clound'}">会员积分</router-link></li>
       <li :class="{'dark': $route.fullPath.indexOf('Public') != -1}" v-if="role.diancan && !role.haiwai && !role.isCashier">
         <a class="sidebar-nav__item" @click="toggle(2)">
           智慧餐厅

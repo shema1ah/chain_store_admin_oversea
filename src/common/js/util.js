@@ -117,7 +117,7 @@ let deepClone = (obj) => {
   return JSON.parse(JSON.stringify(obj))
 }
 
-// 角色判断 大商户、子商户、海外商户
+// 用户角色
 const getRole = (data = {}) => {
   let role = {
     type: 'chain',
@@ -131,7 +131,6 @@ const getRole = (data = {}) => {
     diancan: data.diancan_display === 1, // 是否展示智慧餐厅
     isClound: data.wuxiang_display === 1 // 是否展示舞项云
   }
-  console.log(role, 6666, data.opinfo && data.opinfo.opuid)
 
   // 包商baoshang 日本japan 香港hongkong 印尼id 迪拜ar
   // bigmerchant:大商户 submerchant:子商户 merchant:商户
