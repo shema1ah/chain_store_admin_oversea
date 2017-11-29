@@ -40,7 +40,7 @@
             label="头像">
             <template scope="scope">
               <img v-if="scope.row.avatar" :src="scope.row.avatar" alt="" width="44" height="44" />
-              <img src="./img/default.png" height="44" width="44" v-else />
+              <img src="../../assets/img/default.png" height="44" width="44" v-else />
             </template>
           </el-table-column>
           <el-table-column

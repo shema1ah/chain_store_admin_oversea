@@ -159,7 +159,7 @@
   import axios from 'axios'
   import config from 'config'
   import Store from '../../common/js/store'
-  import avatar from './img/avatar.png'
+  import avatar from '../../assets/img/default.png'
 
   export default {
     data() {

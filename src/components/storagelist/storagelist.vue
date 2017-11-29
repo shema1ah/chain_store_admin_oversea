@@ -18,7 +18,7 @@
           <el-table-column label="头像">
             <template scope="scope">
               <img v-if="scope.row.avatar || scope.row.c_avatar" :src="scope.row.avatar || scope.row.c_avatar" alt="" width="44" height="44" />
-              <img src="./img/default.png" height="44" width="44" v-else />
+              <img src="../../assets/img/default.png" height="44" width="44" v-else />
             </template>
           </el-table-column>
           <el-table-column label="姓名" prop="name">
