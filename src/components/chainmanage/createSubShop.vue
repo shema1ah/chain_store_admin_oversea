@@ -10,7 +10,7 @@
     <!-- 地图弹窗-->
     <div class="banner_wrapper">
       <el-breadcrumb separator=">">
-        <el-breadcrumb-item :to="{ path: '/main/chainmanage' }" replace>门店管理</el-breadcrumb-item>
+        <el-breadcrumb-item class="first" :to="{ path: '/main/chainmanage' }" replace>门店管理</el-breadcrumb-item>
         <el-breadcrumb-item>创建分店</el-breadcrumb-item>
       </el-breadcrumb>
     </div>

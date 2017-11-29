@@ -2,7 +2,7 @@
   <div class="addcashier" v-loading="loading">
     <div class="banner_wrapper">
       <el-breadcrumb separator=">">
-        <el-breadcrumb-item :to="{ path: '/main/cashiermanage' }" replace>{{ $t('cashMng.crumbs.L1') }}</el-breadcrumb-item>
+        <el-breadcrumb-item class="first" :to="{ path: '/main/cashiermanage' }" replace>{{ $t('cashMng.crumbs.L1') }}</el-breadcrumb-item>
         <el-breadcrumb-item>{{ $t('cashMng.crumbs.L3') }}</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
