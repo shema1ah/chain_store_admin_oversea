@@ -55,13 +55,13 @@
         if(!vm.act_type) {
           if(vm.role.isBaoshang) {
             vm.act_type = 'type_payment';
-            vm.$router.push({ name: 'type_payment' });
+            vm.$router.replace({ name: 'type_payment' });
           }else {
             vm.act_type = 'type_common';
-            vm.$router.push({ name: 'type_common' });
+            vm.$router.replace({ name: 'type_common' });
           }
         }else {
-          vm.$router.push({ name: vm.act_type });
+          vm.$router.replace({ name: vm.act_type });
         }
       });
     },
@@ -72,7 +72,7 @@
     },
     methods: {
       changePacketType(label) {
-        this.$router.push({ name: label });
+        this.$router.replace({ name: label });
       },
       currentChange(currentPage) {
         this.$store.dispatch({

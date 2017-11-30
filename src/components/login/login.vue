@@ -94,6 +94,10 @@
             type: 'error'
           });
       }
+      // cookie存在跳转首页
+      if(getCookie('sessionid') && Store.get('flag') === false) {
+        this.$router.push('/main/index');
+      }
       // 退出之后清除session
       if(getCookie('sessionid') && Store.get('flag') === true) {
         clearCookie('sessionid', config.ohost);

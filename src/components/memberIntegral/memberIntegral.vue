@@ -34,7 +34,7 @@
         </div>
       </div>
       <div class="form-submit_wrapper">
-        <a class="panel-btn__download panel-btn__download_detail" :href="linkUrl" :class="{'isDisabled': isDisabled}" target="_blank">
+        <a class="panel-btn__download panel-btn__download_detail" :href="linkUrl" @click="getUrl" target="_blank">
           <span>立即使用</span>
         </a>
         <a class="cancel" href="http://qmm.la/xVk0Fx" target="_blank">了解更多</a>
@@ -51,11 +51,9 @@
     data() {
       return {
         loading: false,
-        isDisabled: false,
         linkUrl: 'javascript:;'
       }
     },
-
     created() {
       this.getUrl();
     },
@@ -69,13 +67,10 @@
           if (data.respcd === config.code.OK) {
             this.linkUrl = (data.data || {}).url;
           } else {
-            this.isDisabled = true;
             this.$message.error(data.respmsg);
-
           }
         }).catch(() => {
           this.loading = false;
-          this.isDisabled = true;
           this.$message.error('请求失败!');
         });
       }
@@ -120,9 +115,6 @@
 
       .panel-btn__download:first-child {
         margin-left: 140px;
-      }
-      .isDisabled {
-        pointer-events: none;
       }
     }
   }
