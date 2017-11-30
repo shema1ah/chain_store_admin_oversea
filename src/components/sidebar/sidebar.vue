@@ -18,7 +18,7 @@
                 {{ subnav.val }}
               </router-link>
             </li>
-            <li v-if="role.isClound"><router-link class="sidebar-nav__item sidebar-nav__subitem" :to="{name: 'memberIntegral'}">会员积分</router-link></li>
+            <li v-if="role.isClound && role.single"><router-link class="sidebar-nav__item sidebar-nav__subitem" :to="{name: 'memberIntegral'}">会员积分</router-link></li>
           </ul>
         </transition>
       </li>

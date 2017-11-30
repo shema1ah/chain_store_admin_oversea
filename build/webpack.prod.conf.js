@@ -48,7 +48,6 @@ var webpackConfig = merge(baseWebpackConfig, {
     new HtmlWebpackPlugin({
       filename: config.build.index,
       template: 'index.html',
-      favicon: path.resolve(__dirname, '../src/assets/favicon.ico'),
       inject: true,
       // 缓存
       cache:false,
