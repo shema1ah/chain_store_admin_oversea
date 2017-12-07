@@ -42,7 +42,7 @@
             </div>
             <div class="panel-select__wrapper" v-if="!role.isCashier">
               <span class="panel-select__desc">{{$t('tradeMng.panel.operator')}}</span>
-              <el-form-item>
+              <el-form-item prop="operaValue">
                 <el-select v-model="form.operaValue" :placeholder="$t('tradeMng.table.all')" size="small" @change="operaChange" :disabled="form.selectShopUid === ''">
                   <el-option :label="$t('tradeMng.table.all')" value=""></el-option>
                   <el-option v-for="(label, value) in operaList" :label="label" :value="value" :key="value"></el-option>
