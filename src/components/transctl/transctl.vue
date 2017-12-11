@@ -123,7 +123,7 @@
               <span class="el-dropdown-link"><img src="./img/download.png" alt="download"></span>
               <el-dropdown-menu slot="dropdown">
                 <a :href="detailHref" download class="downDetail"><el-dropdown-item command=1>{{$t('tradeMng.table.btn.downDetail')}}</el-dropdown-item></a>
-                <a :href="collectionHref" download><el-dropdown-item command=2>{{$t('tradeMng.table.btn.downTrade')}}</el-dropdown-item></a>
+                <a :href="collectionHref" @click="downCollection"><el-dropdown-item command=2>{{$t('tradeMng.table.btn.downTrade')}}</el-dropdown-item></a>
               </el-dropdown-menu>
             </el-dropdown>
           </div>
@@ -281,8 +281,9 @@
           other: []
         },
         currentPage: 1,
-        operaList: [],
+        operaList: {},
         transData: {},
+        collectionHref: 'javascript:;',
         formrules: {
           orderno: [
             { validator: checkOrderNo, trigger: 'change' }
@@ -302,10 +303,6 @@
     },
 
     computed: {
-      collectionHref() {
-        return `${config.host}/merchant/trade/total?${qs.stringify(this.basicParams)}`;
-      },
-
       detailHref() {
         let detailParmas = Object.assign({}, this.basicParams, {isdownload: true});
         return `${config.host}/merchant/trade/download?${qs.stringify(detailParmas)}`;
@@ -377,6 +374,19 @@
       // 关闭弹出层
       handleClose(form) {
         this.$refs[form].resetFields();
+      },
+
+      // 点击下载交易汇总
+      downCollection() {
+        this.collectionHref = "javascript:;";
+        let collectParmas, oper = Object.entries(this.operaList);
+        if(!this.form.operaValue && oper.length > 0) {
+          collectParmas = Object.assign({}, {combine_opuser: 1}, this.basicParams);
+          this.collectionHref = `${config.host}/merchant/trade/total?${qs.stringify(collectParmas)}`;
+        }else {
+          collectParmas = Object.assign({}, {combine_opuser: 0}, this.basicParams);
+          this.collectionHref = `${config.host}/merchant/trade/total?${qs.stringify(collectParmas)}`;
+        }
       },
 
       // 撤销操作
@@ -521,7 +531,6 @@
 
       // 点击查询
       search() {
-        this.downHref = 'javascript:;';
         this.handleSizeChange();
       },
 
