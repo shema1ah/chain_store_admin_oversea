@@ -44,37 +44,38 @@
   .el-dialog__footer {
     padding: 20px 30px;
     @at-root .el-dialog__footer
-    .cancel {
-      box-sizing: border-box;
-      width: 100px;
-      height: 36px;
-      margin-right: 20px;
-      text-align: center;
-      line-height: 36px;
-      font-size: 16px;
-      border: 1px solid #FE9B20;
-      border-radius: 4px;
-      color: #FE9B20;
-      border-color: #FE9B20;
-      cursor: pointer;
-    }
     .dialog-footer {
       display: flex;
       justify-content: flex-end;
+      div {
+        width: 100px;
+        height: 36px;
+        text-align: center;
+        line-height: 36px;
+        border-radius: 4px;
+        font-size: 16px;
+        cursor: pointer;
+      }
+    }
+    .cancel {
+      margin-right: 20px;
+      border: 1px solid #FE9B20;
+      color: #FE9B20;
     }
     .submit {
-      width: 100px;
-      height: 36px;
       background-color: #7ED321;
-      text-align: center;
-      line-height: 36px;
-      border-radius: 4px;
       color: #fff;
-      font-size: 16px;
-      cursor: pointer;
       @at-root .el-icon-loading {
         margin-right: 15px;
       }
+    }
+  }
+
+  .total-footer {
+    .separate {
+      background-color: #FE9B20;
+      color: #fff;
+      margin-right: 20px;
     }
   }
 }

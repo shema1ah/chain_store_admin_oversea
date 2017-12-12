@@ -123,7 +123,7 @@
               <span class="el-dropdown-link"><img src="./img/download.png" alt="download"></span>
               <el-dropdown-menu slot="dropdown">
                 <a :href="detailHref" download class="downDetail"><el-dropdown-item command=1>{{$t('tradeMng.table.btn.downDetail')}}</el-dropdown-item></a>
-                <a :href="collectionHref" @click="downCollection"><el-dropdown-item command=2>{{$t('tradeMng.table.btn.downTrade')}}</el-dropdown-item></a>
+                <a href="javascript:;" @click="downCollection"><el-dropdown-item command=2>{{$t('tradeMng.table.btn.downTrade')}}</el-dropdown-item></a>
               </el-dropdown-menu>
             </el-dropdown>
           </div>
@@ -210,6 +210,20 @@
         </div>
       </div>
     </el-dialog>
+    <el-dialog title="交易流水Excel下载" :visible.sync="showTotal" custom-class="mydialog" top="20%" @close="handleClose">
+      <div style="margin-bottom: 20px;">检测到门店有收银员角色，交易汇总是否要区分收银员？</div>
+      <div slot="footer" class="dialog-footer total-footer">
+        <div @click="showTotal = false" class="cancel">
+          <span>关闭</span>
+        </div>
+        <div class="separate">
+          <a :href="separateHref" download id="separate">区分收银员</a>
+        </div>
+        <div class="submit">
+          <a :href="mergeHref" download>合并收银员</a>
+        </div>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -240,6 +254,7 @@
         lang: config.lang,
         role: Store.get('role') || {},
         showConfirm: false,
+        showTotal: false,
         checkValue: {},
         formpwd: {
           pwd: ''
@@ -283,7 +298,6 @@
         currentPage: 1,
         operaList: {},
         transData: {},
-        collectionHref: 'javascript:;',
         formrules: {
           orderno: [
             { validator: checkOrderNo, trigger: 'change' }
@@ -303,6 +317,15 @@
     },
 
     computed: {
+      mergeHref() {
+        let collectParmas = Object.assign({}, {combine_opuser: 1}, this.basicParams);
+        return `${config.host}/merchant/trade/total?${qs.stringify(collectParmas)}`;
+      },
+      separateHref() {
+        let collectParmas = Object.assign({}, {combine_opuser: 0}, this.basicParams);
+        return `${config.host}/merchant/trade/total?${qs.stringify(collectParmas)}`;
+      },
+
       detailHref() {
         let detailParmas = Object.assign({}, this.basicParams, {isdownload: true});
         return `${config.host}/merchant/trade/download?${qs.stringify(detailParmas)}`;
@@ -373,19 +396,16 @@
     methods: {
       // 关闭弹出层
       handleClose(form) {
-        this.$refs[form].resetFields();
+        this.$refs[form] && this.$refs[form].resetFields();
       },
 
       // 点击下载交易汇总
       downCollection() {
-        this.collectionHref = "javascript:;";
-        let collectParmas, oper = Object.entries(this.operaList);
+        let oper = Object.entries(this.operaList);
         if(!this.form.operaValue && oper.length > 0) {
-          collectParmas = Object.assign({}, {combine_opuser: 1}, this.basicParams);
-          this.collectionHref = `${config.host}/merchant/trade/total?${qs.stringify(collectParmas)}`;
+          this.showTotal = true;
         }else {
-          collectParmas = Object.assign({}, {combine_opuser: 0}, this.basicParams);
-          this.collectionHref = `${config.host}/merchant/trade/total?${qs.stringify(collectParmas)}`;
+          document.querySelector('#separate').click();
         }
       },
 
