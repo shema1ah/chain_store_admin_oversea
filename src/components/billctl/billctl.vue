@@ -1,5 +1,5 @@
 <template>
-  <div class="redpacket">
+  <div class="billctl">
     <div class="banner_wrapper">
       <el-breadcrumb separator=">">
         <el-breadcrumb-item>{{$t('billMng.crumbs.L1')}}</el-breadcrumb-item>
@@ -214,10 +214,9 @@
     text-decoration: underline;
   }
 }
+
 .relative {
   position: relative;
-}
-.relative {
   .note {
     position: absolute;
     bottom: -28px;
@@ -225,6 +224,12 @@
   }
   .ml-0 {
     margin-left: 0px;
+  }
+}
+
+.billctl {
+  .panel-header {
+    background-color: #fff;
   }
 }
 </style>

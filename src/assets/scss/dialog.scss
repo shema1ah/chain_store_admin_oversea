@@ -46,7 +46,6 @@
   }
   .el-dialog__footer {
     padding: 20px 30px;
-    @at-root .el-dialog__footer
     .dialog-footer {
       display: flex;
       justify-content: flex-end;
@@ -64,10 +63,16 @@
       margin-right: 20px;
       border: 1px solid #FE9B20;
       color: #FE9B20;
+      &:hover,&:active {
+        background-color: darken(#fff, 10%);
+      }
     }
     .submit {
       background-color: #7ED321;
       color: #fff;
+      &:hover,&:active {
+        background-color: darken(#7ED321, 10%);
+      }
       @at-root .el-icon-loading {
         margin-right: 15px;
       }
@@ -79,6 +84,9 @@
       background-color: #FE9B20;
       color: #fff;
       margin-right: 20px;
+      &:hover,&:active {
+        background-color: darken(#FE9B20, 10%);
+      }
     }
   }
 }

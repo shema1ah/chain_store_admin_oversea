@@ -1,5 +1,5 @@
 <template>
-  <div class="collectPacket">
+  <div class="memberpoint">
     <div class="banner_wrapper">
       <el-breadcrumb separator=">">
         <el-breadcrumb-item>会员功能</el-breadcrumb-item>
@@ -374,7 +374,7 @@
 .orange {
   color: #FE9B20;
 }
-  .collectPacket {
+  .memberpoint {
     .btn-wrap {
       display: flex;
       .panel-edit-btn__subshopnum {

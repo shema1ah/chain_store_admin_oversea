@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="reviewpoint">
     <div class="banner_wrapper">
       <el-breadcrumb separator=">">
         <el-breadcrumb-item>会员功能</el-breadcrumb-item>

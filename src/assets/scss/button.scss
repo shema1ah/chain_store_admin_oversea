@@ -99,9 +99,9 @@
       font-size: 17px;
       cursor: pointer;
       color: #FE9B20;
-      background-color: #fff;
+      background-color: #FEFDFB;
       &:hover,&:active{
-        background-color: darken(#fff, 10%);
+        background-color: darken(#FEFDFB, 10%);
       }
     }
     .panel-header-btn__fill {
@@ -110,6 +110,12 @@
       background-color: #FE9B20;
       &:hover,&:active {
         background-color: darken(#FE9B20, 10%);
+      }
+    }
+    .transctl-btn {
+      background-color: #fff;
+      &:hover,&:active{
+        background-color: darken(#fff, 10%);
       }
     }
   }

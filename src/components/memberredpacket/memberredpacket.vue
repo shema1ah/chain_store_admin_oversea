@@ -460,6 +460,7 @@
   padding-left: 15px;
   border-top: 2px solid #FE9B20;
   border-bottom: 1px solid #E7EAEC;
+  background-color: #FEFDFB;
   font-size: 16px;
   @at-root .panel-select__wrapper {
     display: flex;

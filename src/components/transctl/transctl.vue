@@ -89,7 +89,7 @@
                 <span class="el-icon-loading" v-if="loading"></span>
                 <span v-else>{{$t('tradeMng.panel.btn.query')}}</span>
               </div>
-              <div class="panel-header-btn" @click="reset">{{$t('tradeMng.panel.btn.reset')}}</div>
+              <div class="panel-header-btn transctl-btn" @click="reset">{{$t('tradeMng.panel.btn.reset')}}</div>
             </div>
           </div>
         </el-form>
@@ -653,6 +653,9 @@
   }
 
   .down{
+    .panel-header {
+      background-color: #fff;
+    }
     .panel-select-group {
       margin-bottom: 10px;
       position: relative;

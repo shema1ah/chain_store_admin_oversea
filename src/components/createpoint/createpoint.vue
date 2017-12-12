@@ -1,5 +1,5 @@
 <template>
-  <div class="createcollect" v-loading="loading">
+  <div class="createpoint" v-loading="loading">
     <div class="banner_wrapper">
       <el-breadcrumb separator=">">
         <el-breadcrumb-item>会员功能</el-breadcrumb-item>
