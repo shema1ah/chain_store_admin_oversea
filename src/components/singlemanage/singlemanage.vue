@@ -116,6 +116,7 @@
           <el-input v-model="form.repass" size="small" type="password" :placeholder="$t('shopmng.dialog.msg.m2')"></el-input>
         </el-form-item>
       </el-form>
+      <div class="divider"></div>
       <div slot="footer" class="dialog-footer">
         <div @click="showChangePass = false" class="cancel">{{$t('shopmng.dialog.cancel')}}</div>
         <div @click="submit" class="submit">

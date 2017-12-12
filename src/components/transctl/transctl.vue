@@ -203,6 +203,7 @@
           <el-input v-model="formpwd.pwd" :placeholder="$t('tradeMng.msg.m9')" type="password" @keyup.enter.native="onEnter"></el-input>
         </el-form-item>
       </el-form>
+      <div class="divider"></div>
       <div slot="footer" class="dialog-footer">
         <div @click="checkPwd" class="submit">
           <span class="el-icon-loading" v-if="iconLoading"></span>
@@ -210,16 +211,14 @@
         </div>
       </div>
     </el-dialog>
-    <el-dialog title="交易流水Excel下载" :visible.sync="showTotal" custom-class="mydialog" top="20%" @close="handleClose">
+    <el-dialog title="交易流水Excel下载" :visible.sync="showTotal" custom-class="mydialog extra" top="20%" @close="handleClose">
       <div style="margin-bottom: 20px;">检测到门店有收银员角色，交易汇总是否要区分收银员？</div>
+      <div class="divider"></div>
       <div slot="footer" class="dialog-footer total-footer">
-        <div @click="showTotal = false" class="cancel">
-          <span>关闭</span>
-        </div>
-        <div class="separate">
+        <div class="separate" @click="showTotal = false">
           <a :href="separateHref" download id="separate">区分收银员</a>
         </div>
-        <div class="submit">
+        <div class="submit" @click="showTotal = false">
           <a :href="mergeHref" download>合并收银员</a>
         </div>
       </div>
@@ -402,7 +401,7 @@
       // 点击下载交易汇总
       downCollection() {
         let oper = Object.entries(this.operaList);
-        if(!this.form.operaValue && oper.length > 0) {
+        if(!this.role.haiwai && !this.form.operaValue && oper.length > 0) {
           this.showTotal = true;
         }else {
           document.querySelector('#separate').click();

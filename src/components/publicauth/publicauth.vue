@@ -145,6 +145,7 @@
             </el-checkbox>
           </el-checkbox-group>
         </el-form>
+        <div class="divider"></div>
         <span slot="footer" class="dialog-footer">
         <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange" class="check-all">{{$t('pubSignal.dialog.all')}}</el-checkbox>
         <el-button @click="dialogVisible = false">{{$t('common.cancel')}}</el-button>

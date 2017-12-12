@@ -96,6 +96,7 @@
           <el-input v-model="form.password" size="small" type="password" :placeholder="$t('cashMng.common.m7')" @change="passChange" @blur="passBlur"></el-input>
         </el-form-item>
       </el-form>
+      <div class="divider"></div>
       <div slot="footer" class="dialog-footer">
         <div @click="showChangeInfo = false" class="cancel">{{ $t('common.close') }}</div>
         <div @click="submit" class="submit">
