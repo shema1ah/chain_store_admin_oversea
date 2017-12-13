@@ -1,11 +1,10 @@
 <template>
   <div class="redpacket">
     <div class="banner_wrapper">
-      <div class="banner-breadcrumb">
-        <span>会员功能</span>
-        <i class="icon-right_arrow"></i>
-        <span>会员红包</span>
-      </div>
+      <el-breadcrumb separator=">">
+        <el-breadcrumb-item>会员功能</el-breadcrumb-item>
+        <el-breadcrumb-item>会员红包</el-breadcrumb-item>
+      </el-breadcrumb>
       <div class="banner-btn" @click="creatPackage">
         <i class="icon-create"></i>
         <span class="banner-btn__desc">新建红包</span>
@@ -421,19 +420,13 @@
   justify-content: space-between;
   font-size: 18px;
   background-color: #fff;
-  .banner-breadcrumb {
-    display: flex;
-    align-items: center;
-    .icon-right_arrow {
-      font-size: 6px;
-      margin: 0px 8px;
-    }
-  }
+
   @at-root .banner-btn {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 158px;
+    width: 140px;
+    padding: 0 10px;
     height: 40px;
     background-color: #7ED321;
     border-radius: 3px;
@@ -467,6 +460,7 @@
   padding-left: 15px;
   border-top: 2px solid #FE9B20;
   border-bottom: 1px solid #E7EAEC;
+  background-color: #FEFDFB;
   font-size: 16px;
   @at-root .panel-select__wrapper {
     display: flex;
@@ -480,11 +474,6 @@
 
 .panel-body {
   padding: 10px 10px 0px;
-}
-
-.el-table__row_fix {
-  height: 62px;
-  min-height: 62px;
 }
 
 .pagination_wrapper {

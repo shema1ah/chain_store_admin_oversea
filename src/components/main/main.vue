@@ -107,9 +107,6 @@ export default {
 </script>
 
 <style lang="scss">
-  @import "../../assets/scss/dialog.scss";
-  @import "../../assets/scss/button.scss";
-  @import "../../assets/scss/element.scss";
   .responsive_img {
     max-width: 100%;
     height: auto;
@@ -145,7 +142,7 @@ export default {
         align-items: center;
         justify-content: center;
         background-color: #F39118;
-        width: 123px;
+        padding: 0 20px;
         height: 50px;
         cursor: pointer;
         transition: .3s cubic-bezier(.645,.045,.355,1);

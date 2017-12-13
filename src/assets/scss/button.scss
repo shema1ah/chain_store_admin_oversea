@@ -13,10 +13,10 @@
 /*绿色按钮*/
 .panel-header-btn__associate{
   display: flex;
-  width: 155px;
+  width: 140px;
+  padding: 0 10px;
   height: 35px;
   box-sizing: border-box;
-  padding: 0;
   background-color: #7ED321;
   justify-content: center;
   align-items: center;
@@ -46,7 +46,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 192px;
+  min-width: 172px;
+  padding: 0 10px;
   height: 40px;
   border-radius: 3px;
   font-size: 17px;
@@ -63,7 +64,7 @@
 
 .panel-btn__download_detail {
   background-color: #7ED321;
-  &:link,&:visited,&:hover,&:active {
+  &:hover,&:active {
     background-color: darken(#7ED321, 10%);
   }
 }
@@ -73,7 +74,7 @@
     .el-button--primary {
       background-color: #7ED321;
       border: none;
-      &:link,&:visited,&:hover,&:active {
+      &:hover,&:active {
         background-color: darken(#7ED321, 10%);
       }
     }
@@ -88,8 +89,8 @@
   @at-root {
     .panel-header-btn {
       float: left;
-      box-sizing: border-box;
-      width: 100px;
+      width: 80px;
+      padding: 0 10px;
       height: 35px;
       border: 1px solid #FE9B20;
       border-radius: 3px;
@@ -98,17 +99,23 @@
       font-size: 17px;
       cursor: pointer;
       color: #FE9B20;
-      background-color: #fff;
-      &:link,&:visited,&:hover,&:active{
-        background-color: darken(#fff, 10%);
+      background-color: #FEFDFB;
+      &:hover,&:active{
+        background-color: darken(#FEFDFB, 10%);
       }
     }
     .panel-header-btn__fill {
       margin-right: 15px;
       color: #fff;
       background-color: #FE9B20;
-      &:link,&:visited,&:hover,&:active {
+      &:hover,&:active {
         background-color: darken(#FE9B20, 10%);
+      }
+    }
+    .transctl-btn {
+      background-color: #fff;
+      &:hover,&:active{
+        background-color: darken(#fff, 10%);
       }
     }
   }
@@ -119,7 +126,7 @@
 // 下载
 .panel-btn__download_record {
   background-color: #FE9B20;
-  &:link,&:visited,&:hover,&:active {
+  &:hover,&:active {
     background-color: darken(#FE9B20, 10%);
   }
 }
@@ -181,6 +188,12 @@
       border-bottom: 1px solid #E8E7E6;
     }
   }
+}
+
+// 日语下自适应宽度按钮
+div.banner-btn-ja {
+  width: auto;
+  max-width: 250px;
 }
 
 // 打分自定义样式

@@ -1,9 +1,9 @@
 <template>
   <div class="chain">
     <div class="banner_wrapper">
-      <div class="banner-breadcrumb">
-        <span>{{$t('shopmng.crumbs.L1')}}</span>
-      </div>
+      <el-breadcrumb separator=">">
+        <el-breadcrumb-item>{{$t('shopmng.crumbs.L1')}}</el-breadcrumb-item>
+      </el-breadcrumb>
     </div>
 
     <div class="panel">
@@ -163,6 +163,7 @@
           <el-input v-model="form.repass" size="small" type="password" :placeholder="$t('shopmng.dialog.msg.m2')"></el-input>
         </el-form-item>
       </el-form>
+      <div class="divider"></div>
       <div slot="footer" class="dialog-footer">
         <div @click="showChangePass = false" class="cancel">{{$t('shopmng.dialog.cancel')}}</div>
         <div @click="submit" class="submit">
@@ -198,8 +199,8 @@
         <el-form-item prop="primeaccountpwd">
           <el-input v-model="formpwd.primeaccountpwd" :placeholder="$t('shopmng.dialog.validateText2')" type="password" style="font-size:12px"></el-input>
         </el-form-item>
-
       </el-form>
+      <div class="divider"></div>
       <div slot="footer" class="dialog-footer">
         <div @click="checkPrimeShopPwd('pwdform',this)" class="submit"><i class="el-icon-loading" v-show="iconShow"></i>{{$t('shopmng.dialog.ok')}}
         </div>

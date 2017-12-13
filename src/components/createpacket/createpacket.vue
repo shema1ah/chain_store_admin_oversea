@@ -1,13 +1,11 @@
 <template>
   <div class="createpacket">
     <div class="banner_wrapper">
-      <div class="banner-breadcrumb">
-        <span>会员功能</span>
-        <i class="icon-right_arrow"></i>
-        <span>会员红包</span>
-        <i class="icon-right_arrow"></i>
-        <span>创建红包</span>
-      </div>
+      <el-breadcrumb separator=">">
+        <el-breadcrumb-item>会员功能</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ path: '/main/memberredpacket' }" replace>会员红包</el-breadcrumb-item>
+        <el-breadcrumb-item>创建红包</el-breadcrumb-item>
+      </el-breadcrumb>
     </div>
     <div class="panel">
       <div class="panel-header panel-header__fix">
@@ -57,13 +55,13 @@
         if(!vm.act_type) {
           if(vm.role.isBaoshang) {
             vm.act_type = 'type_payment';
-            vm.$router.push({ name: 'type_payment' });
+            vm.$router.replace({ name: 'type_payment' });
           }else {
             vm.act_type = 'type_common';
-            vm.$router.push({ name: 'type_common' });
+            vm.$router.replace({ name: 'type_common' });
           }
         }else {
-          vm.$router.push({ name: vm.act_type });
+          vm.$router.replace({ name: vm.act_type });
         }
       });
     },
@@ -74,7 +72,7 @@
     },
     methods: {
       changePacketType(label) {
-        this.$router.push({ name: label });
+        this.$router.replace({ name: label });
       },
       currentChange(currentPage) {
         this.$store.dispatch({

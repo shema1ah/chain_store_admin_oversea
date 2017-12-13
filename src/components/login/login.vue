@@ -94,12 +94,11 @@
             type: 'error'
           });
       }
-
       // cookie存在跳转首页
       if(getCookie('sessionid') && Store.get('flag') === false) {
         this.$router.push('/main/index');
       }
-
+      // 退出之后清除session
       if(getCookie('sessionid') && Store.get('flag') === true) {
         clearCookie('sessionid', config.ohost);
       }
@@ -179,9 +178,9 @@
       // 切换标签清除表单
       handleClick(event) {
         if(event.name === 'cash') {
-          this.$refs['merchant'].resetFields();
+          this.$refs['merchant'] && this.$refs['merchant'].resetFields();
         }else {
-          this.$refs['cash'].resetFields();
+          this.$refs['cash'] && this.$refs['cash'].resetFields();
         }
       },
 
@@ -245,6 +244,7 @@
       }
       .username {
         background: url("./img/phone.png") no-repeat left center;
+        background-size: 24px;
       }
 
       .el-input__inner {
@@ -263,9 +263,11 @@
 
       .cashier {
         background: url("./img/cashier.png") no-repeat left center;
+        background-size: 24px;
       }
       .password {
         background: url("./img/password.png") no-repeat left center;
+        background-size: 24px;
       }
       .panel-header-btn {
         width: 100%;

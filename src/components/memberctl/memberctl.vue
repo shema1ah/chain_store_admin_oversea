@@ -1,11 +1,10 @@
 <template>
   <div class="redpacket">
     <div class="banner_wrapper">
-      <div class="banner-breadcrumb">
-        <span>会员功能</span>
-        <i class="icon-right_arrow"></i>
-        <span>会员管理</span>
-      </div>
+      <el-breadcrumb separator=">">
+        <el-breadcrumb-item>会员功能</el-breadcrumb-item>
+        <el-breadcrumb-item>会员管理</el-breadcrumb-item>
+      </el-breadcrumb>
       <!-- <div class="panel-btn-group__wrapper panel-header-download-btn-group">
           <div class="panel-btn__download panel-btn__download_detail">
             <i class="icon-create"></i>
@@ -41,7 +40,7 @@
             label="头像">
             <template scope="scope">
               <img v-if="scope.row.avatar" :src="scope.row.avatar" alt="" width="44" height="44" />
-              <img src="./img/default.png" height="44" width="44" v-else />
+              <img src="../../assets/img/default.png" height="44" width="44" v-else />
             </template>
           </el-table-column>
           <el-table-column

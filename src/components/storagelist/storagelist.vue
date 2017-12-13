@@ -1,13 +1,11 @@
 <template>
   <div class="storagelist">
     <div class="banner_wrapper">
-      <div class="banner-breadcrumb">
-        <span>会员功能</span>
-        <i class="icon-right_arrow"></i>
-        <span>会员储值</span>
-        <i class="icon-right_arrow"></i>
-        <span>储值会员</span>
-      </div>
+      <el-breadcrumb separator=">">
+        <el-breadcrumb-item>会员功能</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ path: '/main/memberstorage' }" replace>会员储值</el-breadcrumb-item>
+        <el-breadcrumb-item>储值会员</el-breadcrumb-item>
+      </el-breadcrumb>
     </div>
 
     <div class="panel">
@@ -20,7 +18,7 @@
           <el-table-column label="头像">
             <template scope="scope">
               <img v-if="scope.row.avatar || scope.row.c_avatar" :src="scope.row.avatar || scope.row.c_avatar" alt="" width="44" height="44" />
-              <img src="./img/default.png" height="44" width="44" v-else />
+              <img src="../../assets/img/default.png" height="44" width="44" v-else />
             </template>
           </el-table-column>
           <el-table-column label="姓名" prop="name">

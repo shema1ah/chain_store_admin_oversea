@@ -78,8 +78,7 @@ module.exports = app.listen(port, function (err) {
     return
   }
 
-  // when env is testing, don't need open it
-  if (autoOpenBrowser && process.env.NODE_ENV !== 'testing') {
+  if (autoOpenBrowser) {
     opn(uri)
   }
 })

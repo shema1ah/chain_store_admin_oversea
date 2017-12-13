@@ -1,9 +1,9 @@
 <template>
   <div class="transctl">
     <div class="banner_wrapper">
-      <div class="banner-breadcrumb">
-        <span>{{$t('tradeMng.crumbs.L1')}}</span>
-      </div>
+      <el-breadcrumb separator=">">
+        <el-breadcrumb-item>{{$t('tradeMng.crumbs.L1')}}</el-breadcrumb-item>
+      </el-breadcrumb>
     </div>
     <div class="panel down">
       <div class="panel-header panel-header__auto">
@@ -42,7 +42,7 @@
             </div>
             <div class="panel-select__wrapper" v-if="!role.isCashier">
               <span class="panel-select__desc">{{$t('tradeMng.panel.operator')}}</span>
-              <el-form-item>
+              <el-form-item prop="operaValue">
                 <el-select v-model="form.operaValue" :placeholder="$t('tradeMng.table.all')" size="small" @change="operaChange" :disabled="form.selectShopUid === ''">
                   <el-option :label="$t('tradeMng.table.all')" value=""></el-option>
                   <el-option v-for="(label, value) in operaList" :label="label" :value="value" :key="value"></el-option>
@@ -89,7 +89,7 @@
                 <span class="el-icon-loading" v-if="loading"></span>
                 <span v-else>{{$t('tradeMng.panel.btn.query')}}</span>
               </div>
-              <div class="panel-header-btn" @click="reset">{{$t('tradeMng.panel.btn.reset')}}</div>
+              <div class="panel-header-btn transctl-btn" @click="reset">{{$t('tradeMng.panel.btn.reset')}}</div>
             </div>
           </div>
         </el-form>
@@ -123,7 +123,7 @@
               <span class="el-dropdown-link"><img src="./img/download.png" alt="download"></span>
               <el-dropdown-menu slot="dropdown">
                 <a :href="detailHref" download class="downDetail"><el-dropdown-item command=1>{{$t('tradeMng.table.btn.downDetail')}}</el-dropdown-item></a>
-                <a :href="collectionHref" download><el-dropdown-item command=2>{{$t('tradeMng.table.btn.downTrade')}}</el-dropdown-item></a>
+                <a href="javascript:;" @click="downCollection"><el-dropdown-item command=2>{{$t('tradeMng.table.btn.downTrade')}}</el-dropdown-item></a>
               </el-dropdown-menu>
             </el-dropdown>
           </div>
@@ -203,10 +203,23 @@
           <el-input v-model="formpwd.pwd" :placeholder="$t('tradeMng.msg.m9')" type="password" @keyup.enter.native="onEnter"></el-input>
         </el-form-item>
       </el-form>
+      <div class="divider"></div>
       <div slot="footer" class="dialog-footer">
         <div @click="checkPwd" class="submit">
           <span class="el-icon-loading" v-if="iconLoading"></span>
           <span v-else>{{$t('common.ok')}}</span>
+        </div>
+      </div>
+    </el-dialog>
+    <el-dialog title="交易流水Excel下载" :visible.sync="showTotal" custom-class="mydialog extra" top="20%" @close="handleClose">
+      <div style="margin-bottom: 20px;">检测到门店有收银员角色，交易汇总是否要区分收银员？</div>
+      <div class="divider"></div>
+      <div slot="footer" class="dialog-footer total-footer">
+        <div class="separate" @click="showTotal = false">
+          <a :href="separateHref" download id="separate">区分收银员</a>
+        </div>
+        <div class="submit" @click="showTotal = false">
+          <a :href="mergeHref" download>合并收银员</a>
         </div>
       </div>
     </el-dialog>
@@ -240,6 +253,7 @@
         lang: config.lang,
         role: Store.get('role') || {},
         showConfirm: false,
+        showTotal: false,
         checkValue: {},
         formpwd: {
           pwd: ''
@@ -281,7 +295,7 @@
           other: []
         },
         currentPage: 1,
-        operaList: [],
+        operaList: {},
         transData: {},
         formrules: {
           orderno: [
@@ -302,8 +316,13 @@
     },
 
     computed: {
-      collectionHref() {
-        return `${config.host}/merchant/trade/total?${qs.stringify(this.basicParams)}`;
+      mergeHref() {
+        let collectParmas = Object.assign({}, {combine_opuser: 1}, this.basicParams);
+        return `${config.host}/merchant/trade/total?${qs.stringify(collectParmas)}`;
+      },
+      separateHref() {
+        let collectParmas = Object.assign({}, {combine_opuser: 0}, this.basicParams);
+        return `${config.host}/merchant/trade/total?${qs.stringify(collectParmas)}`;
       },
 
       detailHref() {
@@ -376,7 +395,17 @@
     methods: {
       // 关闭弹出层
       handleClose(form) {
-        this.$refs[form].resetFields();
+        this.$refs[form] && this.$refs[form].resetFields();
+      },
+
+      // 点击下载交易汇总
+      downCollection() {
+        let oper = Object.entries(this.operaList);
+        if(!this.role.haiwai && !this.form.operaValue && oper.length > 0) {
+          this.showTotal = true;
+        }else {
+          document.querySelector('#separate').click();
+        }
       },
 
       // 撤销操作
@@ -387,7 +416,7 @@
           txamt: val.total_amt,
           txdtm: formatDate(val.sysdtm, 'yyyy-MM-dd HH:mm:ss'),
           syssn: val.syssn,
-          out_trade_no: "",
+          out_trade_no: Date.now(),
           udid: 'bigmerchant'
         };
         axios.post(`${config.payHost}/trade/v1/refund`, qs.stringify(params), {
@@ -521,7 +550,6 @@
 
       // 点击查询
       search() {
-        this.downHref = 'javascript:;';
         this.handleSizeChange();
       },
 
@@ -596,85 +624,10 @@
 </script>
 
 <style lang="scss">
-  // 采用BEM命名规则
-  .banner_wrapper {
-    display: flex;
-    height: 66px;
-    padding: 0px 25px;
-    align-items: center;
-    justify-content: space-between;
-    font-size: 18px;
-    background-color: #fff;
-    .banner-breadcrumb {
-      display: flex;
-      align-items: center;
-      .icon-right_arrow {
-        font-size: 6px;
-        margin: 0px 8px;
-      }
-    }
-    @at-root .banner-btn {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: 158px;
-      height: 40px;
-      background-color: #7ED321;
-      border-radius: 3px;
-      color: #fff;
-      cursor: pointer;
-      transition: .3s cubic-bezier(.645,.045,.355,1);
-      @at-root .banner-btn__desc {
-        margin-left: 8px;
-      }
-      .icon-create {
-        transition: .3s cubic-bezier(.645,.045,.355,1);
-        transform: rotateZ(0deg);
-      }
-      &:hover {
-        box-shadow: -3px 3px 5px rgba(0, 0, 0, 0.12);
-        .icon-create {
-          transform: rotateZ(90deg);
-        }
-      }
-    }
-  }
-
-  .panel {
-    margin: 23px 25px 23px;
-    background-color: #fff;
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.12);
-  }
-  .panel-header {
-    height: 50px;
-    padding-left: 15px;
-    border-top: 2px solid #FE9B20;
-    border-bottom: 1px solid #E7EAEC;
-    font-size: 16px;
-    @at-root .panel-select__wrapper {
-      display: flex;
-      align-items: center;
-      margin-right: 40px;
-      @at-root .panel-select__desc {
-        margin-right: 15px;
-      }
-    }
-  }
-  .panel-body {
-    padding: 10px 10px 0px;
-  }
-
   .el-table__row_fix {
     height: 62px;
     min-height: 62px;
     color: #282A2D;
-  }
-  .pagination_wrapper {
-    display: flex;
-    height: 60px;
-    padding-right: 20px;
-    justify-content: flex-end;
-    align-items: center;
   }
 
   .panel-header__auto {
@@ -700,6 +653,9 @@
   }
 
   .down{
+    .panel-header {
+      background-color: #fff;
+    }
     .panel-select-group {
       margin-bottom: 10px;
       position: relative;

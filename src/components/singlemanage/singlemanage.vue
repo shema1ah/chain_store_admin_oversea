@@ -1,11 +1,10 @@
 <template>
   <div class="single">
     <div class="banner_wrapper">
-      <div class="banner-breadcrumb">
-        <span>{{$t('shopmng.crumbs.L1')}}</span>
-      </div>
+      <el-breadcrumb separator=">">
+        <el-breadcrumb-item>{{$t('shopmng.crumbs.L1')}}</el-breadcrumb-item>
+      </el-breadcrumb>
     </div>
-
     <div class="panel">
       <div class="panel-header panel-header__fix">
         <div class="panel-select-group panel-select-group__justify">
@@ -77,7 +76,7 @@
             <div class="info__title">{{ $t('cashMng.common.user') }}</div>
             <div class="info__desc">{{ shop.mobile }}</div>
           </div>
-          <div class="info next-bottom">
+          <div class="info next-bottom" :style="lang === 'ja'?{'margin-bottom': '10px'}:''">
             <div class="info__title">{{ $t('cashMng.common.number') }}</div>
             <div class="info__desc">{{ opinfo.opuid }}</div>
           </div>
@@ -117,6 +116,7 @@
           <el-input v-model="form.repass" size="small" type="password" :placeholder="$t('shopmng.dialog.msg.m2')"></el-input>
         </el-form-item>
       </el-form>
+      <div class="divider"></div>
       <div slot="footer" class="dialog-footer">
         <div @click="showChangePass = false" class="cancel">{{$t('shopmng.dialog.cancel')}}</div>
         <div @click="submit" class="submit">

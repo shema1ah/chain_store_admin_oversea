@@ -37,6 +37,7 @@ module.exports = {
     'padded-blocks': 0,
     //对象字面量项尾不能有逗号
     "comma-dangle": [0],
-    'keyword-spacing': 0
+    'keyword-spacing': 0,
+    'one-var': 0 //连续申明
   }
 }

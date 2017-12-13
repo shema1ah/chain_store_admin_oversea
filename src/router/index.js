@@ -39,6 +39,8 @@ import dcqrcode from 'components/dcqrcode/dcqrcode'
 import cashiermanage from 'components/cashiermanage/cashiermanage'
 import addcashier from 'components/addcashier/addcashier'
 import cashierdetail from 'components/cashierdetail/cashierdetail'
+import merchandise from 'components/merchandise/merchandise'
+import memberIntegral from 'components/memberIntegral/memberIntegral'
 
 Vue.use(Router)
 
@@ -234,6 +236,11 @@ export default new Router({
           component: dcqrcode
         },
         {
+          path: 'memberIntegral',
+          name: 'memberIntegral',
+          component: memberIntegral
+        },
+        {
           path: 'cashiermanage',
           component: member,
           children: [
@@ -252,6 +259,11 @@ export default new Router({
               component: cashierdetail
             }
           ]
+        },
+        {
+          path: 'merchandise',
+          name: 'merchandise',
+          component: merchandise
         }
       ]
     }

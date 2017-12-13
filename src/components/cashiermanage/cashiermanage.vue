@@ -1,11 +1,11 @@
 <template>
   <div class="cashiermanage">
     <div class="banner_wrapper">
-      <div class="banner-breadcrumb">
-        <span>{{ $t('cashMng.crumbs.L1') }}</span>
-      </div>
+      <el-breadcrumb separator=">">
+        <el-breadcrumb-item>{{ $t('cashMng.crumbs.L1') }}</el-breadcrumb-item>
+      </el-breadcrumb>
       <div class="btn-wrap">
-        <div class="banner-btn" @click="addCashier">
+        <div class="banner-btn" :class="{'banner-btn-ja': lang === 'ja'}" @click="addCashier">
           <i class="icon-create"></i>
           <span class="banner-btn__desc">{{ $t('cashMng.crumbs.L3') }}</span>
         </div>
@@ -34,20 +34,20 @@
         <el-table :data="cashierData.opusers" style="width: 100%" row-class-name="el-table__row_fix" v-loading="loading" id="memberredcollect">
           <el-table-column prop="opuid" :label="$t('cashMng.common.number')"></el-table-column>
           <el-table-column prop="opname" :label="$t('cashMng.mng.name')"></el-table-column>
-          <el-table-column prop="mobile" :label="$t('cashMng.mng.mobile')"></el-table-column>
-          <el-table-column :label="$t('cashMng.common.status')">
+          <el-table-column prop="mobile" min-width="80px" :label="$t('cashMng.mng.mobile')"></el-table-column>
+          <el-table-column :label="$t('cashMng.common.status')" :min-width="role.haiwai?'140px':'80px'">
             <template scope="scope">
               <el-switch v-model="scope.row.status" on-text="" off-text="" on-color="#FF8100" off-color="#d8d8d8" on-value=1 off-value=0 @change="changeStatus(scope.row.opuid, scope.row.status)"></el-switch>
               <span class="explain">{{ scope.row.status == 1 ? $t('cashMng.mng.status3') : $t('cashMng.mng.status4') }}</span>
             </template>
           </el-table-column>
-          <el-table-column prop="refund" label="退款权限状态" v-if="!role.haiwai">
+          <el-table-column prop="refund" label="退款权限状态" v-if="!role.haiwai" min-width="80px">
             <template scope="scope">
               <el-switch v-model="scope.row.refund" on-text="" off-text="" on-color="#7ed321" off-color="#d8d8d8" on-value=1 off-value=0 @change="changeRights(scope.row.opuid, scope.row.refund)"></el-switch>
               <span class="explain">{{ scope.row.refund == 1 ? '开启退款' : '关闭退款' }}</span>
             </template>
           </el-table-column>
-          <el-table-column min-width="150" :label="$t('cashMng.mng.op')">
+          <el-table-column min-width="120" :label="$t('cashMng.mng.op')">
             <template scope="scope">
               <el-button type="text" size="small" class="el-button__fix" @click="goDetail(scope.row.opuid)">{{ $t('cashMng.mng.detail') }}</el-button>
               <a :href="downHref + scope.row.opuid" download v-if="!role.haiwai" class="el-button__fix el-button--text">下载收款码</a>
@@ -100,6 +100,7 @@
     data() {
       return {
         role: Store.get('role') || {},
+        lang: config.lang,
         cashierData: [],
         pageSize: 10,
         rightsValue: '',

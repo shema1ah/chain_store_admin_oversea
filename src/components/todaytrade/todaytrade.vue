@@ -1,9 +1,9 @@
 <template>
   <div class="content">
     <div class="banner_wrapper">
-      <div class="banner-breadcrumb">
-        <span>实时收款</span>
-      </div>
+      <el-breadcrumb separator=">">
+        <el-breadcrumb-item>实时收款</el-breadcrumb-item>
+      </el-breadcrumb>
     </div>
 
     <div class="panel">
