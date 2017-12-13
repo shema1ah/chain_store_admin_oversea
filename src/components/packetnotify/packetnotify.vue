@@ -121,9 +121,6 @@
         }
       }
     },
-    created() {
-      this.$store.dispatch('getMemberTotal');
-    },
     methods: {
       getNotifyTime() {
         let baseDate = new Date();

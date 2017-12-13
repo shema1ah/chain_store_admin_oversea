@@ -13,13 +13,9 @@ const store = new Vuex.Store({
     redpacketData: [],
     storageData: [],
     shopDict: {},
-    pageShopData: [],
-    redPacketComponent: {}
+    pageShopData: []
   },
   mutations: {
-    getRedpacketComponent (state, payload) {
-      state.redPacketComponent = payload.redPacketComponent
-    },
     getStorageData (state, payload) {
       state.storageData = payload.storageData
     },
@@ -157,44 +153,8 @@ const store = new Vuex.Store({
         loading.close()
         Message.error('获取红包数据失败!')
       })
-    },
-    getExchangedCreditsList({ commit }, payload) {
-      var loading = Loading.service({
-        target: document.getElementById('memberredpacket'),
-        fullscreen: false
-      })
-      axios.get(`${config.host}/merchant/activity/list`, {
-        params: Object.assign({}, {
-          type: '',
-          sub_uid: '',
-          length: 10,
-          curpage: 0
-        }, payload && payload.params)
-      })
-        .then((res) => {
-          loading.close()
-          let data = res.data
-          if (data.respcd === config.code.OK) {
-            commit({
-              type: 'getRedpacketData',
-              redpacketData: data.data
-            })
-          } else {
-            Message.error(data.respmsg)
-          }
-        })
-        .catch(() => {
-          loading.close()
-          Message.error('获取红包数据失败!')
-        })
     }
   }
 })
-
-// store.dispatch('getShopList');
-// store.dispatch('getMemberTotal')
-// store.dispatch('getRedpacketData');
-// store.dispatch('getPageShopData');
-// store.dispatch('getStorageData');
 
 export default store
