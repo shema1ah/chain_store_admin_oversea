@@ -367,7 +367,6 @@
     },
     created() {
       this.$store.dispatch('getPageShopData');
-      // this.$store.dispatch('getShopList');
     },
 
     methods: {
@@ -435,9 +434,7 @@
           this.$message.error(e);
         })
       },
-      submitEditSubShopTag() {
 
-      },
       // 编辑子商户
       editSubShopNum() {
         this.showEditSubShopNum = true;

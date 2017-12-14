@@ -897,6 +897,7 @@
       backToShopManagement() {
         this.$refs['upload_info'].resetFields();
         this.$refs['shop_info'].resetFields();
+        this.$store.dispatch('getShopList');
         this.$router.push('/main/chainmanage');
       },
 
