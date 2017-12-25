@@ -38,6 +38,25 @@
               <span class="panel-header__desc">店铺基本信息</span>
             </div>
 
+            <el-form-item label="商户类型" prop="usertype">
+              <el-select v-model="shopInfo.usertype" placeholder="请选择" icon="caret-bottom"
+                         class="sub-account-item-info">
+                <el-option label="小微" :value=1 :key=1></el-option>
+                <el-option label="个体工商户" :value=2 :key=2></el-option>
+                <el-option label="企业" :value=3 :key=3></el-option>
+              </el-select>
+            </el-form-item>
+
+            <el-form-item label="营销执照名称" prop="name" v-if="shopInfo.usertype !== 1">
+              <el-input v-model.trim="shopInfo.name" size="small" type="text" placeholder="请输入"
+                        auto-complete="off" class="sub-account-item-info"></el-input>
+            </el-form-item>
+
+            <el-form-item label="营业执照编号" prop="licensenumber" v-if="shopInfo.usertype !== 1">
+              <el-input v-model.trim="shopInfo.licensenumber" size="small" type="text" placeholder="请输入"
+                        auto-complete="off" class="sub-account-item-info"></el-input>
+            </el-form-item>
+
             <el-form-item label="分店名称" prop="shopname">
               <el-input v-model.trim="shopInfo.shopname" size="small" type="text" placeholder="请输入" auto-complete="off"
                         class="sub-account-item-info"></el-input>
@@ -249,6 +268,47 @@
         <div class="sub_info_wrapper">
           <el-form :model="shopInfo" label-position="left" :rules="page2_rules" ref="upload_info">
             <el-form-item label=""></el-form-item>
+            <div v-if="shopInfo.usertype !== 1">
+              <div class="panel-select-group fix-unique">
+                <i class="divider-icon"></i>
+                <span class="panel-header__desc">营业执照图片</span>
+              </div>
+
+              <el-form-item style="margin-bottom:0">
+                <el-col :span="8">
+                  <el-upload v-loading="licensephotoloading"
+                             :on-progress="startAvatarUpload"
+                             class="avatar-uploader"
+                             :action="uploadInterface"
+                             :show-file-list="false"
+                             :before-upload="beforeAvatarUpload"
+                             :on-success="avatarSuccess"
+                             :on-error="avatarFailed"
+                             :data="{
+                    category: 1,
+                    source: 1,
+                    tag: 'licensephoto',
+                    format: 'cors',
+                    userid: shopInfo.userid
+                }">
+                    <div v-if="shopInfo.licensephoto_url" class="avatar-wrap">
+                      <img :src="shopInfo.licensephoto_url" class="avatar">
+                      <i class="img-tip">重新上传</i>
+                    </div>
+                    <div v-else class="avatar-uploader-wrap">
+                      <i class="avatar-uploader-icon el-icon-plus"></i>
+                      <div class="avatar-desc">点击添加图片</div>
+                      <div class="avatar-tip">支持jpg／png格式</div>
+                    </div>
+                  </el-upload>
+                </el-col>
+                <el-col :span="6">
+                  <img src="./image/example6.jpg" class="" width="240" height="180" class="example_img"/>
+                </el-col>
+              </el-form-item>
+              <div class="image_info">* 必须使用有效期之内的营业执照，需要证件完整且文字清晰可见。</div>
+            </div>
+
             <div class="panel-select-group fix-unique">
               <i class="divider-icon"></i>
               <span class="panel-header__desc">店铺门头图片</span>
@@ -273,7 +333,7 @@
                     userid: shopInfo.userid
                 }">
                   <div v-if="shopInfo.shopphoto_url" class="avatar-wrap">
-                    <img :src="shopInfo.shopphoto_url" class="avatar"> <!-- /static/img/example3.jpg   -->
+                    <img :src="shopInfo.shopphoto_url" class="avatar">
                     <i class="img-tip">重新上传</i>
                   </div>
                   <div v-else class="avatar-uploader-wrap">
@@ -439,6 +499,45 @@
               </el-col>
             </el-form-item>
             <div class="image_info">* 必须使用有效期内的二代身份证，身份证本人手持证件，正面展示。</div>
+
+            <div class="panel-select-group fix-unique">
+              <i class="divider-icon"></i>
+              <span class="panel-header__desc">上传连锁店分店说明</span>
+            </div>
+            <el-form-item style="margin-bottom:0">
+              <el-col :span="8">
+                <el-upload
+                  v-loading="subshopdescloading"
+                  :on-progress="startAvatarUpload"
+                  class="avatar-uploader"
+                  :action="uploadInterface"
+                  :show-file-list="false"
+                  :before-upload="beforeAvatarUpload"
+                  :on-success="avatarSuccess"
+                  :on-error="avatarFailed"
+                  :data="{
+                  category: 1,
+                  source: 1,
+                  tag: 'subshopdesc',
+                  userid: shopInfo.userid,
+                  format: 'cors'
+              }">
+                  <div v-if="shopInfo.subshopdesc_url" class="avatar-wrap">
+                    <img :src="shopInfo.subshopdesc_url" class="avatar">
+                    <i class="img-tip">重新上传></i>
+                  </div>
+                  <div v-else class="avatar-uploader-wrap">
+                    <i class="avatar-uploader-icon el-icon-plus"></i>
+                    <div class="avatar-desc">点击添加图片</div>
+                    <div class="avatar-tip">支持jpg／png格式</div>
+                  </div>
+                </el-upload>
+              </el-col>
+            </el-form-item>
+            <div class="image_info">
+              <a class="down-doc" href="http://near.m1img.com/op_upload/137/151394230826.doc" download>点此下载文件，请填写后加盖公章并拍照重新上传</a>
+            </div>
+
             <div class="divider"></div>
 
             <el-form-item>
@@ -556,9 +655,11 @@
         forFlag: false,
         changeFlag: false,
         fastInfo: {},
+        licensephotoloading: false,
         shopphotoloading: false,
         goodsphotoloading: false,
         idcardfrontloading: false,
+        subshopdescloading: false,
         idcardbackloading: false,
         idcardinhandloading: false,
         mapComponentURL: '',
@@ -571,6 +672,9 @@
         shopInfo: {
           shopAccout: '',
           password: '', // 密码
+          usertype: 1, // 商户类型
+          name: '', // 营销执照名称
+          licensenumber: '', // 营业执照编号
           shopname: '', // 分店名称
           landline: '', // 顾客可联系的电话
           shoptype_id: '', // 经营类型（商户类型）id
@@ -605,6 +709,8 @@
           bankname: '', // 开户行支行名称
           userid: '', // 预注册时返回 用于上传图片用
           username: '', // 预注册时返回 用于上传图片用
+          licensephoto_url: '', //营业执照照片url
+          licensephoto_name: '',
           shopphoto_url: '', // 经营场所/经营场所外景照片url
           shopphoto_name: '', // 经营场所/经营场所外景照片名
           goodsphoto_url: '', // 所售商品/经营场所内景照片url
@@ -615,6 +721,8 @@
           idcardback_name: '',
           idcardinhand_url: '', // 手持身份证合照url
           idcardinhand_name: '',
+          subshopdesc_url: '', // 连锁店分店说明url
+          subshopdesc_name: '',
           shop_types: [], // 树状结构数据 异步返回
           bankCitys: [],
           headbanks: [], // 开户行总行数据
@@ -629,6 +737,15 @@
           password: [
             {required: true, message: '请输入分店登录密码', trigger: 'blur'},
             {max: 20, min: 6, message: '请输入6~20位数字或字母', trigger: 'blur'}
+          ],
+          name: [
+            {required: true, message: '请输入营销执照名称'}
+          ],
+          licensenumber: [
+            {required: true, message: '请输入营业执照编号'}
+          ],
+          usertype: [
+            {required: true, message: '请选择商户类型'}
           ],
           shopname: [
             {required: true, message: '请输入分店名称', trigger: 'blur'},
@@ -721,6 +838,9 @@
 
         },
         page2_rules: {
+          licensephoto_url: [
+            {required: true, message: '请上传营业执照照片'}
+          ],
           shopphoto_url: [
             {required: true, message: '请上传经营场所外景照片'}
           ],
@@ -735,6 +855,9 @@
           ],
           idcardinhand_url: [
             {required: true, message: '请上传手持身份证合照'}
+          ],
+          subshopdesc_url: [
+            {required: true, message: '上传连锁店分店说明'}
           ]
         }
 
@@ -766,9 +889,10 @@
                 idcardback_url: info.idcardback_url,
                 idcardfront_url: info.idcardfront_url,
                 idcardinhand_url: info.idcardinhand_url,
+                subshopdesc_url: info.subshopdesc_url,
                 idnumber: info.idnumber,
-                idstatdate: info.idstatdate?new Date(info.idstatdate):'',
-                idenddate: info.idenddate?new Date(info.idenddate):'',
+                idstatdate: info.idstatdate ? new Date(info.idstatdate) : '',
+                idenddate: info.idenddate ? new Date(info.idenddate) : '',
                 shoptype_id: info.shoptype_id,
                 city_id: info.city_id
               });
@@ -1029,6 +1153,9 @@
             axios.post(`${config.ohost}/mchnt/user/signup`, qs.stringify({
               username: this.shopInfo.username,
               password: this.shopInfo.password,
+              usertype: this.shopInfo.usertype,
+              name: this.shopInfo.name,
+              licensenumber: this.shopInfo.licensenumber,
               bankuser: this.shopInfo.bankuser,
               idnumber: this.shopInfo.idnumber,
               bankprovince: this.shopInfo.bankprovince,
@@ -1046,11 +1173,13 @@
               location: this.shopInfo.location,
               address: this.shopInfo.address,
               provinceid: this.shopInfo.provinceid,
+              licensephoto: this.shopInfo.licensephoto_name,
               shopphoto: this.shopInfo.shopphoto_name,
               goodsphoto: this.shopInfo.goodsphoto_name,
               idcardfront: this.shopInfo.idcardfront_name,
               idcardback: this.shopInfo.idcardback_name,
               idcardinhand: this.shopInfo.idcardinhand_name,
+              subshopdesc: this.shopInfo.subshopdesc_name,
               idstatdate: formatDate(this.shopInfo.idstatdate),
               idenddate: formatDate(this.shopInfo.idenddate),
               longitude: this.shopInfo.longitude,
@@ -1347,6 +1476,13 @@
         height: 16px;
         line-height: 16px;
         padding: 10px 0 20px 30px;
+
+        .down-doc {
+          color: #FE9B20;
+          text-decoration: underline;
+          text-decoration-color: #FE9B20;
+          font-style: italic;
+        }
       }
       padding: 20px 0 0 0px;
       .divider-icon {
