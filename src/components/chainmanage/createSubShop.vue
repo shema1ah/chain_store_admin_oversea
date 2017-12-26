@@ -266,7 +266,7 @@
       </div>
       <div class="csup-panel-body">
         <div class="sub_info_wrapper">
-          <el-form :model="shopInfo" label-position="left" :rules="page2_rules" ref="upload_info">
+          <el-form :model="shopInfo" label-position="left" ref="upload_info">
             <el-form-item label=""></el-form-item>
             <div v-if="shopInfo.usertype !== 1">
               <div class="panel-select-group fix-unique">
@@ -316,8 +316,7 @@
 
             <el-form-item style="margin-bottom:0">
               <el-col :span="8">
-                <el-upload ref="shopphoto"
-                           v-loading="shopphotoloading"
+                <el-upload v-loading="shopphotoloading"
                            :on-progress="startAvatarUpload"
                            class="avatar-uploader"
                            :action="uploadInterface"
@@ -836,29 +835,6 @@
             {required: true, message: '请选择开户支行'}
           ]
 
-        },
-        page2_rules: {
-          licensephoto_url: [
-            {required: true, message: '请上传营业执照照片'}
-          ],
-          shopphoto_url: [
-            {required: true, message: '请上传经营场所外景照片'}
-          ],
-          goodsphoto_url: [
-            {required: true, message: '请上传经营场所内景照片'}
-          ],
-          idcardfront_url: [
-            {required: true, message: '请上传法人身份证正面照片'}
-          ],
-          idcardback_url: [
-            {required: true, message: '请上传法人身份证背面照片'}
-          ],
-          idcardinhand_url: [
-            {required: true, message: '请上传手持身份证合照'}
-          ],
-          subshopdesc_url: [
-            {required: true, message: '上传连锁店分店说明'}
-          ]
         }
 
       }
@@ -1144,69 +1120,96 @@
 
       },
 
+      // 校验图片表单
+      checkForm() {
+        if(!this.shopInfo.licensephoto_url && this.shopInfo.usertype !== 1) {
+          this.$message.error('请上传营业执照照片');
+          return false;
+        }
+        if(!this.shopInfo.shopphoto_url) {
+          this.$message.error('请上传经营场所外景照片');
+          return false;
+        }
+        if(!this.shopInfo.goodsphoto_url) {
+          this.$message.error('请上传经营场所内景照片');
+          return false;
+        }
+        if(!this.shopInfo.idcardfront_url) {
+          this.$message.error('请上传法人身份证正面照片');
+          return false;
+        }
+        if(!this.shopInfo.idcardback_url) {
+          this.$message.error('请上传法人身份证背面照片');
+          return false;
+        }
+        if(!this.shopInfo.idcardinhand_url) {
+          this.$message.error('请上传手持身份证合照');
+          return false;
+        }
+        return true
+      },
+
       // 最终提交
       signUp() {
         var _this = this;
-        this.$refs['upload_info'].validate((valid) => {
-          if (valid) {
-            this.btnLocked = true;
-            axios.post(`${config.ohost}/mchnt/user/signup`, qs.stringify({
-              username: this.shopInfo.username,
-              password: this.shopInfo.password,
-              usertype: this.shopInfo.usertype,
-              name: this.shopInfo.name,
-              licensenumber: this.shopInfo.licensenumber,
-              bankuser: this.shopInfo.bankuser,
-              idnumber: this.shopInfo.idnumber,
-              bankprovince: this.shopInfo.bankprovince,
-              bankcity: this.shopInfo.bankcity,
-              banktype: this.shopInfo.banktype,
-              bankname: this.shopInfo.bankname,
-              headbankname: this.shopInfo.headbankname,
-              bankcode: this.shopInfo.bankcode,
-              bankaccount: this.shopInfo.bankaccount,
-              bankmobile: this.shopInfo.bankmobile,
-              shopname: this.shopInfo.shopname,
-              shoptype_id: this.shopInfo.shoptype_id + '',
-              province: this.shopInfo.province,
-              city: this.shopInfo.city,
-              location: this.shopInfo.location,
-              address: this.shopInfo.address,
-              provinceid: this.shopInfo.provinceid,
-              licensephoto: this.shopInfo.licensephoto_name,
-              shopphoto: this.shopInfo.shopphoto_name,
-              goodsphoto: this.shopInfo.goodsphoto_name,
-              idcardfront: this.shopInfo.idcardfront_name,
-              idcardback: this.shopInfo.idcardback_name,
-              idcardinhand: this.shopInfo.idcardinhand_name,
-              subshopdesc: this.shopInfo.subshopdesc_name,
-              idstatdate: formatDate(this.shopInfo.idstatdate),
-              idenddate: formatDate(this.shopInfo.idenddate),
-              longitude: this.shopInfo.longitude,
-              latitude: this.shopInfo.latitude,
-              mode: 'bigmchnt',
-              format: 'cors'
-            }), {
-              headers: {
-                'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
-              }
-            }).then((res) => {
-              _this.btnLocked = false;
-              let data = res.data;
-              if (data.respcd === config.code.OK) {
-                _this.shopInfo.shopAccout = data.data.mobile;
-                _this.isShowCommitDone = true;
-              } else {
-                _this.$message.error(data.resperr);
-              }
+        if (this.checkForm()) {
+          this.btnLocked = true;
+          axios.post(`${config.ohost}/mchnt/user/signup`, qs.stringify({
+            username: this.shopInfo.username,
+            password: this.shopInfo.password,
+            usertype: this.shopInfo.usertype,
+            name: this.shopInfo.name,
+            licensenumber: this.shopInfo.licensenumber,
+            bankuser: this.shopInfo.bankuser,
+            idnumber: this.shopInfo.idnumber,
+            bankprovince: this.shopInfo.bankprovince,
+            bankcity: this.shopInfo.bankcity,
+            banktype: this.shopInfo.banktype,
+            bankname: this.shopInfo.bankname,
+            headbankname: this.shopInfo.headbankname,
+            bankcode: this.shopInfo.bankcode,
+            bankaccount: this.shopInfo.bankaccount,
+            bankmobile: this.shopInfo.bankmobile,
+            shopname: this.shopInfo.shopname,
+            shoptype_id: this.shopInfo.shoptype_id + '',
+            province: this.shopInfo.province,
+            city: this.shopInfo.city,
+            location: this.shopInfo.location,
+            address: this.shopInfo.address,
+            provinceid: this.shopInfo.provinceid,
+            licensephoto: this.shopInfo.licensephoto_name,
+            shopphoto: this.shopInfo.shopphoto_name,
+            goodsphoto: this.shopInfo.goodsphoto_name,
+            idcardfront: this.shopInfo.idcardfront_name,
+            idcardback: this.shopInfo.idcardback_name,
+            idcardinhand: this.shopInfo.idcardinhand_name,
+            subshopdesc: this.shopInfo.subshopdesc_name,
+            idstatdate: formatDate(this.shopInfo.idstatdate),
+            idenddate: formatDate(this.shopInfo.idenddate),
+            longitude: this.shopInfo.longitude,
+            latitude: this.shopInfo.latitude,
+            mode: 'bigmchnt',
+            format: 'cors'
+          }), {
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+            }
+          }).then((res) => {
+            _this.btnLocked = false;
+            let data = res.data;
+            if (data.respcd === config.code.OK) {
+              _this.shopInfo.shopAccout = data.data.mobile;
+              _this.isShowCommitDone = true;
+            } else {
+              _this.$message.error(data.resperr);
+            }
 
-            })
-              .catch((e) => {
-                _this.$message.error(e);
-                _this.btnLocked = false;
-              });
-          }
-        })
+          })
+            .catch((e) => {
+              _this.$message.error(e);
+              _this.btnLocked = false;
+            });
+        }
       },
       onLocationError(e) {
         console.log('定位错误信息：', e);
