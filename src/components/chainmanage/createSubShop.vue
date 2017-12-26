@@ -1121,7 +1121,7 @@
                   this.shopInfo.username = data.data.username;
                   this.infoPage = !this.infoPage;
 
-                  ['idcardfront', 'idcardback', 'idcardinhand'].forEach((value) => {
+                  ['idcardfront', 'idcardback', 'idcardinhand', 'subshopdesc'].forEach((value) => {
                     this.imgUpload(value);
                   });
                   Vue.nextTick(function () {
