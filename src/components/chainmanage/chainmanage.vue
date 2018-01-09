@@ -39,17 +39,6 @@
           </div> -->
           <div class="btn-group">
             <el-button type="primary" class="panel-edit-btn__subshopnum" @click.native="editSubShopNum">{{$t('shopmng.panel.btn.editSubTag')}}</el-button>
-            <el-dropdown :hide-on-click="true" style="margin-left:10px;" v-if="!role.isBaoshang && !role.haiwai">
-              <div class="panel-header-btn__associate">
-                <i class="icon-create"></i>
-                <span>创建分店</span>
-              </div>
-
-              <el-dropdown-menu slot="dropdown" style="width:155px;">
-                <el-dropdown-item @click.native="createShop">直接创建</el-dropdown-item>
-                <el-dropdown-item @click.native="associate">关联已有</el-dropdown-item>
-              </el-dropdown-menu>
-            </el-dropdown>
           </div>
 
         </div>
@@ -204,32 +193,6 @@
       <div slot="footer" class="dialog-footer">
         <div @click="checkPrimeShopPwd('pwdform',this)" class="submit"><i class="el-icon-loading" v-show="iconShow"></i>{{$t('shopmng.dialog.ok')}}
         </div>
-      </div>
-    </el-dialog>
-
-    <el-dialog title="关联分店" :visible.sync="visible" class="mydialog" @close="handleClose('associate_form')">
-      <el-form :model="associate_form" :rules="formrules" ref="associate_form" label-width="80px">
-        <div class="desc">
-          <p>请输入您的分店信息，以做关联。</p>
-          <p>如您的分店还没有账号，请联系客服或者业务员为您的分店入网。</p>
-        </div>
-        <el-form-item label="分店账号" prop="account">
-          <el-input v-model="associate_form.account" size="small" placeholder="请输入分店账号"></el-input>
-        </el-form-item>
-        <el-form-item label="登录密码" prop="password">
-          <el-input type="password" v-model="associate_form.password" size="small" placeholder="请输入分店登录密码"></el-input>
-        </el-form-item>
-        <el-form-item label="收款人" prop="bankuser">
-          <el-input v-model="associate_form.bankuser" size="small" placeholder="请输入分店收款人姓名"></el-input>
-        </el-form-item>
-        <el-form-item label="银行卡号" prop="bankaccount">
-          <el-input v-model="associate_form.bankaccount" size="small" placeholder="请输入分店收款银行卡号"></el-input>
-        </el-form-item>
-      </el-form>
-      <div class="divider"></div>
-      <div slot="footer" class="dialog-footer">
-        <div @click="visible = false" class="cancel">取 消</div>
-        <div @click="submit_bind" class="submit"><i class="el-icon-loading" v-show="iconShow"></i>确 定</div>
       </div>
     </el-dialog>
   </div>

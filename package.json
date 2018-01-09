@@ -5,6 +5,7 @@
   "author": "qfpay LLC.",
   "private": true,
   "scripts": {
+    "start": "NODE_ENV=production node build/prod-server.js production",
     "dev": "node build/dev-server.js development",
     "build_test": "node build/build.js test",
     "build": "node build/build.js production",

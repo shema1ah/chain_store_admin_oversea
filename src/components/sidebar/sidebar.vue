@@ -104,22 +104,8 @@
               {
                 val: this.$t('nav.index'),
                 pathname: 'index'
-              }, {
-                val: '会员功能',
-                sub: [{
-                  val: '会员管理',
-                  pathname: 'memberctl'
-                }, {
-                  val: '会员集点',
-                  pathname: 'memberredpoint'
-                }, {
-                  val: '会员红包',
-                  pathname: 'memberredpacket'
-                }, {
-                  val: '会员储值',
-                  pathname: 'memberstorage'
-                }]
-              }, {
+              },
+              {
                 val: this.$t('nav.tradeMng'),
                 pathname: 'transctl'
               }, {
@@ -141,21 +127,6 @@
                   val: '实时收款',
                   pathname: 'todaytrade'
                 }, {
-                  val: '会员功能',
-                  sub: [{
-                    val: '会员管理',
-                    pathname: 'memberctl'
-                  }, {
-                    val: '会员集点',
-                    pathname: 'memberredpoint'
-                  }, {
-                    val: '会员红包',
-                    pathname: 'memberredpacket'
-                  }, {
-                    val: '会员储值',
-                    pathname: 'memberstorage'
-                  }]
-                }, {
                   val: this.$t('nav.tradeMng'),
                   pathname: 'transctl'
                 }, {
@@ -171,21 +142,6 @@
                 }, {
                   val: '实时收款',
                   pathname: 'todaytrade'
-                }, {
-                  val: '会员功能',
-                  sub: [{
-                    val: '会员管理',
-                    pathname: 'memberctl'
-                  }, {
-                    val: '会员集点',
-                    pathname: 'memberredpoint'
-                  }, {
-                    val: '会员红包',
-                    pathname: 'memberredpacket'
-                  }, {
-                    val: '会员储值',
-                    pathname: 'memberstorage'
-                  }]
                 }, {
                   val: this.$t('nav.tradeMng'),
                   pathname: 'transctl'
