@@ -160,4 +160,92 @@ export default {
   .top_content {
     height: 100%;
   }
+  // 采用BEM命名规则
+  .banner_wrapper {
+    display: flex;
+    height: 66px;
+    padding: 0px 25px;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 18px;
+    background-color: #fff;
+
+    @at-root .banner-btn {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 140px;
+      padding: 0 10px;
+      height: 40px;
+      background-color: #7ED321;
+      border-radius: 3px;
+      color: #fff;
+      cursor: pointer;
+      transition: .3s cubic-bezier(.645, .045, .355, 1);
+      @at-root .banner-btn__desc {
+        margin-left: 8px;
+      }
+      .icon-create {
+        transition: .3s cubic-bezier(.645, .045, .355, 1);
+        transform: rotateZ(0deg);
+      }
+      &:hover {
+        box-shadow: -3px 3px 5px rgba(0, 0, 0, 0.12);
+        .icon-create {
+          transform: rotateZ(90deg);
+        }
+      }
+    }
+  }
+
+  .panel {
+    margin: 23px 25px 23px;
+    background-color: #fff;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.12);
+  }
+
+  .panel-header {
+    height: 50px;
+    padding-left: 15px;
+    border-top: 2px solid #FE9B20;
+    border-bottom: 1px solid #E7EAEC;
+    background-color: #FEFDFB;
+    font-size: 16px;
+    @at-root .panel-select__wrapper {
+      display: flex;
+      align-items: center;
+      margin-right: 40px;
+      @at-root .panel-select__desc {
+        margin-right: 15px;
+      }
+    }
+  }
+
+  .panel-body {
+    padding: 10px 10px 0px;
+  }
+
+  .pagination_wrapper {
+    display: flex;
+    height: 60px;
+    padding-right: 20px;
+    justify-content: flex-end;
+    align-items: center;
+  }
+  .detail_dialog {
+    .el-row {
+      line-height: 30px;
+      .title {
+        font-size: 16px;
+      }
+    }
+    .highlight {
+      color: #FE9B20;
+      margin: 0px 5px;
+    }
+  }
+  .scope_cotent_title {
+    margin-right: 10px;
+    font-weight: 500;
+  }
 </style>

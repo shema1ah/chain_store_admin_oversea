@@ -630,11 +630,11 @@
     color: #282A2D;
   }
 
-  .panel-header__auto {
-    position: relative;
-    height: auto !important;
-    padding: 25px 0;
-  }
+  /*.panel-header__auto {*/
+    /*position: relative;*/
+    /*height: auto !important;*/
+    /*padding: 25px 0;*/
+  /*}*/
 
   .panel-select-group__fix {
     margin-bottom: 15px;

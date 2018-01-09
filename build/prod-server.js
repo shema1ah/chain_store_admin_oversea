@@ -5,7 +5,6 @@ if (!process.env.NODE_ENV) {
   process.env.NODE_ENV = JSON.parse(config.dev.env.NODE_ENV)
 }
 console.error('dev-server：', process.env.NODE_ENV, process.argv)
-
 var opn = require('opn')
 var path = require('path')
 var express = require('express')
@@ -76,8 +75,4 @@ module.exports = app.listen(port, function (err) {
     console.log(err)
     return
   }
-
-  // if (autoOpenBrowser) {
-  //   opn(uri)
-  // }
 })

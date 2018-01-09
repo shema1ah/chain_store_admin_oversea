@@ -16,7 +16,7 @@ import transctl from 'components/transctl/transctl'
 // import editpoint from 'components/editpoint/editpoint'
 // import exchangecreditslist from 'components/exchangedcredits/exchangedcreditslist'
 // import reviewpoint from 'components/reviewpoint/reviewpoint'
-import memberredpacket from 'components/memberredpacket/memberredpacket'
+// import memberredpacket from 'components/memberredpacket/memberredpacket'
 // import memberstorage from 'components/memberstorage/memberstorage'
 // import createpacket from 'components/createpacket/createpacket'
 // import reviewpacket from 'components/reviewpacket/reviewpacket'
@@ -38,7 +38,7 @@ import cashiermanage from 'components/cashiermanage/cashiermanage'
 import addcashier from 'components/addcashier/addcashier'
 import cashierdetail from 'components/cashierdetail/cashierdetail'
 import merchandise from 'components/merchandise/merchandise'
-import memberIntegral from 'components/memberIntegral/memberIntegral'
+// import memberIntegral from 'components/memberIntegral/memberIntegral'
 
 Vue.use(Router)
 
@@ -149,14 +149,14 @@ export default new Router({
         //     }
         //   ]
         // },
-        {
-          path: 'memberredpacket',
-          component: member,
-          children: [
-            {
-              path: '',
-              component: memberredpacket
-            },
+        // {
+        //   path: 'memberredpacket',
+        //   component: member,
+        //   children: [
+        //     {
+        //       path: '',
+        //       component: memberredpacket
+        //     },
             // {
             //   path: 'createpacket',
             //   component: createpacket,
@@ -183,8 +183,8 @@ export default new Router({
             //   name: 'reviewpacket',
             //   component: reviewpacket
             // }
-          ]
-        },
+        //   ]
+        // },
         {
           path: 'transctl',
           component: transctl
@@ -213,11 +213,11 @@ export default new Router({
           path: 'settings',
           component: settings
         },
-        {
-          path: 'memberIntegral',
-          name: 'memberIntegral',
-          component: memberIntegral
-        },
+        // {
+        //   path: 'memberIntegral',
+        //   name: 'memberIntegral',
+        //   component: memberIntegral
+        // },
         {
           path: 'cashiermanage',
           component: member,

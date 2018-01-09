@@ -314,4 +314,84 @@
       font-size: 12px;
     }
   }
+  .form-item__detail {
+    margin-top: 10px;
+    color: #98989E;
+    font-size: 14px;
+    line-height: 1;
+  }
+
+  .form-submit_wrapper {
+    display: flex;
+    padding: 20px;
+    align-items: center;
+    .cancel {
+      margin-right: 46px;
+      text-decoration: underline;
+      font-size: 16px;
+      color: #FE9B20;
+      cursor: pointer;
+    }
+    .icon-create {
+      margin-right: 10px;
+    }
+  }
+
+  .divider {
+    width: 100%;
+    height: 1px;
+    background-color: #E8E7E6;
+  }
+
+  .myform_wrapper {
+    margin-top: 20px;
+    .el-form-item {
+      margin-left: 20px;
+      margin-bottom: 20px;
+      .el-form-item {
+        display: inline-block;
+        margin: 0px;
+      }
+    }
+    .el-form-item__content {
+      margin-left: 110px;
+      line-height: 32px;
+      font-size: 16px;
+    }
+    .el-radio__label {
+      font-size: 16px;
+    }
+    .el-form-item__label {
+      padding: 8px 0px;
+      font-size: 16px;
+    }
+    .el-input {
+      display: inline-block;
+    }
+  }
+
+  .add_rule {
+    display: inline-block;
+    width: 100px;
+    line-height: 30px;
+    margin-top: 2px;
+    margin-left: 20px;
+    background-color: #7ED321;
+    border-radius: 3px;
+    color: #fff;
+    text-align: center;
+    font-size: 15px;
+    cursor: pointer;
+    .icon-create {
+      margin-right: 8px;
+    }
+  }
+  .el-form-item.is-required .el-form-item__label:before {
+    display: none !important;
+  }
+  .remark {
+    margin-top: 10px;
+    color: red !important;
+    font-size: 14px !important;
+  }
 </style>
