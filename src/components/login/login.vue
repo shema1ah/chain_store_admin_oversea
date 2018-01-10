@@ -56,7 +56,8 @@
         userType: 'merchant',
         merchant: {
           username: '',
-          password: ''
+          password: '',
+          format: 'cors'
         },
         merchantRules: {
           username: [
@@ -135,7 +136,8 @@
               params = {
                 username: cash.name,
                 opuid: cash.opuid,
-                password: cash.pass
+                password: cash.pass,
+                format: 'cors'
               };
             }
             _this.loading = true;
