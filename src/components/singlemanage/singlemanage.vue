@@ -186,9 +186,9 @@
     computed: {
       downHref() {
         if(this.role.isCashier) {
-          return `${config.host}/merchant/qrcode?userid=${this.shop.uid}&opuid=${this.opuid}`;
+          return `${config.host}/merchant/qrcode?userid=${this.shop.uid}&opuid=${this.opuid}&format=cors`;
         }else {
-          return `${config.host}/merchant/qrcode?userid=${this.shop.uid}&lang=${this.lang}`;
+          return `${config.host}/merchant/qrcode?userid=${this.shop.uid}&lang=${this.lang}&format=cors`;
         }
       },
       opinfo() {
@@ -210,7 +210,7 @@
 
       // 退出登录
       logout() {
-        axios.get(`${config.host}/merchant/signout`)
+        axios.get(`${config.host}/merchant/signout?format=cors`)
           .then((res) => {
             let data = res.data;
             if (data.respcd === config.code.OK) {
@@ -220,12 +220,8 @@
               localStorage.removeItem('lang');
               localStorage.removeItem('hashid');
               localStorage.removeItem('uid');
-              var toRemoved = document.getElementById('unique_map');
-              if(toRemoved) {
-                toRemoved.onload = null;
-                document.body.removeChild(toRemoved);
-              }
-              this.$router.push(`/login?from=logout&haiwai=${this.role.haiwai}`);
+
+              this.$router.push(`/login`);
             } else {
               this.$message.error(data.respmsg);
             }

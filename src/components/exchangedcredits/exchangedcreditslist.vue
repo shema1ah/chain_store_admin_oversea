@@ -127,7 +127,8 @@ import ElButton from "../../../node_modules/element-ui/packages/button/src/butto
         return {
           sub_uid: this.nameValue,
           pagesize: this.pageSize,
-          page: this.currentpage
+          page: this.currentpage,
+          format: 'cors'
         };
       },
       shopData() {

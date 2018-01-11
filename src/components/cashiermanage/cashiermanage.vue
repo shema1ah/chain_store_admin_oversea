@@ -155,7 +155,7 @@
         };
       },
       downHref() {
-        return `${config.host}/merchant/qrcode?userid=${this.shop.uid}&opuid=`;
+        return `${config.host}/merchant/qrcode?userid=${this.shop.uid}&opuid=&format=cors`;
       }
     },
 

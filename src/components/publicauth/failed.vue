@@ -50,7 +50,7 @@
     },
     methods: {
       fetchMerchantIds () {
-        axios.get(`${config.host}/merchant/ids`)
+        axios.get(`${config.host}/merchant/ids?format=cors`)
           .then((res) => {
             let data = res.data
             if (data.respcd === config.code.OK) {

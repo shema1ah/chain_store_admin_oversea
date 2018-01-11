@@ -138,7 +138,8 @@
           startdate: this.startdate,
           busicd: this.form.orderno || '',
           lang: this.lang,
-          charset: 'utf-8'
+          charset: 'utf-8',
+          format: 'cors'
         };
       }
     },

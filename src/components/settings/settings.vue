@@ -95,7 +95,8 @@
         this.$refs['form'].validate((valid) => {
           if(valid && !this.loading1) {
             axios.post(`${config.host}/merchant/add/email`, {
-              status: val
+              status: val,
+              format: 'cors'
             }).then((res) => {
               let data = res.data;
               if(data.respcd === config.code.OK) {
@@ -116,7 +117,8 @@
               this.loading1 = true;
               axios.post(`${config.host}/merchant/add/email`, {
                 email: this.form.email,
-                status: 1
+                status: 1,
+                format: 'cors'
               }).then((res) => {
                 this.loading1 = false;
                 let data = res.data;

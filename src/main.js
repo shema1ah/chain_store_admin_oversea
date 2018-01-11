@@ -85,19 +85,13 @@ axios.interceptors.response.use((res) => {
   if (data.respcd == config.code.SESSIONERR || data.respcd == config.code.LOGINERR) {
     // 清除本地cookie
     (new Image()).src = `${config.ohost}/mchnt/set_cookie?sessionid=`;
-    let role = Store.get('role') || {};
 
     Store.set('flag', true);
     localStorage.removeItem('lang');
     localStorage.removeItem('hashid');
     localStorage.removeItem('uid');
 
-    var toRemoved = document.getElementById('unique_map');
-    if(toRemoved) {
-      toRemoved.onload = null;
-      document.body.removeChild(toRemoved);
-    }
-    location.replace(`/#/?from=logout&haiwai=${role.haiwai}`);
+    location.replace(`${location.pathname}#/login`);
   } else {
     return res
   }

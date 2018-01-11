@@ -583,7 +583,8 @@
         this.form.operaValue = '';
         axios.get(`${config.host}/merchant/sub/opusers`, {
             params: {
-              userid: uid
+              userid: uid,
+              format: 'cors'
             }
           }).then((res) => {
             let data = res.data;

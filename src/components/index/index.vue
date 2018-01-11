@@ -195,7 +195,7 @@
     methods: {
       fetchDashboardData() {
         this.loading1 = true;
-        axios.get(`${config.host}/merchant/dashboard/stats`)
+        axios.get(`${config.host}/merchant/dashboard/stats?format=cors`)
           .then((res) => {
             this.loading1 = false;
             let data = res.data
@@ -212,7 +212,7 @@
       },
       fetchActivityData() {
         this.loading2 = true;
-        axios.get(`${config.host}/merchant/homeview`)
+        axios.get(`${config.host}/merchant/homeview?format=cors`)
           .then((res) => {
             this.loading2 = false;
             let data = res.data
