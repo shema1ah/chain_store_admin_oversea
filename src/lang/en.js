@@ -14,7 +14,8 @@ exports.default = {
     publicAuth: 'Official Account',
     shopMng: 'Account Info',
     cashMng: 'Cashier Mgmt',
-    setup: 'Setting'
+    setup: 'Setting',
+    contact: 'Contact Us'
   },
   common: {
     ok: 'OK',
@@ -201,6 +202,7 @@ exports.default = {
       sNum: 'Transaction ID',
       op: 'Operation',
       cancel: 'Refund',
+      download: 'Download Receipt',
       ac: 'Actually Collected', // 实收
       red: 'paid from the red envelope', // 商家红包
       plat: 'paid from the platform', // 平台补贴
@@ -328,5 +330,9 @@ exports.default = {
       btn1: 'Cancel',
       btn2: 'Confirm'
     }
+  },
+  contact: { // 客服
+    phone: 'Phone',
+    email: 'E-mail'
   }
 }

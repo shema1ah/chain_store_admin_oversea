@@ -33,11 +33,11 @@
           <span v-else>{{$t('login.login')}}</span>
         </div>
       </el-form>
-      <div class="bottom" v-if="lang.indexOf('zh-CN')>-1">
-        <router-link :to="{ name: 'forget'}" class="forget">{{$t('login.forgetPwd')}}</router-link>
-        <!--<span>|</span>
-        <router-link :to="{ name: 'register'}" class="register">我要注册连锁店管理账号</router-link>-->
+      <!-- 忘记密码 -->
+      <div class="bottom" v-if="role.haiwai">
+        <router-link :to="{ name: 'overseaForget'}" class="forget">{{$t('login.forgetPwd')}}</router-link>
       </div>
+
     </div>
   </div>
 </template>
@@ -157,9 +157,18 @@
                   bicon.style.display = 'none';
                   bicon.src = `${config.ohost}/mchnt/set_cookie?sessionid=${sid}`;
                 }
-                setTimeout(function() {
-                  _this.$router.push('/main/index');
-                }, 0)
+
+                // 进行是否是首次登录的判断，返回need_change_pwd字段，1为需要重置，0为不需要重置
+                let needChangePwd = 0;
+                if(needChangePwd) {
+                  setTimeout(function() {
+                    _this.$router.push('/firstlogin');
+                  }, 0)
+                } else {
+                  setTimeout(function() {
+                    _this.$router.push('/main/index');
+                  }, 0)
+                }
 
               } else {
                 this.$message.error(data.resperr);

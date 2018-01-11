@@ -10,7 +10,8 @@ exports.default = {
     publicAuth: '公众号授权',
     shopMng: '账户信息',
     cashMng: '收银员管理',
-    setup: '设置'
+    setup: '设置',
+    contact: '客服'
   },
   common: {
     ok: '确 定',
@@ -197,6 +198,7 @@ exports.default = {
       sNum: '流水号',
       op: '操作',
       cancel: '撤销',
+      download: '下载小票',
       ac: '实收', // 实收
       red: '商家红包', // 商家红包
       plat: '平台补贴', // 平台补贴
@@ -324,6 +326,9 @@ exports.default = {
       btn1: '放弃添加',
       btn2: '提交'
     }
+  },
+  contact: { // 客服
+    phone: '电话',
+    email: '邮箱'
   }
 }
-

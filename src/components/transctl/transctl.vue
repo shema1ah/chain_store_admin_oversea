@@ -134,24 +134,24 @@
           row-class-name="el-table__row_fix"
           v-loading="loading">
           <el-table-column
-            :label="$t('tradeMng.table.shopName')">
+            :label="$t('tradeMng.table.shopName')" min-width="90">
             <template scope="scope">
               <div>{{ scope.row.username }}</div>
             </template>
           </el-table-column>
           <el-table-column
-            :label="$t('tradeMng.table.operator')">
+            :label="$t('tradeMng.table.operator')" min-width="70">
             <template scope="scope">{{ scope.row.opuser || '-' }}</template>
           </el-table-column>
           <el-table-column
             prop="busicd_info"
-            :label="$t('tradeMng.table.tradeType')">
+            :label="$t('tradeMng.table.tradeType')" min-width="100">
           </el-table-column>
-          <el-table-column prop="sysdtm" min-width="150" :label="$t('tradeMng.table.tradeTime')">
+          <el-table-column prop="sysdtm" min-width="95" :label="$t('tradeMng.table.tradeTime')">
             <template scope="scope">{{ scope.row.sysdtm }}</template>
           </el-table-column>
           <el-table-column
-            :label="$t('tradeMng.table.tradeAmount') + '(' + role.currency + ')'" v-if="role.haiwai">
+            :label="$t('tradeMng.table.tradeAmount') + '(' + role.currency + ')'" v-if="role.haiwai" min-width="110">
             <template scope="scope">
               <div class="table-title">{{ scope.row.total_amt | formatCurrency }}</div>
             </template>
@@ -167,16 +167,21 @@
           </el-table-column>
           <el-table-column
             prop="status_str"
-            :label="$t('tradeMng.table.tradeState')">
+            :label="$t('tradeMng.table.tradeState')" min-width="76">
           </el-table-column>
           <el-table-column
             prop="syssn"
-            min-width="210"
+            min-width="105"
             :label="$t('tradeMng.table.sNum')">
           </el-table-column>
-          <el-table-column min-width="100" :label="$t('tradeMng.table.op')" v-if="role.single">
+          <el-table-column min-width="215" :label="$t('tradeMng.table.op')" v-if="role.single">
             <template scope="scope">
               <el-button type="text" size="small" :disabled="scope.row.cancel !== 0 || scope.row.status !== 1" class="el-button__fix" @click="confirm(scope.row)">{{$t('tradeMng.table.cancel')}}</el-button>
+              <el-button
+                type="text"
+                size="small"
+                class="el-button__fix"
+                @click="downloadTicket(scope.$index)">{{$t('tradeMng.table.download')}}</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -443,6 +448,21 @@
           this.iconLoading = false;
           this.$message.error(this.$t('tradeMng.msg.m7'));
         });
+      },
+
+      // 下载小票
+      downloadTicket(index) {
+        let data = this.transData.data[index];
+        let param = {
+          username: data.username, // 店铺名
+          busicd_info: data.busicd_info, // 交易类型
+          sysdtm: data.sysdtm, // 交易时间
+          total_amt: data.total_amt, // 交易金额
+          status_str: data.status_str, // 交易状态
+          syssn: data.syssn, // 流水号
+          format: 'cors'
+        }
+        console.log(param)
       },
 
       // 点击enter键提交

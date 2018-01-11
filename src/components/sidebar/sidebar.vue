@@ -278,7 +278,10 @@
               }, {
                 val: this.$t('nav.setup'),
                 pathname: 'settings'
-              }
+              }, {
+                  val: this.$t('nav.contact'),
+                  pathname: 'contact'
+                },
             ];
             break;
           default:
@@ -290,7 +293,10 @@
                 }, {
                   val: this.$t('nav.shopMng'),
                   pathname: 'singlemanage'
-                }
+                }, {
+                  val: this.$t('nav.contact'),
+                  pathname: 'contact'
+                },
               ];
             }else {
               this.navs = [
@@ -306,7 +312,13 @@
                 }, {
                   val: this.$t('nav.cashMng'),
                   pathname: 'cashiermanage'
-                }
+                }, {
+                  val: this.$t('nav.setup'),
+                  pathname: 'settings'
+                }, {
+                  val: this.$t('nav.contact'),
+                  pathname: 'contact'
+                },
               ];
             }
         }

@@ -39,6 +39,9 @@ import addcashier from 'components/addcashier/addcashier'
 import cashierdetail from 'components/cashierdetail/cashierdetail'
 import merchandise from 'components/merchandise/merchandise'
 // import memberIntegral from 'components/memberIntegral/memberIntegral'
+import overseaForget from 'components/overseaforget/overseaforget'
+import firstLogin from 'components/firstlogin/firstlogin'
+import contact from 'components/contact/contact'
 
 Vue.use(Router)
 
@@ -53,6 +56,10 @@ export default new Router({
       component: login
     },
     {
+      path: '/firstLogin',
+      component: firstLogin
+    },
+    {
       path: '/register',
       component: register,
       name: 'register'
@@ -61,6 +68,11 @@ export default new Router({
       path: '/forget',
       component: register,
       name: 'forget'
+    },
+    {
+      path: '/overseaForget',
+      component: overseaForget,
+      name: 'overseaForget'
     },
     {
       path: '/main',
@@ -242,6 +254,11 @@ export default new Router({
           path: 'merchandise',
           name: 'merchandise',
           component: merchandise
+        },
+        {
+          path: 'contact',
+          name: 'contact',
+          component: contact
         }
       ]
     }

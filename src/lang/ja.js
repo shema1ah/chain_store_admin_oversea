@@ -14,7 +14,8 @@ exports.default = {
     publicAuth: '公式アカウント',
     shopMng: 'アカウント',
     cashMng: 'キャッシャー管理',
-    setup: '設定'
+    setup: '設定',
+    contact: 'お問い合わせ',
   },
   common: {
     ok: '確定',
@@ -201,6 +202,7 @@ exports.default = {
       sNum: 'シリアル番号',
       op: '操作',
       cancel: '取消',
+      download: '————',
       ac: '', // 实收
       red: '商店の 紅包', // 商家红包
       plat: 'をプラートフォームから支給', // 平台补贴
@@ -329,5 +331,9 @@ exports.default = {
       btn1: 'キャンセル',
       btn2: '確定'
     }
+  },
+  contact: { // 客服
+    phone: '電話',
+    email: 'メール'
   }
 }

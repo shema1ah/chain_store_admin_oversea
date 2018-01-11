@@ -10,7 +10,8 @@ exports.default = {
     publicAuth: '公眾號授權',
     shopMng: '賬戶信息',
     cashMng: '收銀員管理',
-    setup: '設置'
+    setup: '設置',
+    contact: '聯繫我們'
   },
   common: {
     ok: '確 定',
@@ -197,6 +198,7 @@ exports.default = {
       sNum: '序列號',
       op: '操作',
       cancel: '撤銷',
+      download: '下載電子小票',
       ac: '實收', // 实收
       red: '商家紅包', // 商家红包
       plat: '平台補貼', // 平台补贴
@@ -324,5 +326,9 @@ exports.default = {
       btn1: '取消',
       btn2: '確認'
     }
+  },
+  contact: { // 客服
+    phone: '電話',
+    email: '郵箱'
   }
 }
