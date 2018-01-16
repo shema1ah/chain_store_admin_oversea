@@ -237,17 +237,15 @@
       changeStatus(id, st) {
         let s, message;
         if(st === '1') {
-          s = 0 + '';
-          message = this.$t('cashMng.common.m1');
-        }else {
-          s = 1 + '';
           message = this.$t('cashMng.common.m2');
+        }else {
+          message = this.$t('cashMng.common.m1');
         }
         if(!this.loading) {
           this.loading = true;
           axios.post(`${config.ohost}/mchnt/opuser/change`, {
             opuid: id,
-            status: s,
+            status: st,
             format: 'cors'
           }).then((res) => {
             this.loading = false;
