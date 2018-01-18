@@ -1,35 +1,35 @@
 <template lang="html">
   <div class="hwforget">
-    <div class="head">Shop Management Platform</div>
+    <div class="head">{{ $t('nav.mmp') }}</div>
     <div class="tip">
-      <p v-if="isNext">Please enter your email.</p>
-      <p v-if="isConfirm">We will send a verification code to <span>{{ emailAddr }}</span>.Please enter the code.</p>
+      <p v-if="isNext">{{ $t('overseaForget.enterEmail') }}</p>
+      <p v-if="isConfirm">{{ $t('overseaForget.text1') }}<span>{{ emailAddr }}</span>,{{ $t('overseaForget.text2') }}</p>
     </div>
     <el-form :model='form' :rules='formrules' ref="form">
       <!-- next -->
       <!-- email -->
-      <el-form-item label="Email Address" prop="email" v-if="isNext">
+      <el-form-item :label="$t('overseaForget.emailAddr')" prop="email" v-if="isNext">
         <el-input v-model="form.email" @keyup.enter.native="onEnter"></el-input>
         <span class="del" v-if="isErr">+</span>
       </el-form-item>
       <!-- Confirm -->
       <!-- 验证码 -->
-      <el-form-item label="Verification Code" prop="vCode" v-if="isConfirm">
+      <el-form-item :label="$t('overseaForget.code')" prop="vCode" v-if="isConfirm">
         <el-input v-model="form.vCode" id="Code"></el-input>
         <span class="del" v-if="isErr2">+</span>
-        <p class="count" v-if="resend">Resend after ({{ countDown }}s)</p>
-        <p class="count resend" v-if="!resend" @click="resendCode()">Resend</p>
+        <p class="count" v-if="resend">{{ $t('overseaForget.secend1') + countDown + $t('overseaForget.secend2') }}</p>
+        <p class="count resend" v-if="!resend" @click="resendCode()">{{ $t('overseaForget.resend') }}</p>
       </el-form-item>
       <!-- 新密码 -->
-      <el-form-item label="New Password" v-if="isConfirm" prop="newPassword">
+      <el-form-item :label="$t('overseaForget.newPwd')" v-if="isConfirm" prop="newPassword">
         <el-input type="password" v-model="form.newPassword" id="pwd"></el-input>
       </el-form-item>
 
       <div class="panel-header-btn panel-header-btn__fill" id="nextBtn" v-if="isNext" @click="handleNext('form')">
-        <span>Next</span>
+        <span>{{ $t('overseaForget.next') }}</span>
       </div>
       <div class="panel-header-btn panel-header-btn__fill" id="confirmBtn" v-if="isConfirm" @click="confirm('form',$event)">
-        <span>Confirm</span>
+        <span>{{ $t('overseaForget.confirm') }}</span>
       </div>
     </el-form>
   </div>
@@ -44,11 +44,11 @@ export default {
     // 邮箱验证
     let emailValid = (rul, val, cb) => {
       if (val === '') {
-        cb("邮箱地址不能为空")
+        cb(this.$t('overseaForget.enterEmail'))
       } else if(!/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/.test(val)) {
         // 不满足邮箱的格式，出现错误提示信息
         this.isErr = true;
-        cb('邮箱地址格式不正确');
+        cb(this.$t('overseaForget.invalidEmail'));
       }else{
         this.isErr = false;
         cb();
@@ -57,7 +57,7 @@ export default {
     // 验证码验证
     let vCodeValid = (rul, val, cb) => {
       if( val === '') {
-        cb("验证码不能为空")
+        cb(this.$t('overseaForget.filledCode'))
       } else {
         let param = {
           email: this.form.email,
@@ -78,8 +78,7 @@ export default {
     //  密码
     let passValid = (rul, val, cb) => {
       if( val === '') {
-        this.$message.error("密码不能为空")
-        cb()
+        cb(this.$t('shopmng.dialog.msg.m1'));
       } else {
         cb();
       }
@@ -106,7 +105,7 @@ export default {
         ],
         newPassword: [
           { validator: passValid, trigger: 'blur' },
-          { max: 20, min: 6, message: '请输入6~20位数字或字母', trigger: 'blur' }
+          { max: 20, min: 6, message: this.$t('overseaForget.char'), trigger: 'blur' }
         ]
       }
     }
@@ -170,7 +169,7 @@ export default {
           this.emailAddr = arr.join("@");
           this.$message({
             type: 'success',
-            message: '验证码已发送！'
+            message: this.$t('overseaForget.codeResent')
           })
         } else {
           this.$message.error(res.data.respmsg);
@@ -178,7 +177,7 @@ export default {
           this.isNext = true;
         }
       }).catch(() => {
-        this.$message.error('请求失败!');
+        this.$message.error(this.$t('common.netError'));
         this.isConfirm = false;
         this.isNext = true;
       });
@@ -199,7 +198,7 @@ export default {
           this.$message.error(res.data.respmsg)
         }
       }).catch(() => {
-        this.$message.error('请求失败!');
+        this.$message.error(this.$t('common.netError'));
       });
     },
 
@@ -239,11 +238,11 @@ export default {
             }
           }).catch(() => {
             this.locked(_confirmBtn, false, 'confirmBtn');
-            this.$message.error('请求失败!');
+            this.$message.error(this.$t('common.netError'));
           });
         } else {
           this.locked(_confirmBtn, false, 'confirmBtn');
-          this.$message.error('提交失败');
+          this.$message.error(this.$t('common.modFailed'));
           return false;
         }
 

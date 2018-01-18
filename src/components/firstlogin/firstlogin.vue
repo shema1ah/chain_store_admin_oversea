@@ -1,23 +1,23 @@
 <template lang="html">
   <div class="hwforget">
-    <div class="head">Shop Management Platform</div>
+    <div class="head">{{ $t('nav.mmp') }}</div>
     <div class="tip">
-      <p>Congratulations on your first login to the merchant App！</p>
-      <p class="tipTwo">Please change your password to continue.</p>
+      <p>{{ $t('firstlogin.congratulation') }}</p>
+      <p class="tipTwo">{{ $t('firstlogin.changePwd') }}</p>
     </div>
     <el-form :model='form' :rules='formrules' ref="form">
       <!-- 密码 -->
-      <el-form-item label="New Password" prop="newPassword">
+      <el-form-item :label="$t('firstlogin.newPwd')" prop="newPassword">
         <el-input :type="inputType" v-model="form.newPassword" id="pwd"></el-input>
         <span class="pwdIcon" :class="{'open': inputChange}" @click="changeType()" ></span>
       </el-form-item>
       <!-- 密码验证 -->
-      <el-form-item label="Comfirm Password" prop="comfirmPassword">
+      <el-form-item :label="$t('firstlogin.rePwd')" prop="comfirmPassword">
         <el-input :type="inputType2" v-model="form.comfirmPassword" id="repwd"></el-input>
         <span class="pwdIcon" :class="{'open': inputChange2}" @click="changeType2()"></span>
       </el-form-item>
       <div class="panel-header-btn panel-header-btn__fill" id="confirmBtn" @click="handleSubmit('form', $event)">
-        <span>Comfirm</span>
+        <span>{{ $t('firstlogin.confirm') }}</span>
       </div>
     </el-form>
   </div>
@@ -32,7 +32,7 @@ export default {
   data() {
     let passValid = (rule, val, cb) => {
       if(val === '') {
-        cb('请输入新密码');
+        cb(this.$t('shopmng.dialog.msg.m2'));
       } else {
         if(this.form.comfirmPassword !== '') {
           this.$refs['form'].validateField('comfirmPassword');
@@ -41,10 +41,8 @@ export default {
       }
     };
     let repassValid = (rule, val, cb) => {
-      if(val === '') {
-        cb('请输入确认密码');
-      } else if(this.form.newPassword && this.form.newPassword !== val) {
-        cb('新密码与确认密码不一致');
+      if(this.form.newPassword && this.form.newPassword !== val) {
+        cb(this.$t('shopmng.dialog.msg.m3'));
       } else {
         cb();
       }
@@ -71,11 +69,11 @@ export default {
       formrules: {
         newPassword: [
           { validator: passValid },
-          {max: 20, min: 6, message: '请输入6~20位数字或字母', trigger: 'blur'}
+          {max: 20, min: 6, message: this.$t('overseaForget.char'), trigger: 'blur'}
         ],
         comfirmPassword: [
           { validator: repassValid },
-          {max: 20, min: 6, message: '请输入6~20位数字或字母', trigger: 'blur'}
+          // {max: 20, min: 6, message: this.$t('overseaForget.char'), trigger: 'blur'}
         ]
       }
     }
@@ -133,7 +131,7 @@ export default {
           } else {
             // 提交失败
             this.locked(_confirmBtn, false);
-            this.$message.error('提交失败!');
+            this.$message.error(this.$t('common.modFailed'));
             return false;
           }
       });
@@ -149,7 +147,7 @@ export default {
           this.param.username = data.data.mobile;
         })
         .catch(() => {
-          console.log('catch')
+          this.$message.error(this.$t('common.netError'));
         });
     },
 

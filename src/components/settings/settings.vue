@@ -16,19 +16,19 @@
           <!-- 我们会在次日早上7点，把上一天的交易记录发送给您 -->
           <div class="gray-explain">{{$t('setting.panel.explain')}}</div>
           <el-form :rules="formrules" :model="form" ref="form">
-            <el-form-item label="Add Email">
+            <el-form-item :label="$t('overseaForget.emailAddr')">
               <el-form-item prop="email">
                 <el-input v-model="form.email" size="small" type="text" class="panel-select-input-230"></el-input>
               </el-form-item>
               <div class="panel-header-btn panel-header-btn__fill" @click="addEmail()">
-                <span>Ok</span>
+                <span>{{ $t('common.ok') }}</span>
               </div>
             </el-form-item>
             <!-- email列表 -->
             <div class="emails-box" v-if="this.isShow">
-              <h5>Email Address:</h5>
+              <h5>{{ $t('overseaForget.emailAddr') }}:</h5>
               <ul class="emails-list">
-                <li v-for="(email, index) in this.emails">{{ email }} <span @click="delEmail(index)">Delete</span></li>
+                <li v-for="(email, index) in this.emails">{{ email }} <span @click="delEmail(index)">{{ $t('common.del') }}</span></li>
               </ul>
             </div>
             <!-- 每日发送日报 -->
@@ -51,10 +51,10 @@
       // 邮箱验证
       let emailValid = (rul, val, cb) => {
         if (val === '') {
-          cb("邮箱地址不能为空");
+          cb(this.$t('overseaForget.enterEmail'));
         } else if(!/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/.test(val)) {
           // 不满足邮箱的格式，出现错误提示信息
-          cb('邮箱地址格式不正确')
+          cb(this.$t('overseaForget.invalidEmail'))
         }else{
           cb();
         }
@@ -86,7 +86,9 @@
           let data = res.data;
           if(data.respcd === config.code.OK) {
             if(data.data.email.length != 0) {
-              this.emails = data.data.email.split(",");
+              if (data.data.email.length) {
+                this.emails = data.data.email.split(",");
+              }
               this.form.status = "1";
               this.isShow = true;
             } else {
@@ -131,75 +133,36 @@
       // 点击添加
       addEmail() {
         this.$refs['form'].validate((valid) => {
-<<<<<<< Updated upstream
-          if(valid && !this.loading1) {
-            axios.post(`${config.host}/merchant/add/email`, {
-              status: val,
-              format: 'cors'
-            }).then((res) => {
-              let data = res.data;
-              if(data.respcd === config.code.OK) {
-=======
           if(valid) {
-            let emails = this.emails;
+            // let emails = this.emails;
             // 判断该邮箱是否已经存在
-            for(let i = 0; i < emails.length; i++) {
+            for(let i = 0; i < this.emails.length; i++) {
               // 已有该邮箱
-              if(emails.indexOf(this.form.email) != -1) {
-                this.$message.error("该邮箱已存在");
+              if(this.emails.indexOf(this.form.email) != -1) {
+                this.$message.error(this.$t('setting.msg.m5'));
                 return;
->>>>>>> Stashed changes
               } else {
                 break;
               }
             }
             // 邮箱个数上限为10
-            if(emails.length >= 10) {
-              this.$message.error("邮箱个数上限为10个");
+            if(this.emails.length >= 10) {
+              this.$message.error(this.$t('setting.msg.m6'));
             } else {
               this.emails.push(this.form.email);
               let params = {
-                email: emails.join(","),
+                email: this.emails.join(","),
                 status: this.form.status,
                 format: 'cors'
               }
               this.modifyEmail(params);
               this.form.email = "";
+              this.getEmails();
             }
           }
         })
       },
 
-<<<<<<< Updated upstream
-      // 提交
-      commit() {
-        this.$refs['form'].validate((valid) => {
-            if(valid && !this.loading1) {
-              this.loading1 = true;
-              axios.post(`${config.host}/merchant/add/email`, {
-                email: this.form.email,
-                status: 1,
-                format: 'cors'
-              }).then((res) => {
-                this.loading1 = false;
-                let data = res.data;
-                if(data.respcd === config.code.OK) {
-                  this.$message({
-                    type: 'success',
-                    message: this.$t('common.modSucc')
-                  });
-                  this.form.status = '1';
-                  this.state1 = false;
-                  this.state2 = false;
-                } else {
-                  this.$message.error(data.resperr);
-                }
-              }).catch(() => {
-                this.loading1 = false;
-                this.$message.error(this.$t('common.modFailed'));
-              });
-            }
-=======
       // 是否往邮箱发送交易报表
       sendChange() {
         let params = {
@@ -216,38 +179,33 @@
           let data = res.data;
           if(data.respcd === config.code.OK) {
             // 删除成功，将返回的新邮箱数据更新到this.emails
-            this.emails = data.data.email.split(",");
+            if (data.data.email.length) {
+              this.emails = data.data.email.split(",");
+            } else {
+              this.emails = []
+            }
           } else {
             this.$message.error(data.resperr);
           }
         }).catch(() => {
           this.$message.error(this.$t('common.modFailed'));
->>>>>>> Stashed changes
         })
       },
 
       // 弹框提示
       open6(cb) {
-          this.$confirm('此操作将关闭此功能, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
+          this.$confirm(this.$t('setting.tip.m1'), {
+          confirmButtonText: this.$t('shopmng.dialog.ok'),
+          cancelButtonText: this.$t('shopmng.dialog.cancel'),
           type: 'warning',
           center: true
         }).then(() => {
-          this.$message({
-            type: 'success',
-            message: '删除成功!'
-          });
-          // 关闭开关
+          // 点击确认关闭开关（这里应该为接口返回已删除后再关闭开关）
           this.form.status = '0';
           this.isShow = false;
           cb(0);
         }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消删除'
-          });
-          // 保持开关开着
+          // 点击取消保持开关开着
           this.form.status = '1';
           this.isShow = true;
           cb(1)
