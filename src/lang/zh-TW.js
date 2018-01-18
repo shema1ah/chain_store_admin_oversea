@@ -25,6 +25,7 @@ exports.default = {
     modSucc: '修改成功',
     modFailed: '修改失敗',
     logout: '退出',
+    del: '刪除',
     msg: {
       sel: '請選擇'
     }
@@ -277,7 +278,12 @@ exports.default = {
     msg: {
       m1: '請輸入郵箱地址',
       m2: '請輸入正確的電郵地址',
-      m3: '獲取電郵設置失敗!'
+      m3: '獲取電郵設置失敗!',
+      m5: '已經添加過這個郵箱了!',
+      m6: '最多只能添加10個郵箱'
+    },
+    tip: {
+      m1: '刪除最後一個郵箱會關掉郵件報表的功能，確認刪除嗎？'
     }
   },
   cashMng: { // 收银员管理
@@ -330,5 +336,36 @@ exports.default = {
   contact: { // 客服
     phone: '電話',
     email: '郵箱'
+  },
+  overseaForget: {
+    enterEmail: '請輸入您的郵箱', //
+    emailAddr: '郵箱地址', //
+    // tryAnother: '試試其他方法',
+    next: '下一步',
+    confirm: '確 認',
+    notExist: '該帳號未註冊，請確認您的郵箱是否正確',
+    sendCode: '我們會給您的郵箱發送驗證碼，請輸入驗證碼',
+    resend: '重新發送',
+    code: '驗證碼',
+    newPwd: '新密碼',
+    enterCode: '請輸入驗證碼',
+    char: '密碼長度為6–20位！',
+    rePwd: '重置密碼',
+    invalidEmail: '無效的郵箱格式',
+    text1: '我們會給',
+    text2: '發送驗證碼，請輸入驗證碼',
+    secend1: "( ",
+    secend2: 's )後可以重發',
+    codeResent: '驗證碼發送成功',
+    wrongCode: '驗證碼錯誤',
+    filledCode: '驗證碼不能為空',
+    frequently: '驗證碼獲取頻繁，請稍候再試'
+  },
+  firstlogin: {
+    congratulation: '恭喜您登陸成功',
+    changePwd: '請修改您的初始密碼',
+    newPwd: '新密碼',
+    rePwd: '確認密碼',
+    confirm: '確  認'
   }
 }

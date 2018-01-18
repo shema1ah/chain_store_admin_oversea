@@ -25,6 +25,7 @@ exports.default = {
     modSucc: '修改成功',
     modFailed: '修改失败',
     logout: '退出',
+    del: '删除',
     msg: {
       sel: '请选择'
     }
@@ -277,7 +278,12 @@ exports.default = {
     msg: {
       m1: '请输入邮箱地址',
       m2: '请输入正确的邮箱地址',
-      m3: '获取邮箱设置失败!'
+      m3: '获取邮箱设置失败!',
+      m5: '已经添加过这个邮箱了!',
+      m6: '最多只能添加10个邮箱'
+    },
+    tip: {
+      m1: '删除最后一个邮箱会关掉邮件报表的功能，确认删除吗？'
     }
   },
   cashMng: { // 收银员管理
@@ -330,5 +336,36 @@ exports.default = {
   contact: { // 客服
     phone: '电话',
     email: '邮箱'
+  },
+  overseaForget: {
+    enterEmail: '请输入您的邮箱',
+    emailAddr: '邮箱地址',
+    tryAnother: '试试其他方法',
+    next: '下一步',
+    confirm: '确认',
+    notExist: '该账号未注册，请确认您邮箱是否正确',
+    sendCode: '我们会给您的邮箱发送验证码,请输入验证码',
+    resend: '重新发送',
+    code: '验证码',
+    newPwd: '新密码',
+    enterCode: '请输入验证码',
+    char: '密码需要6~20位之间',
+    rePwd: '重置密码',
+    invalidEmail: '无效的邮箱格式',
+    text1: '我们会给',
+    text2: '发送验证码，请输入验证码',
+    secend1: "( ",
+    secend2: 's )后可以重发',
+    codeResent: '验证码发送成功',
+    wrongCode: '验证验证码失败',
+    filledCode: '验证码不能为空',
+    frequently: '验证码获取频繁'
+  },
+  firstlogin: {
+    congratulation: '恭喜您登录成功',
+    changePwd: '请修改您的初始密码',
+    newPwd: '新密码',
+    rePwd: '确认密码',
+    confirm: '确 认'
   }
 }

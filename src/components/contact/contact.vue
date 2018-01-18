@@ -13,20 +13,16 @@
         </div>
       </div>
       <div class="panel-body">
-        <div class="panel-body-phone panel-body-con-box">
+        <div class="panel-body-phone panel-body-con-box" v-if="isTel">
           <h5>{{$t('contact.phone')}}:</h5>
           <div class="panel-body-con">
-            <!-- <p>+853 2613 9299</p>
-            <p>+853 2613 9299</p> -->
-            <p v-for="tel in tels">{{ tel.val }}</p>
+            <p v-for="tel in tels">{{ tel }}</p>
           </div>
         </div>
-        <div class="panel-body-email panel-body-con-box">
+        <div class="panel-body-email panel-body-con-box" v-if="isEmail">
           <h5>{{$t('contact.email')}}:</h5>
           <div class="panel-body-con">
-            <!-- <p>+853 2613 9299</p>
-            <p>+853 2613 9299</p> -->
-            <p v-for="email in emails">{{ email.val }}</p>
+            <p v-for="email in emails">{{ email }}</p>
           </div>
         </div>
       </div>
@@ -41,14 +37,10 @@ import config from '../../config';
 export default {
   data() {
     return {
-      tels: [
-        { val: "111111" },
-        { val: "222222" }
-      ],
-      emails: [
-        { val: "3333333" },
-        { val: "4444444" }
-      ]
+      isTel: false,
+      isEmail: false,
+      tels: [],
+      emails: []
     }
   },
 
@@ -59,12 +51,25 @@ export default {
   methods: {
     getContact() {
       // 获取相关的联系方式
-      // /mchnt/user/csinfo
       axios.get(`${config.ohost}/mchnt/user/csinfo?format=cors`)
       .then((res) => {
-        console.log(res.data)
+        let data = res.data;
+        if(data.respcd === config.code.OK) {
+          let tels = data.data.csinfo.mobiles;
+          let emails = data.data.csinfo.emails;
+          if(tels.length) {
+            this.isTel = true;
+            this.tels = tels;
+          }
+          if(emails.length) {
+            this.isEmail = true;
+            this.emails = emails;
+          }
+        } else {
+          this.$message.error(data.resperr);
+        }
       }).catch(() => {
-        console.log('catch')
+        this.$message.error(this.$t('setting.msg.m3'));
       })
 
     }

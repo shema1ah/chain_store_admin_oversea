@@ -177,11 +177,10 @@
           <el-table-column min-width="215" :label="$t('tradeMng.table.op')" v-if="role.single">
             <template scope="scope">
               <el-button type="text" size="small" :disabled="scope.row.cancel !== 0 || scope.row.status !== 1" class="el-button__fix" @click="confirm(scope.row)">{{$t('tradeMng.table.cancel')}}</el-button>
-              <el-button
-                type="text"
-                size="small"
-                class="el-button__fix"
-                @click="downloadTicket(scope.$index)">{{$t('tradeMng.table.download')}}</el-button>
+              <!-- 下载小票 -->
+              <a :href="downHref(scope.$index)" download>
+                  <span id="tr-download">{{ $t('tradeMng.table.download') }}</span>
+              </a>
             </template>
           </el-table-column>
         </el-table>
@@ -255,6 +254,7 @@
         }
       };
       return {
+        imgsrc: "",
         lang: config.lang,
         role: Store.get('role') || {},
         showConfirm: false,
@@ -356,6 +356,7 @@
           paytypes: this.form.type.join(','),
           filters: this.form.other.join(','),
           lang: this.lang,
+          tab: 3,
           format: 'cors'
         };
       }
@@ -451,18 +452,12 @@
       },
 
       // 下载小票
-      downloadTicket(index) {
-        let data = this.transData.data[index];
-        let param = {
-          username: data.username, // 店铺名
-          busicd_info: data.busicd_info, // 交易类型
-          sysdtm: data.sysdtm, // 交易时间
-          total_amt: data.total_amt, // 交易金额
-          status_str: data.status_str, // 交易状态
-          syssn: data.syssn, // 流水号
-          format: 'cors'
+      downHref(index) {
+        if (!this.transData) {
+          return ''
         }
-        console.log(param)
+        let data = this.transData.data[index]
+        return `${config.host}/merchant/receipt/download?username=${data.username}&busicd_info=${data.busicd_info}&sysdtm=${data.sysdtm}&total_amt=${data.total_amt}&status_str=${data.status_str}&syssn=${data.syssn}&format=cors`;
       },
 
       // 点击enter键提交
@@ -650,7 +645,9 @@
     min-height: 62px;
     color: #282A2D;
   }
-
+  #tr-download {
+    color: #FF8100;
+  }
   /*.panel-header__auto {*/
     /*position: relative;*/
     /*height: auto !important;*/

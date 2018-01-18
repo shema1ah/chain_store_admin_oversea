@@ -29,6 +29,7 @@ exports.default = {
     modSucc: 'Modified successfully',
     modFailed: 'Failed to modify',
     logout: 'Logout',
+    del: 'Delete',
     msg: {
       sel: 'Please choose'
     }
@@ -281,8 +282,14 @@ exports.default = {
     msg: {
       m1: 'Please enter email address.',
       m2: 'Please enter correct email address.',
-      m3: 'Fetch email address failed!'
+      m3: 'Fetch email address failed!',
+      m5: 'The email has been added!',
+      m6: 'You can only add 10 email addresses'
+    },
+    tip: {
+      m1: 'Delete the last email address will turn off the feature, do you confirm?'
     }
+
   },
   cashMng: { // 收银员管理
     crumbs: {
@@ -334,5 +341,36 @@ exports.default = {
   contact: { // 客服
     phone: 'Phone',
     email: 'E-mail'
+  },
+  overseaForget: {
+    enterEmail: 'Please enter your email.',
+    emailAddr: 'Email Address',
+    tryAnother: 'Try another way',
+    next: 'Next',
+    confirm: 'Confirm',
+    notExist: 'E-mail address does not exist',
+    sendCode: 'We will deliver a verification code to you. Please enter the code.',
+    resend: 'Please resend',
+    code: 'Verification Code',
+    newPwd: 'New Password',
+    enterCode: 'Please enter the code.',
+    char: 'Please enter 6-20 characters',
+    rePwd: 'Reset Password',
+    invalidEmail: 'Invalid email address',
+    text1: 'We will deliver a verification code to',
+    text2: '. Please enter the code.',
+    secend1: "Resend after( ",
+    secend2: 's )',
+    codeResent: 'Code Resent',
+    wrongCode: 'Verification code is wrong',
+    filledCode: 'Verification code must be filled',
+    frequently: 'Get verification code frequently, please try again later'
+  },
+  firstlogin: {
+    congratulation: 'Congratulation! You have registered at HaoJin Merchant App',
+    changePwd: 'Please change your password to continue',
+    newPwd: 'New Password',
+    rePwd: 'Confirm Password',
+    confirm: 'Confirm'
   }
 }
