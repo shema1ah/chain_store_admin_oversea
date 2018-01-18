@@ -182,7 +182,8 @@
         this.loading = true;
         axios.get(`${config.host}/merchant/opuser/info`, {
           params: {
-            opuid: this.opuid
+            opuid: this.opuid,
+            format: 'cors'
           }
         }).then((res) => {
           this.loading = false;

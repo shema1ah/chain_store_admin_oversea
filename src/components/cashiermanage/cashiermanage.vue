@@ -271,18 +271,16 @@
       changeRights(id, rg) {
         let s, message;
         if(rg === '1') {
-          s = 0 + '';
-          message = '权限已关闭';
-        } else {
-          s = 1 + '';
           message = '权限已开启';
+        } else {
+          message = '权限已关闭';
         }
         if(!this.loading) {
           this.loading = true;
           axios.post(`${config.ohost}/mchnt/opuser/perm/change`, {
             opuid: id,
             type: 'refund',
-            status: s,
+            status: rg,
             format: 'cors'
           }).then((res) => {
             this.loading = false;
