@@ -50,7 +50,8 @@
               </el-form-item>
             </div>
           </div>
-          <div class="panel-select-group" v-if="!role.haiwai">
+          <!-- 支付方式 -->
+          <div class="panel-select-group" v-if="isShow">
             <div class="panel-select__wrapper">
               <span class="panel-select__desc">{{$t('tradeMng.table.colWay')}}</span>
               <el-form-item prop="checkAll1">
@@ -231,13 +232,14 @@
 </template>
 
 <script>
+/* eslint-disable */
   import axios from 'axios';
   import config from 'config';
   import qs from 'qs';
   import {formatDate} from '../../common/js/util';
   import Store from '../../common/js/store';
 
-  let typeLists = ['wxpay', 'alipay', 'qqpay', 'card'];
+  let typeLists = ['wxpay', 'alipay'];
   let otherLists = ['prepaid_recharge', 'prepaid', 'coupon', 'cancel'];
 
   // cancel 0未撤销 1撤销 status  0:交易中 1:交易成功 2:交易失败 3:交易超时
@@ -273,8 +275,8 @@
         typeList: [
           {'name': '微信收款', 'value': 'wxpay'},
           {'name': '支付宝收款', 'value': 'alipay'},
-          {'name': 'QQ收款', 'value': 'qqpay'},
-          {'name': '刷卡收款', 'value': 'card'}
+          // {'name': 'QQ收款', 'value': 'qqpay'},
+          // {'name': '刷卡收款', 'value': 'card'}
         ],
         otherList: [
           {'name': '储值充值', 'value': 'prepaid_recharge'},
@@ -302,6 +304,7 @@
         currentPage: 1,
         operaList: {},
         transData: {},
+        isShow: false,
         formrules: {
           orderno: [
             { validator: checkOrderNo, trigger: 'change' }
@@ -372,6 +375,17 @@
     },
 
     created() {
+      let tradeType = window.sessionStorage.getItem("trade_type");
+      if(tradeType) {
+        let tradeTypeArr = eval(window.sessionStorage.getItem("trade_type"));
+        if(tradeTypeArr.length <= 1) {
+          this.isShow = false;
+        } else {
+          this.isShow = true;
+        }
+      } else {
+        this.isShwo = false;
+      }
       this.changeTime('1');
       // 子商户查询其收银员
       if(this.role.single) {
@@ -394,7 +408,6 @@
         ];
         otherLists = ['cancel'];
       }
-
       this.getTransData();
     },
 
@@ -544,11 +557,12 @@
         }
       },
 
-      // check选择功能
+      // 支付方式全选check选择功能
       handleCheckAllChange1(event) {
         this.form.type = event.target.checked ? [] : typeLists;
       },
 
+      // 支付方式单选或多选
       handleCheckedCitiesChange1(value) {
         let checkCount = value.length;
         this.form.checkAll1 = !(checkCount > 0);
