@@ -38,7 +38,7 @@ const store = new Vuex.Store({
       data.forEach((v) => {
         tmpObj[v.uid] = v.shop_name
       })
-      console.log(tmpObj)
+      // console.log(tmpObj)
       state.shopDict = tmpObj
     }
   },

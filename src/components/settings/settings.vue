@@ -157,7 +157,6 @@
               }
               this.modifyEmail(params);
               this.form.email = "";
-              this.getEmails();
             }
           }
         })
@@ -187,6 +186,7 @@
           } else {
             this.$message.error(data.resperr);
           }
+          this.getEmails();
         }).catch(() => {
           this.$message.error(this.$t('common.modFailed'));
         })
