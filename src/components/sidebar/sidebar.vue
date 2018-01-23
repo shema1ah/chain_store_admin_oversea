@@ -132,6 +132,10 @@
                   {
                     val: this.$t('nav.setup'), // 邮件设置
                     pathname: 'settings'
+                  },
+                  {
+                    val: this.$t('nav.contact'), // 客服
+                    pathname: 'contact'
                   }
                 ];
               }
@@ -152,6 +156,10 @@
                 {
                   val: this.$t('nav.setup'), // 邮件设置
                   pathname: 'settings'
+                },
+                {
+                  val: this.$t('nav.contact'), // 客服
+                  pathname: 'contact'
                 }
               ];
             }
@@ -194,6 +202,10 @@
                   {
                     val: this.$t('nav.setup'), // 邮件设置
                     pathname: 'settings'
+                  },
+                  {
+                    val: this.$t('nav.contact'), // 客服
+                    pathname: 'contact'
                   }
                 ];
               }
@@ -214,6 +226,10 @@
                 {
                   val: this.$t('nav.setup'), // 邮件设置
                   pathname: 'settings'
+                },
+                {
+                  val: this.$t('nav.contact'), // 客服
+                  pathname: 'contact'
                 }
               ];
             }
@@ -229,10 +245,6 @@
                   {
                     val: this.$t('nav.shopMng'), // 账户信息
                     pathname: 'chainmanage'
-                  },
-                  {
-                    val: this.$t('nav.contact'), // 客服
-                    pathname: 'contact'
                   }
                 ];
               }else {
@@ -256,10 +268,6 @@
                   {
                     val: this.$t('nav.setup'), // 邮件设置
                     pathname: 'settings'
-                  },
-                  {
-                    val: this.$t('nav.contact'), // 客服
-                    pathname: 'contact'
                   }
                 ];
               }
@@ -280,10 +288,6 @@
                 {
                   val: this.$t('nav.setup'), // 邮件设置
                   pathname: 'settings'
-                },
-                {
-                  val: this.$t('nav.contact'), // 客服
-                  pathname: 'contact'
                 }
               ];
             }
