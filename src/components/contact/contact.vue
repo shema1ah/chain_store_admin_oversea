@@ -55,8 +55,8 @@ export default {
       .then((res) => {
         let data = res.data;
         if(data.respcd === config.code.OK) {
-          let tels = data.data.csinfo.mobiles;
-          let emails = data.data.csinfo.emails;
+          let tels = data.data.csinfo.mobiles ? data.data.csinfo.mobiles : [];
+          let emails = data.data.csinfo.emails ? data.data.csinfo.emails : [];
           if(tels.length) {
             this.isTel = true;
             this.tels = tels;
@@ -91,6 +91,7 @@ export default {
   }
   .panel-body {
     padding: 2px 0 0 21px;
+    min-height: 200px;
     .panel-body-con-box {
       display: flex;
       padding: 35px 0 15px;

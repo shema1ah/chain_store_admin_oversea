@@ -203,7 +203,7 @@ exports.default = {
       sNum: 'シリアル番号',
       op: '操作',
       cancel: '取消',
-      download: '————',
+      download: '',
       ac: '', // 实收
       red: '商店の 紅包', // 商家红包
       plat: 'をプラートフォームから支給', // 平台补贴

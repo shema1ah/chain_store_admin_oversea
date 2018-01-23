@@ -6,7 +6,7 @@
 
         <div class="user_wrapper">
           <div class="user_name">
-            {{ role.isCashier?`Welcome,${(shop.opinfo || {}).opname}(${(shop.opinfo || {}).opuid})`:'Welcome'}}
+            {{ role.isCashier?`Welcome,${shop.shopname}  ${(shop.opinfo || {}).opname}(${(shop.opinfo || {}).opuid})`:`Welcome,${shop.shopname}`}}
           </div>
           <a href="javascript:;" @click="logout">
             <div class="user_operation">
@@ -130,7 +130,13 @@ export default {
         margin-right: 14px;
       }
       @at-root .user_name {
+        display: flex;
+        justify-content: flex-end;
         margin-right: 20px;
+        width: 500px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
       @at-root .user_operation {
         display: flex;
