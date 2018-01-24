@@ -130,8 +130,7 @@ export default {
         margin-right: 14px;
       }
       @at-root .user_name {
-        display: flex;
-        justify-content: flex-end;
+        text-align: right;
         margin-right: 20px;
         width: 500px;
         overflow: hidden;

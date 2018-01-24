@@ -179,7 +179,7 @@
             <template scope="scope">
               <el-button type="text" size="small" :disabled="scope.row.cancel !== 0 || scope.row.status !== 1" class="el-button__fix" @click="confirm(scope.row)">{{$t('tradeMng.table.cancel')}}</el-button>
               <!-- 下载小票 -->
-              <a v-if="role.haiwai && role.country != 'JP'" :href="downHref(scope.$index)" download>
+              <a :href="downHref(scope.$index)" download>
                   <span id="tr-download">{{ $t('tradeMng.table.download') }}</span>
               </a>
             </template>
