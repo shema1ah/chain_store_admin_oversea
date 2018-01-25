@@ -108,7 +108,7 @@
                   },
                   {
                     val: this.$t('nav.shopMng'), // 账户信息
-                    pathname: 'chainmanage'
+                    pathname: 'singlemanage'
                   },
                   {
                     val: this.$t('nav.contact'), // 客服
@@ -127,7 +127,7 @@
                   },
                   {
                     val: this.$t('nav.shopMng'), // 账户信息
-                    pathname: 'chainmanage'
+                    pathname: 'singlemanage'
                   },
                   {
                     val: this.$t('nav.setup'), // 邮件设置
@@ -174,7 +174,7 @@
                   },
                   {
                     val: this.$t('nav.shopMng'), // 账户信息
-                    pathname: 'chainmanage'
+                    pathname: 'singlemanage'
                   },
                   {
                     val: this.$t('nav.contact'), // 客服
@@ -193,7 +193,7 @@
                   },
                   {
                     val: this.$t('nav.shopMng'), // 账户信息
-                    pathname: 'chainmanage'
+                    pathname: 'singlemanage'
                   },
                   {
                     val: this.$t('nav.cashMng'), // 收银员管理
@@ -244,7 +244,7 @@
                   },
                   {
                     val: this.$t('nav.shopMng'), // 账户信息
-                    pathname: 'chainmanage'
+                    pathname: 'singlemanage'
                   }
                 ];
               }else {
@@ -259,7 +259,7 @@
                   },
                   {
                     val: this.$t('nav.shopMng'), // 账户信息
-                    pathname: 'chainmanage'
+                    pathname: 'singlemanage'
                   },
                   {
                     val: this.$t('nav.cashMng'), // 收银员管理
