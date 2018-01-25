@@ -134,7 +134,6 @@
       addEmail() {
         this.$refs['form'].validate((valid) => {
           if(valid) {
-            // let emails = this.emails;
             // 判断该邮箱是否已经存在
             for(let i = 0; i < this.emails.length; i++) {
               // 已有该邮箱
@@ -156,7 +155,9 @@
                 format: 'cors'
               }
               this.modifyEmail(params);
-              this.form.email = "";
+              setTimeout(() => {
+                window.location.reload();
+              }, 0)
             }
           }
         })
@@ -164,12 +165,17 @@
 
       // 是否往邮箱发送交易报表
       sendChange() {
-        let params = {
-          email: this.emails.join(","),
-          status: this.form.status,
-          format: 'cors'
-        };
-        this.modifyEmail(params);
+        if(this.emails.length) {
+          let params = {
+            email: this.emails.join(","),
+            status: this.form.status,
+            format: 'cors'
+          };
+          this.modifyEmail(params)
+        } else {
+          this.form.status = 0;
+        }
+
       },
 
       // 删除，添加邮箱的修改邮箱操作操作
@@ -186,7 +192,6 @@
           } else {
             this.$message.error(data.resperr);
           }
-          this.getEmails();
         }).catch(() => {
           this.$message.error(this.$t('common.modFailed'));
         })

@@ -159,7 +159,7 @@
                 }
 
                 // 存支付方式列表
-                data.data.trade_type && window.sessionStorage.setItem("trade_type", data.data.trade_type);
+                data.data.trade_type && window.sessionStorage.setItem('trade_type', JSON.stringify(data.data.trade_type));
 
                 // 进行是否是首次登录的判断，返回need_change_pwd字段，1为需要重置，0为不需要重置
                 let needChangePwd = data.data.need_change_pwd;
