@@ -179,7 +179,7 @@
             <template scope="scope">
               <el-button type="text" size="small" :disabled="scope.row.cancel !== 0 || scope.row.status !== 1" class="el-button__fix" @click="confirm(scope.row)">{{$t('tradeMng.table.cancel')}}</el-button>
               <!-- 下载小票 -->
-              <a :href="downHref(scope.$index)" download>
+              <a :href="downUrl" @click="downHref(scope.$index, $event)">
                   <span id="tr-download">{{ $t('tradeMng.table.download') }}</span>
               </a>
             </template>
@@ -256,6 +256,7 @@
         }
       };
       return {
+        downUrl: 'javascript:;',
         imgsrc: "",
         lang: config.lang,
         role: Store.get('role') || {},
@@ -465,12 +466,10 @@
       },
 
       // 下载小票
-      downHref(index) {
-        if (!this.transData) {
-          return ''
-        }
+      downHref(index, e) {
         let data = this.transData.data[index]
-        return `${config.host}/merchant/receipt/download?username=${data.username}&busicd_info=${data.busicd_info}&sysdtm=${data.sysdtm}&total_amt=${data.total_amt}&status_str=${data.status_str}&syssn=${data.syssn}&format=cors`;
+        let total_amt = (data.total_amt / this.role.rate).toFixed(2);
+        e.target.parentNode.href = `${config.host}/merchant/receipt/download?username=${data.username}&busicd_info=${data.busicd_info}&sysdtm=${data.sysdtm}&total_amt=${total_amt}&status_str=${data.status_str}&syssn=${data.syssn}&format=cors`;
       },
 
       // 点击enter键提交

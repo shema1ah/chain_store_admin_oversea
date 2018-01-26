@@ -34,7 +34,7 @@
         </div>
       </el-form>
       <!-- 忘记密码 -->
-      <div class="bottom" v-if="role.haiwai">
+      <div class="bottom">
         <router-link :to="{ name: 'overseaForget'}" class="forget">{{$t('login.forgetPwd')}}</router-link>
       </div>
 

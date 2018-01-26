@@ -9,13 +9,13 @@
       <!-- next -->
       <!-- email -->
       <el-form-item :label="$t('overseaForget.emailAddr')" prop="email" v-if="isNext">
-        <el-input v-model="form.email" @keyup.enter.native="onEnter"></el-input>
+        <el-input v-model="form.email" @keyup.enter.native="onEnter" id="email"></el-input>
         <span class="del" v-if="isErr">+</span>
       </el-form-item>
       <!-- Confirm -->
       <!-- 验证码 -->
       <el-form-item :label="$t('overseaForget.code')" prop="vCode" v-if="isConfirm">
-        <el-input v-model="form.vCode" id="Code"></el-input>
+        <el-input v-model="form.vCode" id="code"></el-input>
         <span class="del" v-if="isErr2">+</span>
         <p class="count" v-if="resend">{{ $t('overseaForget.secend1') + countDown + $t('overseaForget.secend2') }}</p>
         <p class="count resend" v-if="!resend" @click="resendCode()">{{ $t('overseaForget.resend') }}</p>
@@ -111,8 +111,9 @@ export default {
     }
   },
   mounted() {
-    // docuemnt.querySelector('code').value = '';
-    // docuemnt.querySelector('pwd').value = '';
+    document.querySelector('email').value = '';
+    docuemnt.querySelector('code').value = '';
+    docuemnt.querySelector('pwd').value = '';
   },
   methods: {
     // 倒计时
