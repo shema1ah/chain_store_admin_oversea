@@ -44,12 +44,13 @@
             </div>
           </div>
           <div class="panel-btn-group__wrapper">
-            <a :href="downHref" download v-if="!role.haiwai || role.country === 'HK'">
+            <!-- 下载店铺收款码 -->
+            <!-- <a :href="downHref" download v-if="!role.haiwai || role.country === 'HK'">
               <div class="panel-btn__download panel-btn__download_detail">
                 <i class="icon-download"></i>
                 <span>{{$t('shopmng.panel.btn.down')}}</span>
               </div>
-            </a>
+            </a> -->
             <div class="panel-btn__download panel-btn__download_record" @click="changePass(shop.mobile)">{{$t('shopmng.panel.table.editPwd')}}</div>
           </div>
         </div>
