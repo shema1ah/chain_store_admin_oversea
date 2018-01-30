@@ -1,13 +1,11 @@
 <template>
   <div class="createpacket">
     <div class="banner_wrapper">
-      <div class="banner-breadcrumb">
-        <span>会员功能</span>
-        <i class="icon-right_arrow"></i>
-        <span>会员储值</span>
-        <i class="icon-right_arrow"></i>
-        <span>修改储值</span>
-      </div>
+      <el-breadcrumb separator=">">
+        <el-breadcrumb-item>会员功能</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ path: '/main/memberstorage' }" replace>会员储值</el-breadcrumb-item>
+        <el-breadcrumb-item>修改储值</el-breadcrumb-item>
+      </el-breadcrumb>
     </div>
     <div class="panel">
       <div class="panel-header panel-header__fix">
@@ -121,7 +119,7 @@
         let alterData = Store.get('alterstoredata');
         let info = alterData.activity_info;
 
-        let rules = alterData.activity_info.rules;
+        let rules = alterData.activity_info.rules || [];
         rules.forEach((v) => {
           v.pay_amt = v.pay_amt / 100;
           v.present_amt = v.present_amt / 100;
@@ -181,6 +179,10 @@
         role: Store.get("role") || {},
         state: null,
         form: {
+          start_time: new Date(),
+          end_time: new Date(),
+          mchnt_ids: [],
+          rulesData: []
         },
         formrules: {
           start_time: [

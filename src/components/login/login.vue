@@ -2,23 +2,42 @@
   <div class="login">
     <div class="content">
       <div class="head">{{$t('login.head')}}</div>
-      <el-form :model="form" :rules="formrules" ref="form">
+      <el-tabs v-model="userType" @tab-click="handleClick">
+        <el-tab-pane :label="$t('login.tab1')" name="merchant"></el-tab-pane>
+        <el-tab-pane :label="$t('login.tab2')" name="cash"></el-tab-pane>
+      </el-tabs>
+      <el-form :model="merchant" :rules="merchantRules" ref="merchant" v-if="userType === 'merchant'">
         <el-form-item prop="username" class="username">
-          <el-input v-model.trim="form.username" size="small" type="text" :placeholder="$t('login.reg')" @keyup.enter.native="onEnter"></el-input>
+          <el-input v-model.trim="merchant.username" size="small" type="text" :placeholder="$t('login.reg')" @keyup.enter.native="onEnter"></el-input>
         </el-form-item>
         <el-form-item prop="password" class="password">
-          <el-input v-model.trim="form.password" size="small" type="password" :placeholder="$t('login.ltsix')" @keyup.enter.native="onEnter"></el-input>
+          <el-input v-model.trim="merchant.password" size="small" type="password" :placeholder="$t('login.ltsix')" @keyup.enter.native="onEnter"></el-input>
         </el-form-item>
         <div class="panel-header-btn panel-header-btn__fill" @click="login">
           <span class="el-icon-loading" v-if="loading"></span>
           <span v-else>{{$t('login.login')}}</span>
         </div>
-        <div class="bottom" v-if="lang.indexOf('zh-CN')>-1">
-          <router-link :to="{ name: 'forget'}" class="forget">{{$t('login.forgetPwd')}}</router-link>
-          <!--<span>|</span>
-          <router-link :to="{ name: 'register'}" class="register">我要注册连锁店管理账号</router-link>-->
+      </el-form>
+      <el-form :model="cash" :rules="cashRules" ref="cash" v-else>
+        <el-form-item prop="name" class="username">
+          <el-input v-model.trim="cash.name" size="small" type="text" :placeholder="$t('login.user')" @keyup.enter.native="onEnter"></el-input>
+        </el-form-item>
+        <el-form-item prop="opuid" class="cashier">
+          <el-input v-model.trim="cash.opuid" size="small" type="text" :placeholder="$t('login.cash')" @keyup.enter.native="onEnter"></el-input>
+        </el-form-item>
+        <el-form-item prop="pass" class="password">
+          <el-input v-model.trim="cash.pass" size="small" type="password" :placeholder="$t('login.ltsix')" @keyup.enter.native="onEnter"></el-input>
+        </el-form-item>
+        <div class="panel-header-btn panel-header-btn__fill" @click="login">
+          <span class="el-icon-loading" v-if="loading"></span>
+          <span v-else>{{$t('login.login')}}</span>
         </div>
       </el-form>
+      <!-- 忘记密码 -->
+      <div class="bottom">
+        <router-link :to="{ name: 'overseaForget'}" class="forget">{{$t('login.forgetPwd')}}</router-link>
+      </div>
+
     </div>
   </div>
 </template>
@@ -34,15 +53,33 @@
         lang: config.lang,
         role: Store.get('role') || {},
         loading: false,
-        form: {
+        userType: 'merchant',
+        merchant: {
           username: '',
-          password: ''
+          password: '',
+          format: 'cors'
         },
-        formrules: {
+        merchantRules: {
           username: [
             { required: true, message: this.$t('login.msg.m1') }
           ],
           password: [
+            { required: true, message: this.$t('login.msg.m2') }
+          ]
+        },
+        cash: {
+          name: '',
+          opuid: '',
+          pass: ''
+        },
+        cashRules: {
+          name: [
+            { required: true, message: this.$t('login.msg.m4') }
+          ],
+          opuid: [
+            { required: true, message: this.$t('login.msg.m5') }
+          ],
+          pass: [
             { required: true, message: this.$t('login.msg.m2') }
           ]
         }
@@ -58,12 +95,11 @@
             type: 'error'
           });
       }
-
       // cookie存在跳转首页
       if(getCookie('sessionid') && Store.get('flag') === false) {
         this.$router.push('/main/index');
       }
-
+      // 退出之后清除session
       if(getCookie('sessionid') && Store.get('flag') === true) {
         clearCookie('sessionid', config.ohost);
       }
@@ -90,11 +126,23 @@
       // 登录
       login() {
         var _this = this;
-        this.$refs['form'].validate((valid) => {
-          if(!this.loading && valid) {
-            this.loading = true;
-            axios.post(`${config.host}/merchant/login`, this.form).then((res) => {
-              this.loading = false;
+        _this.$refs[this.userType].validate((valid) => {
+          if(!_this.loading && valid) {
+            let params;
+            if(this.userType === 'merchant') {
+              params = this.merchant;
+            }else {
+              let cash = this.cash;
+              params = {
+                username: cash.name,
+                opuid: cash.opuid,
+                password: cash.pass,
+                format: 'cors'
+              };
+            }
+            _this.loading = true;
+            axios.post(`${config.host}/merchant/login`, params).then((res) => {
+              _this.loading = false;
               let data = res.data;
               if(data.respcd === config.code.OK) {
                 let val = getRole(data.data) || '';
@@ -109,9 +157,22 @@
                   bicon.style.display = 'none';
                   bicon.src = `${config.ohost}/mchnt/set_cookie?sessionid=${sid}`;
                 }
-                setTimeout(function() {
-                  _this.$router.push('/main/index')
-                }, 0)
+
+                // 存支付方式列表
+                data.data.trade_type && window.sessionStorage.setItem('trade_type', JSON.stringify(data.data.trade_type));
+
+                // 进行是否是首次登录的判断，返回need_change_pwd字段，1为需要重置，0为不需要重置
+                let needChangePwd = data.data.need_change_pwd;
+                if(needChangePwd) {
+                  setTimeout(function() {
+                    _this.$router.push('/firstlogin');
+                  }, 0)
+                } else {
+                  setTimeout(function() {
+                    _this.$router.push('/main/index');
+                  }, 0)
+                }
+
               } else {
                 this.$message.error(data.resperr);
               }
@@ -126,6 +187,15 @@
       // 点击enter键调用登录
       onEnter() {
           this.login();
+      },
+
+      // 切换标签清除表单
+      handleClick(event) {
+        if(event.name === 'cash') {
+          this.$refs['merchant'] && this.$refs['merchant'].resetFields();
+        }else {
+          this.$refs['cash'] && this.$refs['cash'].resetFields();
+        }
       },
 
       // 是否为IE内核
@@ -153,7 +223,7 @@
 
     .content {
       width: 500px;
-      height: 350px;
+      height: auto;
       border: 1px solid #979797;
       border-radius: 4px;
       background: #fff;
@@ -166,6 +236,7 @@
         font-size: 24px;
         text-align: center;
         padding: 30px 0;
+        background: #F7F7F7;
       }
 
       .el-form {
@@ -187,6 +258,7 @@
       }
       .username {
         background: url("./img/phone.png") no-repeat left center;
+        background-size: 24px;
       }
 
       .el-input__inner {
@@ -203,19 +275,26 @@
         outline: none;
       }
 
+      .cashier {
+        background: url("./img/cashier.png") no-repeat left center;
+        background-size: 24px;
+      }
       .password {
         background: url("./img/password.png") no-repeat left center;
+        background-size: 24px;
       }
       .panel-header-btn {
         width: 100%;
         height: 44px;
         line-height: 44px;
         margin: 25px 0;
+        float: none;
       }
 
       .bottom {
         text-align: center;
         font-size: 17px;
+        margin: 20px 0;
 
         span {
           padding: 0 15px;
@@ -233,6 +312,31 @@
             color: darken(#FE9B20,10%);
            }
         }
+
+      }
+    }
+
+    .el-tabs {
+      .el-tabs__header {
+        border: none;
+      }
+      .el-tabs__nav-wrap {
+        margin: 0
+      }
+      .el-tabs__nav-scroll {
+        padding: 0 80px;
+      }
+      .el-tabs__nav {
+        display: flex;
+        float: none;
+        width: 100%;
+      }
+      .el-tabs__item {
+        font-size: 20px;
+        flex: 1;
+        height: 55px;
+        line-height: 55px;
+        text-align: center;
 
       }
     }

@@ -1,9 +1,9 @@
 <template>
   <div class="index" v-loading="loading1 || loading2" :element-loading-text="$t('common.loading')">
     <div class="banner_wrapper">
-      <div class="banner-breadcrumb">
-        <span>{{$t('home.crumbs.L1')}}</span>
-      </div>
+      <el-breadcrumb separator=">">
+        <el-breadcrumb-item>{{$t('home.crumbs.L1')}}</el-breadcrumb-item>
+      </el-breadcrumb>
     </div>
 
     <div class="panel">
@@ -180,13 +180,22 @@
       }
     },
     created() {
-      this.fetchDashboardData()
-      this.fetchActivityData()
+      // 收银员角色跳转实时收款，海外调整交易管理
+      if(this.role.isCashier) {
+        if(this.role.haiwai) {
+          this.$router.push('/main/transctl');
+        }else {
+          this.$router.push('/main/todaytrade');
+        }
+      }else {
+        this.fetchDashboardData()
+        this.fetchActivityData()
+      }
     },
     methods: {
       fetchDashboardData() {
         this.loading1 = true;
-        axios.get(`${config.host}/merchant/dashboard/stats`)
+        axios.get(`${config.host}/merchant/dashboard/stats?format=cors`)
           .then((res) => {
             this.loading1 = false;
             let data = res.data
@@ -203,7 +212,7 @@
       },
       fetchActivityData() {
         this.loading2 = true;
-        axios.get(`${config.host}/merchant/homeview`)
+        axios.get(`${config.host}/merchant/homeview?format=cors`)
           .then((res) => {
             this.loading2 = false;
             let data = res.data

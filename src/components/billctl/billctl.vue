@@ -1,9 +1,9 @@
 <template>
-  <div class="redpacket">
+  <div class="billctl">
     <div class="banner_wrapper">
-      <div class="banner-breadcrumb">
-        <span>{{$t('billMng.crumbs.L1')}}</span>
-      </div>
+      <el-breadcrumb separator=">">
+        <el-breadcrumb-item>{{$t('billMng.crumbs.L1')}}</el-breadcrumb-item>
+      </el-breadcrumb>
     </div>
     <div class="panel">
       <div class="panel-header panel-header__auto">
@@ -138,7 +138,8 @@
           startdate: this.startdate,
           busicd: this.form.orderno || '',
           lang: this.lang,
-          charset: 'utf-8'
+          charset: 'utf-8',
+          format: 'cors'
         };
       }
     },
@@ -214,10 +215,9 @@
     text-decoration: underline;
   }
 }
+
 .relative {
   position: relative;
-}
-.relative {
   .note {
     position: absolute;
     bottom: -28px;
@@ -225,6 +225,12 @@
   }
   .ml-0 {
     margin-left: 0px;
+  }
+}
+
+.billctl {
+  .panel-header {
+    background-color: #fff;
   }
 }
 </style>

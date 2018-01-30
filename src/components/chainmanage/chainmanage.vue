@@ -1,9 +1,9 @@
 <template>
   <div class="chain">
     <div class="banner_wrapper">
-      <div class="banner-breadcrumb">
-        <span>{{$t('shopmng.crumbs.L1')}}</span>
-      </div>
+      <el-breadcrumb separator=">">
+        <el-breadcrumb-item>{{$t('shopmng.crumbs.L1')}}</el-breadcrumb-item>
+      </el-breadcrumb>
     </div>
 
     <div class="panel">
@@ -39,17 +39,6 @@
           </div> -->
           <div class="btn-group">
             <el-button type="primary" class="panel-edit-btn__subshopnum" @click.native="editSubShopNum">{{$t('shopmng.panel.btn.editSubTag')}}</el-button>
-            <el-dropdown :hide-on-click="true" style="margin-left:10px;" v-if="!role.isBaoshang && !role.haiwai">
-              <div class="panel-header-btn__associate">
-                <i class="icon-create"></i>
-                <span>创建分店</span>
-              </div>
-
-              <el-dropdown-menu slot="dropdown" style="width:155px;">
-                <el-dropdown-item @click.native="createShop">直接创建</el-dropdown-item>
-                <el-dropdown-item @click.native="associate">关联已有</el-dropdown-item>
-              </el-dropdown-menu>
-            </el-dropdown>
           </div>
 
         </div>
@@ -163,6 +152,7 @@
           <el-input v-model="form.repass" size="small" type="password" :placeholder="$t('shopmng.dialog.msg.m2')"></el-input>
         </el-form-item>
       </el-form>
+      <div class="divider"></div>
       <div slot="footer" class="dialog-footer">
         <div @click="showChangePass = false" class="cancel">{{$t('shopmng.dialog.cancel')}}</div>
         <div @click="submit" class="submit">
@@ -198,37 +188,11 @@
         <el-form-item prop="primeaccountpwd">
           <el-input v-model="formpwd.primeaccountpwd" :placeholder="$t('shopmng.dialog.validateText2')" type="password" style="font-size:12px"></el-input>
         </el-form-item>
-
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <div @click="checkPrimeShopPwd('pwdform',this)" class="submit"><i class="el-icon-loading" v-show="iconShow"></i>{{$t('shopmng.dialog.ok')}}
-        </div>
-      </div>
-    </el-dialog>
-
-    <el-dialog title="关联分店" :visible.sync="visible" class="mydialog" @close="handleClose('associate_form')">
-      <el-form :model="associate_form" :rules="formrules" ref="associate_form" label-width="80px">
-        <div class="desc">
-          <p>请输入您的分店信息，以做关联。</p>
-          <p>如您的分店还没有账号，请联系客服或者业务员为您的分店入网。</p>
-        </div>
-        <el-form-item label="分店账号" prop="account">
-          <el-input v-model="associate_form.account" size="small" placeholder="请输入分店账号"></el-input>
-        </el-form-item>
-        <el-form-item label="登录密码" prop="password">
-          <el-input type="password" v-model="associate_form.password" size="small" placeholder="请输入分店登录密码"></el-input>
-        </el-form-item>
-        <el-form-item label="收款人" prop="bankuser">
-          <el-input v-model="associate_form.bankuser" size="small" placeholder="请输入分店收款人姓名"></el-input>
-        </el-form-item>
-        <el-form-item label="银行卡号" prop="bankaccount">
-          <el-input v-model="associate_form.bankaccount" size="small" placeholder="请输入分店收款银行卡号"></el-input>
-        </el-form-item>
       </el-form>
       <div class="divider"></div>
       <div slot="footer" class="dialog-footer">
-        <div @click="visible = false" class="cancel">取 消</div>
-        <div @click="submit_bind" class="submit"><i class="el-icon-loading" v-show="iconShow"></i>确 定</div>
+        <div @click="checkPrimeShopPwd('pwdform',this)" class="submit"><i class="el-icon-loading" v-show="iconShow"></i>{{$t('shopmng.dialog.ok')}}
+        </div>
       </div>
     </el-dialog>
   </div>
@@ -309,7 +273,8 @@
           account: '',
           password: '',
           payee: '',
-          cardno: ''
+          cardno: '',
+          format: 'cors'
         },
         formpwd: {
           primeaccountpwd: ''
@@ -366,10 +331,8 @@
     },
     created() {
       this.$store.dispatch('getPageShopData');
-      // this.$store.dispatch('getShopList');
     },
-    mounted() {
-    },
+
     methods: {
       refreshSubShopData() {
         this.$store.dispatch('getPageShopData');
@@ -435,9 +398,7 @@
           this.$message.error(e);
         })
       },
-      submitEditSubShopTag() {
 
-      },
       // 编辑子商户
       editSubShopNum() {
         this.showEditSubShopNum = true;
@@ -508,7 +469,7 @@
 
       // 退出登录
       logout() {
-        axios.get(`${config.host}/merchant/signout`)
+        axios.get(`${config.host}/merchant/signout?format=cors`)
           .then((res) => {
             let data = res.data;
             if (data.respcd === config.code.OK) {
@@ -519,12 +480,7 @@
               localStorage.removeItem('hashid');
               localStorage.removeItem('uid');
 
-              var toRemoved = document.getElementById('unique_map');
-              if(toRemoved) {
-                toRemoved.onload = null;
-                document.body.removeChild(toRemoved);
-              }
-              this.$router.push(`/login?from=logout&haiwai=${this.role.haiwai}`);
+              this.$router.push(`/login`);
             } else {
               this.$message.error(data.respmsg);
             }
@@ -672,9 +628,9 @@
       }
 
       @at-root .info__title {
-        font-size: 20px;
-        color: #262323;
-        width: 85px !important;
+        font-size: 16px;
+        color: #8A8C92;
+        width: 100px !important;
         margin-right: 0 !important;
       }
       @at-root .info__title.info__title_en {
@@ -684,8 +640,8 @@
         margin: 0px 10px 0px 0px;
       }
       @at-root .info__desc {
-        font-size: 15px;
-        color: #98989E;
+        font-size: 16px;
+        color: #1F2D3D;
       }
     }
   }

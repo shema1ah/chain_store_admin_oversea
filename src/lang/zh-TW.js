@@ -8,12 +8,16 @@ exports.default = {
     tradeMng: '交易管理',
     billMng: '清算管理',
     publicAuth: '公眾號授權',
-    shopMng: '店舖管理',
-    setup: '設置'
+    shopMng: '賬戶信息',
+    cashMng: '收銀員管理',
+    setup: '設置',
+    contact: '聯繫我們'
   },
   common: {
     ok: '確 定',
     cancel: '取 消',
+    close: '關 閉',
+    confirm: '確 認',
     tip: '提示',
     all: '全部',
     netError: '網絡錯誤',
@@ -21,13 +25,14 @@ exports.default = {
     modSucc: '修改成功',
     modFailed: '修改失敗',
     logout: '退出',
+    del: '刪除',
     msg: {
       sel: '請選擇'
     }
   },
   shopmng: { // 门店管理模块
     crumbs: {
-      L1: '店舖管理'
+      L1: '賬戶信息'
     },
     title: {
       baseInfo: '基本信息',
@@ -40,8 +45,7 @@ exports.default = {
         editPwd: '修改密碼',
         editSub: '編輯分店',
         editSubTag: '編輯分店編號',
-        down: '下載店鋪收款碼',
-        downTip: '點擊下載店鋪收款二維碼'
+        down: '下載店鋪收款碼'
       },
       table: {
         subName: '分店名稱',
@@ -162,6 +166,7 @@ exports.default = {
       yestoday: '昨天',
       near7: '近7天',
       near30: '近30天',
+      near365: '近壹年',
       shopName: '店鋪名稱',
       operator: '收銀員',
       moreFilter: '更多篩選',
@@ -181,7 +186,7 @@ exports.default = {
       undoNum: '撤銷次數',
       bi: '次',
       undo: '撤銷詳情',
-      shopName: '店鋪名稱/ID',
+      shopName: '店鋪名稱',
       operator: '收銀員',
       all: '全部',
       colWay: '收款方式',
@@ -194,6 +199,7 @@ exports.default = {
       sNum: '序列號',
       op: '操作',
       cancel: '撤銷',
+      download: '下載電子小票',
       ac: '實收', // 实收
       red: '商家紅包', // 商家红包
       plat: '平台補貼', // 平台补贴
@@ -215,7 +221,8 @@ exports.default = {
       m7: '撤銷失敗',
       m8: '請輸入序列號',
       m9: '請輸入賬戶密碼',
-      m10: '密碼不正確'
+      m10: '密碼不正確',
+      m11: '您暫無權限執行此操作'
     }
   },
   home: { // 首页概览
@@ -241,13 +248,19 @@ exports.default = {
   login: { // 登录页
     head: '商戶管理後台',
     reg: '註冊賬號',
+    user: '主賬號',
+    cash: '收銀員編號',
     ltsix: '6位以上',
     login: '登錄',
     forgetPwd: '忘記密碼?',
+    tab1: '商戶',
+    tab2: '收銀員',
     msg: {
       m1: '請輸入賬號',
       m2: '請輸入密碼',
-      m3: '登錄失敗'
+      m3: '登錄失敗',
+      m4: '請輸入主賬號',
+      m5: '請輸入收銀員編號'
     }
   },
   setting: { // 邮箱设置页
@@ -265,7 +278,94 @@ exports.default = {
     msg: {
       m1: '請輸入郵箱地址',
       m2: '請輸入正確的電郵地址',
-      m3: '獲取電郵設置失敗!'
+      m3: '獲取電郵設置失敗!',
+      m5: '已經添加過這個郵箱了!',
+      m6: '最多只能添加10個郵箱'
+    },
+    tip: {
+      m1: '刪除最後一個郵箱會關掉郵件報表的功能，確認刪除嗎？'
     }
+  },
+  cashMng: { // 收银员管理
+    crumbs: {
+      L1: '收銀員管理',
+      L2: '查看詳情',
+      L3: '添加收銀員'
+    },
+    common: {
+      status: '帳戶狀態',
+      number: '收銀員編號',
+      name: '姓名',
+      mobile: '電話',
+      shop: '門店',
+      user: '主賬號',
+      password: '收銀員密碼',
+      m1: '帳戶已禁用',
+      m2: '帳戶已啟用',
+      m5: '請輸入收銀員姓名',
+      m6: '請輸入收銀員電話',
+      m7: '請輸入收銀員密碼！',
+      m8: '姓名長度為2–20位！',
+      m9: '請輸入合法的手機號！',
+      m10: '密碼長度為6–15位！',
+      tip1: '* 收銀員登錄方式為主賬戶+收銀員編號+收銀員密碼'
+    },
+    mng: {
+      status1: '已啟用',
+      status2: '已禁用',
+      status3: '啟用帳戶',
+      status4: '禁用帳戶',
+      name: '收銀員名稱',
+      mobile: '收銀員電話',
+      op: '操作',
+      detail: '查看詳情',
+      m5: '獲取收銀員數據失敗'
+    },
+    detail: {
+      title: '收銀員資料',
+      btn: '編輯收銀員資料'
+    },
+    add: {
+      title: '添加收銀員',
+      tip1: '添加收銀員成功',
+      tip2: '獲取收銀員編號失敗',
+      btn1: '取消',
+      btn2: '確認'
+    }
+  },
+  contact: { // 客服
+    phone: '電話',
+    email: '郵箱'
+  },
+  overseaForget: {
+    enterEmail: '請輸入您的郵箱', //
+    emailAddr: '郵箱地址', //
+    // tryAnother: '試試其他方法',
+    next: '下一步',
+    confirm: '確 認',
+    notExist: '該帳號未註冊，請確認您的郵箱是否正確',
+    sendCode: '我們會給您的郵箱發送驗證碼，請輸入驗證碼',
+    resend: '重新發送',
+    code: '驗證碼',
+    newPwd: '新密碼',
+    enterCode: '請輸入驗證碼',
+    char: '密碼長度為6–20位！',
+    rePwd: '重置密碼',
+    invalidEmail: '無效的郵箱格式',
+    text1: '我們會給',
+    text2: '發送驗證碼，請輸入驗證碼',
+    secend1: "( ",
+    secend2: 's )後可以重發',
+    codeResent: '驗證碼發送成功',
+    wrongCode: '驗證碼錯誤',
+    filledCode: '驗證碼不能為空',
+    frequently: '驗證碼獲取頻繁，請稍候再試'
+  },
+  firstlogin: {
+    congratulation: '恭喜您登陸成功',
+    changePwd: '請修改您的初始密碼',
+    newPwd: '新密碼',
+    rePwd: '確認密碼',
+    confirm: '確  認'
   }
 }

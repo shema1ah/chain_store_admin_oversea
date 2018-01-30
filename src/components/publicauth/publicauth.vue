@@ -145,6 +145,7 @@
             </el-checkbox>
           </el-checkbox-group>
         </el-form>
+        <div class="divider"></div>
         <span slot="footer" class="dialog-footer">
         <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange" class="check-all">{{$t('pubSignal.dialog.all')}}</el-checkbox>
         <el-button @click="dialogVisible = false">{{$t('common.cancel')}}</el-button>
@@ -159,7 +160,7 @@
   import axios from 'axios'
   import config from 'config'
   import Store from '../../common/js/store'
-  import avatar from './img/avatar.png'
+  import avatar from '../../assets/img/default.png'
 
   export default {
     data() {
@@ -220,7 +221,7 @@
       },
       fetchMerchantIds () {
         this.loading2 = true;
-        axios.get(`${config.host}/merchant/ids`)
+        axios.get(`${config.host}/merchant/ids?format=cors`)
           .then((res) => {
             this.loading2 = false;
             let data = res.data
@@ -239,7 +240,7 @@
           })
       },
       fetchSubMerchants() {
-        axios.get(`${config.host}/submerchant/auth/info`)
+        axios.get(`${config.host}/submerchant/auth/info?format=cors`)
           .then((res) => {
             let data = res.data
             if (data.respcd === config.code.OK) {
@@ -271,7 +272,8 @@
 
         axios.post(`${config.host}/submerchant/auth/operator`, {
           bind_userids: checkedUids.toString(),
-          unbind_userids: uncheckedUids.toString()
+          unbind_userids: uncheckedUids.toString(),
+          format: 'cors'
         }).then((res) => {
             let data = res.data
             if (data.respcd === config.code.OK) {
@@ -285,7 +287,9 @@
           })
       },
       unbindPublic() {
-        axios.post(`${config.host}/merchant/auth/unbind`)
+        axios.post(`${config.host}/merchant/auth/unbind`, {
+          format: 'cors'
+        })
         .then((res) => {
           let data = res.data
           if (data.respcd === config.code.OK) {

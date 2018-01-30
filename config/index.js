@@ -7,10 +7,20 @@ console.error('构建index：', process.env.NODE_ENV, process.argv)
 module.exports = {
   build: {
     env: isTest ? require('./test.env') : require('./prod.env'),
+    port: 8098,
     index: path.resolve(__dirname, '../dist/main.html'),
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
+    proxyTable: {
+      '/api': {
+        target: 'https://sh.qfpay.com',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/api': '/'
+        }
+      }
+    },
     productionSourceMap: true,
     // Gzip off by default as many popular static hosts such as
     // Surge or Netlify already gzip all static assets for you.

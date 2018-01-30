@@ -12,12 +12,16 @@ exports.default = {
     tradeMng: 'Transaction Mgmt',
     billMng: 'Bill Mgmt',
     publicAuth: 'Official Account',
-    shopMng: 'Shop Mgmt',
-    setup: 'Setting'
+    shopMng: 'Account Info',
+    cashMng: 'Cashier Mgmt',
+    setup: 'Setting',
+    contact: 'Contact Us'
   },
   common: {
     ok: 'OK',
     cancel: 'Cancel',
+    close: 'Close',
+    confirm: 'Confirm',
     tip: 'Tips',
     all: 'All',
     netError: 'Net error',
@@ -25,17 +29,18 @@ exports.default = {
     modSucc: 'Modified successfully',
     modFailed: 'Failed to modify',
     logout: 'Logout',
+    del: 'Delete',
     msg: {
       sel: 'Please choose'
     }
   },
   shopmng: { // 门店管理模块
     crumbs: {
-      L1: 'Shop Management'
+      L1: 'Account Info'
     },
     title: {
       baseInfo: 'Basic Information',
-      subInfo: 'Branch Shop Information'
+      subInfo: 'Branch Information'
     },
     panel: {
       shopName: 'Shop Name',
@@ -44,11 +49,10 @@ exports.default = {
         editPwd: 'Change Password',
         editSub: 'Edit Branch Shop',
         editSubTag: 'Edit Customized ID',
-        down: 'Shop QR Code',
-        downTip: 'Click to download QR code'
+        down: 'Shop QR Code'
       },
       table: {
-        subName: 'Branch Shop Name',
+        subName: 'Branch Name',
         loginAccount: 'Account',
         regTime: 'Register Time',
         subTag: 'Customized ID',
@@ -90,7 +94,7 @@ exports.default = {
       bankAccount: 'Bank Account',
       bankName: 'Bank Name',
       editSubTag: 'Edit Customized ID',
-      diaTip: 'Customized ID would be shown at the exported payment detail and payment summary.',
+      diaTip: 'Customized ID would be shown at the exported transaction detail and transaction summary.',
       validateText: 'Please enter charactors within 20',
       validateText2: 'Please enter the login password of master account',
       notice: 'Be Awared!',
@@ -166,11 +170,12 @@ exports.default = {
       yestoday: 'Yesterday',
       near7: 'Last 7 days',
       near30: 'Last 30 days',
+      near365: 'Last 1 year',
       shopName: 'Shop Name',
       operator: 'Cashier',
       moreFilter: 'More Options',
       noLimit: 'All',
-      dd: 'Refunded', // 撤销明细
+      dd: 'Refund', // 撤销明细
       sNum: 'Transaction ID', // 流水号
       tip: 'Please enter the transaction ID',
       btn: {
@@ -182,10 +187,10 @@ exports.default = {
       total: 'Total Amount',
       realrec: 'Payment Real Received',
       succ: 'Success',
-      undoNum: 'Refunded',
+      undoNum: 'Refund',
       bi: 'times',
       undo: 'Refund The Details',
-      shopName: 'Shop Name/ID',
+      shopName: 'Shop Name',
       operator: 'Cashier ',
       all: 'All',
       colWay: 'Collection Method',
@@ -198,12 +203,13 @@ exports.default = {
       sNum: 'Transaction ID',
       op: 'Operation',
       cancel: 'Refund',
+      download: 'Download Receipt',
       ac: 'Actually Collected', // 实收
       red: 'paid from the red envelope', // 商家红包
       plat: 'paid from the platform', // 平台补贴
       btn: {
-        downDetail: 'Download The Payment Details',
-        downTrade: 'Download The Payment Summary'
+        downDetail: 'Download The Transaction Details',
+        downTrade: 'Download The Transaction Summary'
       }
     },
     dialog: {
@@ -219,7 +225,8 @@ exports.default = {
       m7: 'Failed to refund.',
       m8: 'Please enter the Transaction ID.',
       m9: "Please enter the account's password.",
-      m10: 'invalidate password.'
+      m10: 'invalidate password.',
+      m11: 'You don’t have the authority to proceed.'
     }
   },
   home: { // 首页概览
@@ -245,13 +252,19 @@ exports.default = {
   login: { // 登录页
     head: 'Shop Management Platform',
     reg: 'Register a new account',
+    user: 'Shop Account',
+    cash: 'Cashier No.',
     ltsix: 'More than 6 digits.',
     login: 'Login',
     forgetPwd: 'Forget password?',
+    tab1: 'Merchant',
+    tab2: 'Cashier',
     msg: {
       m1: 'Please enter the account.',
       m2: 'Please enter the password.',
-      m3: 'Failed to log in.'
+      m3: 'Failed to log in.',
+      m4: 'Enter Shop Account',
+      m5: 'Enter Cashier No.'
     }
   },
   setting: { // 邮箱设置页
@@ -269,8 +282,95 @@ exports.default = {
     msg: {
       m1: 'Please enter email address.',
       m2: 'Please enter correct email address.',
-      m3: 'Fetch email address failed!'
+      m3: 'Fetch email address failed!',
+      m5: 'The email has been added!',
+      m6: 'You can only add 10 email addresses'
+    },
+    tip: {
+      m1: 'Delete the last email address will turn off the feature, do you confirm?'
     }
-  }
 
+  },
+  cashMng: { // 收银员管理
+    crumbs: {
+      L1: 'Cashier Management',
+      L2: 'Details',
+      L3: 'Add Cashier'
+    },
+    common: {
+      status: 'Status',
+      number: 'Cashier No.',
+      name: 'Name',
+      mobile: 'Phone Number',
+      shop: 'Shop Name',
+      user: 'Shop Account',
+      password: 'Cashier Password',
+      m1: 'Account is deactivated',
+      m2: 'Account is activated',
+      m5: 'Cashier Name',
+      m6: 'Cashier Contact',
+      m7: 'Cashier Password',
+      m8: 'Please enter 2-20 characters',
+      m9: 'Please input a valid phone number',
+      m10: 'Please enter 6-20 characters',
+      tip1: '* Cashier can login with Shop Account, Cashier No. and Cashier Password'
+    },
+    mng: {
+      status1: 'Active',
+      status2: 'Inactive',
+      status3: 'Activate Account',
+      status4: 'Deactivate Account',
+      name: 'Cashier Name',
+      mobile: 'Cashier Contact',
+      op: 'Operation',
+      detail: 'Details',
+      m5: 'Fail to get cashier’s data'
+    },
+    detail: {
+      title: 'Cashier Info',
+      btn: 'Edit Cashier Info'
+    },
+    add: {
+      title: 'Add Cashier Info',
+      tip1: 'One cashier is added',
+      tip2: 'Fail to get cashier’s number',
+      btn1: 'Cancel',
+      btn2: 'Confirm'
+    }
+  },
+  contact: { // 客服
+    phone: 'Phone',
+    email: 'E-mail'
+  },
+  overseaForget: {
+    enterEmail: 'Please enter your email.',
+    emailAddr: 'Email Address',
+    tryAnother: 'Try another way',
+    next: 'Next',
+    confirm: 'Confirm',
+    notExist: 'E-mail address does not exist',
+    sendCode: 'We will deliver a verification code to you. Please enter the code.',
+    resend: 'Please resend',
+    code: 'Verification Code',
+    newPwd: 'New Password',
+    enterCode: 'Please enter the code.',
+    char: 'Please enter 6-20 characters',
+    rePwd: 'Reset Password',
+    invalidEmail: 'Invalid email address',
+    text1: 'We will deliver a verification code to',
+    text2: '. Please enter the code.',
+    secend1: "Resend after( ",
+    secend2: 's )',
+    codeResent: 'Code Resent',
+    wrongCode: 'Verification code is wrong',
+    filledCode: 'Verification code must be filled',
+    frequently: 'Get verification code frequently, please try again later'
+  },
+  firstlogin: {
+    congratulation: 'Congratulation! You have registered at HaoJin Merchant App',
+    changePwd: 'Please change your password to continue',
+    newPwd: 'New Password',
+    rePwd: 'Confirm Password',
+    confirm: 'Confirm'
+  }
 }

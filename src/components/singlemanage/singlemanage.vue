@@ -1,18 +1,17 @@
 <template>
   <div class="single">
     <div class="banner_wrapper">
-      <div class="banner-breadcrumb">
-        <span>{{$t('shopmng.crumbs.L1')}}</span>
-      </div>
+      <el-breadcrumb separator=">">
+        <el-breadcrumb-item>{{$t('shopmng.crumbs.L1')}}</el-breadcrumb-item>
+      </el-breadcrumb>
     </div>
-
     <div class="panel">
       <div class="panel-header panel-header__fix">
         <div class="panel-select-group panel-select-group__justify">
           <span class="panel-header__desc">{{$t('shopmng.title.baseInfo')}}</span>
         </div>
       </div>
-      <div class="panel-body">
+      <div class="panel-body" v-if="!role.isCashier">
         <div class="info_wrapper">
           <div class="info">
             <div class="info__title">{{$t('shopmng.panel.loginAccount')}}</div>
@@ -45,14 +44,61 @@
             </div>
           </div>
           <div class="panel-btn-group__wrapper">
-            <div class="panel-header-btn panel-header-btn__fill" @click="changePass(shop.mobile)">{{$t('shopmng.panel.table.editPwd')}}</div>
-            <el-tooltip v-if="!role.haiwai || role.country === 'HK'" class="item" effect="dark" :content="$t('shopmng.panel.btn.downTip')" placement="right">
-              <a :href="downHref" download>
-                <div class="panel-header-btn">
-                  <span>{{$t('shopmng.panel.btn.down')}}</span>
-                </div>
-              </a>
-            </el-tooltip>
+            <a :href="downHref" download v-if="!role.haiwai || role.country === 'HK'">
+              <div class="panel-btn__download panel-btn__download_detail">
+                <i class="icon-download"></i>
+                <span>{{$t('shopmng.panel.btn.down')}}</span>
+              </div>
+            </a>
+            <div class="panel-btn__download panel-btn__download_record" @click="changePass(shop.mobile)">{{$t('shopmng.panel.table.editPwd')}}</div>
+          </div>
+        </div>
+      </div>
+      <div class="panel-body" v-else>
+        <div class="info_wrapper">
+          <div class="info">
+            <div class="info__title">{{ $t('cashMng.common.status') }}</div>
+            <div class="info__desc">{{ opinfo.status? $t('cashMng.mng.status3') : $t('cashMng.mng.status4') }}</div>
+          </div>
+          <div class="info">
+            <div class="info__title">{{ $t('cashMng.common.name') }}</div>
+            <div class="info__desc">{{ opinfo.opname }}</div>
+          </div>
+          <div class="info">
+            <div class="info__title">{{ $t('cashMng.common.mobile') }}</div>
+            <div class="info__desc">{{ opinfo.mobile }}</div>
+          </div>
+          <div class="info">
+            <div class="info__title">{{ $t('cashMng.common.shop') }}</div>
+            <div class="info__desc">{{ shop.shopname }}</div>
+          </div>
+          <div class="info">
+            <div class="info__title">{{ $t('cashMng.common.user') }}</div>
+            <div class="info__desc">{{ shop.mobile }}</div>
+          </div>
+          <div class="info next-bottom" :style="lang === 'ja'?{'margin-bottom': '10px'}:''">
+            <div class="info__title">{{ $t('cashMng.common.number') }}</div>
+            <div class="info__desc">{{ opinfo.opuid }}</div>
+          </div>
+          <div class="info">
+            <div class="info__title"></div>
+            <div class="gray-explain">{{ $t('cashMng.common.tip1') }}</div>
+          </div>
+          <div class="info next-bottom" v-if="!role.haiwai">
+            <div class="info__title">退款权限</div>
+            <div class="info__desc">{{ opinfo.refund?'有权限': '无权限'}}</div>
+          </div>
+          <div class="info" v-if="!role.haiwai">
+            <div class="info__title"></div>
+            <div class="gray-explain">* 目前收银员仅支持查看活动信息，不支持对红包、集点、储值活动、特卖、店铺公告、会员特权的增删改</div>
+          </div>
+          <div class="panel-btn-group__wrapper">
+            <a :href="downHref" download v-if="!role.haiwai">
+              <div class="panel-header-btn panel-header-btn__fill">
+                <i class="icon-download"></i>
+                <span>下载收款二维码</span>
+              </div>
+            </a>
           </div>
         </div>
       </div>
@@ -70,6 +116,7 @@
           <el-input v-model="form.repass" size="small" type="password" :placeholder="$t('shopmng.dialog.msg.m2')"></el-input>
         </el-form-item>
       </el-form>
+      <div class="divider"></div>
       <div slot="footer" class="dialog-footer">
         <div @click="showChangePass = false" class="cancel">{{$t('shopmng.dialog.cancel')}}</div>
         <div @click="submit" class="submit">
@@ -138,7 +185,14 @@
 
     computed: {
       downHref() {
-          return `${config.host}/merchant/qrcode?userid=${this.shop.uid}&lang=${this.lang}`;
+        if(this.role.isCashier) {
+          return `${config.host}/merchant/qrcode?userid=${this.shop.uid}&opuid=${this.opuid}&format=cors`;
+        }else {
+          return `${config.host}/merchant/qrcode?userid=${this.shop.uid}&lang=${this.lang}&format=cors`;
+        }
+      },
+      opinfo() {
+        return this.shop.opinfo || {}
       }
     },
 
@@ -156,7 +210,7 @@
 
       // 退出登录
       logout() {
-        axios.get(`${config.host}/merchant/signout`)
+        axios.get(`${config.host}/merchant/signout?format=cors`)
           .then((res) => {
             let data = res.data;
             if (data.respcd === config.code.OK) {
@@ -166,12 +220,8 @@
               localStorage.removeItem('lang');
               localStorage.removeItem('hashid');
               localStorage.removeItem('uid');
-              var toRemoved = document.getElementById('unique_map');
-              if(toRemoved) {
-                toRemoved.onload = null;
-                document.body.removeChild(toRemoved);
-              }
-              this.$router.push(`/login?from=logout&haiwai=${this.role.haiwai}`);
+
+              this.$router.push(`/login`);
             } else {
               this.$message.error(data.respmsg);
             }
@@ -248,9 +298,9 @@
     align-items: center;
     margin-bottom: 18px;
     @at-root .info__title {
-      font-size: 20px;
-      color: #262323;
-      width: 140px;
+      font-size: 16px;
+      color: #8A8C92;
+      width: 100px;
       margin-right: 25px;
       text-align: left;
     }
@@ -259,7 +309,7 @@
     }
     @at-root .info__desc {
       font-size: 15px;
-      color: #98989E;
+      color: #1F2D3D;
     }
   }
   }
@@ -270,6 +320,13 @@
   .single {
     .panel-header-btn {
       width: 210px;
+    }
+    .next-bottom {
+      margin: 0;
+    }
+    .gray-explain {
+      margin: 0;
+      line-height: 1.4;
     }
   }
 </style>

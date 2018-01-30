@@ -6,7 +6,7 @@ import 'src/filters'
 import store from './store'
 import App from './App'
 import router from './router'
-import { Tree, Upload, Select, Option, TableColumn, Table, Button, Pagination, Dropdown, DropdownItem, DropdownMenu, Loading, DatePicker, Input, Message, Form, FormItem, Radio, RadioGroup, RadioButton, Dialog, Col, MessageBox, Row, CheckboxGroup, Checkbox, Rate, Tooltip, Switch } from 'element-ui'
+import { Tree, Upload, Select, Option, TableColumn, Table, Button, Pagination, Dropdown, DropdownItem, DropdownMenu, Loading, DatePicker, Input, Message, Form, FormItem, Radio, RadioGroup, RadioButton, Dialog, Col, MessageBox, Row, CheckboxGroup, Checkbox, Rate, Tooltip, Switch, Tabs, TabPane, Breadcrumb, BreadcrumbItem } from 'element-ui'
 import 'reset.css'
 import 'assets/scss/common.scss'
 import axios from 'axios'
@@ -53,6 +53,10 @@ Vue.use(Checkbox)
 Vue.use(Rate)
 Vue.use(Tooltip)
 Vue.use(Switch)
+Vue.use(Tabs)
+Vue.use(TabPane)
+Vue.use(Breadcrumb)
+Vue.use(BreadcrumbItem)
 
 locale.use(targetLang.default); // elementUI组件的多语言
 var localePackage = { // 静态模板文案多语言
@@ -81,19 +85,13 @@ axios.interceptors.response.use((res) => {
   if (data.respcd == config.code.SESSIONERR || data.respcd == config.code.LOGINERR) {
     // 清除本地cookie
     (new Image()).src = `${config.ohost}/mchnt/set_cookie?sessionid=`;
-    let role = Store.get('role') || {};
 
     Store.set('flag', true);
     localStorage.removeItem('lang');
     localStorage.removeItem('hashid');
     localStorage.removeItem('uid');
 
-    var toRemoved = document.getElementById('unique_map');
-    if(toRemoved) {
-      toRemoved.onload = null;
-      document.body.removeChild(toRemoved);
-    }
-    location.replace(`/#/?from=logout&haiwai=${role.haiwai}`);
+    location.replace(`${location.pathname}#/login`);
   } else {
     return res
   }

@@ -29,6 +29,10 @@ const setformateDate = (date) => {
 // 日期格式化
 const formatDate = (parDate, formatStr) => {
 
+  if(parDate.constructor === String) {
+    parDate = parDate.replace(/-/g, "/");
+  }
+
   let date = new Date(parDate)
   /*
    函数：填充0字符
@@ -113,75 +117,64 @@ let deepClone = (obj) => {
   return JSON.parse(JSON.stringify(obj))
 }
 
-// 角色判断 大商户、子商户、海外商户
+// 用户角色
 const getRole = (data = {}) => {
   let role = {
     type: 'chain',
-    haiwai: false,
-    currency: data.currency || '元',
-    country: data.country,
-    rate: data.rate || 100,
-    single: false,
-    isBaoshang: false,
-    diancan: false
+    haiwai: data.country !== 'CN', // 是否海外
+    currency: data.currency || '元', // 货币单位
+    country: data.country, // 国家
+    rate: data.rate || 100, // 汇率
+    single: data.cate !== 'bigmerchant', // 是否是单店
+    isBaoshang: data.group_name === 'baoshang', // 是否包商
+    isCashier: Boolean(data.opinfo && data.opinfo.opuid), // 是否收银员角色
+    diancan: data.diancan_display === 1, // 是否展示智慧餐厅
+    isClound: data.wuxiang_display === 1 // 是否展示舞项云
+  }
+  if(data.cate !== 'bigmerchant') {
+      role.type = 'single'
   }
 
   // 包商baoshang 日本japan 香港hongkong 印尼id 迪拜ar
   // bigmerchant:大商户 submerchant:子商户 merchant:商户
-  if(data.group_name === 'baoshang') {
-    role.isBaoshang = true
-    role.type = 'baoshang'
-    if (data.cate !== 'bigmerchant') {
-      role.type = 'baoshang_single'
-      role.single = true
-    }
-  }else {
-    switch (data.country) {
-      case 'JP':
-        role.type = 'japan'
-        if (data.cate !== 'bigmerchant') {
-          role.type = 'japan_single'
-          role.single = true
-        }
-        break;
-      case 'ID':
-        role.type = 'id'
-        if (data.cate !== 'bigmerchant') {
-          role.type = 'id_single'
-          role.single = true
-        }
-        break;
-      case 'AR':
-        role.type = 'ar'
-        if (data.cate !== 'bigmerchant') {
-          role.type = 'ar_single'
-          role.single = true
-        }
-        break;
-      case 'HK':
-        role.type = 'hongkong'
-        if (data.cate !== 'bigmerchant') {
-          role.type = 'hongkong_single'
-          role.single = true
-        }
-        break;
-      default:
-        if (data.cate !== 'bigmerchant') {
-          role.type = 'single'
-          role.single = true
-        }
-    }
-  }
+  // if(data.group_name === 'baoshang') {
+  //   role.type = 'baoshang'
+  //   if (data.cate !== 'bigmerchant') {
+  //     role.type = 'baoshang_single'
+  //   }
+  // }else {
+  //   switch (data.country) {
+  //     case 'JP':
+  //       role.type = 'japan'
+  //       if (data.cate !== 'bigmerchant') {
+  //         role.type = 'japan_single'
+  //       }
+  //       break;
+  //     case 'ID':
+  //       role.type = 'id'
+  //       if (data.cate !== 'bigmerchant') {
+  //         role.type = 'id_single'
+  //       }
+  //       break;
+  //     case 'AR':
+  //       role.type = 'ar'
+  //       if (data.cate !== 'bigmerchant') {
+  //         role.type = 'ar_single'
+  //       }
+  //       break;
+  //     case 'HK':
+  //       role.type = 'hongkong'
+  //       if (data.cate !== 'bigmerchant') {
+  //         role.type = 'hongkong_single'
+  //       }
+  //       break;
+  //     default:
+  //       if (data.cate !== 'bigmerchant') {
+  //         role.type = 'single'
+  //       }
+  //   }
+  // }
 
-  // 是否海外
-  if (data.country !== 'CN') {
-    role.haiwai = true
-  }
-
-  // 是否展示智慧餐厅
-  if (data.diancan_display === 1) {
-    role.diancan = true;
-  }
   return role
 }
 
@@ -276,15 +269,6 @@ function GetVerifyBit(id) {
   return result
 }
 
-const mobileValid = (Tel) => {
-  var re = new RegExp(/^((\d{11})|^((\d{7,8})|(\d{4}|\d{3})-(\d{7,8})|(\d{4}|\d{3})-(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1})|(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1}))$)$/);
-  var retu = Tel.match(re);
-  if (retu) {
-    return true;
-  } else {
-    return false;
-  }
-}
 const cardValid = (card) => {
   var aCity = {
     11: '北京',
@@ -402,6 +386,5 @@ module.exports = {
   formatLength,
   getCookie,
   clearCookie,
-  cardValid,
-  mobileValid
+  cardValid
 }

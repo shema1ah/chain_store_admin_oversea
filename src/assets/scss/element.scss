@@ -71,3 +71,20 @@ a {
   text-decoration: none;
   color: #fff;
 }
+
+.el-breadcrumb {
+  font-size: 18px;
+  .el-breadcrumb__item__inner {
+    color: #262424;
+  }
+  .el-breadcrumb__item__inner:hover {
+    color: #FE9B20;
+  }
+
+  .el-breadcrumb__item:not(.first):first-child .el-breadcrumb__item__inner,
+  .el-breadcrumb__item:not(.first):first-child .el-breadcrumb__item__inner:hover {
+    color: #beb297;
+    cursor: text;
+  }
+
+}
