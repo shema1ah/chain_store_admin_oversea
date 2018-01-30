@@ -112,8 +112,8 @@ export default {
   },
   mounted() {
     document.querySelector('email').value = '';
-    docuemnt.querySelector('code').value = '';
-    docuemnt.querySelector('pwd').value = '';
+    document.querySelector('code').value = '';
+    document.querySelector('pwd').value = '';
   },
   methods: {
     // 倒计时
