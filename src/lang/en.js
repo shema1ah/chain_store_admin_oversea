@@ -14,7 +14,7 @@ exports.default = {
     publicAuth: 'Official Account',
     shopMng: 'Account Info',
     cashMng: 'Cashier Mgmt',
-    setup: 'Setting',
+    setup: 'Settings',
     contact: 'Contact Us'
   },
   common: {
@@ -165,7 +165,7 @@ exports.default = {
       L1: 'Transaction Management'
     },
     panel: {
-      time: 'Date',
+      time: 'Time Range',
       today: 'Today',
       yestoday: 'Yesterday',
       near7: 'Last 7 days',
@@ -193,7 +193,7 @@ exports.default = {
       shopName: 'Shop Name',
       operator: 'Cashier ',
       all: 'All',
-      colWay: 'Collection Method',
+      colWay: 'Transaction Type',
       wechatCollect: 'Collect by Wechat',
       tradeType: 'Type',
       tradeTime: 'Time',
@@ -234,18 +234,18 @@ exports.default = {
       L1: 'Home'
     },
     title: {
-      t1: 'Payment Data Statistics',
+      t1: 'Payment Statistics',
       t2: 'Event Operation Statistics'
     },
     panel: {
       t1: 'New Customers Today',
-      t2: 'Payment Amount Today',
+      t2: 'Daily Statistics',
       tc: 'Returning Customer Today',
       cmnew: 'New Customers This Month',
       cumulativeMembership: 'Total Customers',
-      tta: 'Payment Today',
-      tincome: 'Amount Received Today',
-      cmincome: 'Amount Received This Month',
+      tta: '# of Transactions',
+      tincome: 'Total Received (Day)',
+      cmincome: 'Total Received (Month)',
       noActivity: 'No Promotion'
     }
   },
@@ -269,13 +269,13 @@ exports.default = {
   },
   setting: { // 邮箱设置页
     crumbs: {
-      L1: 'Setting'
+      L1: 'Settings'
     },
     panel: {
-      mailSetup: 'Email setting',
+      mailSetup: 'Email settings',
       mail: 'Email Address',
       explain: 'A daily payment report will be delivered to this email address every morning at 7 a.m.',
-      dailySend: 'Turn On Daily Report',
+      dailySend: 'Send Daily Report',
       modi: 'Change',
       confirm: 'Confirm'
     },
@@ -318,8 +318,8 @@ exports.default = {
     mng: {
       status1: 'Active',
       status2: 'Inactive',
-      status3: 'Activate Account',
-      status4: 'Deactivate Account',
+      status3: 'Activated',
+      status4: 'Deactivated',
       name: 'Cashier Name',
       mobile: 'Cashier Contact',
       op: 'Operation',
