@@ -20,20 +20,20 @@
               <el-form-item prop="email">
                 <el-input v-model="form.email" size="small" type="text" class="panel-select-input-230"></el-input>
               </el-form-item>
-              <div class="panel-header-btn panel-header-btn__fill" @click="addEmail()">
+              <div class="panel-header-btn panel-header-btn__fill" @click="addEmail">
                 <span>{{ $t('common.ok') }}</span>
               </div>
             </el-form-item>
             <!-- email列表 -->
-            <div class="emails-box" v-if="this.isShow">
+            <div class="emails-box" v-if="emails.length > 0">
               <h5>{{ $t('overseaForget.emailAddr') }}:</h5>
               <ul class="emails-list">
-                <li v-for="(email, index) in this.emails">{{ email }} <span @click="delEmail(index)">{{ $t('common.del') }}</span></li>
+                <li v-for="(email, index) in emails">{{ email }} <span @click="delEmail(index)">{{ $t('common.del') }}</span></li>
               </ul>
             </div>
             <!-- 每日发送日报 -->
             <el-form-item :label="$t('setting.panel.dailySend')" prop="status">
-              <el-switch v-model="form.status" on-text="" off-text="" on-color="#7ed321" off-color="#d8d8d8" on-value=1 off-value=0 @change="sendChange()"></el-switch>
+              <el-switch v-model="form.status" on-text="" off-text="" on-color="#7ed321" off-color="#d8d8d8" on-value=1 off-value=0 :disabled="emails.length?false:true" @change="sendChange"></el-switch>
             </el-form-item>
           </el-form>
         </div>
@@ -61,7 +61,6 @@
       };
       return {
         loading: false,
-        isShow: false,
         form: {
           email: '',
           status: 0
@@ -75,7 +74,7 @@
       };
     },
 
-    mounted() {
+    created() {
       this.getEmails();
     },
 
@@ -84,16 +83,14 @@
       getEmails() {
         axios.get(`${config.host}/merchant/get/email?format=cors`).then((res) => {
           let data = res.data;
+          console.log(data)
           if(data.respcd === config.code.OK) {
-            if(data.data.email.length != 0) {
-              if (data.data.email.length) {
-                this.emails = data.data.email.split(",");
-              }
-              this.form.status = "1";
-              this.isShow = true;
-            } else {
-              this.form.status = "0";
-              this.isShow = false;
+
+            let temp = String(data.data.status);
+            this.form.status = temp; // 状态
+
+            if (data.data.email.length) {
+              this.emails = data.data.email.split(","); // 邮箱列表
             }
           } else {
             this.$message.error(data.resperr);
@@ -105,28 +102,40 @@
 
       // 点击删除
       delEmail(index) {
+        let tempArr = this.emails;
+        let params = {};
+
+        // 删除最后一个邮箱
         if(this.emails.length <= 1) {
-          // this.$message.error("至少存在一个邮箱");
           // return;
           this.open6((type) => {
             if(!type) {
-              this.emails.splice(index, 1);
-              let params = {
-                email: this.emails.join(","),
-                status: this.form.status,
+              tempArr.splice(index, 1);
+              params = {
+                email: tempArr.join(","),
+                status: 0,
                 format: 'cors'
               };
-              this.modifyEmail(params);
+              this.modifyEmail(params, (flag) => {
+                if(flag) {
+                  this.emails = tempArr;
+                  this.form.status = "0";
+                }
+              });
             }
           });
         } else {
-          this.emails.splice(index, 1);
-          let params = {
-            email: this.emails.join(","),
-            status: this.form.status,
+          // 删除不是最后一个邮箱
+          tempArr.splice(index, 1);
+          params = {
+            email: tempArr.join(","),
             format: 'cors'
           };
-          this.modifyEmail(params);
+          this.modifyEmail(params, (flag) => {
+            if(flag) {
+              this.emails = tempArr;
+            }
+          });
         }
       },
 
@@ -136,7 +145,6 @@
           if(valid) {
             // 判断该邮箱是否已经存在
             for(let i = 0; i < this.emails.length; i++) {
-              // 已有该邮箱
               if(this.emails.indexOf(this.form.email) != -1) {
                 this.$message.error(this.$t('setting.msg.m5'));
                 return;
@@ -148,16 +156,34 @@
             if(this.emails.length >= 10) {
               this.$message.error(this.$t('setting.msg.m6'));
             } else {
-              this.emails.push(this.form.email);
-              let params = {
-                email: this.emails.join(","),
-                status: this.form.status,
-                format: 'cors'
+              let tempArr = [].concat(this.emails)
+              tempArr.push(this.form.email);
+              let params = {};
+              if(tempArr.length == 1) {
+                // 添加第一个邮箱打开开关
+                params = {
+                  email: tempArr.join(","),
+                  status: 1,
+                  format: 'cors'
+                }
+                this.modifyEmail(params, (type) => {
+                  if(type) {
+                    this.emails = tempArr;
+                    this.form.status = "1";
+                  }
+                });
+              } else {
+                // 不是第一个邮箱，不改变当前状态
+                params = {
+                  email: tempArr.join(","),
+                  format: 'cors'
+                }
+                this.modifyEmail(params, (type) => {
+                  if(type) {
+                    this.emails = tempArr;
+                  }
+                });
               }
-              this.modifyEmail(params);
-              setTimeout(() => {
-                window.location.reload();
-              }, 0)
             }
           }
         })
@@ -165,35 +191,34 @@
 
       // 是否往邮箱发送交易报表
       sendChange() {
-        if(this.emails.length) {
-          let params = {
-            email: this.emails.join(","),
-            status: this.form.status,
-            format: 'cors'
-          };
-          this.modifyEmail(params)
-        } else {
-          this.form.status = 0;
-        }
-
+        let temp = this.form.status;
+        let params = {
+          status: temp,
+          type: 1, // 单独点击按钮更新状态时必须传的字段
+          format: 'cors'
+        };
+        this.modifyEmail(params, (type) => {
+          if(!type) {
+            this.form.status = !temp;
+          }
+        })
       },
 
       // 删除，添加邮箱的修改邮箱操作操作
-      modifyEmail(params) {
+      modifyEmail(params, cb) {
+        console.log(params)
         axios.post(`${config.host}/merchant/add/email`, params).then((res) => {
           let data = res.data;
           if(data.respcd === config.code.OK) {
-            // 删除成功，将返回的新邮箱数据更新到this.emails
-            if (data.data.email.length) {
-              this.emails = data.data.email.split(",");
-            } else {
-              this.emails = []
-            }
+            this.form.email = '';
+            cb(1); // 修改成功
           } else {
             this.$message.error(data.resperr);
+            cb(0); // 修改失败
           }
         }).catch(() => {
           this.$message.error(this.$t('common.modFailed'));
+          cb(0)
         })
       },
 
@@ -205,18 +230,11 @@
           type: 'warning',
           center: true
         }).then(() => {
-          // 点击确认关闭开关（这里应该为接口返回已删除后再关闭开关）
-          this.form.status = '0';
-          this.isShow = false;
-          cb(0);
+          cb(0); // 点击确认关闭开关
         }).catch(() => {
-          // 点击取消保持开关开着
-          this.form.status = '1';
-          this.isShow = true;
-          cb(1)
+          cb(1); // 点击取消保持开关开着
         });
       }
-
     }
   };
 </script>
