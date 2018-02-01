@@ -12,7 +12,7 @@
           <span class="panel-header__desc">{{$t('nav.contact')}}</span>
         </div>
       </div>
-      <div class="panel-body">
+      <div class="panel-body panel-body-contact">
         <div class="panel-body-phone panel-body-con-box" v-if="isTel">
           <h5>{{$t('contact.phone')}}:</h5>
           <div class="panel-body-con">
@@ -89,12 +89,12 @@ export default {
   .panel-select-group__justify {
     justify-content: space-between;
   }
-  .panel-body {
-    padding: 2px 0 0 21px;
-    min-height: 200px;
+  .panel-body.panel-body-contact {
+    padding: 35px 0 20px 21px;
+    min-height: inherit;
     .panel-body-con-box {
       display: flex;
-      padding: 35px 0 15px;
+      padding: 0;
       h5 {
         font-size:16px;
         font-family:PingFangSC-Regular;
@@ -107,9 +107,12 @@ export default {
           font-size:14px;
           color:rgba(152,152,158,1);
           line-height:14px;
-          padding-bottom:20px;
+          padding-bottom:15px;
         }
       }
+    }
+    .panel-body-con-box:nth-child(even) {
+      padding: 37px 0 0 0;
     }
   }
 </style>
