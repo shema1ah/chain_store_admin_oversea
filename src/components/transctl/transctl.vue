@@ -64,7 +64,8 @@
               </el-form-item>
             </div>
           </div>
-          <div class="panel-select-group">
+          <!-- 更多筛选 -->
+          <!-- <div class="panel-select-group">
             <div class="panel-select__wrapper">
               <span class="panel-select__desc">{{$t('tradeMng.panel.moreFilter')}}</span>
               <el-form-item prop="checkAll2">
@@ -76,7 +77,7 @@
                 </el-checkbox-group>
               </el-form-item>
             </div>
-          </div>
+          </div> -->
 
           <div class="panel-select-group">
             <div class="panel-select__wrapper orderno_nowrap">
