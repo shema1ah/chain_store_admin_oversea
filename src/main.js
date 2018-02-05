@@ -81,7 +81,10 @@ axios.defaults.withCredentials = true; // 允许跨域请求携带cookie
 axios.defaults.headers.common['lang'] = JSON.parse(switchlang).value;
 
 axios.interceptors.response.use((res) => {
-  let data = res.data
+  if (config.env === 'development') {
+    return res
+  }
+  let data = res.data;
   if (data.respcd == config.code.SESSIONERR || data.respcd == config.code.LOGINERR) {
     // 清除本地cookie
     (new Image()).src = `${config.ohost}/mchnt/set_cookie?sessionid=`;
