@@ -17,12 +17,12 @@
       <div class="panel-body">
         <div class="info_wrapper">
           <div class="info">
-            <div :class="lang === 'en'?'info__title info__title_en': 'info__title_en'">{{$t('shopmng.panel.shopName')}}</div>
+            <div class="info__title_en">{{$t('shopmng.panel.shopName')}}</div>
             <div class="info__sign">:</div>
             <div class="info__desc">{{ shop.shopname }}</div>
           </div>
           <div class="info">
-            <div :class="lang === 'en'?'info__title info__title_en': 'info__title_en'">{{$t('shopmng.panel.loginAccount')}}</div>
+            <div class="info__title_en">{{$t('shopmng.panel.loginAccount')}}</div>
             <div class="info__sign">:</div>
             <div class="info__desc">{{ shop.mobile }}</div>
           </div>
