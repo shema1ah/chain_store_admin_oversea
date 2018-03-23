@@ -82,7 +82,7 @@ export default {
             Store.set('role', val);
 
             this.$store.dispatch('getShopList');
-            this.$store.dispatch('getMemberTotal');
+            // this.$store.dispatch('getMemberTotal');
 
             this.shop = data.data || {};
 

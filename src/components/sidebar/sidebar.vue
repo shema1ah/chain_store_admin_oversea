@@ -6,45 +6,7 @@
     </div>
     <ul class="left-nav">
       <li v-for="nav in navs" :class="{'dark': $route.fullPath.indexOf('member') != -1 && nav.sub}">
-        <router-link class="sidebar-nav__item" v-if="nav.pathname" :to="router('main/' + nav.pathname)">{{ nav.val }}</router-link>
-        <a v-else class="sidebar-nav__item" @click="toggle(1)">
-          {{ nav.val }}
-          <i v-if="nav.sub" class="icon-down_arrow" :class="{'icon-down_arrow__rotate': isRotate1}"></i>
-        </a>
-        <transition name="collpase">
-          <ul v-if="nav.sub" v-show="isShow1" class="collpase">
-            <li v-for="subnav in nav.sub">
-              <router-link class="sidebar-nav__item sidebar-nav__subitem" :to="router('main/' + subnav.pathname)">
-                {{ subnav.val }}
-              </router-link>
-            </li>
-            <li v-if="role.isClound && role.single"><router-link class="sidebar-nav__item sidebar-nav__subitem" :to="{name: 'memberIntegral'}">会员积分</router-link></li>
-          </ul>
-        </transition>
-      </li>
-      <li :class="{'dark': $route.fullPath.indexOf('Public') != -1}" v-if="role.diancan && !role.haiwai && !role.isCashier">
-        <a class="sidebar-nav__item" @click="toggle(2)">
-          智慧餐厅
-          <i class="icon-down_arrow" :class="{'icon-down_arrow__rotate': isRotate2}"></i>
-        </a>
-        <transition name="collpase">
-          <ul v-show="isShow2" class="collpase">
-            <li>
-              <router-link class="sidebar-nav__item sidebar-nav__subitem" :to="{ name: 'noPublic', params: {hasPublic: 'yes'}}">
-                有公众号二维码
-              </router-link>
-            </li>
-            <li>
-              <router-link class="sidebar-nav__item sidebar-nav__subitem" :to="{ name: 'hasPublic', params: {hasPublic: 'no'}}">
-                无公众号二维码
-              </router-link>
-            </li>
-            <li>
-              <a href="/wxofficial/setting#!/goods-management" class="sidebar-nav__item sidebar-nav__subitem">商品管理</a>
-              <!--<router-link class="sidebar-nav__item sidebar-nav__subitem" :to="{ path: '/main/merchandise' }">商品管理</router-link>-->
-            </li>
-          </ul>
-        </transition>
+        <router-link class="sidebar-nav__item" :to="router('main/' + nav.pathname)">{{ nav.val }}</router-link>
       </li>
     </ul>
     <div class="copyright_wrapper" v-if="role.haiwai">
@@ -63,10 +25,6 @@
         lang: config.lang,
         role: Store.get('role') || {},
         navs: [],
-        isShow1: true,
-        isRotate1: false,
-        isShow2: true,
-        isRotate2: false,
         langLists: [
           {label: '日本語', value: 'ja'},
           {label: 'English', value: 'en'},
@@ -292,16 +250,14 @@
               ];
             }
         }
-      },
 
-      toggle(i) {
-        if(i === 1) {
-          this.isRotate1 = !this.isRotate1;
-          this.isShow1 = !this.isShow1;
+        //
+        if(this.role.isMerchant) {
+
         }else {
-          this.isRotate2 = !this.isRotate2;
-          this.isShow2 = !this.isShow2;
+
         }
+        // this.navs.splice()
       }
     }
   };

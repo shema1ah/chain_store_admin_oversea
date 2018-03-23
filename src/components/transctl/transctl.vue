@@ -394,14 +394,6 @@
         this.form.selectShopUid = this.shop.uid;
         this.getOperators(this.shop.uid);
       }
-      // 包商收款方式特殊处理
-      if(this.role.isBaoshang) {
-          this.typeList = [
-          {'name': '微信收款', 'value': 'wxpay'},
-          {'name': '支付宝收款', 'value': 'alipay'}
-        ];
-        typeLists = ['wxpay', 'alipay'];
-      }
 
       // 海外更多筛选特殊处理
       if(this.role.haiwai) {
@@ -654,6 +646,35 @@
 </script>
 
 <style lang="scss">
+  .el-date-table td {
+    vertical-align: middle;
+  }
+
+  .panel-select-group {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    align-items: center;
+  }
+
+  .panel-header__auto {
+    height: auto !important;
+    padding: 25px 0 20px 15px;
+  }
+
+  .panel-btn-group__wrapper {
+    display: flex;
+    margin-top: 25px;
+  }
+
+  .panel-body__fix {
+    padding: 5px 15px !important;
+  }
+
+  .panel-body-btn-group {
+    margin: 10px 0px 20px;
+  }
+
   .el-table__row_fix {
     height: 62px;
     min-height: 62px;
