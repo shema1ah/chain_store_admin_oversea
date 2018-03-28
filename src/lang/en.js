@@ -9,8 +9,8 @@ exports.default = {
   nav: {
     mmp: 'Shop Management Platform',
     index: 'Home',
+    settlement: 'Bill Mgmt',
     tradeMng: 'Transaction Mgmt',
-    billMng: 'Bill Mgmt',
     publicAuth: 'Official Account',
     shopMng: 'Account Info',
     cashMng: 'Cashier Mgmt',
@@ -141,25 +141,6 @@ exports.default = {
       m7: 'Do you really want to cancel the authorization the master official account?'
     }
   },
-  billMng: { // 账单管理
-    crumbs: {
-      L1: 'Bill Management'
-    },
-    panel: {
-      payTime: 'Transfer Time',
-      shopName: 'Shop Name',
-      range: 'select date range'
-    },
-    msg: {
-      m1: "Please don't search over a month.",
-      m2: "Please don't choose it over a month.",
-      m3: 'Please choose the remittance time.'
-    },
-    btn: {
-      downDetail: 'Transfer Details',
-      downRecord: 'Transfer Record'
-    }
-  },
   tradeMng: { // 交易管理
     crumbs: {
       L1: 'Transaction Management'
@@ -247,6 +228,35 @@ exports.default = {
       tincome: 'Total Received (Day)',
       cmincome: 'Total Received (Month)',
       noActivity: 'No Promotion'
+    }
+  },
+  settlement: { // 清算管理
+    crumbs: {
+      L1: 'Bill Mgmt'
+    },
+    panel: {
+      time: 'Time Range',
+      today: 'Today',
+      yestoday: 'Yesterday',
+      near7: 'Last 7 days',
+      near30: 'Last 30 days',
+      name: 'Account',
+      btn: {
+        query: 'Search',
+        reset: 'Reset'
+      }
+    },
+    table: {
+      settleTime: 'Settleme Time',
+      currency: 'Currency',
+      total: 'Total Amount',
+      charge: 'Fee',
+      settleAmount: 'Settlement Amount',
+      op: 'Operation',
+      download: 'Download'
+    },
+    msg: {
+      m1: 'Fail to get data .'
     }
   },
   login: { // 登录页

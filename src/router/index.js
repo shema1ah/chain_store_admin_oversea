@@ -5,6 +5,7 @@ import login from 'components/login/login'
 import register from 'components/register/register'
 import main from 'components/main/main'
 import index from 'components/index/index'
+import settlement from 'components/settlement/settlement'
 import chainmanage from 'components/chainmanage/chainmanage'
 import singlemanage from 'components/singlemanage/singlemanage'
 import transctl from 'components/transctl/transctl'
@@ -56,6 +57,10 @@ export default new Router({
         {
           path: 'index',
           component: index
+        },
+        {
+          path: 'settlement',
+          component: settlement
         },
         {
           path: 'transctl',

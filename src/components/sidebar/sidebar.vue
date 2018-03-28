@@ -251,13 +251,20 @@
             }
         }
 
-        //
+        // 大商户，直营增加清算查询模块
         if(this.role.isMerchant) {
-
-        }else {
-
+          if(this.navs[0].pathname === 'index') {
+            this.navs.splice(1, 0, {
+              val: this.$t('nav.settlement'), // 清算查询
+              pathname: 'settlement'
+            });
+          }else {
+            this.navs.unshift({
+              val: this.$t('nav.settlement'), // 清算查询
+              pathname: 'settlement'
+            });
+          }
         }
-        // this.navs.splice()
       }
     }
   };

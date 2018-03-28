@@ -5,8 +5,8 @@ exports.default = {
   nav: {
     mmp: '商戶管理後台',
     index: '首頁概覽',
+    settlement: '清算管理',
     tradeMng: '交易管理',
-    billMng: '清算管理',
     publicAuth: '公眾號授權',
     shopMng: '賬戶信息',
     cashMng: '收銀員管理',
@@ -137,25 +137,6 @@ exports.default = {
       m7: '請確認是否要解除總賬戶公眾號?'
     }
   },
-  billMng: { // 账单管理
-    crumbs: {
-      L1: '清算管理'
-    },
-    panel: {
-      payTime: '清算時間',
-      shopName: '店鋪名稱',
-      range: '選擇日期範圍'
-    },
-    msg: {
-      m1: '請不要跨月查詢',
-      m2: '請不要跨月選擇!',
-      m3: '請選擇清算時間!'
-    },
-    btn: {
-      downDetail: '下載清算詳情',
-      downRecord: '下載清算記錄'
-    }
-  },
   tradeMng: { // 交易管理
     crumbs: {
       L1: '交易管理'
@@ -243,6 +224,35 @@ exports.default = {
       tincome: '今日實收',
       cmincome: '本月實收',
       noActivity: '暫無活動'
+    }
+  },
+  settlement: { // 清算管理
+    crumbs: {
+      L1: '清算管理'
+    },
+    panel: {
+      time: '時間',
+      today: '今天 ',
+      yestoday: '昨天',
+      near7: '近7天',
+      near30: '近30天',
+      name: '賬號',
+      btn: {
+        query: '查詢',
+        reset: '重置'
+      }
+    },
+    table: {
+      settleTime: '清算時間',
+      currency: '幣種',
+      total: '交易總額',
+      charge: '手續費',
+      settleAmount: '清算金額',
+      op: '操作',
+      download: '下載'
+    },
+    msg: {
+      m1: '獲取清算數據失敗'
     }
   },
   login: { // 登录页
