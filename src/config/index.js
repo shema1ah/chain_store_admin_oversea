@@ -24,6 +24,7 @@ if (test) {
 if (dev) {
   host = 'api';
   ohost = 'https://o.qa.qfpay.net';
+  // ohost = 'api1';
   o2host = 'https://o2.qa.qfpay.net';
   payHost = 'https://openapi.qa.qfpay.net';
   imgUpload = 'https://o2.qfpay.com';

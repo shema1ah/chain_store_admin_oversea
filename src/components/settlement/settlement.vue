@@ -34,8 +34,9 @@
             <div class="panel-select__wrapper">
               <span class="panel-select__desc">{{$t('settlement.panel.name')}}</span>
               <el-form-item prop="shopId">
-                <el-select v-model="form.shopId" :placeholder="$t('common.all')" size="small">
-                  <el-option v-for="shop in shopData.list" :label="shop.shop_name" :value="shop.uid" :key="shop.uid">
+                <el-select v-model="form.remit_type" :placeholder="$t('common.all')" size="small">
+                  <el-option :label="$t('common.all')" value=""></el-option>
+                  <el-option v-for="type in typeList" :label="type.name" :value="type.value" :key="type.value">
                   </el-option>
                 </el-select>
               </el-form-item>
@@ -59,25 +60,27 @@
           <el-table-column
             :label="$t('settlement.table.settleTime')" min-width="100">
             <template slot-scope="scope">
-              <div>{{ scope.row.username }}</div>
+              <div>{{ scope.row.settle_date }}</div>
             </template>
           </el-table-column>
           <el-table-column
             :label="$t('settlement.panel.name')" min-width="120">
-            <template slot-scope="scope">{{ scope.row.opuser || '-' }}</template>
+            <template slot-scope="scope">{{ `${type[scope.row.remit_type]}(${scope.row.merchant_id})` }}</template>
           </el-table-column>
-          <el-table-column prop="busicd_info" :label="$t('settlement.table.currency')">
+          <el-table-column prop="currency" :label="$t('settlement.table.currency')">
           </el-table-column>
-          <el-table-column prop="sysdtm" min-width="100" :label="$t('settlement.table.total')">
-            <template slot-scope="scope">{{ scope.row.sysdtm }}</template>
+          <el-table-column prop="amt" min-width="100" :label="$t('settlement.table.total')">
+            <template slot-scope="scope">{{ scope.row.amt | formatCurrency }}</template>
           </el-table-column>
-          <el-table-column prop="status_str" :label="$t('settlement.table.charge')">
+          <el-table-column prop="fee" :label="$t('settlement.table.charge')">
+            <template slot-scope="scope">{{ scope.row.fee | formatCurrency }}</template>
           </el-table-column>
-          <el-table-column prop="syssn" :label="$t('settlement.table.settleAmount')">
+          <el-table-column prop="settle_amt" :label="$t('settlement.table.settleAmount')">
+            <template slot-scope="scope">{{ scope.row.settle_amt | formatCurrency }}</template>
           </el-table-column>
           <el-table-column :label="$t('settlement.table.op')">
             <template slot-scope="scope">
-              <a href="javascript:;">
+              <a :href="downUrl" @click="getDownUrl(scope.row.id, $event)">
                   <span id="tr-download">{{ $t('settlement.table.download') }}</span>
               </a>
             </template>
@@ -104,15 +107,38 @@
 <script>
   import axios from 'axios';
   import config from 'config';
+  import qs from 'qs';
   import {formatDate} from '../../common/js/util';
 
   export default {
     data() {
       return {
         lang: config.lang,
+        downUrl: 'javascript:;',
         pageSize: 10,
         currentPage: 1,
         loading: false,
+        type: {
+          1: '微信港币钱包',
+          2: '微信直连',
+          3: '支付宝直连',
+          4: '钱方微信'
+        },
+        typeList: [
+          {
+            name: '微信港币钱包',
+            value: 1
+          }, {
+            name: '微信直连',
+            value: 2
+          }, {
+            name: '支付宝直连',
+            value: 3
+          }, {
+            name: '钱方微信',
+            value: 4
+          }
+        ],
         choosetimes: [
           {'name': this.$t('settlement.panel.today'), 'value': '1'},
           {'name': this.$t('settlement.panel.yestoday'), 'value': '2'},
@@ -120,37 +146,28 @@
           {'name': this.$t('settlement.panel.near30'), 'value': '30'}
         ],
         form: {
-          shopId: '',
+          remit_type: '',
           dateRangeValue: '',
           choosetime: '1'
         },
         settleData: {}
       };
     },
-    props: {
-      shop: {
-        type: Object
-      }
-    },
 
     computed: {
-      shopData() {
-        return this.$store.state.shopData;
-      },
       basicParams() {
         let str = '';
         if(!this.form.choosetime) {
           str = 'yyyy-MM-dd HH:mm:ss';
         }
         return {
-          userid: this.form.shopId,
-          starttime: formatDate(this.form.dateRangeValue[0], str),
-          endtime: formatDate(this.form.dateRangeValue[1], str),
+          remit_type: this.form.remit_type,
+          start_date: formatDate(this.form.dateRangeValue[0], str),
+          end_date: formatDate(this.form.dateRangeValue[1], str),
           charset: 'utf-8',
-          isdownload: false,
-          page: this.currentPage,
-          maxnum: this.pageSize,
-          lang: this.lang,
+          page: this.currentPage - 1,
+          size: this.pageSize,
+          lg: this.lang,
           format: 'cors'
         };
       }
@@ -171,6 +188,15 @@
     },
 
     methods: {
+      getDownUrl(id, e) {
+        let downParams = {
+          biz_sn: id,
+          lg: this.lang,
+          format: 'cors'
+        }
+        e.target.parentNode.href = `${config.ohost}/fund/v1/hdk/check/download?${qs.stringify(downParams)}`
+      },
+
       // 选择时间
       changeTime(value) {
         if(value) {
@@ -204,7 +230,7 @@
       getSettleData() {
         if(!this.loading) {
           this.loading = true;
-          axios.get(`${config.host}/merchant/trade/info`, {
+          axios.get(`${config.ohost}/fund/v1/hdk/check`, {
             params: this.basicParams
           }).then((res) => {
             this.loading = false;
