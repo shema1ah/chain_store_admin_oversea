@@ -33,7 +33,7 @@
           <div class="panel-select-group">
             <div class="panel-select__wrapper">
               <span class="panel-select__desc">{{$t('settlement.panel.name')}}</span>
-              <el-form-item prop="shopId">
+              <el-form-item prop="remit_type">
                 <el-select v-model="form.remit_type" :placeholder="$t('common.all')" size="small">
                   <el-option :label="$t('common.all')" value=""></el-option>
                   <el-option v-for="type in typeList" :label="type.name" :value="type.value" :key="type.value">
@@ -87,13 +87,13 @@
           </el-table-column>
         </el-table>
       </div>
-      <div class="pagination_wrapper" v-if="settleData.num >= 10">
+      <div class="pagination_wrapper" v-if="settleData.total >= 10">
         <el-pagination
           ref="page"
           layout="total, sizes, prev, pager, next, jumper"
           :page-size="pageSize"
           @size-change="handleSizeChange"
-          :total="settleData.num"
+          :total="settleData.total"
           @current-change="currentChange"
           :current-page="currentPage">
         </el-pagination>
@@ -167,7 +167,7 @@
           charset: 'utf-8',
           page: this.currentPage - 1,
           size: this.pageSize,
-          lg: this.lang,
+          lang: this.lang,
           format: 'cors'
         };
       }
@@ -191,7 +191,7 @@
       getDownUrl(id, e) {
         let downParams = {
           biz_sn: id,
-          lg: this.lang,
+          lang: this.lang,
           format: 'cors'
         }
         e.target.parentNode.href = `${config.ohost}/fund/v1/hdk/check/download?${qs.stringify(downParams)}`
@@ -272,7 +272,3 @@
     }
   };
 </script>
-
-<style lang="scss">
-
-</style>
