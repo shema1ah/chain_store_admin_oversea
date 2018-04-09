@@ -194,7 +194,7 @@
           lang: this.lang,
           format: 'cors'
         }
-        e.target.parentNode.href = `${config.ohost}/fund/v1/hdk/check/download?${qs.stringify(downParams)}`
+        e.target.parentNode.href = `${config.ohost}/fund/v1/hkd/check/download?${qs.stringify(downParams)}`
       },
 
       // 选择时间
@@ -230,7 +230,7 @@
       getSettleData() {
         if(!this.loading) {
           this.loading = true;
-          axios.get(`${config.ohost}/fund/v1/hdk/check`, {
+          axios.get(`${config.ohost}/fund/v1/hkd/check`, {
             params: this.basicParams
           }).then((res) => {
             this.loading = false;
