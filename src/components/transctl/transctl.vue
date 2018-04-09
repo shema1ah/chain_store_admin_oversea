@@ -137,30 +137,30 @@
           v-loading="loading">
           <el-table-column
             :label="$t('tradeMng.table.shopName')" min-width="90">
-            <template scope="scope">
+            <template slot-scope="scope">
               <div>{{ scope.row.username }}</div>
             </template>
           </el-table-column>
           <el-table-column
             :label="$t('tradeMng.table.operator')" min-width="70">
-            <template scope="scope">{{ scope.row.opuser || '-' }}</template>
+            <template slot-scope="scope">{{ scope.row.opuser || '-' }}</template>
           </el-table-column>
           <el-table-column
             prop="busicd_info"
             :label="$t('tradeMng.table.tradeType')" min-width="100">
           </el-table-column>
           <el-table-column prop="sysdtm" min-width="95" :label="$t('tradeMng.table.tradeTime')">
-            <template scope="scope">{{ scope.row.sysdtm }}</template>
+            <template slot-scope="scope">{{ scope.row.sysdtm }}</template>
           </el-table-column>
           <el-table-column
             :label="$t('tradeMng.table.tradeAmount') + '(' + role.currency + ')'" v-if="role.haiwai" min-width="110">
-            <template scope="scope">
+            <template slot-scope="scope">
               <div class="table-title">{{ scope.row.total_amt | formatCurrency }}</div>
             </template>
           </el-table-column>
           <el-table-column
             label="交易金额" v-else>
-            <template scope="scope">
+            <template slot-scope="scope">
               <div class="table-title">{{ scope.row.total_amt | formatCurrency }}{{ role.currency }}</div>
               <div class="table-content">实收{{ scope.row.txamt | formatCurrency }}{{ role.currency }}</div>
               <div v-show="scope.row.mchnt_coupon" class="table-content">商家红包{{ scope.row.mchnt_coupon | formatCurrency }}{{ role.currency }}</div>
@@ -177,7 +177,7 @@
             :label="$t('tradeMng.table.sNum')">
           </el-table-column>
           <el-table-column min-width="215" :label="$t('tradeMng.table.op')">
-            <template scope="scope">
+            <template slot-scope="scope">
               <el-button type="text" size="small" :disabled="scope.row.cancel !== 0 || scope.row.status !== 1" class="el-button__fix" @click="confirm(scope.row)">{{$t('tradeMng.table.cancel')}}</el-button>
               <!-- 下载小票 -->
               <a :href="downUrl" @click="downHref(scope.$index, $event)">
@@ -258,7 +258,6 @@
       };
       return {
         downUrl: 'javascript:;',
-        imgsrc: "",
         lang: config.lang,
         role: Store.get('role') || {},
         showConfirm: false,
@@ -361,7 +360,6 @@
           paytypes: this.form.type.join(','),
           filters: this.form.other.join(','),
           lang: this.lang,
-          tab: 3,
           format: 'cors'
         };
       }
@@ -393,14 +391,6 @@
       if(this.role.single) {
         this.form.selectShopUid = this.shop.uid;
         this.getOperators(this.shop.uid);
-      }
-      // 包商收款方式特殊处理
-      if(this.role.isBaoshang) {
-          this.typeList = [
-          {'name': '微信收款', 'value': 'wxpay'},
-          {'name': '支付宝收款', 'value': 'alipay'}
-        ];
-        typeLists = ['wxpay', 'alipay'];
       }
 
       // 海外更多筛选特殊处理
@@ -478,7 +468,7 @@
         this.checkPwd();
       },
 
-      // 验证密码
+      // 确认弹框验证密码
       checkPwd() {
         this.$refs['formpwd'].validate((valid) => {
           if (valid && !this.iconLoading) {
@@ -503,7 +493,7 @@
         })
       },
 
-      // 确认弹框
+      // 撤销按钮
       confirm(val) {
         if(this.role.isCashier) {
           this.cheekRefund(val);
@@ -654,6 +644,35 @@
 </script>
 
 <style lang="scss">
+  .el-date-table td {
+    vertical-align: middle;
+  }
+
+  .panel-select-group {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    align-items: center;
+  }
+
+  .panel-header__auto {
+    height: auto !important;
+    padding: 25px 0 20px 15px;
+  }
+
+  .panel-btn-group__wrapper {
+    display: flex;
+    margin-top: 25px;
+  }
+
+  .panel-body__fix {
+    padding: 5px 15px !important;
+  }
+
+  .panel-body-btn-group {
+    margin: 10px 0px 20px;
+  }
+
   .el-table__row_fix {
     height: 62px;
     min-height: 62px;

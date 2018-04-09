@@ -60,16 +60,16 @@
           <el-table-column
             prop="join_time"
             :label="$t('shopmng.panel.table.regTime')">
-            <template scope="scope">{{ scope.row.join_time }}</template>
+            <template slot-scope="scope">{{ scope.row.join_time }}</template>
           </el-table-column>
           <el-table-column
             prop="tag"
             :label="$t('shopmng.panel.table.subTag')">
-            <template scope="scope">{{ scope.row.tag }}</template>
+            <template slot-scope="scope">{{ scope.row.tag }}</template>
           </el-table-column>
           <el-table-column
             :label="$t('shopmng.panel.table.op')">
-            <template scope="scope">
+            <template slot-scope="scope">
               <el-button type="text" size="small" class="el-button__fix" @click="showDetail(scope)">{{$t('shopmng.panel.table.detail')}}</el-button>
               <!--<el-button type="text" size="small" class="el-button__fix" @click="unbind(scope)">解绑此分店</el-button>-->
               <el-dropdown>

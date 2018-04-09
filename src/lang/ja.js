@@ -9,8 +9,8 @@ exports.default = {
   nav: {
     mmp: '商店管理コンソール',
     index: 'トップ',
+    settlement: '勘定書管理',
     tradeMng: '取引管理',
-    billMng: '勘定書管理',
     publicAuth: '公式アカウント',
     shopMng: 'アカウント',
     cashMng: 'キャッシャー管理',
@@ -141,25 +141,6 @@ exports.default = {
       m7: '本当にマスター公式アカウントへの授権を解除しますか？'
     }
   },
-  billMng: { // 账单管理
-    crumbs: {
-      L1: '勘定書管理'
-    },
-    panel: {
-      payTime: '送金時間',
-      shopName: '店舗名',
-      range: '日付の範囲を選択してください'
-    },
-    msg: {
-      m1: '勘定書の検索は当月限定にしてください',
-      m2: '別の月で選択しないでください！',
-      m3: '送金の時間を選択してください'
-    },
-    btn: {
-      downDetail: '送金明細',
-      downRecord: '送金記録'
-    }
-  },
   tradeMng: {
     crumbs: {
       L1: '取引管理'
@@ -247,6 +228,35 @@ exports.default = {
       tincome: '本日の実収金額',
       cmincome: '今月の実収金額',
       noActivity: 'イベントなし'
+    }
+  },
+  settlement: { // 清算管理
+    crumbs: {
+      L1: '勘定書管理'
+    },
+    panel: {
+      time: '日付',
+      today: '今日',
+      yestoday: '昨日',
+      near7: '最近の７日間',
+      near30: '最近の３０日間',
+      name: 'アカウント',
+      btn: {
+        query: '検索',
+        reset: 'リセット'
+      }
+    },
+    table: {
+      settleTime: '清算時間',
+      currency: '通貨',
+      total: '取引総額',
+      charge: '手数料',
+      settleAmount: '清算金額',
+      op: '操作',
+      download: 'ダウンロードする'
+    },
+    msg: {
+      m1: '情報が読み取れません'
     }
   },
   login: {

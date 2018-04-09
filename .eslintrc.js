@@ -10,6 +10,7 @@ module.exports = {
     browser: true,
     es6: true
   },
+  // 扩展一个流行的风格指南，即 eslint-config-standard
   // https://github.com/feross/standard/blob/master/RULES.md#javascript-standard-style
   extends: 'standard',
   // required to lint *.vue files

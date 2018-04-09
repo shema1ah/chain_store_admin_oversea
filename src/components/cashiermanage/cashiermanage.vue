@@ -36,19 +36,19 @@
           <el-table-column prop="opname" :label="$t('cashMng.mng.name')"></el-table-column>
           <el-table-column prop="mobile" min-width="80px" :label="$t('cashMng.mng.mobile')"></el-table-column>
           <el-table-column :label="$t('cashMng.common.status')" :min-width="role.haiwai?'140px':'80px'">
-            <template scope="scope">
+            <template slot-scope="scope">
               <el-switch v-model="scope.row.status" on-text="" off-text="" on-color="#FF8100" off-color="#d8d8d8" on-value=1 off-value=0 @change="changeStatus(scope.row.opuid, scope.row.status)"></el-switch>
               <span class="explain">{{ scope.row.status == 1 ? $t('cashMng.mng.status3') : $t('cashMng.mng.status4') }}</span>
             </template>
           </el-table-column>
           <el-table-column prop="refund" label="退款权限状态" v-if="!role.haiwai" min-width="80px">
-            <template scope="scope">
+            <template slot-scope="scope">
               <el-switch v-model="scope.row.refund" on-text="" off-text="" on-color="#7ed321" off-color="#d8d8d8" on-value=1 off-value=0 @change="changeRights(scope.row.opuid, scope.row.refund)"></el-switch>
               <span class="explain">{{ scope.row.refund == 1 ? '开启退款' : '关闭退款' }}</span>
             </template>
           </el-table-column>
           <el-table-column min-width="120" :label="$t('cashMng.mng.op')">
-            <template scope="scope">
+            <template slot-scope="scope">
               <el-button type="text" size="small" class="el-button__fix" @click="goDetail(scope.row.opuid)">{{ $t('cashMng.mng.detail') }}</el-button>
               <a :href="downHref + scope.row.opuid" download v-if="!role.haiwai" class="el-button__fix el-button--text">下载收款码</a>
             </template>

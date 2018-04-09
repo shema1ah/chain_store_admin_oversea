@@ -121,22 +121,20 @@ let deepClone = (obj) => {
 const getRole = (data = {}) => {
   let role = {
     type: 'chain',
+    isMerchant: data.cate !== 'merchant', // 是否大商户或者单店
     haiwai: data.country !== 'CN', // 是否海外
     currency: data.currency || '元', // 货币单位
     country: data.country, // 国家
     rate: data.rate || 100, // 汇率
     single: data.cate !== 'bigmerchant', // 是否是单店
-    isBaoshang: data.group_name === 'baoshang', // 是否包商
-    isCashier: Boolean(data.opinfo && data.opinfo.opuid), // 是否收银员角色
-    diancan: data.diancan_display === 1, // 是否展示智慧餐厅
-    isClound: data.wuxiang_display === 1 // 是否展示舞项云
+    isCashier: Boolean(data.opinfo && data.opinfo.opuid) // 是否收银员角色
   }
   if(data.cate !== 'bigmerchant') {
       role.type = 'single'
   }
 
   // 包商baoshang 日本japan 香港hongkong 印尼id 迪拜ar
-  // bigmerchant:大商户 submerchant:子商户 merchant:商户
+  // bigmerchant:大商户 submerchant:商户 merchant:子商户
   // if(data.group_name === 'baoshang') {
   //   role.type = 'baoshang'
   //   if (data.cate !== 'bigmerchant') {
