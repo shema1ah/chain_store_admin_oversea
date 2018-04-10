@@ -6,7 +6,9 @@ console.error('构建index：', process.env.NODE_ENV, process.argv)
 
 module.exports = {
   build: {
-    env: isTest ? require('./test.env') : require('./prod.env'),
+    env: isTest ? require('./test.env') : (process.argv[2] === 'dubai' ? {
+      NODE_ENV: '"dubai"'
+    }: require('./prod.env')),
     port: 8098,
     index: path.resolve(__dirname, '../dist/main.html'),
     assetsRoot: path.resolve(__dirname, '../dist'),

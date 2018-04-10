@@ -9,6 +9,7 @@
     "dev": "node build/dev-server.js development",
     "build_test": "node build/build.js test",
     "build": "node build/build.js production",
+    "dubai_build": "NODE_ENV=dubai node build/build.js dubai",
     "lint": "eslint --ext .js,.vue src"
   },
   "dependencies": {
