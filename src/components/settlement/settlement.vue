@@ -156,14 +156,10 @@
 
     computed: {
       basicParams() {
-        let str = '';
-        if(!this.form.choosetime) {
-          str = 'yyyy-MM-dd HH:mm:ss';
-        }
         return {
           remit_type: this.form.remit_type,
-          start_date: formatDate(this.form.dateRangeValue[0], str),
-          end_date: formatDate(this.form.dateRangeValue[1], str),
+          start_date: formatDate(this.form.dateRangeValue[0], 'yyyy-MM-dd HH:mm:ss'),
+          end_date: formatDate(this.form.dateRangeValue[1], 'yyyy-MM-dd HH:mm:ss'),
           charset: 'utf-8',
           page: this.currentPage - 1,
           size: this.pageSize,
