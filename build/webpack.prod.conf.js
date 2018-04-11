@@ -43,7 +43,7 @@ var webpackConfig = merge(baseWebpackConfig, {
     // you can customize output by editing /main.html
     // see https://github.com/ampedandwired/html-webpack-plugin
     new HtmlWebpackPlugin({
-      filename: 'index.html' || config.build.index,
+      filename:  config.build.index,
       template: 'index.html',
       inject: true,
       // 缓存

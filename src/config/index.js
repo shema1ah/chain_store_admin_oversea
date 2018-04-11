@@ -1,5 +1,6 @@
 const test = process.env.NODE_ENV === 'test'
 const dev = process.env.NODE_ENV === 'development'
+const dubai = process.env.NODE_ENV === 'dubai'
 
 // 生产配置
 let host = 'https://sh.qfpay.com';
@@ -9,6 +10,14 @@ let imgUpload = 'https://o2.qfpay.com';
 let o2host = 'https://o2.qfpay.com';
 let mapURL = 'https://m.amap.com/picker/';
 let mapKey = '608d75903d29ad471362f8c58c550daf';
+
+if(dubai) {
+   host = 'https://sh-db.qfapi.com';
+   ohost = 'https://o-db.qfapi.com';
+   payHost = 'https://openapi-db.qfapi.com'
+   imgUpload = 'https://o2-db.qfapi.com';
+   o2host = 'https://o2-db.qfapi.com';
+}
 
 // 测试配置
 if (test) {
