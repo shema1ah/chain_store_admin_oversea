@@ -1,8 +1,6 @@
 <template>
   <div>
-      <keep-alive>
-        <router-view :shop="shop"></router-view>
-      </keep-alive>
+    <router-view :shop="shop"></router-view>
   </div>
 </template>
 <script>

@@ -143,7 +143,9 @@ exports.default = {
   },
   tradeMng: { // 交易管理
     crumbs: {
-      L1: 'Transaction Management'
+      L1: 'Transaction Management',
+      L2: 'Transaction detail',
+      L3: 'Refund detail',
     },
     panel: {
       time: 'Time Range',
@@ -184,6 +186,8 @@ exports.default = {
       sNum: 'Transaction ID',
       op: 'Operation',
       cancel: 'Refund',
+      more: 'More',
+      detail: 'Details',
       download: 'Download Receipt',
       ac: 'Actually Collected', // 实收
       red: 'paid from the red envelope', // 商家红包
@@ -193,8 +197,25 @@ exports.default = {
         downTrade: 'Download The Transaction Summary'
       }
     },
+    detail: {
+      ammount1: 'Transaction amount',
+      ammount2: 'Refund amount',
+      origin: 'Source of consumers',
+      time: 'Refund time',
+      syssn1: 'Transaction ID',
+      syssn2: 'Original transaction ID',
+      syssn3: 'Refund transaction ID',
+      store: 'Store name',
+      account: 'Operating Account',
+      history: 'Refund History'
+    },
     dialog: {
-      d1: 'If you want to refund the payment, please operate it after entering the password of the account to confirm'
+      d1: 'This action cannot be undone, do you want to refund?',
+      d2: 'Confirm',
+      d3: 'Success',
+      d4: 'Fail',
+      d5: 'Password',
+      d6: 'refund'
     },
     msg: {
       m1: 'Transaction ID must be figures!',
@@ -207,7 +228,12 @@ exports.default = {
       m8: 'Please enter the Transaction ID.',
       m9: "Please enter the account's password.",
       m10: 'invalidate password.',
-      m11: 'You don’t have the authority to proceed.'
+      m11: 'You don’t have the authority to proceed.',
+      m12: 'Out of range',
+      m13: 'Refund failed, please contact us for assistance.',
+      m14: 'Max. Refund Amount',
+      m15: 'Please enter the refund amount',
+      m16: 'Please enter a valid refund amount'
     }
   },
   home: { // 首页概览
