@@ -177,7 +177,7 @@
           </el-table-column>
           <el-table-column min-width="215" :label="$t('tradeMng.table.op')">
             <template slot-scope="scope">
-              <el-button v-if="role.single" type="text" size="small" :disabled="scope.row.allow_refund_amt <= 0" class="el-button__fix" @click="confirm(scope.row)">{{$t('tradeMng.table.cancel')}}</el-button>
+              <el-button v-if="role.single" type="text" size="small" class="el-button__fix" @click="confirm(scope.row)">{{$t('tradeMng.table.cancel')}}</el-button>
               <el-button type="text" size="small" class="el-button__fix" @click.native="detail(scope.row.syssn)">{{$t('tradeMng.table.detail')}}</el-button>
               <a :href="downUrl" @click="downHref(scope.$index, $event)">
                   <span id="tr-download">{{ $t('tradeMng.table.download') }}</span>
@@ -203,9 +203,9 @@
     <el-dialog :title="$t('tradeMng.dialog.d2')" :visible.sync="showConfirm" custom-class="mydialog" top="20%" @close="handleClose('formpwd')">
       <div style="margin-bottom: 20px;">{{$t('tradeMng.dialog.d1')}}</div>
       <el-form :model="formpwd" :rules="pwdrules" ref="formpwd" label-width="80px">
-        <el-form-item prop="ammount" :label="$t('tradeMng.detail.ammount2')" class="ammount">
+        <el-form-item prop="amount" :label="$t('tradeMng.detail.ammount2')" class="amount">
           <span>{{ role.currency }}</span>
-          <el-input v-model="formpwd.ammount" :placeholder="$t('tradeMng.msg.m14') + refundAmmount" type="number" @keyup.enter.native="onEnter"></el-input>
+          <el-input class="showAmount" v-model="formpwd.amount" :placeholder="$t('tradeMng.msg.m14') + refundAmount" type="text" @keyup.enter.native="onEnter" @blur="leaveMount"></el-input>
         </el-form-item>
         <el-form-item prop="pwd" :label="$t('tradeMng.dialog.d5')">
           <el-input v-model="formpwd.pwd" :placeholder="$t('tradeMng.msg.m9')" type="password" @keyup.enter.native="onEnter"></el-input>
@@ -284,10 +284,8 @@
           cb();
         }
       };
-      let checkAmmount = (rule, val, cb) => {
-        if(val && !/^\d+(\.\d{1,2})?$/.test(val)) {
-          cb(this.$t('tradeMng.msg.m16'));
-        } else if(val > this.refundAmmount) {
+      let checkAmount = (rule, val, cb) => {
+        if(val > this.refundAmount) {
           cb(this.$t('tradeMng.msg.m12'));
         } else {
           cb();
@@ -296,7 +294,7 @@
       return {
         downUrl: 'javascript:;',
         lang: config.lang,
-        refundAmmount: null,
+        refundAmount: null,
         refundStates: false,
         role: Store.get('role') || {},
         showConfirm: false,
@@ -305,7 +303,7 @@
         refundData: {},
         refundInfo: {},
         formpwd: {
-          ammount: null,
+          amount: null,
           pwd: ''
         },
         iconLoading: false,
@@ -354,9 +352,9 @@
             pwd: [
               { required: true, message: this.$t('tradeMng.msg.m9') }
             ],
-          ammount: [
+          amount: [
             { required: true, message: this.$t('tradeMng.msg.m15') },
-            { validator: checkAmmount, trigger: 'change' }
+            { validator: checkAmount, trigger: 'change' }
           ]
         }
       };
@@ -414,7 +412,16 @@
           this.form.choosetime = '';
         }
         this.status = false;
-      }
+      },
+      'formpwd.amount': function(val, old) {
+        if(val) {
+          if(!/^\d+\.?\d{0,2}$/.test(val)) {
+            setTimeout(() => {
+              this.formpwd.amount = old;
+            }, 10);
+          }
+        }
+      },
     },
 
     created() {
@@ -467,7 +474,7 @@
         let val = this.refundData;
         let params = {
           format: 'cors',
-          txamt: this.formpwd.ammount * this.role.rate,
+          txamt: this.formpwd.amount * this.role.rate,
           txdtm: formatDate(val.sysdtm, 'yyyy-MM-dd HH:mm:ss'),
           syssn: val.syssn,
           out_trade_no: Date.now(),
@@ -495,6 +502,19 @@
           this.iconLoading = false;
           this.$message.error(this.$t('tradeMng.msg.m7'));
         });
+      },
+
+      // 金额输入框失去焦点处理
+      leaveMount() {
+        let val = this.formpwd.amount;
+        if(val) {
+          if(!/^[1-9]+\d*(\.\d{1,2})?$/.test(val)) {
+            setTimeout(() => {
+              let arr = val.match(/[1-9]+\d*(\.\d{1,2})?/) || [0];
+              this.formpwd.amount = arr[0];
+            }, 10);
+          }
+        }
       },
 
       // 下载小票
@@ -541,7 +561,7 @@
 
       // 撤销按钮
       confirm(val) {
-        this.refundAmmount = this.formpwd.ammount = formatLength((val.allow_refund_amt / this.role.rate).toFixed(2));
+        this.refundAmount = this.formpwd.amount = formatLength(val.allow_refund_amt / this.role.rate);
         this.refundData = val;
         if(this.role.isCashier) {
           this.cheekRefund();
@@ -842,7 +862,7 @@
     }
   }
   .transctl {
-    .ammount {
+    .amount {
       span {
         position: absolute;
         left: 5px;
