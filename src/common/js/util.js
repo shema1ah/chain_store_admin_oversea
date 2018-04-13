@@ -121,7 +121,7 @@ let deepClone = (obj) => {
 const getRole = (data = {}) => {
   let role = {
     type: 'chain',
-    isMerchant: data.cate !== 'merchant', // 是否大商户或者单店
+    isMerchant: data.cate !== 'submerchant', // 是否大商户或者单店
     haiwai: data.country !== 'CN', // 是否海外
     currency: data.currency || '元', // 货币单位
     country: data.country, // 国家
@@ -134,7 +134,7 @@ const getRole = (data = {}) => {
   }
 
   // 包商baoshang 日本japan 香港hongkong 印尼id 迪拜ar
-  // bigmerchant:大商户 submerchant:商户 merchant:子商户
+  // bigmerchant:大商户 merchant:商户 submerchant:子商户
   // if(data.group_name === 'baoshang') {
   //   role.type = 'baoshang'
   //   if (data.cate !== 'bigmerchant') {
