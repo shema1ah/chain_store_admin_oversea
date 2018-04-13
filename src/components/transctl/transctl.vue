@@ -16,7 +16,6 @@
                   v-model="form.dateRangeValue"
                   type="datetimerange"
                   :editable="false"
-                  :placeholder="$t('billMng.panel.range')"
                   size="small"
                   :clearable="false">
                 </el-date-picker>
@@ -178,8 +177,8 @@
           </el-table-column>
           <el-table-column min-width="215" :label="$t('tradeMng.table.op')">
             <template slot-scope="scope">
-              <el-button type="text" size="small" :disabled="scope.row.cancel !== 0 || scope.row.status !== 1" class="el-button__fix" @click="confirm(scope.row)">{{$t('tradeMng.table.cancel')}}</el-button>
-              <!-- 下载小票 -->
+              <el-button v-if="role.single" type="text" size="small" class="el-button__fix" @click="confirm(scope.row)">{{$t('tradeMng.table.cancel')}}</el-button>
+              <el-button type="text" size="small" class="el-button__fix" @click.native="detail(scope.row.syssn)">{{$t('tradeMng.table.detail')}}</el-button>
               <a :href="downUrl" @click="downHref(scope.$index, $event)">
                   <span id="tr-download">{{ $t('tradeMng.table.download') }}</span>
               </a>
@@ -201,11 +200,14 @@
       <div class="table_placeholder" v-else></div>
     </div>
 
-    <el-dialog :title="$t('common.tip')" :visible.sync="showConfirm" custom-class="mydialog" top="20%"
-               :show-close="false" @close="handleClose('formpwd')">
+    <el-dialog :title="$t('tradeMng.dialog.d2')" :visible.sync="showConfirm" custom-class="mydialog" top="20%" @close="handleClose('formpwd')">
       <div style="margin-bottom: 20px;">{{$t('tradeMng.dialog.d1')}}</div>
-      <el-form :model="formpwd" :rules="pwdrules" ref="formpwd">
-        <el-form-item prop="pwd">
+      <el-form :model="formpwd" :rules="pwdrules" ref="formpwd" label-width="80px">
+        <el-form-item prop="amount" :label="$t('tradeMng.detail.ammount2')" class="amount">
+          <span>{{ role.currency }}</span>
+          <el-input class="showAmount" v-model="formpwd.amount" :placeholder="$t('tradeMng.msg.m14') + refundAmount" type="text" @keyup.enter.native="onEnter" @blur="leaveMount"></el-input>
+        </el-form-item>
+        <el-form-item prop="pwd" :label="$t('tradeMng.dialog.d5')">
           <el-input v-model="formpwd.pwd" :placeholder="$t('tradeMng.msg.m9')" type="password" @keyup.enter.native="onEnter"></el-input>
         </el-form-item>
       </el-form>
@@ -213,10 +215,36 @@
       <div slot="footer" class="dialog-footer">
         <div @click="checkPwd" class="submit">
           <span class="el-icon-loading" v-if="iconLoading"></span>
-          <span v-else>{{$t('common.ok')}}</span>
+          <span v-else>{{$t('common.confirm')}}</span>
         </div>
       </div>
     </el-dialog>
+
+    <el-dialog :title="refundStates?$t('tradeMng.dialog.d3'):$t('tradeMng.dialog.d4')" :visible.sync="showArefund" custom-class="mydialog refund" :class="[refundStates ? 'success' : 'fail']" top="20%" :show-close="false">
+      <div v-if="refundStates">
+        <el-form label-width="90px">
+          <el-form-item :label="$t('tradeMng.detail.ammount2')">
+            <div>{{ refundInfo.txamt | formatCurrency }}</div>
+          </el-form-item>
+          <el-form-item :label="$t('tradeMng.table.tradeType')">
+            <div>{{ $t('tradeMng.dialog.d6') }}</div>
+          </el-form-item>
+          <el-form-item :label="$t('tradeMng.detail.syssn3')">
+            <div>{{ refundInfo.syssn }}</div>
+          </el-form-item>
+        </el-form>
+      </div>
+      <div v-else class="refundfail">
+        {{ refundInfo.resperr }}
+      </div>
+      <div class="divider"></div>
+      <div slot="footer" class="dialog-footer">
+        <div class="submit">
+          <span>{{$t('common.confirm')}}</span>
+        </div>
+      </div>
+    </el-dialog>
+
     <el-dialog title="交易流水Excel下载" :visible.sync="showTotal" custom-class="mydialog extra" top="20%" @close="handleClose">
       <div style="margin-bottom: 20px;">检测到门店有收银员角色，交易汇总是否要区分收银员？</div>
       <div class="divider"></div>
@@ -237,7 +265,7 @@
   import axios from 'axios';
   import config from 'config';
   import qs from 'qs';
-  import {formatDate} from '../../common/js/util';
+  import {formatDate, formatLength} from '../../common/js/util';
   import Store from '../../common/js/store';
 
   let typeLists = ['wxpay', 'alipay'];
@@ -256,18 +284,27 @@
           cb();
         }
       };
+      let checkAmount = (rule, val, cb) => {
+        if(val > this.refundAmount) {
+          cb(this.$t('tradeMng.msg.m12'));
+        } else {
+          cb();
+        }
+      };
       return {
         downUrl: 'javascript:;',
         lang: config.lang,
+        refundAmount: null,
+        refundStates: false,
         role: Store.get('role') || {},
         showConfirm: false,
+        showArefund: false,
         showTotal: false,
-        checkValue: {},
+        refundData: {},
+        refundInfo: {},
         formpwd: {
+          amount: null,
           pwd: ''
-        },
-        formSend: {
-          email: ''
         },
         iconLoading: false,
         pageSize: 10,
@@ -314,7 +351,11 @@
         pwdrules: {
             pwd: [
               { required: true, message: this.$t('tradeMng.msg.m9') }
-            ]
+            ],
+          amount: [
+            { required: true, message: this.$t('tradeMng.msg.m15') },
+            { validator: checkAmount, trigger: 'change' }
+          ]
         }
       };
     },
@@ -371,7 +412,16 @@
           this.form.choosetime = '';
         }
         this.status = false;
-      }
+      },
+      'formpwd.amount': function(val, old) {
+        if(val) {
+          if(!/^\d+\.?\d{0,2}$/.test(val)) {
+            setTimeout(() => {
+              this.formpwd.amount = old;
+            }, 10);
+          }
+        }
+      },
     },
 
     created() {
@@ -421,10 +471,10 @@
 
       // 撤销操作
       revoke() {
-        let val = this.checkValue;
+        let val = this.refundData;
         let params = {
           format: 'cors',
-          txamt: val.total_amt,
+          txamt: this.formpwd.amount * this.role.rate,
           txdtm: formatDate(val.sysdtm, 'yyyy-MM-dd HH:mm:ss'),
           syssn: val.syssn,
           out_trade_no: Date.now(),
@@ -436,31 +486,47 @@
           }
         }).then((res) => {
           this.iconLoading = false;
+          this.showArefund = true;
           let data = res.data;
+          this.refundInfo = data;
           if (data.respcd === config.code.OK) {
-            this.$message({
-              type: 'success',
-              message: this.$t('tradeMng.msg.m6')
-            });
-
             this.showConfirm = false;
-
+            this.refundStates = true;
             this.getTransData();
-
           } else {
-            this.$message.error(data.resperr);
+            this.showConfirm = false;
+            this.refundStates = false;
           }
         }).catch((res) => {
+          this.showConfirm = false;
           this.iconLoading = false;
           this.$message.error(this.$t('tradeMng.msg.m7'));
         });
       },
 
+      // 金额输入框失去焦点处理
+      leaveMount() {
+        let val = this.formpwd.amount;
+        if(val) {
+          if(!/^[1-9]+\d*(\.\d{1,2})?$/.test(val)) {
+            setTimeout(() => {
+              let arr = val.match(/[1-9]+\d*(\.\d{1,2})?/) || [0];
+              this.formpwd.amount = arr[0];
+            }, 10);
+          }
+        }
+      },
+
       // 下载小票
       downHref(index, e) {
-        let data = this.transData.data[index]
+        let data = this.transData.data[index];
         let total_amt = (data.total_amt / this.role.rate).toFixed(2);
         e.target.parentNode.href = `${config.host}/merchant/receipt/download?username=${data.username}&busicd_info=${data.busicd_info}&sysdtm=${data.sysdtm}&total_amt=${total_amt}&status_str=${data.status_str}&syssn=${data.syssn}&format=cors`;
+      },
+
+      // 交易，撤销详情
+      detail(syssn) {
+        this.$router.push(`/main/transctl/transdetail?syssn=${syssn}&type=trans`);
       },
 
       // 点击enter键提交
@@ -495,22 +561,22 @@
 
       // 撤销按钮
       confirm(val) {
+        this.refundAmount = this.formpwd.amount = formatLength(val.allow_refund_amt / this.role.rate);
+        this.refundData = val;
         if(this.role.isCashier) {
-          this.cheekRefund(val);
+          this.cheekRefund();
         }else {
-          this.checkValue = val;
           this.showConfirm = true;
         }
       },
 
       // 验证收银员退款权限
-      cheekRefund(value) {
+      cheekRefund() {
         axios.get(`${config.ohost}/mchnt/opuser/perms?format=cors`).then((res) => {
           let data = res.data;
           if(data.respcd === config.code.OK) {
             let response = data.data || {};
             if(response.refund === 1) {
-              this.checkValue = value;
               this.showConfirm = true;
             }else {
               this.$message.error(this.$t('tradeMng.msg.m11'));
@@ -793,6 +859,38 @@
         color: #FFF;
         background-color: darken(#7ED321, 5%);
       }
+    }
+  }
+  .transctl {
+    .amount {
+      span {
+        position: absolute;
+        left: 5px;
+        color: #282B2D;
+        z-index: 100;
+        width: 25px;
+        text-align: center;
+      }
+      .el-input__inner {
+        padding-left: 30px;
+      }
+    }
+    .success .el-dialog__header{
+      background: url("img/success.png") top center no-repeat;
+    }
+    .fail .el-dialog__header{
+      background: url("img/fail.png") top center no-repeat;
+    }
+    .refund .el-dialog__header {
+        margin-top: 20px;
+        padding-top: 48px;
+        background-size: 45px 45px;
+    }
+    .refundfail {
+      text-align: center;
+      color: #262424;
+      font-size: 16px;
+      padding: 10px 0;
     }
   }
 </style>

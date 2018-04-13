@@ -5,7 +5,7 @@
       <!-- <h1 class="sidebar-logo__title">{{ shop.shopname }}</h1> -->
     </div>
     <ul class="left-nav">
-      <li v-for="nav in navs" :class="{'dark': $route.fullPath.indexOf('member') != -1 && nav.sub}">
+      <li v-for="nav in navs">
         <router-link class="sidebar-nav__item" :to="router('main/' + nav.pathname)">{{ nav.val }}</router-link>
       </li>
     </ul>
