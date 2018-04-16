@@ -205,7 +205,7 @@
       <el-form :model="formpwd" :rules="pwdrules" ref="formpwd" label-width="80px">
         <el-form-item prop="amount" :label="$t('tradeMng.detail.ammount2')" class="amount">
           <span>{{ role.currency }}</span>
-          <el-input class="showAmount" v-model="formpwd.amount" :placeholder="$t('tradeMng.msg.m14') + refundAmount" type="text" @keyup.enter.native="onEnter" @blur="leaveMount"></el-input>
+          <el-input class="showAmount" v-model="formpwd.amount" :placeholder="$t('tradeMng.msg.m14') + refundAmount" type="number" @keyup.enter.native="onEnter"></el-input>
         </el-form-item>
         <el-form-item prop="pwd" :label="$t('tradeMng.dialog.d5')">
           <el-input v-model="formpwd.pwd" :placeholder="$t('tradeMng.msg.m9')" type="password" @keyup.enter.native="onEnter"></el-input>
@@ -224,7 +224,10 @@
       <div v-if="refundStates">
         <el-form label-width="90px">
           <el-form-item :label="$t('tradeMng.detail.ammount2')">
-            <div>{{ refundInfo.txamt | formatCurrency }}</div>
+            <div>
+              <span style="font-size: 18px;">{{ role.currency }}</span>
+              <span style="font-size: 24px;">{{ refundInfo.txamt | formatCurrency }}</span>
+            </div>
           </el-form-item>
           <el-form-item :label="$t('tradeMng.table.tradeType')">
             <div>{{ $t('tradeMng.dialog.d6') }}</div>
@@ -239,7 +242,7 @@
       </div>
       <div class="divider"></div>
       <div slot="footer" class="dialog-footer">
-        <div class="submit">
+        <div class="submit" @click="showArefund = false">
           <span>{{$t('common.confirm')}}</span>
         </div>
       </div>
@@ -285,6 +288,7 @@
         }
       };
       let checkAmount = (rule, val, cb) => {
+        console.log(this.refundAmount, 666)
         if(val > this.refundAmount) {
           cb(this.$t('tradeMng.msg.m12'));
         } else {
@@ -415,10 +419,19 @@
       },
       'formpwd.amount': function(val, old) {
         if(val) {
-          if(!/^\d+\.?\d{0,2}$/.test(val)) {
-            setTimeout(() => {
-              this.formpwd.amount = old;
-            }, 10);
+          if(this.role.point) {
+            let reg = new RegExp('^\\d+\\.?\\d{0,' + this.role.point + '}$');
+            if(!reg.test(val)) {
+              setTimeout(() => {
+                this.formpwd.amount = old;
+              }, 10);
+            }
+          }else {
+            if(!/^\d+$/.test(val)) {
+              setTimeout(() => {
+                this.formpwd.amount = old;
+              }, 10);
+            }
           }
         }
       },
@@ -502,19 +515,6 @@
           this.iconLoading = false;
           this.$message.error(this.$t('tradeMng.msg.m7'));
         });
-      },
-
-      // 金额输入框失去焦点处理
-      leaveMount() {
-        let val = this.formpwd.amount;
-        if(val) {
-          if(!/^[1-9]+\d*(\.\d{1,2})?$/.test(val)) {
-            setTimeout(() => {
-              let arr = val.match(/[1-9]+\d*(\.\d{1,2})?/) || [0];
-              this.formpwd.amount = arr[0];
-            }, 10);
-          }
-        }
       },
 
       // 下载小票
@@ -875,8 +875,14 @@
         padding-left: 30px;
       }
     }
-    .success .el-dialog__header{
-      background: url("img/success.png") top center no-repeat;
+    .success {
+      .el-dialog__header{
+        background: url("img/success.png") top center no-repeat;
+      }
+      .el-form-item__content {
+        text-align: right;
+        color: #2F323A;
+      }
     }
     .fail .el-dialog__header{
       background: url("img/fail.png") top center no-repeat;
