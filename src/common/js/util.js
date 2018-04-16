@@ -127,7 +127,7 @@ const getRole = (data = {}) => {
     country: data.country, // 国家
     rate: data.rate || 100, // 汇率
     single: data.cate !== 'bigmerchant', // 是否是单店
-    point: data.allow_point || 0, // 精确位数
+    point: Number.parseInt(data.allow_point) || 0, // 精确位数
     isCashier: Boolean(data.opinfo && data.opinfo.opuid) // 是否收银员角色
   }
   if(data.cate !== 'bigmerchant') {

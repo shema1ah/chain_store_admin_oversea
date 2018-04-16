@@ -288,7 +288,6 @@
         }
       };
       let checkAmount = (rule, val, cb) => {
-        console.log(this.refundAmount, 666)
         if(val > this.refundAmount) {
           cb(this.$t('tradeMng.msg.m12'));
         } else {
@@ -420,8 +419,7 @@
       'formpwd.amount': function(val, old) {
         if(val) {
           if(this.role.point) {
-            let reg = new RegExp('^\\d+\\.?\\d{0,' + this.role.point + '}$');
-            if(!reg.test(val)) {
+            if(!/^\d+\.?\d{0,2}$/.test(val)) {
               setTimeout(() => {
                 this.formpwd.amount = old;
               }, 10);
