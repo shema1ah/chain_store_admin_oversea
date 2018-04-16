@@ -868,11 +868,12 @@
         left: 5px;
         color: #282B2D;
         z-index: 100;
-        width: 25px;
+        width: 30px;
         text-align: center;
       }
       .el-input__inner {
-        padding-left: 30px;
+        padding-left: 35px;
+        line-height: 36px;
       }
     }
     .success {
