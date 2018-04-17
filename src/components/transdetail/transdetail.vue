@@ -14,7 +14,7 @@
         </div>
       </div>
       <div class="panel-body">
-        <div class="info_wrapper">
+        <div class="info_wrapper" :class="{'wrapper': lang === 'ja' || lang === 'en'}">
           <div class="info">
             <div class="info__title">{{type === 'refund' ? $t('tradeMng.detail.ammount2') : $t('tradeMng.detail.ammount1')}}</div>
             <div class="info__desc">{{ role.currency }} {{ infoData.txamt | formatCurrency }}</div>

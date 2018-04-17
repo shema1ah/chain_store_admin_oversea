@@ -222,7 +222,7 @@
 
     <el-dialog :title="refundStates?$t('tradeMng.dialog.d3'):$t('tradeMng.dialog.d4')" :visible.sync="showArefund" custom-class="mydialog refund" :class="[refundStates ? 'success' : 'fail']" top="20%" :show-close="false">
       <div v-if="refundStates">
-        <el-form label-width="90px">
+        <el-form label-width="(lang === 'ja' || lang === 'en') ? 150px : 90px">
           <el-form-item :label="$t('tradeMng.detail.ammount2')">
             <div>
               <span style="font-size: 18px;">{{ role.currency }}</span>
@@ -288,7 +288,7 @@
         }
       };
       let checkAmount = (rule, val, cb) => {
-        if(val > this.refundAmount) {
+        if(+val > this.refundAmount) {
           cb(this.$t('tradeMng.msg.m12'));
         } else {
           cb();

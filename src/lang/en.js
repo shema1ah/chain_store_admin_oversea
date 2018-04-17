@@ -203,8 +203,8 @@ exports.default = {
       origin: 'Source of consumers',
       time: 'Refund time',
       syssn1: 'Transaction ID',
-      syssn2: 'Original transaction ID',
-      syssn3: 'Refund transaction ID',
+      syssn2: 'Original ID',
+      syssn3: 'Refund ID',
       store: 'Store name',
       account: 'Operating Account',
       history: 'Refund History'

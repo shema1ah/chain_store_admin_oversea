@@ -13,7 +13,7 @@ module.exports = {
     index: path.resolve(__dirname, '../dist/main.html'),
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'static',
-    assetsPublicPath: '/',
+    assetsPublicPath: './',
     proxyTable: {
       '/api': {
         target: 'https://sh.qfpay.com',
@@ -41,7 +41,7 @@ module.exports = {
     port: 80,
     autoOpenBrowser: false,
     assetsSubDirectory: 'static',
-    assetsPublicPath: '/',
+    assetsPublicPath: './',
     proxyTable: {
       '/api': {
         target: 'https://sh.qa.qfpay.net',

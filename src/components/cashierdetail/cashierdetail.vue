@@ -343,15 +343,6 @@
 </script>
 <style lang="scss">
   .cashierdetail {
-    .wrapper {
-      .info {
-        height: auto;
-        line-height: 1.4;
-      }
-      .info__title {
-        width: 150px;
-      }
-    }
     .next-bottom {
       margin-bottom: 0;
     }
