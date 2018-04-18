@@ -41,10 +41,10 @@ module.exports = {
     port: 80,
     autoOpenBrowser: false,
     assetsSubDirectory: 'static',
-    assetsPublicPath: './',
+    assetsPublicPath: '/',
     proxyTable: {
       '/api': {
-        target: 'https://sh.qa.qfpay.net',
+        target: 'https://sh.qfpay.com',
         // target: 'http://172.100.116.129:9099',
         changeOrigin: true,
         pathRewrite: {

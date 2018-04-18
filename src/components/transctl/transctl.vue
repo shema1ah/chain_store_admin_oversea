@@ -177,7 +177,7 @@
           </el-table-column>
           <el-table-column min-width="215" :label="$t('tradeMng.table.op')">
             <template slot-scope="scope">
-              <el-button v-if="role.single" type="text" size="small" :disabled="scope.row.allow_refund_amt <= 0" class="el-button__fix" @click="confirm(scope.row)">{{$t('tradeMng.table.cancel')}}</el-button>
+              <el-button v-if="showRefund(scope.row.sysdtm)" type="text" size="small" :disabled="scope.row.allow_refund_amt <= 0" class="el-button__fix" @click="confirm(scope.row)">{{$t('tradeMng.table.cancel')}}</el-button>
               <el-button type="text" size="small" class="el-button__fix" @click.native="detail(scope.row.syssn)">{{$t('tradeMng.table.detail')}}</el-button>
               <a :href="downUrl" @click="downHref(scope.$index, $event)">
                   <span id="tr-download">{{ $t('tradeMng.table.download') }}</span>
@@ -303,6 +303,7 @@
         showConfirm: false,
         showArefund: false,
         showTotal: false,
+        date: new Date(),
         refundData: {},
         refundInfo: {},
         formpwd: {
@@ -477,6 +478,23 @@
           this.showTotal = true;
         }else {
           document.querySelector('#separate').click();
+        }
+      },
+
+      // 是否展示撤销按钮
+      showRefund(val) {
+        if(this.role.country === 'HK') {
+          if(formatDate(val) === formatDate(this.date)) {
+            return true;
+          }else {
+            return false;
+          }
+        }else {
+          if(this.role.single) {
+            return true;
+          }else {
+            return false;
+          }
         }
       },
 

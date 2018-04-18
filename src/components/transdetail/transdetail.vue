@@ -119,7 +119,12 @@
       detail() {
         this.loading = true;
         let syssn = this.$route.query.syssn;
-        axios.get(`${config.host}/merchant/trade/abroad/detail?syssn=${syssn}`).then((res) => {
+        axios.get(`${config.host}/merchant/trade/abroad/detail`, {
+          params: {
+            syssn: syssn,
+            format: 'cors'
+          }
+        }).then((res) => {
           this.loading = false;
           let data = res.data;
           if(data.respcd === config.code.OK) {
