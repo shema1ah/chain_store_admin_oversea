@@ -9,7 +9,7 @@ exports.default = {
   nav: {
     mmp: 'Shop Management Platform',
     index: 'Home',
-    settlement: 'Bill Mgmt',
+    settlement: 'Settlement Mgmt',
     tradeMng: 'Transaction Mgmt',
     publicAuth: 'Official Account',
     shopMng: 'Account Info',
@@ -232,7 +232,7 @@ exports.default = {
   },
   settlement: { // 清算管理
     crumbs: {
-      L1: 'Bill Mgmt'
+      L1: 'Settlement Mgmt'
     },
     panel: {
       time: 'Time Range',
@@ -244,7 +244,11 @@ exports.default = {
       btn: {
         query: 'Search',
         reset: 'Reset'
-      }
+      },
+      type1: 'WeChat Pay HK',
+      type2: 'WeChat Pay （WeChat Settlement）',
+      type3: 'Alipay（Alipay Settlement）',
+      type4: 'WeChat Pay'
     },
     table: {
       settleTime: 'Settleme Time',

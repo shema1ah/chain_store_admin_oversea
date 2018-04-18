@@ -36,7 +36,7 @@
               <el-form-item prop="remit_type">
                 <el-select v-model="form.remit_type" :placeholder="$t('common.all')" size="small">
                   <el-option :label="$t('common.all')" value=""></el-option>
-                  <el-option v-for="type in typeList" :label="type.name" :value="type.value" :key="type.value">
+                  <el-option v-for="type in typeList" :label="type.code" :value="type.remit_type" :key="type.remit_type">
                   </el-option>
                 </el-select>
               </el-form-item>
@@ -119,26 +119,12 @@
         currentPage: 1,
         loading: false,
         type: {
-          1: '微信港币钱包',
-          2: '微信直连',
-          3: '支付宝直连',
-          4: '钱方微信'
+          1: this.$t('settlement.panel.type1'),
+          2: this.$t('settlement.panel.type2'),
+          3: this.$t('settlement.panel.type3'),
+          4: this.$t('settlement.panel.type4')
         },
-        typeList: [
-          {
-            name: '微信港币钱包',
-            value: 1
-          }, {
-            name: '微信直连',
-            value: 2
-          }, {
-            name: '支付宝直连',
-            value: 3
-          }, {
-            name: '钱方微信',
-            value: 4
-          }
-        ],
+        typeList: [],
         choosetimes: [
           {'name': this.$t('settlement.panel.today'), 'value': '1'},
           {'name': this.$t('settlement.panel.yestoday'), 'value': '2'},
@@ -180,10 +166,27 @@
 
     created() {
       this.changeTime('1');
+      this.getType();
       this.getSettleData();
     },
 
     methods: {
+      // 获取
+      getType() {
+        axios.get(`${config.ohost}/fund/v1/hkd/check/types?lang=${this.lang}&format=cors`).then(
+          (res) => {
+            let data = res.data;
+            if(data.respcd === config.code.OK) {
+              this.typeList = data.data;
+            } else {
+              this.$message.error(data.resperr);
+            }
+          }
+        ).catch(() => {
+          this.$message.error(this.$t('common.netError'));
+        });
+      },
+
       getDownUrl(id, e) {
         let downParams = {
           biz_sn: id,
