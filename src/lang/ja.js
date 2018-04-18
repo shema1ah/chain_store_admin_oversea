@@ -270,7 +270,11 @@ exports.default = {
       btn: {
         query: '検索',
         reset: 'リセット'
-      }
+      },
+      type1: 'WeChat Pay HK',
+      type2: 'WeChat Pay （WeChat Settlement）',
+      type3: 'Alipay（Alipay Settlement）',
+      type4: 'WeChat Pay'
     },
     table: {
       settleTime: '清算時間',
