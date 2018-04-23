@@ -7,7 +7,6 @@ exports.default = {
     index: '首页概览',
     settlement: '清算管理',
     tradeMng: '交易管理',
-    publicAuth: '公众号授权',
     shopMng: '账户信息',
     cashMng: '收银员管理',
     setup: '设置',
@@ -97,46 +96,6 @@ exports.default = {
       noticeTip: '删除分店前建议先终止该分店正在进行的会员营销活动。'
     }
   },
-  pubSignal: { // 公众号授权
-    crumbs: {
-      authorizedPS: '已授权公众号',
-      unauthorized: '您还没有关联您的微信账号，请关联您的微信账号以便我们能为您提供更多服务。'
-    },
-    title: {
-      psInfo: '公众号基本信息',
-      bind: '绑定微信公众号'
-    },
-    panel: {
-      avatar: '头像',
-      name: '名称',
-      id: 'ID (微信号)',
-      psType: '公众号类型',
-      authType: '认证类型',
-      wechatScan: '使用绑定的个人微信号扫描',
-      adminAuthConfirm: '公众号管理员授权确认',
-      authSucc: '授权成功，运营公众号！',
-      btn: {
-        subAuthMng: '分店授权管理',
-        deAuth: '解除账户授权',
-        dePrimeAuth: '解除总账户授权',
-        freeAdd: '免费添加微信公众号',
-        releaseAuth: '解除授权'
-      }
-    },
-    dialog: {
-      m1: '请勾选需要授权的分店',
-      all: '全选'
-    },
-    msg: {
-      m1: '获取公众号信息失败',
-      m2: '获取商户id失败',
-      m3: '获取连锁店铺失败',
-      m4: '解除成功',
-      m5: '解除失败',
-      m6: '请确认是否要解除账户授权?',
-      m7: '请确认是否要解除总账户公众号?'
-    }
-  },
   tradeMng: { // 交易管理
     crumbs: {
       L1: '交易管理',
@@ -163,10 +122,12 @@ exports.default = {
       }
     },
     table: {
-      total: '交易总金额',
-      realrec: '交易实收',
+      totalAmount: '交易总金额',
+      totalNum: '交易总笔数',
+      succAmount: '成功交易金额',
       succ: '成功交易笔数',
-      undoNum: '撤销笔数',
+      refundMount: '退款金额',
+      refundNum: '退款笔数',
       bi: '笔',
       undo: '撤销明细',
       shopName: '店铺名称',

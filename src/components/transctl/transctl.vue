@@ -99,24 +99,28 @@
         <div class="panel-btn-group__wrapper panel-body-btn-group flex-normal">
           <div class="num_total">
             <div class="num_wrapper">
-              <p class="num-title">{{$t('tradeMng.table.total')}}</p>
+              <p class="num-title">{{$t('tradeMng.table.totalAmount')}}</p>
+              <p class="num-desc">{{ transData.total_amt | formatNumber }} {{ role.currency }}</p>
+            </div>
+            <div class="num_wrapper">
+              <p class="num-title">{{$t('tradeMng.table.totalNum')}}</p>
+              <p class="num-desc">{{ transData.total_num || 0 }} </p>
+            </div>
+            <div class="num_wrapper">
+              <p class="num-title">{{$t('tradeMng.table.succAmount')}}</p>
               <p class="num-desc">{{ transData.sucamt | formatNumber }} {{ role.currency }}</p>
-            </div>
-            <div class="num_wrapper" v-if="!role.haiwai">
-              <p class="num-title">{{$t('tradeMng.table.realrec')}}</p>
-              <p class="num-desc">{{ transData.total_txamt | formatNumber }} {{ role.currency }}</p>
-            </div>
-            <div class="num_wrapper" v-if="!role.haiwai">
-              <p class="num-title">{{$t('tradeMng.table.redpacket')}}</p>
-              <p class="num-desc">{{ transData.coupon_amt | formatNumber }} {{ role.currency }}</p>
             </div>
             <div class="num_wrapper">
               <p class="num-title">{{$t('tradeMng.table.succ')}}</p>
               <p class="num-desc">{{ transData.sucnum || 0 }}</p>
             </div>
             <div class="num_wrapper">
-              <p class="num-title">{{$t('tradeMng.table.undoNum')}}</p>
-              <p class="num-default">{{ transData.cancelnum || 0 }}</p>
+              <p class="num-title">{{$t('tradeMng.table.refundMount')}}</p>
+              <p class="num-desc">{{ transData.cancel_amt | formatNumber }} {{ role.currency }}</p>
+            </div>
+            <div class="num_wrapper">
+              <p class="num-title">{{$t('tradeMng.table.refundNum')}}</p>
+              <p class="num-default">{{ transData.cancel_num || 0 }}</p>
             </div>
           </div>
           <div class="a-wrapper">
@@ -152,32 +156,23 @@
             <template slot-scope="scope">{{ scope.row.sysdtm }}</template>
           </el-table-column>
           <el-table-column
-            :label="$t('tradeMng.table.tradeAmount') + '(' + role.currency + ')'" v-if="role.haiwai" min-width="110">
+            :label="$t('tradeMng.table.tradeAmount') + '(' + role.currency + ')'" min-width="110">
             <template slot-scope="scope">
               <div class="table-title">{{ scope.row.total_amt | formatCurrency }}</div>
-            </template>
-          </el-table-column>
-          <el-table-column
-            label="交易金额" v-else>
-            <template slot-scope="scope">
-              <div class="table-title">{{ scope.row.total_amt | formatCurrency }}{{ role.currency }}</div>
-              <div class="table-content">实收{{ scope.row.txamt | formatCurrency }}{{ role.currency }}</div>
-              <div v-show="scope.row.mchnt_coupon" class="table-content">商家红包{{ scope.row.mchnt_coupon | formatCurrency }}{{ role.currency }}</div>
-              <div v-show="scope.row.hj_coupon" class="table-content">平台补贴{{ scope.row.hj_coupon | formatCurrency }}{{ role.currency }}</div>
             </template>
           </el-table-column>
           <el-table-column
             prop="status_str"
             :label="$t('tradeMng.table.tradeState')" min-width="76">
           </el-table-column>
-          <el-table-column
-            prop="syssn"
-            min-width="105"
-            :label="$t('tradeMng.table.sNum')">
+          <el-table-column min-width="105" :label="$t('tradeMng.table.sNum')">
+            <template slot-scope="scope">
+              <div>{{ scope.row.origssn?scope.row.syssn + '(' + $t('tradeMng.detail.syssn2') + ':' + scope.row.origssn + ')': scope.row.syssn }}</div>
+            </template>
           </el-table-column>
           <el-table-column min-width="215" :label="$t('tradeMng.table.op')">
             <template slot-scope="scope">
-              <el-button v-if="showRefund(scope.row.sysdtm)" type="text" size="small" :disabled="scope.row.allow_refund_amt <= 0" class="el-button__fix" @click="confirm(scope.row)">{{$t('tradeMng.table.cancel')}}</el-button>
+              <el-button v-if="showRefund(scope.row.sysdtm)" type="text" size="small" :disabled="!scope.row.allow_refund_amt" class="el-button__fix" @click="confirm(scope.row)">{{$t('tradeMng.table.cancel')}}</el-button>
               <el-button type="text" size="small" class="el-button__fix" @click.native="detail(scope.row.syssn)">{{$t('tradeMng.table.detail')}}</el-button>
               <a :href="downUrl" @click="downHref(scope.$index, $event)">
                   <span id="tr-download">{{ $t('tradeMng.table.download') }}</span>
@@ -202,10 +197,10 @@
 
     <el-dialog :title="$t('tradeMng.dialog.d2')" :visible.sync="showConfirm" custom-class="mydialog" top="20%" @close="handleClose('formpwd')">
       <div style="margin-bottom: 20px;">{{$t('tradeMng.dialog.d1')}}</div>
-      <el-form :model="formpwd" :rules="pwdrules" ref="formpwd" label-width="80px">
+      <el-form :model="formpwd" :rules="pwdrules" ref="formpwd" label-width="80px" autocomplete="off">
         <el-form-item prop="amount" :label="$t('tradeMng.detail.ammount2')" class="amount">
           <span>{{ role.currency }}</span>
-          <el-input class="showAmount" v-model="formpwd.amount" :placeholder="$t('tradeMng.msg.m14') + refundAmount" type="number" @keyup.enter.native="onEnter"></el-input>
+          <el-input name="amount" class="showAmount" v-model="formpwd.amount" :placeholder="$t('tradeMng.msg.m14') + refundAmount" type="number" @keyup.enter.native="onEnter"></el-input>
         </el-form-item>
         <el-form-item prop="pwd" :label="$t('tradeMng.dialog.d5')">
           <el-input v-model="formpwd.pwd" :placeholder="$t('tradeMng.msg.m9')" type="password" @keyup.enter.native="onEnter"></el-input>
@@ -303,7 +298,6 @@
         showConfirm: false,
         showArefund: false,
         showTotal: false,
-        date: new Date(),
         refundData: {},
         refundInfo: {},
         formpwd: {
@@ -484,10 +478,15 @@
       // 是否展示撤销按钮
       showRefund(val) {
         if(this.role.country === 'HK') {
-          if(formatDate(val) === formatDate(this.date)) {
-            return true;
+          if(!this.role.isMerchant || this.role.isCashier) {
+            let date = formatDate(this.transData.date || new Date());
+            if(formatDate(val) === date) {
+              return true;
+            }else {
+              return false;
+            }
           }else {
-            return false;
+            return true;
           }
         }else {
           if(this.role.single) {

@@ -11,7 +11,6 @@ exports.default = {
     index: 'トップ',
     settlement: '勘定書管理',
     tradeMng: '取引管理',
-    publicAuth: '公式アカウント',
     shopMng: 'アカウント',
     cashMng: 'キャッシャー管理',
     setup: '設定',
@@ -101,46 +100,6 @@ exports.default = {
       noticeTip: '支店を削除する前に当該支店の進行中の会員マーケティングイベントを中止させるようお薦めします'
     }
   },
-  pubSignal: { // 公众号授权
-    crumbs: {
-      authorizedPS: '授権済みの公式アカウント',
-      unauthorized: '未だWechatアカウントに関連していません。こちらより更によいサービスを提供させていただくため、先にWechatアカウントを関連してください。'
-    },
-    title: {
-      psInfo: '公式アカウントの基本情報',
-      bind: 'Wechat公式アカウントにバンディングします'
-    },
-    panel: {
-      avatar: '顔写真',
-      name: '名前',
-      id: 'ID(Wechatアカウント)',
-      psType: '公式アカウントの種類',
-      authType: '認証種類',
-      wechatScan: 'バンディングされた個人のWechatアカウントでスキャンします',
-      adminAuthConfirm: '公式アカウント管理者から授権して確認します',
-      authSucc: '授権に成功しました、公式アカウントを運営しましょう！',
-      btn: {
-        subAuthMng: '支店への授権管理',
-        deAuth: 'アカウントの授権を解除します',
-        dePrimeAuth: 'マスターアカウントの授権を解除します',
-        freeAdd: '無料でWechat公式アカウントを追加します',
-        releaseAuth: '授権を解除します'
-      }
-    },
-    dialog: {
-      m1: '授権する支店の前にチェックを入れてください。',
-      all: '全て選択'
-    },
-    msg: {
-      m1: '公式アカウント情報を取得に失敗しました',
-      m2: '商店IDを取得に失敗しました',
-      m3: 'チェーン店を取得に失敗しました',
-      m4: '解除に成功しました',
-      m5: '解除に失敗しました',
-      m6: '本当にアカウントへの授権を解除しますか？',
-      m7: '本当にマスター公式アカウントへの授権を解除しますか？'
-    }
-  },
   tradeMng: {
     crumbs: {
       L1: '取引管理',
@@ -167,10 +126,12 @@ exports.default = {
       }
     },
     table: {
-      total: '取引総額',
-      realrec: '実際の集金額',
-      succ: '取引き数',
-      undoNum: '取消し数',
+      totalAmount: '取引総金額',
+      totalNum: '取引総筆数',
+      succAmount: '成功取引金額',
+      succ: '成功取引き数',
+      refundMount: '返金金額',
+      refundNum: '返金筆数',
       bi: '',
       undo: '取消',
       shopName: '店舗名',

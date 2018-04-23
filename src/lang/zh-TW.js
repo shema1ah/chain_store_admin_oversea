@@ -7,7 +7,6 @@ exports.default = {
     index: '首頁概覽',
     settlement: '清算管理',
     tradeMng: '交易管理',
-    publicAuth: '公眾號授權',
     shopMng: '賬戶信息',
     cashMng: '收銀員管理',
     setup: '設置',
@@ -97,46 +96,6 @@ exports.default = {
       noticeTip: '刪除分店前建議先終止該分店正在進行的會員營銷活動。'
     }
   },
-  pubSignal: { // 公众号授权
-    crumbs: {
-      authorizedPS: '已授權公眾號',
-      unauthorized: '您還沒有關聯您的微信賬號，請關聯您的微信賬號以便我們能為您提供更多服務。'
-    },
-    title: {
-      psInfo: '公眾號基本信息',
-      bind: '綁定微信公眾號'
-    },
-    panel: {
-      avatar: '頭像',
-      name: '名稱',
-      id: 'ID (微信號)',
-      psType: '公眾號類型',
-      authType: '認證類型',
-      wechatScan: '使用綁定的個人微信號掃描',
-      adminAuthConfirm: '公眾號管理員授權確認',
-      authSucc: '授權成功，運營公眾號！',
-      btn: {
-        subAuthMng: '分店授權管理',
-        deAuth: '解除賬戶授權',
-        dePrimeAuth: '解除總賬戶授權',
-        freeAdd: '免費添加微信公眾號',
-        releaseAuth: '解除授權'
-      }
-    },
-    dialog: {
-      m1: '請勾選需要授權的分店',
-      all: '全選'
-    },
-    msg: {
-      m1: '獲取公眾號信息失敗',
-      m2: '獲取商戶ID失敗',
-      m3: '獲取連鎖店鋪失敗',
-      m4: '解除成功',
-      m5: '解除失敗',
-      m6: '請確認是否要解除賬戶授權?',
-      m7: '請確認是否要解除總賬戶公眾號?'
-    }
-  },
   tradeMng: { // 交易管理
     crumbs: {
       L1: '交易管理',
@@ -163,10 +122,12 @@ exports.default = {
       }
     },
     table: {
-      total: '交易總金額',
-      realrec: '交易實收',
+      totalAmount: '交易總金額',
+      totalNum: '交易總次數',
+      succAmount: '成功交易金額',
       succ: '成功交易次數',
-      undoNum: '撤銷次數',
+      refundMount: '退款金額',
+      refundNum: '退款次數',
       bi: '次',
       undo: '撤銷詳情',
       shopName: '店鋪名稱',

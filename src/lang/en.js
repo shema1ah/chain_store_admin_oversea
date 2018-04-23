@@ -11,7 +11,6 @@ exports.default = {
     index: 'Home',
     settlement: 'Settlement Mgmt',
     tradeMng: 'Transaction Mgmt',
-    publicAuth: 'Official Account',
     shopMng: 'Account Info',
     cashMng: 'Cashier Mgmt',
     setup: 'Settings',
@@ -101,46 +100,6 @@ exports.default = {
       noticeTip: 'Always remember to turn off the branch shop promotions before delete the branch.'
     }
   },
-  pubSignal: { // 公众号授权
-    crumbs: {
-      authorizedPS: 'Official Account',
-      unauthorized: 'Authenticate your Official Account for more services.'
-    },
-    title: {
-      psInfo: 'Basic information of Official Account',
-      bind: 'Authenticate the Official Account'
-    },
-    panel: {
-      avatar: 'Head Portrait',
-      name: 'Name',
-      id: 'ID(Wechat Account)',
-      psType: 'Official Account Type',
-      authType: 'Authentication Type',
-      wechatScan: 'Use your WeChat account to scan',
-      adminAuthConfirm: 'Confirm the authentication process',
-      authSucc: 'Authentication completes',
-      btn: {
-        subAuthMng: 'Branch Auth',
-        deAuth: 'Cancel The Authorization For The Account',
-        dePrimeAuth: 'Release Auth',
-        freeAdd: 'Start',
-        releaseAuth: 'Release Auth'
-      }
-    },
-    dialog: {
-      m1: 'Select branches to authorize',
-      all: 'Select all'
-    },
-    msg: {
-      m1: 'Failed to get the official account information.',
-      m2: 'Failed to get the shop ID.',
-      m3: 'Failed to get the chain shop.',
-      m4: 'Successfully cancelled.',
-      m5: 'Failed to cancel.',
-      m6: 'Do you really want to cancel the authorization the official account?',
-      m7: 'Do you really want to cancel the authorization the master official account?'
-    }
-  },
   tradeMng: { // 交易管理
     crumbs: {
       L1: 'Transaction Management',
@@ -167,10 +126,12 @@ exports.default = {
       }
     },
     table: {
-      total: 'Total Amount',
-      realrec: 'Payment Real Received',
-      succ: 'Success',
-      undoNum: 'Refund',
+      totalAmount: 'Total Amount',
+      totalNum: 'Total Number',
+      succAmount: 'Success Amount',
+      succ: 'Success Number',
+      refundMount: 'Refund Amount',
+      refundNum: 'Refund Number',
       bi: 'times',
       undo: 'Refund The Details',
       shopName: 'Shop Name',
