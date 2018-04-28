@@ -267,7 +267,7 @@
   import Store from '../../common/js/store';
 
   let typeLists = ['wxpay', 'alipay'];
-  let otherLists = ['prepaid_recharge', 'prepaid', 'coupon', 'cancel'];
+  let otherLists = ['cancel'];
 
   // cancel 0未撤销 1撤销 status  0:交易中 1:交易成功 2:交易失败 3:交易超时
 
@@ -308,17 +308,9 @@
         pageSize: 10,
         status: false,
         loading: false,
-        typeList: [
-          {'name': '微信收款', 'value': 'wxpay'},
-          {'name': '支付宝收款', 'value': 'alipay'},
-          // {'name': 'QQ收款', 'value': 'qqpay'},
-          // {'name': '刷卡收款', 'value': 'card'}
-        ],
+        typeList: [],
         otherList: [
-          {'name': '储值充值', 'value': 'prepaid_recharge'},
-          {'name': '储值消费', 'value': 'prepaid'},
-          {'name': '红包优惠', 'value': 'coupon'},
-          {'name': '撤销明细', 'value': 'cancel'}
+          {'name': this.$t('tradeMng.panel.dd'), 'value': 'cancel'}
         ],
         choosetimes: [
           {'name': this.$t('tradeMng.panel.today'), 'value': '1'},
@@ -431,16 +423,16 @@
     },
 
     created() {
-      let tradeType = window.sessionStorage.getItem("trade_type");
-      if(tradeType) {
-        let tradeTypeArr = eval(window.sessionStorage.getItem("trade_type"));
-        if(tradeTypeArr.length <= 1) {
-          this.isShow = false;
-        } else {
-          this.isShow = true;
+      let tradeType = this.role.trade_type;
+      if(tradeType.length > 0) {
+        typeLists = tradeType;
+        if(tradeType.includes('wxpay')) {
+          this.typeList.push({'name': this.$t('tradeMng.table.wechatCollect'), 'value': 'wxpay'});
         }
-      } else {
-        this.isShwo = false;
+        if(tradeType.includes('alipay')) {
+          this.typeList.push({'name': this.$t('tradeMng.table.alipay'), 'value': 'alipay'});
+        }
+        this.isShow = true;
       }
       this.changeTime('1');
       // 子商户查询其收银员
@@ -449,13 +441,6 @@
         this.getOperators(this.shop.uid);
       }
 
-      // 海外更多筛选特殊处理
-      if(this.role.haiwai) {
-        this.otherList = [
-          {'name': this.$t('tradeMng.panel.dd'), 'value': 'cancel'}
-        ];
-        otherLists = ['cancel'];
-      }
       this.getTransData();
     },
 

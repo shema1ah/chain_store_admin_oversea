@@ -28,7 +28,7 @@
           <div v-if="role.country !== 'ID'">
             <div class="info">
               <div class="info__title">{{$t('shopmng.dialog.mobile')}}</div>
-              <div class="info__desc">{{ shop.telephone || '无' }}</div>
+              <div class="info__desc">{{ shop.telephone || $t('common.none') }}</div>
             </div>
             <div class="info">
               <div class="info__title">{{$t('shopmng.dialog.cardHolder')}}</div>
