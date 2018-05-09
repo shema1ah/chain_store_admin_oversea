@@ -148,7 +148,7 @@ exports.default = {
       redpacket: ' 紅包（ホンバオ）割引', // 红包优惠
       sNum: 'シリアル番号',
       op: '操作',
-      cancel: '取消',
+      cancel: '返金',
       more: 'もっと',
       detail: '詳細確認',
       download: 'レシート',
@@ -178,7 +178,7 @@ exports.default = {
       d3: '成功',
       d4: '失敗',
       d5: 'パスワード',
-      d6: '払い戻し'
+      d6: '返金'
     },
     msg: {
       m1: 'シリアル番号は必ず数字です！',

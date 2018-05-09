@@ -144,7 +144,7 @@ exports.default = {
       redpacket: '红包优惠',
       sNum: '流水号',
       op: '操作',
-      cancel: '撤销',
+      cancel: '退款',
       more: '更多',
       detail: '查看详情',
       download: '下载小票',

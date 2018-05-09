@@ -144,7 +144,7 @@ exports.default = {
       redpacket: '紅包優惠',
       sNum: '序列號',
       op: '操作',
-      cancel: '撤銷',
+      cancel: '退款',
       more: '更多',
       detail: '查看詳情',
       download: '下載電子小票',
