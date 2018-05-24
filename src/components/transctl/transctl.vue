@@ -283,7 +283,9 @@
         }
       };
       let checkAmount = (rule, val, cb) => {
-        if(+val > this.refundAmount) {
+        if(+val === 0) {
+          cb(this.$t('tradeMng.msg.m15'));
+        }else if(+val > this.refundAmount) {
           cb(this.$t('tradeMng.msg.m12'));
         } else {
           cb();

@@ -235,7 +235,7 @@ exports.default = {
         reset: 'Reset'
       },
       type1: 'WeChat Pay HK',
-      type2: 'WeChat Pay （WeChat Settlement）',
+      type2: 'WeChat Pay（WeChat Settlement）',
       type3: 'Alipay（Alipay Settlement）',
       type4: 'WeChat Pay'
     },

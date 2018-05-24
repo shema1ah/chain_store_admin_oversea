@@ -235,8 +235,8 @@ exports.default = {
         reset: 'リセット'
       },
       type1: 'WeChat Pay HK',
-      type2: 'WeChat Pay （WeChat Settlement）',
-      type3: 'Alipay（Alipay Settlement）',
+      type2: 'WeChat Pay（WeChatの清算）',
+      type3: 'Alipay（Alipayの清算）',
       type4: 'WeChat Pay'
     },
     table: {
