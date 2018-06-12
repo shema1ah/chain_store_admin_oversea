@@ -143,6 +143,7 @@ exports.default = {
     },
     panel: {
       time: '時間',
+      range: '選擇日期範圍',
       today: '今天 ',
       yestoday: '昨天',
       near7: '近7天',
@@ -237,14 +238,11 @@ exports.default = {
       near7: '近7天',
       near30: '近30天',
       name: '賬號',
+      type: '類型',
       btn: {
         query: '查詢',
         reset: '重置'
-      },
-      type1: '香港微信支付',
-      type2: '跨境微信支付（微信清算）',
-      type3: '支付寶（支付寶清算）',
-      type4: '跨境微信支付'
+      }
     },
     table: {
       settleTime: '清算時間',

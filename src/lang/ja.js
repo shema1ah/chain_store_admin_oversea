@@ -147,6 +147,7 @@ exports.default = {
     },
     panel: {
       time: '日付',
+      range: '日付の範囲を選択してください',
       today: '今日',
       yestoday: '昨日',
       near7: '最近の７日間',
@@ -236,6 +237,7 @@ exports.default = {
     },
     panel: {
       time: '日付',
+      type: 'タイプ',
       today: '今日',
       yestoday: '昨日',
       near7: '最近の７日間',
@@ -244,11 +246,7 @@ exports.default = {
       btn: {
         query: '検索',
         reset: 'リセット'
-      },
-      type1: 'WeChat Pay HK',
-      type2: 'WeChat Pay （WeChat Settlement）',
-      type3: 'Alipay（Alipay Settlement）',
-      type4: 'WeChat Pay'
+      }
     },
     table: {
       settleTime: '清算時間',

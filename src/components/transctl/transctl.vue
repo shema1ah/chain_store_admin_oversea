@@ -16,7 +16,7 @@
                   v-model="form.dateRangeValue"
                   type="datetimerange"
                   :editable="false"
-                  :placeholder="$t('billMng.panel.range')"
+                  :placeholder="$t('tradeMng.panel.range')"
                   size="small"
                   :clearable="false">
                 </el-date-picker>
