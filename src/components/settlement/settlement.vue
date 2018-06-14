@@ -126,7 +126,7 @@
           {'name': this.$t('settlement.panel.near30'), 'value': '30'}
         ],
         form: {
-          remit_type: 1,
+          remit_type: null,
           dateRangeValue: '',
           choosetime: '1'
         },
@@ -171,7 +171,7 @@
             let data = res.data;
             if(data.respcd === config.code.OK) {
               this.typeList = data.data || [];
-              this.form.remit_type = this.typeList[0].remit_type;
+              this.form.remit_type = (this.typeList[0] || {}).remit_type;
 
               this.getSettleData();
             } else {

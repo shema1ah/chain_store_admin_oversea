@@ -263,8 +263,8 @@
                 }
               ];
             }
-            // 日本和柬埔寨
-            if(this.role.country === 'JP' || this.role.country === 'KH') {
+            // 日本、柬埔寨、新加坡
+            if(this.role.country === 'JP' || this.role.country === 'KH' || this.role.country === 'SG') {
               // 大商户，直营增加清算查询模块
               if(this.role.isMerchant && !this.role.isCashier) {
                 this.navs.splice(1, 0, {
