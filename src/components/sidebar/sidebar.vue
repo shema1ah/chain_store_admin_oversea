@@ -122,18 +122,11 @@
               ];
             }
             // 大商户，直营增加清算查询模块
-            if(this.role.isMerchant) {
-              if(this.navs[0].pathname === 'index') {
-                this.navs.splice(1, 0, {
-                  val: this.$t('nav.settlement'), // 清算查询
-                  pathname: 'settlement'
-                });
-              }else {
-                this.navs.unshift({
-                  val: this.$t('nav.settlement'), // 清算查询
-                  pathname: 'settlement'
-                });
-              }
+            if(this.role.isMerchant && !this.role.isCashier) {
+              this.navs.splice(1, 0, {
+                val: this.$t('nav.settlement'), // 清算查询
+                pathname: 'settlement'
+              });
             }
             break;
           case 'AR':
@@ -205,6 +198,13 @@
                 }
               ];
             }
+            // 大商户，直营增加清算查询模块
+            if(this.role.isMerchant && !this.role.isCashier) {
+              this.navs.splice(1, 0, {
+                val: this.$t('nav.settlement'), // 清算查询
+                pathname: 'settlement'
+              });
+            }
             break;
           default:
             if(this.role.single) { // 其他国家单店
@@ -263,6 +263,17 @@
                 }
               ];
             }
+            // 日本、柬埔寨、新加坡
+            if(this.role.country === 'JP' || this.role.country === 'KH' || this.role.country === 'SG') {
+              // 大商户，直营增加清算查询模块
+              if(this.role.isMerchant && !this.role.isCashier) {
+                this.navs.splice(1, 0, {
+                  val: this.$t('nav.settlement'), // 清算查询
+                  pathname: 'settlement'
+                });
+              }
+            }
+
         }
       }
     }

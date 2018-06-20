@@ -145,7 +145,7 @@
               _this.loading = false;
               let data = res.data;
               if(data.respcd === config.code.OK) {
-                let val = getRole(data.data) || '';
+                let val = getRole(data.data);
                 this.$store.state.role = val;
                 Store.set('role', val);
                 Store.set('flag', false);

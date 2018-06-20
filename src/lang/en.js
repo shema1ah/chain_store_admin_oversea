@@ -149,6 +149,7 @@ exports.default = {
     },
     panel: {
       time: 'Time Range',
+      range: 'select date range',
       today: 'Today',
       yestoday: 'Yesterday',
       near7: 'Last 7 days',
@@ -262,6 +263,7 @@ exports.default = {
     },
     panel: {
       time: 'Time Range',
+      type: 'Type',
       today: 'Today',
       yestoday: 'Yesterday',
       near7: 'Last 7 days',
@@ -270,11 +272,7 @@ exports.default = {
       btn: {
         query: 'Search',
         reset: 'Reset'
-      },
-      type1: 'WeChat Pay HK',
-      type2: 'WeChat Pay （WeChat Settlement）',
-      type3: 'Alipay（Alipay Settlement）',
-      type4: 'WeChat Pay'
+      }
     },
     table: {
       settleTime: 'Settleme Time',

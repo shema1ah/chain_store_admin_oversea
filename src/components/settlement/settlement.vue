@@ -16,7 +16,7 @@
                   v-model="form.dateRangeValue"
                   type="datetimerange"
                   :editable="false"
-                  :placeholder="$t('billMng.panel.range')"
+                  :placeholder="$t('tradeMng.panel.range')"
                   size="small"
                   :clearable="false">
                 </el-date-picker>
@@ -30,17 +30,17 @@
               </el-form-item>
             </div>
           </div>
-          <div class="panel-select-group">
+          <div class="panel-select-group type-special" v-show="typeList.length > 1">
             <div class="panel-select__wrapper">
-              <span class="panel-select__desc">{{$t('settlement.panel.name')}}</span>
+              <span class="panel-select__desc">{{$t('settlement.panel.type')}}</span>
               <el-form-item prop="remit_type">
-                <el-select v-model="form.remit_type" :placeholder="$t('common.all')" size="small">
-                  <el-option :label="$t('common.all')" value=""></el-option>
-                  <el-option v-for="type in typeList" :label="type.code" :value="type.remit_type" :key="type.remit_type">
-                  </el-option>
-                </el-select>
+                <el-radio-group v-model="form.remit_type">
+                  <el-radio-button v-for="type in typeList" :label="type.remit_type" :key="type.remit_type">{{ type.code }}</el-radio-button>
+                </el-radio-group>
               </el-form-item>
             </div>
+          </div>
+          <div class="panel-select-group" style="height: 37px">
             <div class="panel-header-btn-group">
               <div class="panel-header-btn panel-header-btn__fill" @click="search">
                 <span class="el-icon-loading" v-if="loading"></span>
@@ -65,7 +65,7 @@
           </el-table-column>
           <el-table-column
             :label="$t('settlement.panel.name')" min-width="120">
-            <template slot-scope="scope">{{ `${type[scope.row.remit_type]}(${scope.row.merchant_id})` }}</template>
+            <template slot-scope="scope">{{ scope.row.code }}</template>
           </el-table-column>
           <el-table-column prop="currency" :label="$t('settlement.table.currency')">
           </el-table-column>
@@ -118,12 +118,6 @@
         pageSize: 10,
         currentPage: 1,
         loading: false,
-        type: {
-          1: this.$t('settlement.panel.type1'),
-          2: this.$t('settlement.panel.type2'),
-          3: this.$t('settlement.panel.type3'),
-          4: this.$t('settlement.panel.type4')
-        },
         typeList: [],
         choosetimes: [
           {'name': this.$t('settlement.panel.today'), 'value': '1'},
@@ -132,7 +126,7 @@
           {'name': this.$t('settlement.panel.near30'), 'value': '30'}
         ],
         form: {
-          remit_type: '',
+          remit_type: null,
           dateRangeValue: '',
           choosetime: '1'
         },
@@ -167,17 +161,19 @@
     created() {
       this.changeTime('1');
       this.getType();
-      this.getSettleData();
     },
 
     methods: {
       // 获取
       getType() {
-        axios.get(`${config.ohost}/fund/v1/hkd/check/types?lang=${this.lang}&format=cors`).then(
+        axios.get(`${config.ohost}/fund/v1/check/types?lang=${this.lang}&format=cors`).then(
           (res) => {
             let data = res.data;
             if(data.respcd === config.code.OK) {
-              this.typeList = data.data;
+              this.typeList = data.data || [];
+              this.form.remit_type = (this.typeList[0] || {}).remit_type;
+
+              this.getSettleData();
             } else {
               this.$message.error(data.resperr);
             }
@@ -192,8 +188,14 @@
           biz_sn: id,
           lang: this.lang,
           format: 'cors'
+        };
+        let url, type = this.form.remit_type;
+        if(type === 4 || type === 5) {
+          url = 'overseas';
+        }else {
+          url = 'hkd';
         }
-        e.target.parentNode.href = `${config.ohost}/fund/v1/hkd/check/download?${qs.stringify(downParams)}`
+        e.target.parentNode.href = `${config.ohost}/fund/v1/${url}/check/download?${qs.stringify(downParams)}`
       },
 
       // 选择时间
@@ -229,7 +231,13 @@
       getSettleData() {
         if(!this.loading) {
           this.loading = true;
-          axios.get(`${config.ohost}/fund/v1/hkd/check`, {
+          let url, type = this.form.remit_type;
+          if(type === 4 || type === 5) {
+            url = 'overseas';
+          }else {
+            url = 'hkd';
+          }
+          axios.get(`${config.ohost}/fund/v1/${url}/check`, {
             params: this.basicParams
           }).then((res) => {
             this.loading = false;
@@ -271,3 +279,10 @@
     }
   };
 </script>
+<style lang="scss">
+  .type-special {
+    .el-radio-button {
+      padding-bottom: 10px;
+    }
+  }
+</style>
