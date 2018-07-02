@@ -41,7 +41,7 @@ module.exports = {
     port: 80,
     autoOpenBrowser: false,
     assetsSubDirectory: 'static',
-    assetsPublicPath: './',
+    assetsPublicPath: '/',
     proxyTable: {
       '/api': {
         target: 'https://sh.qa.qfpay.net',

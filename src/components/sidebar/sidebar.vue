@@ -130,6 +130,7 @@
             }
             break;
           case 'AR':
+          case 'JP':
             if(this.role.single) { // 迪拜单店
               if(this.role.isCashier) { // 是收营员
                 this.navs = [
@@ -263,8 +264,8 @@
                 }
               ];
             }
-            // 日本、柬埔寨、新加坡
-            if(this.role.country === 'JP' || this.role.country === 'KH' || this.role.country === 'SG') {
+            // 柬埔寨、新加坡
+            if(this.role.country === 'KH' || this.role.country === 'SG') {
               // 大商户，直营增加清算查询模块
               if(this.role.isMerchant && !this.role.isCashier) {
                 this.navs.splice(1, 0, {
