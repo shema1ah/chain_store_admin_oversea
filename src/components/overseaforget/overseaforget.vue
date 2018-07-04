@@ -110,11 +110,7 @@ export default {
       }
     }
   },
-  mounted() {
-    document.querySelector('email').value = '';
-    document.querySelector('code').value = '';
-    document.querySelector('pwd').value = '';
-  },
+
   methods: {
     // 倒计时
     count() {
