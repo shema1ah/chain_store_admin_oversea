@@ -9,6 +9,7 @@ import settlement from 'components/settlement/settlement'
 import chainmanage from 'components/chainmanage/chainmanage'
 import singlemanage from 'components/singlemanage/singlemanage'
 import transctl from 'components/transctl/transctl'
+import transdetail from 'components/transdetail/transdetail'
 import member from 'components/member/member'
 import settings from 'components/settings/settings'
 import cashiermanage from 'components/cashiermanage/cashiermanage'
@@ -64,7 +65,18 @@ export default new Router({
         },
         {
           path: 'transctl',
-          component: transctl
+          component: member,
+          children: [
+            {
+              path: '',
+              component: transctl
+            },
+            {
+              path: 'transdetail',
+              name: 'transdetail',
+              component: transdetail
+            }
+          ]
         },
         {
           path: 'chainmanage',

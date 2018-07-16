@@ -11,7 +11,6 @@ exports.default = {
     index: 'Home',
     settlement: 'Settlement Mgmt',
     tradeMng: 'Transaction Mgmt',
-    publicAuth: 'Official Account',
     shopMng: 'Account Info',
     cashMng: 'Cashier Mgmt',
     setup: 'Settings',
@@ -24,6 +23,7 @@ exports.default = {
     confirm: 'Confirm',
     tip: 'Tips',
     all: 'All',
+    none: 'Nothing',
     netError: 'Net error',
     loading: 'Loading...',
     modSucc: 'Modified successfully',
@@ -101,53 +101,14 @@ exports.default = {
       noticeTip: 'Always remember to turn off the branch shop promotions before delete the branch.'
     }
   },
-  pubSignal: { // 公众号授权
-    crumbs: {
-      authorizedPS: 'Official Account',
-      unauthorized: 'Authenticate your Official Account for more services.'
-    },
-    title: {
-      psInfo: 'Basic information of Official Account',
-      bind: 'Authenticate the Official Account'
-    },
-    panel: {
-      avatar: 'Head Portrait',
-      name: 'Name',
-      id: 'ID(Wechat Account)',
-      psType: 'Official Account Type',
-      authType: 'Authentication Type',
-      wechatScan: 'Use your WeChat account to scan',
-      adminAuthConfirm: 'Confirm the authentication process',
-      authSucc: 'Authentication completes',
-      btn: {
-        subAuthMng: 'Branch Auth',
-        deAuth: 'Cancel The Authorization For The Account',
-        dePrimeAuth: 'Release Auth',
-        freeAdd: 'Start',
-        releaseAuth: 'Release Auth'
-      }
-    },
-    dialog: {
-      m1: 'Select branches to authorize',
-      all: 'Select all'
-    },
-    msg: {
-      m1: 'Failed to get the official account information.',
-      m2: 'Failed to get the shop ID.',
-      m3: 'Failed to get the chain shop.',
-      m4: 'Successfully cancelled.',
-      m5: 'Failed to cancel.',
-      m6: 'Do you really want to cancel the authorization the official account?',
-      m7: 'Do you really want to cancel the authorization the master official account?'
-    }
-  },
   tradeMng: { // 交易管理
     crumbs: {
-      L1: 'Transaction Management'
+      L1: 'Transaction Management',
+      L2: 'Transaction detail',
+      L3: 'Refund detail',
     },
     panel: {
       time: 'Time Range',
-      range: 'select date range',
       today: 'Today',
       yestoday: 'Yesterday',
       near7: 'Last 7 days',
@@ -166,10 +127,12 @@ exports.default = {
       }
     },
     table: {
-      total: 'Total Amount',
-      realrec: 'Payment Real Received',
-      succ: 'Success',
-      undoNum: 'Refund',
+      totalAmount: 'Total Amount',
+      totalNum: 'Total Number',
+      succAmount: 'Success Amount',
+      succ: 'Success Number',
+      refundMount: 'Refund Amount',
+      refundNum: 'Refund Number',
       bi: 'times',
       undo: 'Refund The Details',
       shopName: 'Shop Name',
@@ -177,6 +140,7 @@ exports.default = {
       all: 'All',
       colWay: 'Transaction Type',
       wechatCollect: 'Collect by Wechat',
+      alipay: 'Alipay',
       tradeType: 'Type',
       tradeTime: 'Time',
       tradeAmount: 'Amount',
@@ -185,6 +149,8 @@ exports.default = {
       sNum: 'Transaction ID',
       op: 'Operation',
       cancel: 'Refund',
+      more: 'More',
+      detail: 'Details',
       download: 'Download Receipt',
       ac: 'Actually Collected', // 实收
       red: 'paid from the red envelope', // 商家红包
@@ -194,8 +160,25 @@ exports.default = {
         downTrade: 'Download The Transaction Summary'
       }
     },
+    detail: {
+      ammount1: 'Transaction amount',
+      ammount2: 'Refund amount',
+      origin: 'Source of consumers',
+      time: 'Refund time',
+      syssn1: 'Transaction ID',
+      syssn2: 'Original ID',
+      syssn3: 'Refund ID',
+      store: 'Store name',
+      account: 'Operating Account',
+      history: 'Refund History'
+    },
     dialog: {
-      d1: 'If you want to refund the payment, please operate it after entering the password of the account to confirm'
+      d1: 'This action cannot be undone, do you want to refund?',
+      d2: 'Confirm',
+      d3: 'Success',
+      d4: 'Fail',
+      d5: 'Password',
+      d6: 'refund'
     },
     msg: {
       m1: 'Transaction ID must be figures!',
@@ -208,7 +191,12 @@ exports.default = {
       m8: 'Please enter the Transaction ID.',
       m9: "Please enter the account's password.",
       m10: 'invalidate password.',
-      m11: 'You don’t have the authority to proceed.'
+      m11: 'You don’t have the authority to proceed.',
+      m12: 'Out of range',
+      m13: 'Refund failed, please contact us for assistance.',
+      m14: 'Max. Refund Amount',
+      m15: 'Please enter the refund amount',
+      m16: 'Please enter a valid refund amount'
     }
   },
   home: { // 首页概览
@@ -237,7 +225,6 @@ exports.default = {
     },
     panel: {
       time: 'Time Range',
-      type: 'Type',
       today: 'Today',
       yestoday: 'Yesterday',
       near7: 'Last 7 days',

@@ -7,7 +7,6 @@ exports.default = {
     index: '首页概览',
     settlement: '清算管理',
     tradeMng: '交易管理',
-    publicAuth: '公众号授权',
     shopMng: '账户信息',
     cashMng: '收银员管理',
     setup: '设置',
@@ -20,6 +19,7 @@ exports.default = {
     confirm: '确 认',
     tip: '提示',
     all: '全部',
+    none: '无',
     netError: '网络错误',
     loading: '拼命加载中',
     modSucc: '修改成功',
@@ -97,53 +97,14 @@ exports.default = {
       noticeTip: '删除分店前建议先终止该分店正在进行的会员营销活动。'
     }
   },
-  pubSignal: { // 公众号授权
-    crumbs: {
-      authorizedPS: '已授权公众号',
-      unauthorized: '您还没有关联您的微信账号，请关联您的微信账号以便我们能为您提供更多服务。'
-    },
-    title: {
-      psInfo: '公众号基本信息',
-      bind: '绑定微信公众号'
-    },
-    panel: {
-      avatar: '头像',
-      name: '名称',
-      id: 'ID (微信号)',
-      psType: '公众号类型',
-      authType: '认证类型',
-      wechatScan: '使用绑定的个人微信号扫描',
-      adminAuthConfirm: '公众号管理员授权确认',
-      authSucc: '授权成功，运营公众号！',
-      btn: {
-        subAuthMng: '分店授权管理',
-        deAuth: '解除账户授权',
-        dePrimeAuth: '解除总账户授权',
-        freeAdd: '免费添加微信公众号',
-        releaseAuth: '解除授权'
-      }
-    },
-    dialog: {
-      m1: '请勾选需要授权的分店',
-      all: '全选'
-    },
-    msg: {
-      m1: '获取公众号信息失败',
-      m2: '获取商户id失败',
-      m3: '获取连锁店铺失败',
-      m4: '解除成功',
-      m5: '解除失败',
-      m6: '请确认是否要解除账户授权?',
-      m7: '请确认是否要解除总账户公众号?'
-    }
-  },
   tradeMng: { // 交易管理
     crumbs: {
-      L1: '交易管理'
+      L1: '交易管理',
+      L2: '交易详情',
+      L3: '退款详情',
     },
     panel: {
       time: '时间',
-      range: '选择日期范围',
       today: '今天 ',
       yestoday: '昨天',
       near7: '近7天',
@@ -162,10 +123,12 @@ exports.default = {
       }
     },
     table: {
-      total: '交易总金额',
-      realrec: '交易实收',
+      totalAmount: '交易总金额',
+      totalNum: '交易总笔数',
+      succAmount: '成功交易金额',
       succ: '成功交易笔数',
-      undoNum: '撤销笔数',
+      refundMount: '退款金额',
+      refundNum: '退款笔数',
       bi: '笔',
       undo: '撤销明细',
       shopName: '店铺名称',
@@ -173,6 +136,7 @@ exports.default = {
       all: '全部',
       colWay: '收款方式',
       wechatCollect: '微信收款',
+      alipay: '支付宝收款',
       tradeType: '交易类型',
       tradeTime: '交易时间',
       tradeAmount: '交易金额',
@@ -180,7 +144,9 @@ exports.default = {
       redpacket: '红包优惠',
       sNum: '流水号',
       op: '操作',
-      cancel: '撤销',
+      cancel: '退款',
+      more: '更多',
+      detail: '查看详情',
       download: '下载小票',
       ac: '实收', // 实收
       red: '商家红包', // 商家红包
@@ -190,8 +156,25 @@ exports.default = {
         downTrade: '下载交易汇总'
       }
     },
+    detail: {
+      ammount1: '订单金额',
+      ammount2: '退款金额',
+      origin: '消费者来源',
+      time: '退款时间',
+      syssn1: '订单流水号',
+      syssn2: '原订单流水号',
+      syssn3: '退款流水号',
+      store: '交易门店',
+      account: '操作账户',
+      history: '退款历史'
+    },
     dialog: {
-      d1: '若要撤销交易，请输入账户登录密码以确认操作'
+      d1: '操作一旦确认将无法撤回，是否确认？',
+      d2: '确认退款',
+      d3: '成功',
+      d4: '失败',
+      d5: '密码',
+      d6: '退款'
     },
     msg: {
       m1: '流水号必须为数字',
@@ -204,7 +187,12 @@ exports.default = {
       m8: '请输入流水号',
       m9: '请输入账户密码',
       m10: '密码不正确',
-      m11: '您暂无权限执行此操作'
+      m11: '您暂无权限执行此操作',
+      m12: '超出可退范围',
+      m13: '发起退款失败，请联系客服查询失败原因，或采用其他方式给消费者退款',
+      m14: '最大可退款金额',
+      m15: '请输入退款金额',
+      m16: '请输入有效退款金额'
     }
   },
   home: { // 首页概览

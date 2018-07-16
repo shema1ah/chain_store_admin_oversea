@@ -11,7 +11,6 @@ exports.default = {
     index: 'トップ',
     settlement: '勘定書管理',
     tradeMng: '取引管理',
-    publicAuth: '公式アカウント',
     shopMng: 'アカウント',
     cashMng: 'キャッシャー管理',
     setup: '設定',
@@ -24,6 +23,7 @@ exports.default = {
     confirm: '確 認',
     tip: 'ヒント',
     all: '全部',
+    none: 'ない',
     netError: 'ネットワークエラー',
     loading: '一生懸命ローディング中です',
     modSucc: '変更しました!',
@@ -101,53 +101,14 @@ exports.default = {
       noticeTip: '支店を削除する前に当該支店の進行中の会員マーケティングイベントを中止させるようお薦めします'
     }
   },
-  pubSignal: { // 公众号授权
-    crumbs: {
-      authorizedPS: '授権済みの公式アカウント',
-      unauthorized: '未だWechatアカウントに関連していません。こちらより更によいサービスを提供させていただくため、先にWechatアカウントを関連してください。'
-    },
-    title: {
-      psInfo: '公式アカウントの基本情報',
-      bind: 'Wechat公式アカウントにバンディングします'
-    },
-    panel: {
-      avatar: '顔写真',
-      name: '名前',
-      id: 'ID(Wechatアカウント)',
-      psType: '公式アカウントの種類',
-      authType: '認証種類',
-      wechatScan: 'バンディングされた個人のWechatアカウントでスキャンします',
-      adminAuthConfirm: '公式アカウント管理者から授権して確認します',
-      authSucc: '授権に成功しました、公式アカウントを運営しましょう！',
-      btn: {
-        subAuthMng: '支店への授権管理',
-        deAuth: 'アカウントの授権を解除します',
-        dePrimeAuth: 'マスターアカウントの授権を解除します',
-        freeAdd: '無料でWechat公式アカウントを追加します',
-        releaseAuth: '授権を解除します'
-      }
-    },
-    dialog: {
-      m1: '授権する支店の前にチェックを入れてください。',
-      all: '全て選択'
-    },
-    msg: {
-      m1: '公式アカウント情報を取得に失敗しました',
-      m2: '商店IDを取得に失敗しました',
-      m3: 'チェーン店を取得に失敗しました',
-      m4: '解除に成功しました',
-      m5: '解除に失敗しました',
-      m6: '本当にアカウントへの授権を解除しますか？',
-      m7: '本当にマスター公式アカウントへの授権を解除しますか？'
-    }
-  },
   tradeMng: {
     crumbs: {
-      L1: '取引管理'
+      L1: '取引管理',
+      L2: '取引明細',
+      L3: '払い戻す',
     },
     panel: {
       time: '日付',
-      range: '日付の範囲を選択してください',
       today: '今日',
       yestoday: '昨日',
       near7: '最近の７日間',
@@ -166,10 +127,12 @@ exports.default = {
       }
     },
     table: {
-      total: '取引総額',
-      realrec: '実際の集金額',
-      succ: '取引き数',
-      undoNum: '取消し数',
+      totalAmount: '取引総金額',
+      totalNum: '取引総筆数',
+      succAmount: '成功取引金額',
+      succ: '成功取引き数',
+      refundMount: '返金金額',
+      refundNum: '返金筆数',
       bi: '',
       undo: '取消',
       shopName: '店舗名',
@@ -177,6 +140,7 @@ exports.default = {
       all: '全部',
       colWay: '集金方式',
       wechatCollect: 'Wechatで集金します',
+      alipay: '宝を支払います',
       tradeType: '取引種類',
       tradeTime: '取引時間',
       tradeAmount: '取引金額',
@@ -184,7 +148,9 @@ exports.default = {
       redpacket: ' 紅包（ホンバオ）割引', // 红包优惠
       sNum: 'シリアル番号',
       op: '操作',
-      cancel: '取消',
+      cancel: '返金',
+      more: 'もっと',
+      detail: '詳細確認',
       download: 'レシート',
       ac: '', // 实收
       red: '商店の 紅包', // 商家红包
@@ -194,8 +160,25 @@ exports.default = {
         downTrade: '取引要約をダウンロードします'
       }
     },
+    detail: {
+      ammount1: '取引金額',
+      ammount2: '払い戻す金額',
+      origin: 'ユーザーの地域',
+      time: '払い戻す時間',
+      syssn1: '取引番号',
+      syssn2: '元取引番号',
+      syssn3: '払い戻す取引番号',
+      store: '店舗',
+      account: 'オペレータアカウント',
+      history: '払い戻し履歴'
+    },
     dialog: {
-      d1: '取引を取消したい場合、アカウントのログインパスワードを入力し、確認してから操作してください'
+      d1: 'この動作が取り返しのつかない、払い戻すことができたい？',
+      d2: '確認',
+      d3: '成功',
+      d4: '失敗',
+      d5: 'パスワード',
+      d6: '返金'
     },
     msg: {
       m1: 'シリアル番号は必ず数字です！',
@@ -208,7 +191,12 @@ exports.default = {
       m8: 'シリアル番号を入力してください',
       m9: 'アカウントを入力してください',
       m10: 'パスワードが正しくありません',
-      m11: 'この操作を実行する権限がありません'
+      m11: 'この操作を実行する権限がありません',
+      m12: '間違い金額',
+      m13: '払い戻すことができません。お問い合わせしでください。',
+      m14: '最高な払い戻す金額',
+      m15: '返金金額を入力してください',
+      m16: '有効な返金金額を入力してください'
     }
   },
   home: { // 首页概览
@@ -237,7 +225,6 @@ exports.default = {
     },
     panel: {
       time: '日付',
-      type: 'タイプ',
       today: '今日',
       yestoday: '昨日',
       near7: '最近の７日間',

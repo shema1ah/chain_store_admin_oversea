@@ -7,7 +7,6 @@ exports.default = {
     index: '首頁概覽',
     settlement: '清算管理',
     tradeMng: '交易管理',
-    publicAuth: '公眾號授權',
     shopMng: '賬戶信息',
     cashMng: '收銀員管理',
     setup: '設置',
@@ -20,6 +19,7 @@ exports.default = {
     confirm: '確 認',
     tip: '提示',
     all: '全部',
+    none: '無',
     netError: '網絡錯誤',
     loading: '拼命加載中',
     modSucc: '修改成功',
@@ -97,49 +97,11 @@ exports.default = {
       noticeTip: '刪除分店前建議先終止該分店正在進行的會員營銷活動。'
     }
   },
-  pubSignal: { // 公众号授权
-    crumbs: {
-      authorizedPS: '已授權公眾號',
-      unauthorized: '您還沒有關聯您的微信賬號，請關聯您的微信賬號以便我們能為您提供更多服務。'
-    },
-    title: {
-      psInfo: '公眾號基本信息',
-      bind: '綁定微信公眾號'
-    },
-    panel: {
-      avatar: '頭像',
-      name: '名稱',
-      id: 'ID (微信號)',
-      psType: '公眾號類型',
-      authType: '認證類型',
-      wechatScan: '使用綁定的個人微信號掃描',
-      adminAuthConfirm: '公眾號管理員授權確認',
-      authSucc: '授權成功，運營公眾號！',
-      btn: {
-        subAuthMng: '分店授權管理',
-        deAuth: '解除賬戶授權',
-        dePrimeAuth: '解除總賬戶授權',
-        freeAdd: '免費添加微信公眾號',
-        releaseAuth: '解除授權'
-      }
-    },
-    dialog: {
-      m1: '請勾選需要授權的分店',
-      all: '全選'
-    },
-    msg: {
-      m1: '獲取公眾號信息失敗',
-      m2: '獲取商戶ID失敗',
-      m3: '獲取連鎖店鋪失敗',
-      m4: '解除成功',
-      m5: '解除失敗',
-      m6: '請確認是否要解除賬戶授權?',
-      m7: '請確認是否要解除總賬戶公眾號?'
-    }
-  },
   tradeMng: { // 交易管理
     crumbs: {
-      L1: '交易管理'
+      L1: '交易管理',
+      L2: '交易詳情',
+      L3: '退款詳情',
     },
     panel: {
       time: '時間',
@@ -162,10 +124,12 @@ exports.default = {
       }
     },
     table: {
-      total: '交易總金額',
-      realrec: '交易實收',
+      totalAmount: '交易總金額',
+      totalNum: '交易總次數',
+      succAmount: '成功交易金額',
       succ: '成功交易次數',
-      undoNum: '撤銷次數',
+      refundMount: '退款金額',
+      refundNum: '退款次數',
       bi: '次',
       undo: '撤銷詳情',
       shopName: '店鋪名稱',
@@ -173,6 +137,7 @@ exports.default = {
       all: '全部',
       colWay: '收款方式',
       wechatCollect: '微信收款',
+      alipay: '支付寶收款',
       tradeType: '交易類型',
       tradeTime: '交易時間',
       tradeAmount: '交易金額',
@@ -180,7 +145,9 @@ exports.default = {
       redpacket: '紅包優惠',
       sNum: '序列號',
       op: '操作',
-      cancel: '撤銷',
+      cancel: '退款',
+      more: '更多',
+      detail: '查看詳情',
       download: '下載電子小票',
       ac: '實收', // 实收
       red: '商家紅包', // 商家红包
@@ -190,8 +157,25 @@ exports.default = {
         downTrade: '下載交易匯總'
       }
     },
+    detail: {
+      ammount1: '訂單金額',
+      ammount2: '退款金額',
+      origin: '消費者來源',
+      time: '退款時間',
+      syssn1: '訂單流水號',
+      syssn2: '原訂單流水號',
+      syssn3: '退款流水號',
+      store: '交易店舖',
+      account: '操作帳戶',
+      history: '退款歷史'
+    },
     dialog: {
-      d1: '若要撤銷交易，請輸入賬戶登錄密碼以確認操作'
+      d1: '操作後不可撤回，是否確認？',
+      d2: '確認退款',
+      d3: '成功',
+      d4: '失敗',
+      d5: '密碼',
+      d6: '退款'
     },
     msg: {
       m1: '商戶單號必須為數字',
@@ -204,7 +188,12 @@ exports.default = {
       m8: '請輸入序列號',
       m9: '請輸入賬戶密碼',
       m10: '密碼不正確',
-      m11: '您暫無權限執行此操作'
+      m11: '您暫無權限執行此操作',
+      m12: '超過可退款金額',
+      m13: '退款失敗，請聯繫我們查詢原因',
+      m14: '最大可退款金額',
+      m15: '請輸入退款金額',
+      m16: '請輸入有效退款金額'
     }
   },
   home: { // 首页概览
