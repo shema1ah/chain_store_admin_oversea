@@ -3,6 +3,7 @@
     <div class="banner_wrapper">
       <el-breadcrumb separator=">">
         <el-breadcrumb-item>{{$t('setting.crumbs.L1')}}</el-breadcrumb-item>
+        <el-breadcrumb-item>{{$t('setting.crumbs.L2')}}</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
     <div class="panel">

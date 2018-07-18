@@ -7,9 +7,13 @@ exports.default = {
     index: '首頁概覽',
     settlement: '清算管理',
     tradeMng: '交易管理',
+    tradeAssign: '交易流水',
+    refundCheck: '退款審核',
     shopMng: '賬戶信息',
     cashMng: '收銀員管理',
     setup: '設置',
+    passSet: '管理密碼設置',
+    emailSet: '電子郵件設置',
     contact: '聯繫我們'
   },
   common: {
@@ -97,11 +101,12 @@ exports.default = {
       noticeTip: '刪除分店前建議先終止該分店正在進行的會員營銷活動。'
     }
   },
-  tradeMng: { // 交易管理
+  tradeMng: { // 交易流水
     crumbs: {
       L1: '交易管理',
       L2: '交易詳情',
       L3: '退款詳情',
+      L4: '交易流水'
     },
     panel: {
       time: '時間',
@@ -196,6 +201,48 @@ exports.default = {
       m16: '請輸入有效退款金額'
     }
   },
+  refundCheck: { // 退款审核
+    crumbs: {
+      L1: '交易管理',
+      L2: '退款審核'
+    },
+    panel: {
+      time: '申請時間',
+      shopName: '交易店舖',
+      operator: '收銀員',
+      oNUm: '原訂單流水號',
+      tip: '請輸入原訂單流水號',
+      btn: {
+        query: '查詢',
+        reset: '重置'
+      }
+    },
+    table: {
+      applyAmount: '申請賬戶',
+      tradeType: '交易類型',
+      tradeTime: '交易時間',
+      refundMount: '退款金額',
+      tradeAmount: '交易金額',
+      sNum: '商戶單號',
+      checkState: '審核狀態',
+      waiting: '等待審核',
+      approved: '已批准',
+      rejected: '已拒絕',
+      op: '操作',
+      approve: '批准',
+      reject: '拒絕'
+    },
+    dialog: {
+      d1: '操作後不可撤回，是否確認？',
+      d2: '確認批准',
+      d3: '確認拒絕'
+    },
+    msg: {
+      m1: '管理密碼',
+      m2: '請輸入管理密碼',
+      m3: '操作成功'
+    }
+  },
   home: { // 首页概览
     crumbs: {
       L1: '首頁概覽'
@@ -226,7 +273,6 @@ exports.default = {
       yestoday: '昨天',
       near7: '近7天',
       near30: '近30天',
-      name: '賬號',
       type: '類型',
       btn: {
         query: '查詢',
@@ -235,6 +281,9 @@ exports.default = {
     },
     table: {
       settleTime: '清算時間',
+      settleType: '清算類型',
+      name: '帳號',
+      amount: '開戶名',
       currency: '幣種',
       total: '交易總額',
       charge: '手續費',
@@ -266,7 +315,8 @@ exports.default = {
   },
   setting: { // 邮箱设置页
     crumbs: {
-      L1: '設置'
+      L1: '設置',
+      L2: '電子郵件設置'
     },
     panel: {
       mailSetup: '電子郵件設置',

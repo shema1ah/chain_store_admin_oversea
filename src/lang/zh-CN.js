@@ -7,9 +7,13 @@ exports.default = {
     index: '首页概览',
     settlement: '清算管理',
     tradeMng: '交易管理',
+    tradeAssign: '交易流水',
+    refundCheck: '退款审核',
     shopMng: '账户信息',
     cashMng: '收银员管理',
     setup: '设置',
+    passSet: '管理密码设置',
+    emailSet: '邮箱设置',
     contact: '客服'
   },
   common: {
@@ -97,14 +101,16 @@ exports.default = {
       noticeTip: '删除分店前建议先终止该分店正在进行的会员营销活动。'
     }
   },
-  tradeMng: { // 交易管理
+  tradeMng: { // 交易流水
     crumbs: {
       L1: '交易管理',
       L2: '交易详情',
       L3: '退款详情',
+      L4: '交易流水'
     },
     panel: {
       time: '时间',
+      range: '选择日期范围',
       today: '今天 ',
       yestoday: '昨天',
       near7: '近7天',
@@ -195,6 +201,48 @@ exports.default = {
       m16: '请输入有效退款金额'
     }
   },
+  refundCheck: { // 退款审核
+    crumbs: {
+      L1: '交易管理',
+      L2: '退款审核'
+    },
+    panel: {
+      time: '申请时间',
+      shopName: '交易门店',
+      operator: '收银员',
+      oNUm: '原订单流水号',
+      tip: '请输入原订单流水号',
+      btn: {
+        query: '查询',
+        reset: '重置'
+      }
+    },
+    table: {
+      applyAmount: '申请账户',
+      tradeType: '交易类型',
+      tradeTime: '交易时间',
+      refundMount: '退款金额',
+      tradeAmount: '交易金额',
+      sNum: '流水号',
+      checkState: '审核状态',
+      waiting: '等待审核',
+      approved: '已批准',
+      rejected: '已拒绝',
+      op: '操作',
+      approve: '批准',
+      reject: '拒绝'
+    },
+    dialog: {
+      d1: '操作一旦确认将无法撤回，是否确认？',
+      d2: '确认批准',
+      d3: '确认拒绝'
+    },
+    msg: {
+      m1: '管理密码',
+      m2: '请输入管理密码',
+      m3: '操作成功'
+    }
+  },
   home: { // 首页概览
     crumbs: {
       L1: '首页概览'
@@ -225,7 +273,6 @@ exports.default = {
       yestoday: '昨天',
       near7: '近7天',
       near30: '近30天',
-      name: '账号',
       type: '类型',
       btn: {
         query: '查询',
@@ -234,6 +281,9 @@ exports.default = {
     },
     table: {
       settleTime: '清算时间',
+      settleType: '清算类型',
+      name: '账号',
+      amount: '开户名',
       currency: '币种',
       total: '交易总额',
       charge: '手续费',
@@ -265,7 +315,8 @@ exports.default = {
   },
   setting: { // 邮箱设置页
     crumbs: {
-      L1: '设置'
+      L1: '设置',
+      L2: '邮箱设置'
     },
     panel: {
       mailSetup: '邮箱设置',
@@ -284,6 +335,36 @@ exports.default = {
     },
     tip: {
       m1: '删除最后一个邮箱会关掉邮件报表的功能，确认删除吗？'
+    }
+  },
+  passSet: { // 管理密码设置
+    crumbs: {
+      L1: '设置',
+      L2: '管理密码设置'
+    },
+    panel: {
+      pass: '管理密码',
+      explain: '用途：设置后，隔日退款审批 将通过输入管理密码完成确认验证。',
+      states1: '未设置',
+      states2: '已设置',
+      bt1: '设置',
+      bt2: '重置',
+      bt3: '保存',
+      safe: '安全验证',
+      reEnter: '再次输入',
+      originPass: '原管理密码',
+      newPass: '新管理密码'
+    },
+    msg: {
+      m1: '请输入登录密码',
+      m2: '请输入',
+      m3: '请输入 6～20 位数字或字母',
+      m5: '请输入原管理密码',
+      m6: '请输入新管理密码',
+      m7: '请再次输入'
+    },
+    tip: {
+      m1: '忘记原密码？ 请联系客服处理'
     }
   },
   cashMng: { // 收银员管理

@@ -6,10 +6,23 @@
     </div>
     <ul class="left-nav">
       <li v-for="nav in navs">
-        <router-link class="sidebar-nav__item" :to="router('main/' + nav.pathname)">{{ nav.val }}</router-link>
+        <router-link class="sidebar-nav__item" v-if="nav.pathname" :to="router('main/' + nav.pathname)">{{ nav.val }}</router-link>
+        <a v-else class="sidebar-nav__item" @click="toggle" :class="{'dark': $route.fullPath.indexOf(nav.subnav) > -1}">
+          {{ nav.val }}
+          <i v-if="nav.sub" class="icon-down_arrow" :class="{'icon-down_arrow__rotate': $route.fullPath.indexOf(nav.subnav) === -1}"></i>
+        </a>
+        <transition name="collpase">
+          <ul v-if="nav.sub" v-show="$route.fullPath.indexOf(nav.subnav) > -1" class="collpase" :class="{'dark': $route.fullPath.indexOf(nav.subnav) > -1}">
+            <li v-for="ls in nav.sub">
+              <router-link class="sidebar-nav__item sidebar-nav__subitem" :to="router('main/' + ls.pathname)">
+                {{ ls.val }}
+              </router-link>
+            </li>
+          </ul>
+        </transition>
       </li>
     </ul>
-    <div class="copyright_wrapper" v-if="role.haiwai">
+    <div class="copyright_wrapper">
       <el-select v-model="lang"  icon="caret-bottom" @change="switchLanguage" size="small" popperClass="popperBg" style="width:80%;">
         <el-option v-for="item in langLists" :key="item.value" :label="item.label" :value="item.value"></el-option>
       </el-select>
@@ -54,10 +67,21 @@
         return `/${router}`;
       },
 
+      toggle(e) {
+        let ev = e.target.nextElementSibling || {};
+        if(ev.style.display === 'none') {
+          e.target.lastElementChild.className = 'icon-down_arrow';
+          ev.style.display = '';
+        }else {
+          e.target.lastElementChild.className = 'icon-down_arrow icon-down_arrow__rotate';
+          ev.style.display = 'none';
+        }
+      },
+
       getNav() {
         switch (this.role.country) {
           case 'HK':
-            if(this.role.single) { // 香港单店
+            if(this.role.single) { // 香港单店,无收银员管理
               if(this.role.isCashier) { // 是收营员
                 this.navs = [
                   {
@@ -81,15 +105,29 @@
                   },
                   {
                     val: this.$t('nav.tradeMng'), // 交易管理
-                    pathname: 'transctl'
+                    subnav: 'trans',
+                    sub: [{
+                      val: this.$t('nav.tradeAssign'), // 交易流水
+                      pathname: 'transctl'
+                    }, {
+                      val: this.$t('nav.refundCheck'), // 退款审核
+                      pathname: 'transCheck'
+                    }]
                   },
                   {
                     val: this.$t('nav.shopMng'), // 账户信息
                     pathname: 'singlemanage'
                   },
                   {
-                    val: this.$t('nav.setup'), // 邮件设置
-                    pathname: 'settings'
+                    val: this.$t('nav.setup'), // 设置
+                    subnav: 'Setting',
+                    sub: [{
+                      val: this.$t('nav.emailSet'), // 邮箱设置
+                      pathname: 'emailSetting'
+                    }, {
+                      val: this.$t('nav.passSet'), // 管理密码设置
+                      pathname: 'passSetting'
+                    }]
                   },
                   {
                     val: this.$t('nav.contact'), // 客服
@@ -105,15 +143,29 @@
                 },
                 {
                   val: this.$t('nav.tradeMng'), // 交易管理
-                  pathname: 'transctl'
+                  subnav: 'trans',
+                  sub: [{
+                    val: this.$t('nav.tradeAssign'), // 交易流水
+                    pathname: 'transctl'
+                  }, {
+                    val: this.$t('nav.refundCheck'), // 退款审核
+                    pathname: 'transCheck'
+                  }]
                 },
                 {
                   val: this.$t('nav.shopMng'), // 账户信息
                   pathname: 'chainmanage'
                 },
                 {
-                  val: this.$t('nav.setup'), // 邮件设置
-                  pathname: 'settings'
+                  val: this.$t('nav.setup'), // 设置
+                  subnav: 'Setting',
+                  sub: [{
+                    val: this.$t('nav.emailSet'), // 邮箱设置
+                    pathname: 'emailSetting'
+                  }, {
+                    val: this.$t('nav.passSet'), // 管理密码设置
+                    pathname: 'passSetting'
+                  }]
                 },
                 {
                   val: this.$t('nav.contact'), // 客服
@@ -155,7 +207,14 @@
                   },
                   {
                     val: this.$t('nav.tradeMng'), // 交易管理
-                    pathname: 'transctl'
+                    subnav: 'trans',
+                    sub: [{
+                      val: this.$t('nav.tradeAssign'), // 交易流水
+                      pathname: 'transctl'
+                    }, {
+                      val: this.$t('nav.refundCheck'), // 退款审核
+                      pathname: 'transCheck'
+                    }]
                   },
                   {
                     val: this.$t('nav.shopMng'), // 账户信息
@@ -166,8 +225,15 @@
                     pathname: 'cashiermanage'
                   },
                   {
-                    val: this.$t('nav.setup'), // 邮件设置
-                    pathname: 'settings'
+                    val: this.$t('nav.setup'), // 设置
+                    subnav: 'Setting',
+                    sub: [{
+                      val: this.$t('nav.emailSet'), // 邮箱设置
+                      pathname: 'emailSetting'
+                    }, {
+                      val: this.$t('nav.passSet'), // 管理密码设置
+                      pathname: 'passSetting'
+                    }]
                   },
                   {
                     val: this.$t('nav.contact'), // 客服
@@ -183,15 +249,29 @@
                 },
                 {
                   val: this.$t('nav.tradeMng'), // 交易管理
-                  pathname: 'transctl'
+                  subnav: 'trans',
+                  sub: [{
+                    val: this.$t('nav.tradeAssign'), // 交易流水
+                    pathname: 'transctl'
+                  }, {
+                    val: this.$t('nav.refundCheck'), // 退款审核
+                    pathname: 'transCheck'
+                  }]
                 },
                 {
                   val: this.$t('nav.shopMng'), // 账户信息
                   pathname: 'chainmanage'
                 },
                 {
-                  val: this.$t('nav.setup'), // 邮件设置
-                  pathname: 'settings'
+                  val: this.$t('nav.setup'), // 设置
+                  subnav: 'Setting',
+                  sub: [{
+                    val: this.$t('nav.emailSet'), // 邮箱设置
+                    pathname: 'emailSetting'
+                  }, {
+                    val: this.$t('nav.passSet'), // 管理密码设置
+                    pathname: 'passSetting'
+                  }]
                 },
                 {
                   val: this.$t('nav.contact'), // 客服
@@ -239,8 +319,15 @@
                     pathname: 'cashiermanage'
                   },
                   {
-                    val: this.$t('nav.setup'), // 邮件设置
-                    pathname: 'settings'
+                    val: this.$t('nav.setup'), // 设置
+                    subnav: 'Setting',
+                    sub: [{
+                      val: this.$t('nav.emailSet'), // 邮箱设置
+                      pathname: 'emailSetting'
+                    }, {
+                      val: this.$t('nav.passSet'), // 管理密码设置
+                      pathname: 'passSetting'
+                    }]
                   }
                 ];
               }
@@ -252,15 +339,29 @@
                 },
                 {
                   val: this.$t('nav.tradeMng'), // 交易管理
-                  pathname: 'transctl'
+                  subnav: 'trans',
+                  sub: [{
+                    val: this.$t('nav.tradeAssign'), // 交易流水
+                    pathname: 'transctl'
+                  }, {
+                    val: this.$t('nav.refundCheck'), // 退款审核
+                    pathname: 'transCheck'
+                  }]
                 },
                 {
                   val: this.$t('nav.shopMng'), // 账户信息
                   pathname: 'chainmanage'
                 },
                 {
-                  val: this.$t('nav.setup'), // 邮件设置
-                  pathname: 'settings'
+                  val: this.$t('nav.setup'), // 设置
+                  subnav: 'Setting',
+                  sub: [{
+                    val: this.$t('nav.emailSet'), // 邮箱设置
+                    pathname: 'emailSetting'
+                  }, {
+                    val: this.$t('nav.passSet'), // 管理密码设置
+                    pathname: 'passSetting'
+                  }]
                 }
               ];
             }

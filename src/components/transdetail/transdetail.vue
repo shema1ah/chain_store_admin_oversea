@@ -3,6 +3,7 @@
     <div class="banner_wrapper">
       <el-breadcrumb separator=">">
         <el-breadcrumb-item>{{$t('tradeMng.crumbs.L1')}}</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ path: '/main/transctl' }" replace>{{$t('tradeMng.crumbs.L4')}}</el-breadcrumb-item>
         <el-breadcrumb-item>{{type === 'refund'?$t('tradeMng.crumbs.L3'):$t('tradeMng.crumbs.L2')}}</el-breadcrumb-item>
       </el-breadcrumb>
     </div>

@@ -11,9 +11,13 @@ exports.default = {
     index: 'Home',
     settlement: 'Settlement Mgmt',
     tradeMng: 'Transaction Mgmt',
+    tradeAssign: 'Trading Flow',
+    refundCheck: ' Refund Review',
     shopMng: 'Account Info',
     cashMng: 'Cashier Mgmt',
     setup: 'Settings',
+    passSet: 'Mgmt Pass Settings',
+    emailSet: 'Email Settings',
     contact: 'Contact Us'
   },
   common: {
@@ -101,14 +105,16 @@ exports.default = {
       noticeTip: 'Always remember to turn off the branch shop promotions before delete the branch.'
     }
   },
-  tradeMng: { // 交易管理
+  tradeMng: { // 交易流水
     crumbs: {
       L1: 'Transaction Management',
       L2: 'Transaction detail',
       L3: 'Refund detail',
+      L4: 'Trading Flow',
     },
     panel: {
       time: 'Time Range',
+      range: 'select date range',
       today: 'Today',
       yestoday: 'Yesterday',
       near7: 'Last 7 days',
@@ -199,6 +205,48 @@ exports.default = {
       m16: 'Please enter a valid refund amount'
     }
   },
+  refundCheck: { // 退款审核
+    crumbs: {
+      L1: 'Transaction Management',
+      L2: 'Refund Review'
+    },
+    panel: {
+      time: 'application time',
+      shopName: 'Store name',
+      operator: 'Cashier',
+      oNUm: 'Original ID',
+      tip: 'Please enter the Original ID',
+      btn: {
+        query: 'Search',
+        reset: 'Reset'
+      }
+    },
+    table: {
+      applyAmount: 'Account Application',
+      tradeType: 'Type',
+      tradeTime: 'Time',
+      refundMount: 'Refund amount',
+      tradeAmount: 'Amount',
+      sNum: 'Transaction ID',
+      checkState: 'Approval Status',
+      waiting: 'Moderated',
+      approved: 'Approved',
+      rejected: 'rejected',
+      op: 'Operation',
+      approve: 'Approve',
+      reject: 'Refuse'
+    },
+    dialog: {
+      d1: 'Once the operation is confirmed, it will not be withdrawn. Is it confirmed?',
+      d2: 'Confirmation of approval',
+      d3: 'Confirm rejection'
+    },
+    msg: {
+      m1: 'Management password',
+      m2: 'Please enter the management password',
+      m3: 'Successful operation'
+    }
+  },
   home: { // 首页概览
     crumbs: {
       L1: 'Home'
@@ -229,14 +277,17 @@ exports.default = {
       yestoday: 'Yesterday',
       near7: 'Last 7 days',
       near30: 'Last 30 days',
-      name: 'Account',
+      type: 'Type',
       btn: {
         query: 'Search',
         reset: 'Reset'
       }
     },
     table: {
-      settleTime: 'Settleme Time',
+      settleTime: 'Settlement Time',
+      settleType: 'Settlement Type',
+      name: 'Account',
+      amount: 'Account Name',
       currency: 'Currency',
       total: 'Total Amount',
       charge: 'Fee',
@@ -268,7 +319,8 @@ exports.default = {
   },
   setting: { // 邮箱设置页
     crumbs: {
-      L1: 'Settings'
+      L1: 'Settings',
+      L2: 'Email Settings'
     },
     panel: {
       mailSetup: 'Email settings',

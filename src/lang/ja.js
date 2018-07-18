@@ -11,9 +11,13 @@ exports.default = {
     index: 'トップ',
     settlement: '勘定書管理',
     tradeMng: '取引管理',
+    tradeAssign: '取引流水',
+    refundCheck: ' 返金審査',
     shopMng: 'アカウント',
     cashMng: 'キャッシャー管理',
     setup: '設定',
+    passSet: 'パスワード管理設置',
+    emailSet: 'メール設定',
     contact: 'お問い合わせ',
   },
   common: {
@@ -106,9 +110,11 @@ exports.default = {
       L1: '取引管理',
       L2: '取引明細',
       L3: '払い戻す',
+      L4: '取引流水'
     },
     panel: {
       time: '日付',
+      range: '日付の範囲を選択してください',
       today: '今日',
       yestoday: '昨日',
       near7: '最近の７日間',
@@ -199,6 +205,48 @@ exports.default = {
       m16: '有効な返金金額を入力してください'
     }
   },
+  refundCheck: { // 退款审核
+    crumbs: {
+      L1: '取引管理',
+      L2: ' 返金審査'
+    },
+    panel: {
+      time: ' 申請時間',
+      shopName: '店舗',
+      operator: 'キャッシャー',
+      oNUm: '元取引番号',
+      tip: '元のオーダー流水番号を入力してください',
+      btn: {
+        query: '検索',
+        reset: 'リセット'
+      }
+    },
+    table: {
+      applyAmount: ' アカウント申請',
+      tradeType: '取引種類',
+      tradeTime: '取引時間',
+      refundMount: ' 返金金額',
+      tradeAmount: '取引金額',
+      sNum: 'シリアル番号',
+      checkState: '審査状態',
+      waiting: '審査待ち',
+      approved: '許可済み',
+      rejected: '拒絶済み',
+      op: '操作',
+      approve: '許可',
+      reject: '拒絶'
+    },
+    dialog: {
+      d1: 'この動作が取り返しのつかない、払い戻すことができたい？',
+      d2: '確認許可',
+      d3: '確認拒絶'
+    },
+    msg: {
+      m1: 'パスワード管理',
+      m2: 'パスワードを入力してください',
+      m3: '操作成功'
+    }
+  },
   home: { // 首页概览
     crumbs: {
       L1: 'トップページ'
@@ -229,7 +277,7 @@ exports.default = {
       yestoday: '昨日',
       near7: '最近の７日間',
       near30: '最近の３０日間',
-      name: 'アカウント',
+      type: 'タイプ',
       btn: {
         query: '検索',
         reset: 'リセット'
@@ -237,6 +285,9 @@ exports.default = {
     },
     table: {
       settleTime: '清算時間',
+      settleType: '清算タイプ',
+      name: 'アカウント',
+      amount: ' 開設した口座名称',
       currency: '通貨',
       total: '取引総額',
       charge: '手数料',
@@ -268,7 +319,8 @@ exports.default = {
   },
   setting: { // 邮箱设置页
     crumbs: {
-      L1: '設定'
+      L1: '設定',
+      L2: 'メール設定'
     },
     panel: {
       mailSetup: 'メール設定',
