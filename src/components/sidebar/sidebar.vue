@@ -22,8 +22,8 @@
         </transition>
       </li>
     </ul>
-    <div class="copyright_wrapper">
-      <el-select v-model="lang"  icon="caret-bottom" @change="switchLanguage" size="small" popperClass="popperBg" style="width:80%;">
+    <div class="copyright_wrapper" v-if="role.haiwai">
+    <el-select v-model="lang"  icon="caret-bottom" @change="switchLanguage" size="small" popperClass="popperBg" style="width:80%;">
         <el-option v-for="item in langLists" :key="item.value" :label="item.label" :value="item.value"></el-option>
       </el-select>
     </div>

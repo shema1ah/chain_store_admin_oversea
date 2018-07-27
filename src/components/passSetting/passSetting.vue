@@ -13,36 +13,61 @@
         </div>
       </div>
       <div class="panel-body">
-        <div class="myform_wrapper" :class="{'wrapper': lang === 'ja' || lang === 'en'}">
-          <el-form :rules="formrules" :model="form" ref="form">
-            <el-form-item :label="$t('cashMng.common.name')" prop="opname">
-              <el-input size="small" v-model.trim="form.opname" type="text" :placeholder="$t('cashMng.common.m5')" class="panel-select-input-220"></el-input>
-            </el-form-item>
-            <el-form-item :label="$t('cashMng.common.mobile')" prop="mobile">
-              <el-input size="small" v-model.trim="form.mobile" type="text" :placeholder="$t('cashMng.common.m6')" class="panel-select-input-220"></el-input>
-            </el-form-item>
-            <el-form-item :label="$t('cashMng.common.user')">
-              <span class="input-content">{{ shop.mobile }}</span>
-            </el-form-item>
-            <el-form-item :label="$t('cashMng.common.number')">
-              <span class="input-content">{{ opuid }}</span>
-            </el-form-item>
-            <el-form-item :label="$t('cashMng.common.password')" prop="password">
-              <el-input size="small" type="password" v-model.trim="form.password" :placeholder="$t('cashMng.common.m7')" class="panel-select-input-220"></el-input>
-            </el-form-item>
-            <div class="gray-explain">{{ $t('cashMng.common.tip1') }}</div>
-          </el-form>
-          <div class="divider"></div>
-          <div class="form-submit_wrapper">
-            <span class="cancel" @click="cancelCreat">{{ $t('cashMng.add.btn1') }}</span>
-            <div class="panel-btn__download panel-btn__download_detail" @click="submit">
-              <span class="el-icon-loading" v-if="loading1"></span>
-              <span v-else>{{ $t('cashMng.add.btn2') }}</span>
+        <div class="myform_wrapper">
+          <div class="gray-explain">{{$t('passSet.panel.explain')}}</div>
+          <div class="passState">
+            <div class="title">{{ $t('passSet.panel.passMsg') }}</div>
+            <div :class="role.passState ? 'reset' : 'no-set'">{{ role.passState ? $t('passSet.panel.states2') : $t('passSet.panel.states1') }}</div>
+            <div class="panel-header-btn panel-header-btn__fill" @click="changePass">
+              <span>{{ role.passState ? $t('passSet.panel.bt2') : $t('passSet.panel.bt1') }}</span>
             </div>
           </div>
         </div>
       </div>
     </div>
+    <el-dialog :title="$t('passSet.panel.title1')" :visible.sync="setPass" @close="handleClose('form1')" :custom-class="(lang === 'ja' || lang === 'en')?'mydialog haiwiadialog':'mydialog'" top="20%" :show-close="false">
+      <el-form :model="form1" :rules="form1rules" ref="form1" :label-width="(lang === 'ja' || lang === 'en')?'135px':'90px'">
+        <el-form-item :label="$t('passSet.panel.safe')" prop="pass">
+          <el-input v-model.trim="form1.pass" size="small" type="password" :placeholder="$t('passSet.msg.m1')"></el-input>
+        </el-form-item>
+        <el-form-item :label="$t('passSet.panel.pass')" prop="msgPass">
+          <el-input v-model.trim="form1.msgPass" size="small" type="password" :placeholder="$t('passSet.msg.m2')"></el-input>
+        </el-form-item>
+        <el-form-item :label="$t('passSet.panel.reEnter')" prop="rePass">
+          <el-input v-model="form1.rePass" size="small" type="password" :placeholder="$t('passSet.msg.m3')"></el-input>
+        </el-form-item>
+      </el-form>
+      <div class="divider"></div>
+      <div slot="footer" class="dialog-footer">
+        <div @click="setPass = false" class="cancel">{{ $t('common.cancel') }}</div>
+        <div @click="submit(1)" class="submit">
+          <span class="el-icon-loading" v-if="iconShow"></span>
+          <span v-else>{{ $t('common.confirm') }}</span>
+        </div>
+      </div>
+    </el-dialog>
+    <el-dialog :title="$t('passSet.panel.title2')" :visible.sync="resetPass" @close="handleClose('form2')" :custom-class="(lang === 'ja' || lang === 'en')?'mydialog haiwiadialog':'mydialog'" top="20%" :show-close="false">
+      <el-form :model="form2" :rules="form2rules" ref="form2" :label-width="(lang === 'ja' || lang === 'en')?'135px':'90px'">
+        <el-form-item :label="$t('passSet.panel.originPass')" prop="oldPass">
+          <el-input v-model.trim="form2.oldPass" size="small" type="password" :placeholder="$t('passSet.msg.m6')"></el-input>
+        </el-form-item>
+        <el-form-item :label="$t('passSet.panel.newPass')" prop="msgPass">
+          <el-input v-model.trim="form2.msgPass" size="small" type="password" :placeholder="$t('passSet.msg.m7')"></el-input>
+        </el-form-item>
+        <el-form-item :label="$t('passSet.panel.reEnter')" prop="rePass">
+          <el-input v-model="form2.rePass" size="small" type="password" :placeholder="$t('passSet.msg.m8')"></el-input>
+        </el-form-item>
+        <div class="gray-explain" style="margin-left: 0; padding-top: 10px;">{{ $t('passSet.tip.m1') }}</div>
+      </el-form>
+      <div class="divider"></div>
+      <div slot="footer" class="dialog-footer">
+        <div @click="resetPass = false" class="cancel">{{ $t('common.cancel') }}</div>
+        <div @click="submit(2)" class="submit">
+          <span class="el-icon-loading" v-if="iconShow"></span>
+          <span v-else>{{ $t('common.confirm') }}</span>
+        </div>
+      </div>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -52,11 +77,28 @@
 
   export default {
     data() {
-      let mobileValid = (rule, val, cb) => {
-        if(val === '') {
-          cb(this.$t('cashMng.common.m6'));
-        } else if((!this.role.haiwai && !/^1[34578]\d{9}$/.test(val)) || (this.role.haiwai && val.length > 15)) {
-          cb(this.$t('cashMng.common.m9'));
+      let passValid = (rule, val, cb) => {
+        if(this.form1.repass !== '') {
+          this.$refs['form1'].validateField('rePass');
+        }
+        cb();
+      };
+      let repassValid = (rule, val, cb) => {
+        if(this.form1.msgPass !== '' && val !== this.form1.msgPass) {
+          cb(this.$t('passSet.msg.m9'));
+        } else {
+          cb();
+        }
+      };
+      let pass1Valid = (rule, val, cb) => {
+        if(this.form2.rePass !== '') {
+          this.$refs['form2'].validateField('rePass');
+        }
+        cb();
+      };
+      let repass1Valid = (rule, val, cb) => {
+        if(this.form2.msgPass && val !== this.form2.msgPass) {
+          cb(this.$t('passSet.msg.m9'));
         } else {
           cb();
         }
@@ -66,82 +108,114 @@
         role: Store.get('role') || {},
         lang: config.lang,
         loading: false,
-        loading1: false,
-        opuid: '',
-        form: {
-          opname: '',
-          mobile: '',
-          password: ''
+        iconShow: false,
+        setPass: false,
+        resetPass: false,
+        form1: {
+          pass: '',
+          msgPass: '',
+          rePass: ''
         },
-        formrules: {
-          opname: [
-            { required: true, message: this.$t('cashMng.common.m5') },
-            { max: 20, min: 2, message: this.$t('cashMng.common.m8') }
+        form2: {
+          oldPass: '',
+          msgPass: '',
+          rePass: ''
+        },
+        form1rules: {
+          pass: [
+            { required: true, message: this.$t('passSet.msg.m1') },
+            { max: 20, min: 6, message: this.$t('passSet.msg.m4') }
           ],
-          mobile: [
-            { validator: mobileValid }
+          msgPass: [
+            { required: true, message: this.$t('passSet.msg.m2') },
+            { max: 20, min: 6, message: this.$t('passSet.msg.m4') },
+            { validator: passValid }
           ],
-          password: [
-            { required: true, message: this.$t('cashMng.common.m7') },
-            { max: 20, min: 6, message: this.$t('cashMng.common.m10') }
+          rePass: [
+            { required: true, message: this.$t('passSet.msg.m3') },
+            { max: 20, min: 6, message: this.$t('passSet.msg.m4') },
+            { validator: repassValid }
+          ]
+        },
+        form2rules: {
+          oldPass: [
+            { required: true, message: this.$t('passSet.msg.m6') },
+            { max: 20, min: 6, message: this.$t('passSet.msg.m4') }
+          ],
+          msgPass: [
+            { required: true, message: this.$t('passSet.msg.m7') },
+            { max: 20, min: 6, message: this.$t('passSet.msg.m4') },
+            { validator: pass1Valid }
+          ],
+          rePass: [
+            { required: true, message: this.$t('passSet.msg.m8') },
+            { max: 20, min: 6, message: this.$t('passSet.msg.m4') },
+            { validator: repass1Valid }
           ]
         }
       };
     },
-    props: {
-      shop: {
-        type: Object
-      }
-    },
 
     methods: {
-      // 放弃添加
-      cancelCreat() {
-        this.$router.push('/main/cashiermanage');
+      changePass() {
+        if(this.role.passState) {
+          this.resetPass = true;
+        }else {
+          this.setPass = true;
+        }
+      },
+
+      handleClose(form) {
+        this.$refs[form].resetFields();
       },
 
       // 提交
-      submit() {
-        this.$refs['form'].validate((valid) => {
-          if (valid && !this.loading1) {
-            this.loading1 = true;
-            axios.post(`${config.ohost}/mchnt/opuser/add`, Object.assign({}, this.form, {
-              opuid: this.opuid,
-              format: 'cors'
-            })).then((res) => {
-              this.loading1 = false;
+      submit(val) {
+        this.$refs[`form${val}`].validate((valid) => {
+          if (valid && !this.iconShow) {
+            this.iconShow = true;
+            let [uri, params] = [];
+            if(this.role.passState) {
+              uri = '/merchant/user/reset_manage_password';
+              params = {
+                origin_password: this.form2.oldPass,
+                new_password: this.form2.msgPass,
+                format: 'cors'
+              }
+            }else {
+             uri = '/merchant/user/set_manage_password';
+             params = {
+               login_passwd: this.form1.pass,
+               password: this.form1.msgPass,
+               format: 'cors'
+             }
+            }
+            axios.post(`${config.host}${uri}`, params).then((res) => {
+              this.iconShow = false;
+              this.resetPass = false;
+              this.setPass = false;
               let data = res.data;
               if(data.respcd === config.code.OK) {
+                if(!this.role.passState) {
+                  this.role.passState = true;
+                  Store.set('role', Object.assign({}, this.role, {
+                    passState: true
+                  }));
+                }
                 this.$message({
                   type: 'success',
-                  message: this.$t('cashMng.add.tip1')
+                  message: this.$t('passSet.msg.m10')
                 });
-                this.$router.push('/main/cashiermanage');
               } else {
                 this.$message.error(data.resperr);
               }
             }).catch(() => {
-              this.loading1 = false;
+              this.resetPass = false;
+              this.setPass = false;
+              this.iconShow = false;
               this.$message.error(this.$t('common.netError'));
             })
           }
-        });
-      },
-
-      // 获取收银员编号
-      getOpuid() {
-        this.loading = true;
-        axios.get(`${config.ohost}/mchnt/opuser/opuid?format=cors`).then((res) => {
-          this.loading = false;
-          let data = res.data;
-          if (data.respcd === config.code.OK) {
-            this.opuid = data.data.opuid;
-          } else {
-            this.$message.error(data.respmsg);
-          }
-        }).catch(() => {
-          this.loading = false;
-          this.$message.error(this.$t('cashMng.add.tip2'));
         });
       }
     }
@@ -149,27 +223,31 @@
 </script>
 <style lang="scss">
   .passSet {
-    .input-content {
-      color: #777A7D;
-      font-size: 16px;
+    .panel {
+      padding: 23px 25px 23px;
     }
-    .wrapper {
-      .el-form-item {
-        display: flex;
-        align-items: center;
-
-        .el-form-item__label {
-          float: none;
-          width: 150px;
-          text-align: left;
-        }
-        .el-form-item__content {
-          padding: 0;
-          margin-left: 20px;
-        }
-        .panel-select-input-220 {
-          width: 300px;
-        }
+    .gray-explain {
+      color: #FF8100;
+      font-size: 14px;
+      margin-top: 10px;
+      margin-left: 20px;
+      margin-bottom: 20px;
+    }
+    .passState {
+      display: flex;
+      align-items: center;
+      font-size: 16px;
+      margin-left: 20px;
+      .title {
+        color: #2F323A;
+      }
+      .no-set {
+        color: #C2C2C2;
+        padding-right: 30px;
+      }
+      .reset {
+        color: #98989E;
+        padding-right: 30px;
       }
     }
   }

@@ -77,7 +77,7 @@
           <el-table-column
             :label="$t('refundCheck.panel.time')" min-width="90">
             <template slot-scope="scope">
-              <div>{{ scope.row.username }}</div>
+              <div>{{ scope.row.ctime }}</div>
             </template>
           </el-table-column>
           <el-table-column
@@ -98,27 +98,32 @@
           <el-table-column
             :label="$t('refundCheck.table.refundMount') + '(' + role.currency + ')'" min-width="90">
             <template slot-scope="scope">
-              <div class="table-title">{{ scope.row.total_amt | formatCurrency }}</div>
+              <div class="table-title">{{ scope.row.refund_amt | formatCurrency }}</div>
             </template>
           </el-table-column>
           <el-table-column
             :label="$t('refundCheck.table.tradeAmount') + '(' + role.currency + ')'" min-width="90">
             <template slot-scope="scope">
-              <div class="table-title">{{ scope.row.total_amt | formatCurrency }}</div>
+              <div class="table-title">{{ scope.row.txamt | formatCurrency }}</div>
             </template>
           </el-table-column>
           <el-table-column min-width="105" :label="$t('refundCheck.table.sNum')">
             <template slot-scope="scope">
-              <div>{{ scope.row.origssn }}</div>
+              <div>{{ scope.row.syssn }}</div>
             </template>
           </el-table-column>
-          <el-table-column prop="status_str" :label="$t('refundCheck.table.checkState')">
+          <el-table-column prop="state" :label="$t('refundCheck.table.checkState')">
+            <template slot-scope="scope">
+              <div v-if="scope.row.state === 0">{{ $t('refundCheck.table.waiting') }}</div>
+              <div v-else-if="scope.row.state === 2">{{ $t('refundCheck.table.rejected') }}</div>
+              <div v-else-if="scope.row.state === 1">{{ $t('refundCheck.table.approved') }}</div>
+            </template>
           </el-table-column>
 
           <el-table-column min-width="200" :label="$t('refundCheck.table.op')">
             <template slot-scope="scope">
-              <el-button type="text" size="small" class="el-button__fix" @click.native="check(scope.row)">{{$t('refundCheck.table.approve')}}</el-button>
-              <el-button type="text" size="small" class="el-button__fix" @click.native="check()">{{$t('refundCheck.table.reject')}}</el-button>
+              <el-button type="text" size="small" class="el-button__fix" :disabled="scope.row.state !== 0" @click.native="check(scope.row, 1)">{{ $t('refundCheck.table.approve') }}</el-button>
+              <el-button type="text" size="small" class="el-button__fix" :disabled="scope.row.state !== 0" @click.native="check(scope.row, 0)">{{$t('refundCheck.table.reject') }}</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -236,6 +241,7 @@
           endtime: formatDate(this.form.dateRangeValue[1], str),
           orderno: this.form.orderno,
           charset: 'utf-8',
+          isdownload: false,
           page: this.currentPage,
           maxnum: this.pageSize,
           format: 'cors'
@@ -274,71 +280,101 @@
         this.checkPwd();
       },
 
-      check(val) {
-        console.log(val, 888)
+      check(val, state) {
         this.showConfirm = true;
-        if(val) {
+        this.refundData = val;
+        if(state) {
           this.approved = true;
         } else {
           this.approved = false;
         }
-        console.log(this.approved, 999)
       },
 
       // 确认弹框验证密码
       checkPwd() {
         this.$refs['formpwd'].validate((valid) => {
           if (valid && !this.iconLoading) {
-            this.iconLoading = true;
+            let _this = this;
+            _this.iconLoading = true;
             axios.post(`${config.host}/merchant/validate_password`, {
-              password: this.formpwd.pwd,
+              mode: 'manage',
+              password: _this.formpwd.pwd,
               format: 'cors'
             }).then((res) => {
               let data = res.data;
               if (data.data.result === 'success') {
-                if(this.approved) {
-                  this.revoke();
+                if(_this.approved) {
+                  _this.revoke();
+                }else {
+                  _this.changeState();
                 }
               } else {
-                this.iconLoading = false;
-                this.$message.error(this.$t('tradeMng.msg.m10'));
+                _this.showConfirm = false;
+                _this.iconLoading = false;
+                _this.$message.error(_this.$t('tradeMng.msg.m10'));
               }
             }).catch(() => {
-              this.iconLoading = false;
-              this.$message.error(this.$t('common.netError'));
+              _this.showConfirm = false;
+              _this.iconLoading = false;
+              _this.$message.error(this.$t('common.netError'));
             })
           }
 
         })
       },
 
+      // 改变状态
+      changeState() {
+        axios.post(`${config.host}/merchant/trade/update_apply`, {
+          id: this.refundData.id,
+          state: this.approved ? 1 : 2,
+          format: 'cors'
+        }).then((res) => {
+          let data = res.data;
+          this.showConfirm = false;
+          this.iconLoading = false;
+          if (data.respcd === config.code.OK) {
+            this.$message.success(this.$t('refundCheck.msg.m3'));
+            this.getCheckData();
+          } else {
+            this.$message.error(this.$t('tradeMng.msg.m10'));
+          }
+        }).catch(() => {
+          this.showConfirm = false;
+          this.iconLoading = false;
+          this.$message.error(this.$t('common.netError'));
+        })
+      },
+
       // 撤销操作
       revoke() {
         let val = this.refundData;
+
         let params = {
           format: 'cors',
-          txamt: val.amount * this.role.rate,
+          txamt: val.refund_amt,
           txdtm: formatDate(val.sysdtm, 'yyyy-MM-dd HH:mm:ss'),
           syssn: val.syssn,
           out_trade_no: Date.now(),
-          udid: 'bigmerchant'
+          mchid: val.userid,
+          bigmch_refund_mark: 'bigmch_refund_mark'
         };
         axios.post(`${config.payHost}/trade/v1/refund`, qs.stringify(params), {
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
           }
         }).then((res) => {
-          this.iconLoading = false;
           let data = res.data;
           if (data.respcd === config.code.OK) {
-            this.showConfirm = false;
-            this.$message.success(this.$t('tradeMng.msg.m6'));
-            this.getCheckData();
+            this.changeState();
+            // this.$message.success(this.$t('tradeMng.msg.m6'));
           } else {
             this.showConfirm = false;
+            this.iconLoading = false;
             this.$message.error(data.resperr);
           }
         }).catch((res) => {
+          this.showConfirm = false;
           this.iconLoading = false;
           this.$message.error(this.$t('tradeMng.msg.m7'));
         });
@@ -377,7 +413,7 @@
       getCheckData() {
         if(!this.loading) {
           this.loading = true;
-          axios.get(`${config.host}/merchant/trade/info`, {
+          axios.get(`${config.host}/merchant/trade/refund_list`, {
             params: this.basicParams
           }).then((res) => {
             this.loading = false;

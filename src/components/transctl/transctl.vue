@@ -154,24 +154,24 @@
             prop="busicd_info"
             :label="$t('tradeMng.table.tradeType')" min-width="100">
           </el-table-column>
-          <el-table-column prop="sysdtm" min-width="95" :label="$t('tradeMng.table.tradeTime')">
+          <el-table-column prop="sysdtm" min-width="110" :label="$t('tradeMng.table.tradeTime')">
             <template slot-scope="scope">{{ scope.row.sysdtm }}</template>
           </el-table-column>
           <el-table-column
-            :label="$t('tradeMng.table.tradeAmount') + '(' + role.currency + ')'" min-width="110">
+            :label="$t('tradeMng.table.tradeAmount') + '(' + role.currency + ')'" min-width="90">
             <template slot-scope="scope">
               <div class="table-title">{{ scope.row.total_amt | formatCurrency }}</div>
             </template>
           </el-table-column>
-          <el-table-column
-            prop="status_str"
-            :label="$t('tradeMng.table.tradeState')" min-width="76">
+          <el-table-column prop="status_str" :label="$t('tradeMng.table.tradeState')" min-width="75">
           </el-table-column>
           <el-table-column min-width="105" :label="$t('tradeMng.table.sNum')">
             <template slot-scope="scope">
               <div>{{ scope.row.origssn?scope.row.syssn + '(' + $t('tradeMng.detail.syssn2') + ':' + scope.row.origssn + ')': scope.row.syssn }}</div>
             </template>
           </el-table-column>
+
+          <el-table-column prop="node" :label="$t('tradeMng.table.remark')"></el-table-column>
           <el-table-column min-width="215" :label="$t('tradeMng.table.op')">
             <template slot-scope="scope">
               <el-button v-if="showRefund(scope.row.sysdtm)" type="text" size="small" :disabled="!scope.row.allow_refund_amt" class="el-button__fix" @click="confirm(scope.row)">{{$t('tradeMng.table.cancel')}}</el-button>
@@ -458,17 +458,19 @@
         document.querySelector('#separate').click();
       },
 
-      // 是否展示撤销按钮
+      // 是否展示撤销按钮,单店展示分店当天展示
       showRefund(val) {
-        if(!this.role.isMerchant || this.role.isCashier) {
-          let date = formatDate(this.transData.date || new Date());
-          if(formatDate(val) === date) {
+        if(this.role.single) {
+          if(this.role.isMerchant && !this.role.isCashier) {
             return true;
           }else {
-            return false;
+            let date = formatDate(this.transData.date || new Date());
+            if(formatDate(val) === date) {
+              return true;
+            }else {
+              return false;
+            }
           }
-        }else {
-          return true;
         }
       },
 

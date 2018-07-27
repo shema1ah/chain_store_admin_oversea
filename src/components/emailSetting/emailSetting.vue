@@ -1,5 +1,5 @@
 <template>
-  <div class="settings" v-loading="loading" :element-loading-text="$t('common.loading')">
+  <div class="emailSetting" v-loading="loading" :element-loading-text="$t('common.loading')">
     <div class="banner_wrapper">
       <el-breadcrumb separator=">">
         <el-breadcrumb-item>{{$t('setting.crumbs.L1')}}</el-breadcrumb-item>
@@ -241,7 +241,7 @@
 </script>
 
 <style lang="scss">
-  .settings {
+  .emailSetting {
     .el-button .el-button--default .el-button--primary {
       background-color: #FE9B20;
     }

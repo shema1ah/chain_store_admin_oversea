@@ -153,6 +153,7 @@ exports.default = {
       tradeState: 'Status',
       redpacket: 'Red Envelope Discount', // 红包优惠
       sNum: 'Transaction ID',
+      remark: 'Remarks',
       op: 'Operation',
       cancel: 'Refund',
       more: 'More',
@@ -341,6 +342,42 @@ exports.default = {
       m1: 'Delete the last email address will turn off the feature, do you confirm?'
     }
 
+  },
+  passSet: { // 管理密码设置
+    crumbs: {
+      L1: 'Settings',
+      L2: 'Manage password settings'
+    },
+    panel: {
+      passMsg: 'Management password：',
+      explain: 'use：After  setting, the refund approval for next day will confirmed entering management password.',
+      states1: 'Not set',
+      states2: 'Has been set',
+      bt1: 'Set',
+      bt2: 'Reset',
+      bt3: 'Save',
+      title1: 'Setting management password',
+      title2: 'Reset management password',
+      safe: 'Safety verification',
+      pass: 'Mgmt Pass',
+      reEnter: 're-enter',
+      originPass: 'Original Mgmt Pass',
+      newPass: 'New Mgmt Pass'
+    },
+    msg: {
+      m1: 'Please enter your password',
+      m2: 'Please enter your Mgmt Pass',
+      m3: 'Please re-enter your Mgmt Pass',
+      m4: 'Enter alphabets or numbers from 6 to 20 digits.',
+      m6: 'Please enter original Mgmt Pass',
+      m7: 'Please enter new Mgmt Pass',
+      m8: 'Please re-enter new Mgmt Pass',
+      m9: 'Management ciphers do not agree with Mgmt Pass',
+      m10: 'Set successfully'
+    },
+    tip: {
+      m1: '* Forgot  original password Please contact customer service'
+    }
   },
   cashMng: { // 收银员管理
     crumbs: {
