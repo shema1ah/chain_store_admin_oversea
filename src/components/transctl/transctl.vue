@@ -167,15 +167,15 @@
           </el-table-column>
           <el-table-column min-width="105" :label="$t('tradeMng.table.sNum')">
             <template slot-scope="scope">
-              <div>{{ scope.row.origssn?scope.row.syssn + '(' + $t('tradeMng.detail.syssn2') + ':' + scope.row.origssn + ')': scope.row.syssn }}</div>
+              <div>{{ scope.row.origssn ? scope.row.syssn + '(' + $t('tradeMng.detail.syssn2') + ':' + scope.row.origssn + ')' : scope.row.syssn }}</div>
             </template>
           </el-table-column>
 
           <el-table-column prop="node" :label="$t('tradeMng.table.remark')"></el-table-column>
           <el-table-column min-width="215" :label="$t('tradeMng.table.op')">
             <template slot-scope="scope">
-              <el-button v-if="showRefund(scope.row.sysdtm)" type="text" size="small" :disabled="!scope.row.allow_refund_amt" class="el-button__fix" @click="confirm(scope.row)">{{$t('tradeMng.table.cancel')}}</el-button>
-              <el-button type="text" size="small" class="el-button__fix" @click.native="detail(scope.row.syssn)">{{$t('tradeMng.table.detail')}}</el-button>
+              <el-button type="text" size="small" :disabled="!scope.row.allow_refund_amt || showRefund(scope.row.sysdtm)" class="el-button__fix" @click="confirm(scope.row)">{{$t('tradeMng.table.cancel')}}</el-button>
+              <el-button type="text" size="small" class="el-button__fix" @click.native="detail(scope.row.syssn, scope.row.origssn)">{{$t('tradeMng.table.detail')}}</el-button>
               <a :href="downUrl" @click="downHref(scope.$index, $event)">
                   <span id="tr-download">{{ $t('tradeMng.table.download') }}</span>
               </a>
@@ -461,16 +461,14 @@
       // 是否展示撤销按钮,单店展示分店当天展示
       showRefund(val) {
         if(this.role.single) {
-          if(this.role.isMerchant && !this.role.isCashier) {
+          let date = formatDate(this.transData.date || new Date());
+          if(formatDate(val) === date) {
             return true;
           }else {
-            let date = formatDate(this.transData.date || new Date());
-            if(formatDate(val) === date) {
-              return true;
-            }else {
-              return false;
-            }
+            return false;
           }
+        }else {
+          return false;
         }
       },
 
@@ -516,8 +514,12 @@
       },
 
       // 交易，撤销详情
-      detail(syssn) {
-        this.$router.push(`/main/transctl/transdetail?syssn=${syssn}&type=trans`);
+      detail(syssn, origin) {
+        let type = 'trans';
+        if(origin) {
+          type = 'refund';
+        }
+        this.$router.push(`/main/transctl/transdetail?syssn=${syssn}&type=${type}`);
       },
 
       // 点击enter键提交

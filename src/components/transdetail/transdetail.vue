@@ -28,10 +28,10 @@
             <div class="info__title">{{$t('tradeMng.table.tradeType')}}</div>
             <div class="info__desc">{{ infoData.busicd_info }}</div>
           </div>
-          <div class="info">
+          <!--<div class="info">
             <div class="info__title">{{$t('tradeMng.detail.origin')}}</div>
             <div class="info__desc">{{ infoData.customer }}</div>
-          </div>
+          </div>-->
           <div class="info">
             <div class="info__title">{{type === 'refund' ? $t('tradeMng.detail.time') : $t('tradeMng.table.tradeTime')}}</div>
             <div class="info__desc">{{ infoData.sysdtm }}</div>
@@ -72,7 +72,7 @@
           </el-table-column>
           <el-table-column
             prop="txamt"
-            :label="$t('tradeMng.detail.ammount2')">
+            :label="$t('tradeMng.detail.ammount2')+ '(' + role.currency + ')'">
             <template slot-scope="scope">{{ scope.row.txamt | formatCurrency }}</template>
           </el-table-column>
           <el-table-column

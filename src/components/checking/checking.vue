@@ -145,8 +145,8 @@
     <el-dialog :title="$t('refundCheck.dialog.d1')" :visible.sync="showConfirm" custom-class="mydialog" top="20%" @close="handleClose('formpwd')">
       <div style="margin-bottom: 20px;">{{approved ?  $t('refundCheck.dialog.d2') : $t('refundCheck.dialog.d3')}}</div>
       <el-form :model="formpwd" :rules="pwdrules" ref="formpwd" label-width="80px" autocomplete="off">
-        <el-form-item prop="pwd" :label="$t('refundCheck.msg.m1')">
-          <el-input v-model="formpwd.pwd" :placeholder="$t('refundCheck.msg.m2')" type="password" @keyup.enter.native="onEnter"></el-input>
+        <el-form-item prop="pwd" :label="role.passState ? $t('refundCheck.msg.m1') : $t('tradeMng.dialog.d5')">
+          <el-input v-model.trim="formpwd.pwd" :placeholder="role.passState ? $t('refundCheck.msg.m2') :$t('tradeMng.msg.m9') " type="password" @keyup.enter.native="onEnter"></el-input>
         </el-form-item>
       </el-form>
       <div class="divider"></div>
@@ -157,7 +157,6 @@
         </div>
       </div>
     </el-dialog>
-
   </div>
 </template>
 
@@ -175,6 +174,17 @@
           cb(this.$t('tradeMng.msg.m1'));
         } else if(val && !/\d{14}/.test(val)) {
           cb(this.$t('tradeMng.msg.m2'));
+        } else {
+          cb();
+        }
+      };
+      let checkPass = (rule, val, cb) => {
+        if(!val && !/^\d+$/.test(val)) {
+          if(this.role.passState) {
+            cb(this.$t('refundCheck.msg.m2'));
+          }else {
+            cb(this.$t('tradeMng.msg.m9'));
+          }
         } else {
           cb();
         }
@@ -214,7 +224,7 @@
         },
         pwdrules: {
             pwd: [
-              { required: true, message: this.$t('refundCheck.msg.m2') }
+              { validator: checkPass }
             ]
         }
       };
@@ -296,11 +306,16 @@
           if (valid && !this.iconLoading) {
             let _this = this;
             _this.iconLoading = true;
-            axios.post(`${config.host}/merchant/validate_password`, {
-              mode: 'manage',
+            let params = {
               password: _this.formpwd.pwd,
               format: 'cors'
-            }).then((res) => {
+            };
+            if(this.role.passState) {
+              Object.assign(params, {
+                mode: 'manage'
+              })
+            }
+            axios.post(`${config.host}/merchant/validate_password`, params).then((res) => {
               let data = res.data;
               if (data.data.result === 'success') {
                 if(_this.approved) {
@@ -309,7 +324,7 @@
                   _this.changeState();
                 }
               } else {
-                _this.showConfirm = false;
+                // _this.showConfirm = false;
                 _this.iconLoading = false;
                 _this.$message.error(_this.$t('tradeMng.msg.m10'));
               }

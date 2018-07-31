@@ -372,7 +372,7 @@ exports.default = {
       m6: 'Please enter original Mgmt Pass',
       m7: 'Please enter new Mgmt Pass',
       m8: 'Please re-enter new Mgmt Pass',
-      m9: 'Management ciphers do not agree with Mgmt Pass',
+      m9: 'Inconsistency with admin password input',
       m10: 'Set successfully'
     },
     tip: {
