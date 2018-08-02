@@ -74,27 +74,11 @@
           style="width: 100%"
           row-class-name="el-table__row_fix"
           v-loading="loading">
-          <el-table-column
-            :label="$t('refundCheck.panel.time')" min-width="90">
-            <template slot-scope="scope">
-              <div>{{ scope.row.ctime }}</div>
-            </template>
-          </el-table-column>
-          <el-table-column
-            :label="$t('refundCheck.panel.shopName')">
-            <template slot-scope="scope">
-              <div>{{ scope.row.username }}</div>
-            </template>
-          </el-table-column>
-          <el-table-column
-            :label="$t('refundCheck.table.applyAmount')">
-            <template slot-scope="scope">{{ scope.row.opuser }}</template>
-          </el-table-column>
-          <el-table-column prop="busicd_info" :label="$t('refundCheck.table.tradeType')">
-          </el-table-column>
-          <el-table-column prop="sysdtm" min-width="90" :label="$t('refundCheck.table.tradeTime')">
-            <template slot-scope="scope">{{ scope.row.sysdtm }}</template>
-          </el-table-column>
+          <el-table-column prop="ctime" :label="$t('refundCheck.panel.time')" min-width="90"></el-table-column>
+          <el-table-column prop="username" :label="$t('refundCheck.panel.shopName')"></el-table-column>
+          <el-table-column prop="opuser" :label="$t('refundCheck.table.applyAmount')"></el-table-column>
+          <el-table-column prop="busicd_info" :label="$t('refundCheck.table.tradeType')"></el-table-column>
+          <el-table-column prop="sysdtm" min-width="90" :label="$t('refundCheck.table.tradeTime')"></el-table-column>
           <el-table-column
             :label="$t('refundCheck.table.refundMount') + '(' + role.currency + ')'" min-width="90">
             <template slot-scope="scope">
@@ -107,12 +91,8 @@
               <div class="table-title">{{ scope.row.txamt | formatCurrency }}</div>
             </template>
           </el-table-column>
-          <el-table-column min-width="105" :label="$t('refundCheck.table.sNum')">
-            <template slot-scope="scope">
-              <div>{{ scope.row.syssn }}</div>
-            </template>
-          </el-table-column>
-          <el-table-column prop="state" :label="$t('refundCheck.table.checkState')">
+          <el-table-column prop="syssn" min-width="100" :label="$t('refundCheck.table.sNum')"></el-table-column>
+          <el-table-column prop="state" min-width="90" :label="$t('refundCheck.table.checkState')">
             <template slot-scope="scope">
               <div v-if="scope.row.state === 0">{{ $t('refundCheck.table.waiting') }}</div>
               <div v-else-if="scope.row.state === 2">{{ $t('refundCheck.table.rejected') }}</div>
@@ -142,9 +122,9 @@
       <div class="table_placeholder" v-else></div>
     </div>
 
-    <el-dialog :title="$t('refundCheck.dialog.d1')" :visible.sync="showConfirm" custom-class="mydialog" top="20%" @close="handleClose('formpwd')">
-      <div style="margin-bottom: 20px;">{{approved ?  $t('refundCheck.dialog.d2') : $t('refundCheck.dialog.d3')}}</div>
-      <el-form :model="formpwd" :rules="pwdrules" ref="formpwd" label-width="80px" autocomplete="off">
+    <el-dialog :title="approved ? $t('refundCheck.dialog.d3') : $t('refundCheck.dialog.d4')" :visible.sync="showConfirm" custom-class="mydialog" top="20%" @close="handleClose('formpwd')">
+      <div style="margin-bottom: 20px;">{{approved ? $t('refundCheck.dialog.d1') : $t('refundCheck.dialog.d2')}}</div>
+      <el-form :model="formpwd" :rules="pwdrules" ref="formpwd" :label-width="(lang === 'ja' || lang === 'en') ? '110px' : '80px'" autocomplete="off">
         <el-form-item prop="pwd" :label="role.passState ? $t('refundCheck.msg.m1') : $t('tradeMng.dialog.d5')">
           <el-input v-model.trim="formpwd.pwd" :placeholder="role.passState ? $t('refundCheck.msg.m2') :$t('tradeMng.msg.m9') " type="password" @keyup.enter.native="onEnter"></el-input>
         </el-form-item>
@@ -192,6 +172,7 @@
 
       return {
         role: Store.get('role') || {},
+        lang: config.lang,
         showConfirm: false,
         approved: false,
         refundData: {},

@@ -212,7 +212,7 @@ exports.default = {
       L2: 'Refund Review'
     },
     panel: {
-      time: 'application time',
+      time: 'Application time',
       shopName: 'Store name',
       operator: 'Cashier',
       oNUm: 'Original ID',
@@ -232,19 +232,20 @@ exports.default = {
       checkState: 'Approval Status',
       waiting: 'Moderated',
       approved: 'Approved',
-      rejected: 'rejected',
+      rejected: 'Rejected',
       op: 'Operation',
       approve: 'Approve',
       reject: 'Refuse'
     },
     dialog: {
-      d1: 'Once the operation is confirmed, it will not be withdrawn. Is it confirmed?',
-      d2: 'Confirmation of approval',
-      d3: 'Confirm rejection'
+      d1: 'The operation will not be withdrawn once confirmed, whether approved?',
+      d2: 'The operation will not be withdrawn once confirmed, whether refused?',
+      d3: 'Confirmation of approval',
+      d4: 'Confirm rejection'
     },
     msg: {
-      m1: 'Management password',
-      m2: 'Please enter the management password',
+      m1: 'Mgmt Pass',
+      m2: 'Please enter the Mgmt Pass',
       m3: 'Successful operation'
     }
   },
@@ -350,7 +351,7 @@ exports.default = {
     },
     panel: {
       passMsg: 'Management password：',
-      explain: 'use：After  setting, the refund approval for next day will confirmed entering management password.',
+      explain: 'Use：After  setting, the refund approval for next day will confirmed entering management password.',
       states1: 'Not set',
       states2: 'Has been set',
       bt1: 'Set',
@@ -360,7 +361,7 @@ exports.default = {
       title2: 'Reset management password',
       safe: 'Safety verification',
       pass: 'Mgmt Pass',
-      reEnter: 're-enter',
+      reEnter: 'Re-enter',
       originPass: 'Original Mgmt Pass',
       newPass: 'New Mgmt Pass'
     },

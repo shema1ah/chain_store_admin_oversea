@@ -26,7 +26,7 @@
       </div>
     </div>
     <el-dialog :title="$t('passSet.panel.title1')" :visible.sync="setPass" @close="handleClose('form1')" :custom-class="(lang === 'ja' || lang === 'en')?'mydialog haiwiadialog':'mydialog'" top="20%" :show-close="false">
-      <el-form :model="form1" :rules="form1rules" ref="form1" :label-width="(lang === 'ja' || lang === 'en')?'135px':'90px'">
+      <el-form :model="form1" :rules="form1rules" ref="form1" :label-width="lang === 'en' ? '120px' : '90px'">
         <el-form-item :label="$t('passSet.panel.safe')" prop="pass">
           <el-input v-model.trim="form1.pass" size="small" type="password" :placeholder="$t('passSet.msg.m1')"></el-input>
         </el-form-item>
@@ -47,7 +47,7 @@
       </div>
     </el-dialog>
     <el-dialog :title="$t('passSet.panel.title2')" :visible.sync="resetPass" @close="handleClose('form2')" :custom-class="(lang === 'ja' || lang === 'en')?'mydialog haiwiadialog':'mydialog'" top="20%" :show-close="false">
-      <el-form :model="form2" :rules="form2rules" ref="form2" :label-width="(lang === 'ja' || lang === 'en')?'135px':'90px'">
+      <el-form :model="form2" :rules="form2rules" ref="form2" :label-width="(lang === 'ja' || lang === 'en') ? '140px' : '90px'">
         <el-form-item :label="$t('passSet.panel.originPass')" prop="oldPass">
           <el-input v-model.trim="form2.oldPass" size="small" type="password" :placeholder="$t('passSet.msg.m6')"></el-input>
         </el-form-item>
@@ -192,15 +192,16 @@
             }
             axios.post(`${config.host}${uri}`, params).then((res) => {
               this.iconShow = false;
-              this.resetPass = false;
-              this.setPass = false;
               let data = res.data;
               if(data.respcd === config.code.OK) {
                 if(!this.role.passState) {
                   this.role.passState = true;
+                  this.setPass = false;
                   Store.set('role', Object.assign({}, this.role, {
                     passState: true
                   }));
+                }else {
+                  this.resetPass = false;
                 }
                 this.$message({
                   type: 'success',

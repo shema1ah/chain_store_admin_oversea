@@ -223,7 +223,7 @@ export default {
               this.locked(_confirmBtn, true, 'confirmBtn');
               this.$message({
                 type: 'success',
-                message: '修改成功'
+                message: this.$t('common.modSucc')
               })
               // 跳转至登录页面
               setTimeout(() => {

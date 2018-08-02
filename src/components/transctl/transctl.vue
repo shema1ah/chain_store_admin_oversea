@@ -100,14 +100,14 @@
       <div class="panel-body">
         <div class="panel-btn-group__wrapper panel-body-btn-group flex-normal">
           <div class="num_total">
-            <div class="num_wrapper">
+            <!--<div class="num_wrapper">
               <p class="num-title">{{$t('tradeMng.table.totalAmount')}}</p>
               <p class="num-desc">{{ transData.total_amt | formatNumber }} {{ role.currency }}</p>
             </div>
             <div class="num_wrapper">
               <p class="num-title">{{$t('tradeMng.table.totalNum')}}</p>
               <p class="num-desc">{{ transData.total_num || 0 }} </p>
-            </div>
+            </div>-->
             <div class="num_wrapper">
               <p class="num-title">{{$t('tradeMng.table.succAmount')}}</p>
               <p class="num-desc">{{ transData.sucamt | formatNumber }} {{ role.currency }}</p>
@@ -139,6 +139,7 @@
           :data="transData.data"
           style="width: 100%"
           row-class-name="el-table__row_fix"
+          :row-class-name="getStyle"
           v-loading="loading">
           <el-table-column
             :label="$t('tradeMng.table.shopName')" min-width="90">
@@ -171,10 +172,10 @@
             </template>
           </el-table-column>
 
-          <el-table-column prop="node" :label="$t('tradeMng.table.remark')"></el-table-column>
+          <el-table-column prop="note" :label="$t('tradeMng.table.remark')"></el-table-column>
           <el-table-column min-width="215" :label="$t('tradeMng.table.op')">
             <template slot-scope="scope">
-              <el-button type="text" size="small" :disabled="!scope.row.allow_refund_amt || showRefund(scope.row.sysdtm)" class="el-button__fix" @click="confirm(scope.row)">{{$t('tradeMng.table.cancel')}}</el-button>
+              <el-button type="text" size="small" :disabled="showRefund(scope.row.sysdtm, scope.row.allow_refund_amt)" class="el-button__fix" @click="confirm(scope.row)">{{$t('tradeMng.table.cancel')}}</el-button>
               <el-button type="text" size="small" class="el-button__fix" @click.native="detail(scope.row.syssn, scope.row.origssn)">{{$t('tradeMng.table.detail')}}</el-button>
               <a :href="downUrl" @click="downHref(scope.$index, $event)">
                   <span id="tr-download">{{ $t('tradeMng.table.download') }}</span>
@@ -199,7 +200,7 @@
 
     <el-dialog :title="$t('tradeMng.dialog.d2')" :visible.sync="showConfirm" custom-class="mydialog" top="20%" @close="handleClose('formpwd')">
       <div style="margin-bottom: 20px;">{{$t('tradeMng.dialog.d1')}}</div>
-      <el-form :model="formpwd" :rules="pwdrules" ref="formpwd" label-width="80px" autocomplete="off">
+      <el-form :model="formpwd" :rules="pwdrules" ref="formpwd" :label-width="(lang === 'ja' || lang === 'en') ? '110px' : '80px'" autocomplete="off">
         <el-form-item prop="amount" :label="$t('tradeMng.detail.ammount2')" class="amount">
           <span>{{ role.currency }}</span>
           <el-input name="amount" class="showAmount" v-model="formpwd.amount" :placeholder="$t('tradeMng.msg.m14') + refundAmount" type="number" @keyup.enter.native="onEnter"></el-input>
@@ -219,7 +220,7 @@
 
     <el-dialog :title="refundStates?$t('tradeMng.dialog.d3'):$t('tradeMng.dialog.d4')" :visible.sync="showArefund" custom-class="mydialog refund" :class="[refundStates ? 'success' : 'fail']" top="20%" :show-close="false">
       <div v-if="refundStates">
-        <el-form label-width="(lang === 'ja' || lang === 'en') ? 150px : 90px">
+        <el-form :label-width="(lang === 'ja' || lang === 'en') ? '150px' : '90px'">
           <el-form-item :label="$t('tradeMng.detail.ammount2')">
             <div>
               <span style="font-size: 18px;">{{ role.currency }}</span>
@@ -459,16 +460,16 @@
       },
 
       // 是否展示撤销按钮,单店展示分店当天展示
-      showRefund(val) {
+      showRefund(val, count) {
         if(this.role.single) {
           let date = formatDate(this.transData.date || new Date());
-          if(formatDate(val) === date) {
-            return true;
-          }else {
+          if(formatDate(val) === date && count > 0) {
             return false;
+          }else {
+            return true;
           }
         }else {
-          return false;
+          return true;
         }
       },
 
@@ -697,6 +698,14 @@
       handleSizeChange(size = 10) {
         this.pageSize = size;
         this.currentChange();
+      },
+
+      // 行样式
+      getStyle(row, index) {
+        if(row.allow_refund_amt === 0) {
+          return 'trans-refund';
+        }
+        return '';
       }
     }
   };
@@ -730,6 +739,9 @@
 
   .panel-body-btn-group {
     margin: 10px 0px 20px;
+  }
+  .trans-refund {
+    color: #afafaf;
   }
 
   .el-table__row_fix {
