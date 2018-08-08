@@ -303,7 +303,7 @@ exports.default = {
   },
   login: { // 登录页
     head: 'Shop Management Platform',
-    reg: 'Register a new account',
+    reg: 'Login Account',
     user: 'Shop Account',
     cash: 'Cashier No.',
     ltsix: 'More than 6 digits.',

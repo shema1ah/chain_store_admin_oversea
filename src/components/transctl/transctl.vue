@@ -52,7 +52,7 @@
             </div>
           </div>
           <!-- 支付方式 -->
-          <div class="panel-select-group" v-if="isShow">
+          <div class="panel-select-group" v-if="typeList.length > 0">
             <div class="panel-select__wrapper">
               <span class="panel-select__desc">{{$t('tradeMng.table.colWay')}}</span>
               <el-form-item prop="checkAll1">
@@ -268,9 +268,6 @@
   import {formatDate, formatLength} from '../../common/js/util';
   import Store from '../../common/js/store';
 
-  let typeLists = ['wxpay', 'alipay'];
-  let otherLists = ['cancel'];
-
   // cancel 0未撤销 1撤销 status  0:交易中 1:交易成功 2:交易失败 3:交易超时
 
   export default {
@@ -313,9 +310,7 @@
         status: false,
         loading: false,
         typeList: [],
-        otherList: [
-          {'name': this.$t('tradeMng.panel.dd'), 'value': 'cancel'}
-        ],
+        allType: [],
         choosetimes: [
           {'name': this.$t('tradeMng.panel.today'), 'value': '1'},
           {'name': this.$t('tradeMng.panel.yestoday'), 'value': '2'},
@@ -330,13 +325,11 @@
           checkAll1: true,
           checkAll2: true,
           choosetime: '1',
-          type: [],
-          other: []
+          type: []
         },
         currentPage: 1,
         operaList: {},
         transData: {},
-        isShow: false,
         formrules: {
           orderno: [
             { validator: checkOrderNo, trigger: 'change' }
@@ -393,7 +386,7 @@
           page: this.currentPage,
           maxnum: this.pageSize,
           paytypes: this.form.type.join(','),
-          filters: this.form.other.join(','),
+          // filters: this.form.other.join(','),
           lang: this.lang,
           format: 'cors'
         };
@@ -429,14 +422,10 @@
     created() {
       let tradeType = this.role.trade_type;
       if(tradeType.length > 0) {
-        typeLists = tradeType;
-        if(tradeType.includes('wxpay')) {
-          this.typeList.push({'name': this.$t('tradeMng.table.wechatCollect'), 'value': 'wxpay'});
+        this.typeList = tradeType;
+        for(let val of tradeType) {
+          this.allType.push(val.value);
         }
-        if(tradeType.includes('alipay')) {
-          this.typeList.push({'name': this.$t('tradeMng.table.alipay'), 'value': 'alipay'});
-        }
-        this.isShow = true;
       }
       this.changeTime('1');
       // 子商户查询其收银员
@@ -609,22 +598,13 @@
 
       // 支付方式全选check选择功能
       handleCheckAllChange1(event) {
-        this.form.type = event.target.checked ? [] : typeLists;
+        this.form.type = event.target.checked ? [] : this.allType;
       },
 
       // 支付方式单选或多选
       handleCheckedCitiesChange1(value) {
         let checkCount = value.length;
         this.form.checkAll1 = !(checkCount > 0);
-      },
-
-      handleCheckAllChange2(event) {
-        this.form.other = event.target.checked ? [] : otherLists;
-      },
-
-      handleCheckedCitiesChange2(value) {
-        let checkCount = value.length;
-        this.form.checkAll2 = !(checkCount > 0);
       },
 
       // 点击查询

@@ -1,5 +1,5 @@
 <template>
-  <div class="index" v-loading="loading1 || loading2" :element-loading-text="$t('common.loading')">
+  <div class="index" v-loading="loading1" :element-loading-text="$t('common.loading')">
     <div class="banner_wrapper">
       <el-breadcrumb separator=">">
         <el-breadcrumb-item>{{$t('home.crumbs.L1')}}</el-breadcrumb-item>
@@ -14,24 +14,6 @@
       </div>
 
       <div class="panel-body panel-today">
-        <div class="member" v-if="!role.haiwai">
-          <h3><i></i>{{$t('home.panel.t1')}}</h3>
-          <strong><em>{{info.new_member_num}}</em>{{role.haiwai ? '' : ' 人'}}</strong>
-          <ul>
-            <li>
-              <strong><i></i>{{$t('home.panel.tc')}}</strong>
-              <span><em>{{info.old_member_num}}</em>{{role.haiwai ? '' : ' 个'}}</span>
-            </li>
-            <li>
-              <strong><i></i>{{$t('home.panel.cmnew')}}</strong>
-              <span><em>{{info.month_new_member}}</em>{{role.haiwai ? '' : ' 人'}}</span>
-            </li>
-            <li>
-              <strong><i></i>{{$t('home.panel.cumulativeMembership')}}</strong>
-              <span><em>{{info.total_member}}</em>{{role.haiwai ? '' : ' 人'}}</span>
-            </li>
-          </ul>
-        </div>
         <div class="fee">
           <h3>{{$t('home.panel.t2')}}</h3>
           <strong><em>{{info.today_total_amt | formatCurrency}}</em> {{ role.currency }}</strong>
@@ -53,110 +35,6 @@
       </div>
     </div>
 
-    <div class="data-show" v-if="!role.haiwai">
-      <h2>活动运营数据统计</h2>
-      <div class="content" v-if="activitys.length > 0">
-        <div class="item" v-for="activity in activitys">
-          <div @click="openDetail('coupon')" v-if="activity.type === 'coupon'">
-            <h3><i></i>进行中的活动：红包</h3>
-            <div class="title">
-              <i class="icon"></i>
-              <span>
-                <strong>{{activity.title}}</strong>
-                活动已进行{{activity.going_days}}天
-              </span>
-            </div>
-            <ul>
-              <li>
-                <strong>领取数</strong>
-                <span><em>{{activity.used_num}}</em>个</span>
-              </li>
-              <li>
-                <strong>使用数</strong>
-                <span><em>{{activity.use}}</em>个</span>
-              </li>
-              <li>
-                <strong>刺激消费数</strong>
-                <span><em>{{activity.total_amt | formatCurrency}}</em>元</span>
-              </li>
-            </ul>
-          </div>
-          <div @click="openDetail('card')" v-else-if="activity.type === 'card'">
-            <h3><i class="collect"></i>进行中的活动：集点</h3>
-            <div class="title">
-              <i class="icon collect"></i>
-              <span>
-                <strong>满{{activity.exchange_pt}}点送{{activity.goods_name}}</strong>
-                活动已进行{{activity.going_days}}天
-              </span>
-            </div>
-            <ul>
-              <li>
-                <strong>参与人数</strong>
-                <span><em>{{activity.in_person_no}}</em>个</span>
-              </li>
-              <li>
-                <strong>会员复购数</strong>
-                <span><em>{{activity.repeat_no}}</em>个</span>
-              </li>
-              <li>
-                <strong>兑换数</strong>
-                <span><em>{{activity.exchange_num}}</em>份</span>
-              </li>
-            </ul>
-          </div>
-          <div @click="openDetail('storage')" v-if="activity.type === 'prepaid'">
-            <h3><i class="store"></i>进行中的活动：储值</h3>
-            <div class="title">
-              <i class="icon store"></i>
-              <span>
-                <strong>{{activity.title}}</strong>
-                活动已进行{{activity.going_days}}天
-              </span>
-            </div>
-            <ul style="text-align:center">
-              <!-- <li>
-                <strong>今日储值</strong>
-                <span><em>{{activity.today_total_pay_amt | formatCurrency}}</em>元</span>
-              </li> -->
-              <li>
-                <strong>储值会员</strong>
-                <span><em>{{activity.user_num}}</em>位</span>
-              </li>
-              <li>
-                <strong>储值金额</strong>
-                <span><em>{{activity.total_pay_amt | formatCurrency}}</em>元</span>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <!-- <div class="item" @click="openDetail('storage')">
-          <h3><i class="store"></i>进行中的活动：储值</h3>
-          <div class="title">
-            <i class="icon store"></i>
-            <span>
-              <strong>储值活动</strong>
-              活动已进行2天
-            </span>
-          </div>
-          <ul>
-            <li>
-              <strong>今日储值</strong>
-              <span><em>21</em>元</span>
-            </li>
-            <li>
-              <strong>储值会员</strong>
-              <span><em>3</em>位</span>
-            </li>
-            <li>
-              <strong>储值金额</strong>
-              <span><em>200</em>元</span>
-            </li>
-          </ul>
-        </div> -->
-      </div>
-      <div class="no-content" v-else>暂无活动</div>
-    </div>
   </div>
 </template>
 
@@ -168,10 +46,8 @@
     data() {
       return {
         loading1: false,
-        loading2: false,
         role: Store.get("role") || {},
-        info: {},
-        activitys: []
+        info: {}
       };
     },
     props: {
@@ -184,14 +60,13 @@
       if(this.role.isCashier) {
         this.$router.push('/main/transctl');
       }else {
-        this.fetchDashboardData()
-        this.fetchActivityData()
+        this.fetchDashboardData();
       }
     },
     methods: {
       fetchDashboardData() {
         this.loading1 = true;
-        axios.get(`${config.host}/merchant/dashboard/stats?format=cors`)
+        axios.get(`${config.host}/merchant/dashboard/abroad/stats?format=cors`)
           .then((res) => {
             this.loading1 = false;
             let data = res.data
@@ -205,40 +80,6 @@
             this.loading1 = false;
             this.$message.error(this.$t('common.netError'))
           });
-      },
-      fetchActivityData() {
-        this.loading2 = true;
-        axios.get(`${config.host}/merchant/homeview?format=cors`)
-          .then((res) => {
-            this.loading2 = false;
-            let data = res.data
-            if (data.respcd === config.code.OK) {
-              this.activitys = data.data.result
-            } else {
-              this.$message.error(data.respmsg)
-            }
-          })
-          .catch(() => {
-            this.loading2 = false;
-            this.$message.error(this.$t('common.netError'))
-          })
-      },
-      openDetail(type) {
-        let pathname = '';
-        switch (type) {
-          case 'coupon':
-            pathname = 'memberredpacket';
-            break;
-          case 'card':
-            pathname = 'memberredpoint';
-            break;
-          case 'storage':
-            pathname = 'memberstorage';
-            break;
-          default:
-            break
-        }
-        this.$router.push(pathname)
       }
     }
   };

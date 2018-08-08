@@ -92,7 +92,7 @@
             </template>
           </el-table-column>
           <el-table-column prop="syssn" min-width="100" :label="$t('refundCheck.table.sNum')"></el-table-column>
-          <el-table-column prop="state" min-width="90" :label="$t('refundCheck.table.checkState')">
+          <el-table-column prop="state" min-width="95" :label="$t('refundCheck.table.checkState')">
             <template slot-scope="scope">
               <div v-if="scope.row.state === 0">{{ $t('refundCheck.table.waiting') }}</div>
               <div v-else-if="scope.row.state === 2">{{ $t('refundCheck.table.rejected') }}</div>
