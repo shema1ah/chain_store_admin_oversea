@@ -309,8 +309,6 @@
         pageSize: 10,
         status: false,
         loading: false,
-        typeList: [],
-        allType: [],
         choosetimes: [
           {'name': this.$t('tradeMng.panel.today'), 'value': '1'},
           {'name': this.$t('tradeMng.panel.yestoday'), 'value': '2'},
@@ -370,6 +368,22 @@
       shopData() {
         return this.$store.state.shopData;
       },
+
+      typeList() {
+        return this.shop.trade_type || []
+      },
+
+      allType() {
+        let type = this.shop.trade_type || [];
+        let list = [];
+        if(type.length > 0) {
+          for(let val of type) {
+            list.push(val.value);
+          }
+        }
+        return list;
+      },
+
       basicParams() {
         let str = '';
         if(!this.form.choosetime) {
@@ -420,13 +434,6 @@
     },
 
     created() {
-      let tradeType = this.role.trade_type;
-      if(tradeType.length > 0) {
-        this.typeList = tradeType;
-        for(let val of tradeType) {
-          this.allType.push(val.value);
-        }
-      }
       this.changeTime('1');
       // 子商户查询其收银员
       if(this.role.single) {
@@ -682,7 +689,7 @@
 
       // 行样式
       getStyle(row, index) {
-        if(row.allow_refund_amt === 0) {
+        if(row.allow_refund_amt === 0 && !row.is_refund) {
           return 'trans-refund';
         }
         return '';
