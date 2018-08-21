@@ -11,10 +11,13 @@ exports.default = {
     index: 'Home',
     settlement: 'Settlement Mgmt',
     tradeMng: 'Transaction Mgmt',
-    publicAuth: 'Official Account',
+    tradeAssign: 'Trading Flow',
+    refundCheck: ' Refund Review',
     shopMng: 'Account Info',
     cashMng: 'Cashier Mgmt',
     setup: 'Settings',
+    passSet: 'Mgmt Pass Settings',
+    emailSet: 'Email Settings',
     contact: 'Contact Us'
   },
   common: {
@@ -24,6 +27,7 @@ exports.default = {
     confirm: 'Confirm',
     tip: 'Tips',
     all: 'All',
+    none: 'Nothing',
     netError: 'Net error',
     loading: 'Loading...',
     modSucc: 'Modified successfully',
@@ -101,51 +105,12 @@ exports.default = {
       noticeTip: 'Always remember to turn off the branch shop promotions before delete the branch.'
     }
   },
-  pubSignal: { // 公众号授权
-    crumbs: {
-      authorizedPS: 'Official Account',
-      unauthorized: 'Authenticate your Official Account for more services.'
-    },
-    title: {
-      psInfo: 'Basic information of Official Account',
-      bind: 'Authenticate the Official Account'
-    },
-    panel: {
-      avatar: 'Head Portrait',
-      name: 'Name',
-      id: 'ID(Wechat Account)',
-      psType: 'Official Account Type',
-      authType: 'Authentication Type',
-      wechatScan: 'Use your WeChat account to scan',
-      adminAuthConfirm: 'Confirm the authentication process',
-      authSucc: 'Authentication completes',
-      btn: {
-        subAuthMng: 'Branch Auth',
-        deAuth: 'Cancel The Authorization For The Account',
-        dePrimeAuth: 'Release Auth',
-        freeAdd: 'Start',
-        releaseAuth: 'Release Auth'
-      }
-    },
-    dialog: {
-      m1: 'Select branches to authorize',
-      all: 'Select all'
-    },
-    msg: {
-      m1: 'Failed to get the official account information.',
-      m2: 'Failed to get the shop ID.',
-      m3: 'Failed to get the chain shop.',
-      m4: 'Successfully cancelled.',
-      m5: 'Failed to cancel.',
-      m6: 'Do you really want to cancel the authorization the official account?',
-      m7: 'Do you really want to cancel the authorization the master official account?'
-    }
-  },
-  tradeMng: { // 交易管理
+  tradeMng: { // 交易流水
     crumbs: {
       L1: 'Transaction Management',
       L2: 'Transaction detail',
       L3: 'Refund detail',
+      L4: 'Trading Flow',
     },
     panel: {
       time: 'Time Range',
@@ -168,10 +133,12 @@ exports.default = {
       }
     },
     table: {
-      total: 'Total Amount',
-      realrec: 'Payment Real Received',
-      succ: 'Success',
-      undoNum: 'Refund',
+      totalAmount: 'Total Amount',
+      totalNum: 'Total Number',
+      succAmount: 'Success Amount',
+      succ: 'Success Number',
+      refundMount: 'Refund Amount',
+      refundNum: 'Refund Number',
       bi: 'times',
       undo: 'Refund The Details',
       shopName: 'Shop Name',
@@ -179,12 +146,14 @@ exports.default = {
       all: 'All',
       colWay: 'Transaction Type',
       wechatCollect: 'Collect by Wechat',
+      alipay: 'Alipay',
       tradeType: 'Type',
       tradeTime: 'Time',
       tradeAmount: 'Amount',
       tradeState: 'Status',
       redpacket: 'Red Envelope Discount', // 红包优惠
       sNum: 'Transaction ID',
+      remark: 'Remarks',
       op: 'Operation',
       cancel: 'Refund',
       more: 'More',
@@ -237,6 +206,49 @@ exports.default = {
       m16: 'Please enter a valid refund amount'
     }
   },
+  refundCheck: { // 退款审核
+    crumbs: {
+      L1: 'Transaction Management',
+      L2: 'Refund Review'
+    },
+    panel: {
+      time: 'Application time',
+      shopName: 'Store name',
+      operator: 'Cashier',
+      oNUm: 'Original ID',
+      tip: 'Please enter the Original ID',
+      btn: {
+        query: 'Search',
+        reset: 'Reset'
+      }
+    },
+    table: {
+      applyAmount: 'Account Application',
+      tradeType: 'Type',
+      tradeTime: 'Time',
+      refundMount: 'Refund amount',
+      tradeAmount: 'Amount',
+      sNum: 'Transaction ID',
+      checkState: 'Approval Status',
+      waiting: 'Moderated',
+      approved: 'Approved',
+      rejected: 'Rejected',
+      op: 'Operation',
+      approve: 'Approve',
+      reject: 'Refuse'
+    },
+    dialog: {
+      d1: 'The operation will not be withdrawn once confirmed, whether approved?',
+      d2: 'The operation will not be withdrawn once confirmed, whether refused?',
+      d3: 'Confirmation of approval',
+      d4: 'Confirm rejection'
+    },
+    msg: {
+      m1: 'Mgmt Pass',
+      m2: 'Please enter the Mgmt Pass',
+      m3: 'Successful operation'
+    }
+  },
   home: { // 首页概览
     crumbs: {
       L1: 'Home'
@@ -263,19 +275,21 @@ exports.default = {
     },
     panel: {
       time: 'Time Range',
-      type: 'Type',
       today: 'Today',
       yestoday: 'Yesterday',
       near7: 'Last 7 days',
       near30: 'Last 30 days',
-      name: 'Account',
+      type: 'Type',
       btn: {
         query: 'Search',
         reset: 'Reset'
       }
     },
     table: {
-      settleTime: 'Settleme Time',
+      settleTime: 'Settlement Time',
+      settleType: 'Settlement Type',
+      name: 'Account',
+      amount: 'Account Name',
       currency: 'Currency',
       total: 'Total Amount',
       charge: 'Fee',
@@ -289,7 +303,7 @@ exports.default = {
   },
   login: { // 登录页
     head: 'Shop Management Platform',
-    reg: 'Register a new account',
+    reg: 'Login Account',
     user: 'Shop Account',
     cash: 'Cashier No.',
     ltsix: 'More than 6 digits.',
@@ -307,7 +321,8 @@ exports.default = {
   },
   setting: { // 邮箱设置页
     crumbs: {
-      L1: 'Settings'
+      L1: 'Settings',
+      L2: 'Email Settings'
     },
     panel: {
       mailSetup: 'Email settings',
@@ -328,6 +343,42 @@ exports.default = {
       m1: 'Delete the last email address will turn off the feature, do you confirm?'
     }
 
+  },
+  passSet: { // 管理密码设置
+    crumbs: {
+      L1: 'Settings',
+      L2: 'Manage password settings'
+    },
+    panel: {
+      passMsg: 'Management password：',
+      explain: 'Use：After  setting, the refund approval for next day will confirmed entering management password.',
+      states1: 'Not set',
+      states2: 'Has been set',
+      bt1: 'Set',
+      bt2: 'Reset',
+      bt3: 'Save',
+      title1: 'Setting management password',
+      title2: 'Reset management password',
+      safe: 'Safety verification',
+      pass: 'Mgmt Pass',
+      reEnter: 'Re-enter',
+      originPass: 'Original Mgmt Pass',
+      newPass: 'New Mgmt Pass'
+    },
+    msg: {
+      m1: 'Please enter your password',
+      m2: 'Please enter your Mgmt Pass',
+      m3: 'Please re-enter your Mgmt Pass',
+      m4: 'Enter alphabets or numbers from 6 to 20 digits.',
+      m6: 'Please enter original Mgmt Pass',
+      m7: 'Please enter new Mgmt Pass',
+      m8: 'Please re-enter new Mgmt Pass',
+      m9: 'Inconsistency with admin password input',
+      m10: 'Set successfully'
+    },
+    tip: {
+      m1: '* Forgot  original password Please contact customer service'
+    }
   },
   cashMng: { // 收银员管理
     crumbs: {

@@ -6,11 +6,24 @@
     </div>
     <ul class="left-nav">
       <li v-for="nav in navs">
-        <router-link class="sidebar-nav__item" :to="router('main/' + nav.pathname)">{{ nav.val }}</router-link>
+        <router-link class="sidebar-nav__item" v-if="nav.pathname" :to="router('main/' + nav.pathname)">{{ nav.val }}</router-link>
+        <a v-else class="sidebar-nav__item" @click="toggle(nav.subnav)" :class="{'dark': $route.fullPath.indexOf(nav.subnav) > -1}">
+          {{ nav.val }}
+          <i v-if="nav.sub" class="icon-down_arrow" :class="{'icon-down_arrow__rotate': !isDark[nav.subnav]}"></i>
+        </a>
+        <transition name="collpase">
+          <ul v-if="nav.sub" v-show="isDark[nav.subnav]" class="collpase" :class="{'dark': $route.fullPath.indexOf(nav.subnav) > -1}">
+            <li v-for="ls in nav.sub">
+              <router-link class="sidebar-nav__item sidebar-nav__subitem" :to="router('main/' + ls.pathname)">
+                {{ ls.val }}
+              </router-link>
+            </li>
+          </ul>
+        </transition>
       </li>
     </ul>
     <div class="copyright_wrapper" v-if="role.haiwai">
-      <el-select v-model="lang"  icon="caret-bottom" @change="switchLanguage" size="small" popperClass="popperBg" style="width:80%;">
+    <el-select v-model="lang"  icon="caret-bottom" @change="switchLanguage" size="small" popperClass="popperBg" style="width:80%;">
         <el-option v-for="item in langLists" :key="item.value" :label="item.label" :value="item.value"></el-option>
       </el-select>
     </div>
@@ -25,6 +38,10 @@
         lang: config.lang,
         role: Store.get('role') || {},
         navs: [],
+        isDark: {
+          trans: true,
+          Setting: true
+        },
         langLists: [
           {label: '日本語', value: 'ja'},
           {label: 'English', value: 'en'},
@@ -54,10 +71,14 @@
         return `/${router}`;
       },
 
+      toggle(val) {
+        this.isDark[val] = !this.isDark[val];
+      },
+
       getNav() {
         switch (this.role.country) {
           case 'HK':
-            if(this.role.single) { // 香港单店
+            if(this.role.single) { // 香港单店,无收银员管理
               if(this.role.isCashier) { // 是收营员
                 this.navs = [
                   {
@@ -88,8 +109,8 @@
                     pathname: 'singlemanage'
                   },
                   {
-                    val: this.$t('nav.setup'), // 邮件设置
-                    pathname: 'settings'
+                    val: this.$t('nav.emailSet'), // 邮箱设置
+                    pathname: 'emailSetting'
                   },
                   {
                     val: this.$t('nav.contact'), // 客服
@@ -105,15 +126,29 @@
                 },
                 {
                   val: this.$t('nav.tradeMng'), // 交易管理
-                  pathname: 'transctl'
+                  subnav: 'trans',
+                  sub: [{
+                    val: this.$t('nav.tradeAssign'), // 交易流水
+                    pathname: 'transctl'
+                  }, {
+                    val: this.$t('nav.refundCheck'), // 退款审核
+                    pathname: 'transCheck'
+                  }]
                 },
                 {
                   val: this.$t('nav.shopMng'), // 账户信息
                   pathname: 'chainmanage'
                 },
                 {
-                  val: this.$t('nav.setup'), // 邮件设置
-                  pathname: 'settings'
+                  val: this.$t('nav.setup'), // 设置
+                  subnav: 'Setting',
+                  sub: [{
+                      val: this.$t('nav.passSet'), // 管理密码设置
+                      pathname: 'passSetting'
+                    }, {
+                    val: this.$t('nav.emailSet'), // 邮箱设置
+                    pathname: 'emailSetting'
+                  }]
                 },
                 {
                   val: this.$t('nav.contact'), // 客服
@@ -121,15 +156,9 @@
                 }
               ];
             }
-            // 大商户，直营增加清算查询模块
-            if(this.role.isMerchant && !this.role.isCashier) {
-              this.navs.splice(1, 0, {
-                val: this.$t('nav.settlement'), // 清算查询
-                pathname: 'settlement'
-              });
-            }
             break;
           case 'AR':
+          case 'JP':
             if(this.role.single) { // 迪拜单店
               if(this.role.isCashier) { // 是收营员
                 this.navs = [
@@ -165,8 +194,8 @@
                     pathname: 'cashiermanage'
                   },
                   {
-                    val: this.$t('nav.setup'), // 邮件设置
-                    pathname: 'settings'
+                    val: this.$t('nav.emailSet'), // 邮箱设置
+                    pathname: 'emailSetting'
                   },
                   {
                     val: this.$t('nav.contact'), // 客服
@@ -182,28 +211,35 @@
                 },
                 {
                   val: this.$t('nav.tradeMng'), // 交易管理
-                  pathname: 'transctl'
+                  subnav: 'trans',
+                  sub: [{
+                    val: this.$t('nav.tradeAssign'), // 交易流水
+                    pathname: 'transctl'
+                  }, {
+                    val: this.$t('nav.refundCheck'), // 退款审核
+                    pathname: 'transCheck'
+                  }]
                 },
                 {
                   val: this.$t('nav.shopMng'), // 账户信息
                   pathname: 'chainmanage'
                 },
                 {
-                  val: this.$t('nav.setup'), // 邮件设置
-                  pathname: 'settings'
+                  val: this.$t('nav.setup'), // 设置
+                  subnav: 'Setting',
+                  sub: [{
+                    val: this.$t('nav.passSet'), // 管理密码设置
+                    pathname: 'passSetting'
+                  }, {
+                    val: this.$t('nav.emailSet'), // 邮箱设置
+                    pathname: 'emailSetting'
+                  }]
                 },
                 {
                   val: this.$t('nav.contact'), // 客服
                   pathname: 'contact'
                 }
               ];
-            }
-            // 大商户，直营增加清算查询模块
-            if(this.role.isMerchant && !this.role.isCashier) {
-              this.navs.splice(1, 0, {
-                val: this.$t('nav.settlement'), // 清算查询
-                pathname: 'settlement'
-              });
             }
             break;
           default:
@@ -238,8 +274,8 @@
                     pathname: 'cashiermanage'
                   },
                   {
-                    val: this.$t('nav.setup'), // 邮件设置
-                    pathname: 'settings'
+                    val: this.$t('nav.emailSet'), // 邮箱设置
+                    pathname: 'emailSetting'
                   }
                 ];
               }
@@ -251,30 +287,57 @@
                 },
                 {
                   val: this.$t('nav.tradeMng'), // 交易管理
-                  pathname: 'transctl'
+                  subnav: 'trans',
+                  sub: [{
+                    val: this.$t('nav.tradeAssign'), // 交易流水
+                    pathname: 'transctl'
+                  }, {
+                    val: this.$t('nav.refundCheck'), // 退款审核
+                    pathname: 'transCheck'
+                  }]
                 },
                 {
                   val: this.$t('nav.shopMng'), // 账户信息
                   pathname: 'chainmanage'
                 },
                 {
-                  val: this.$t('nav.setup'), // 邮件设置
-                  pathname: 'settings'
+                  val: this.$t('nav.setup'), // 设置
+                  subnav: 'Setting',
+                  sub: [{
+                    val: this.$t('nav.passSet'), // 管理密码设置
+                    pathname: 'passSetting'
+                  }, {
+                    val: this.$t('nav.emailSet'), // 邮箱设置
+                    pathname: 'emailSetting'
+                  }]
                 }
               ];
             }
-            // 日本、柬埔寨、新加坡
-            if(this.role.country === 'JP' || this.role.country === 'KH' || this.role.country === 'SG') {
-              // 大商户，直营增加清算查询模块
-              if(this.role.isMerchant && !this.role.isCashier) {
-                this.navs.splice(1, 0, {
-                  val: this.$t('nav.settlement'), // 清算查询
-                  pathname: 'settlement'
-                });
-              }
-            }
-
         }
+
+        // 海外
+        if(this.role.haiwai) {
+          // 大商户，直营增加清算查询模块,退款审核
+          if (this.role.isMerchant && !this.role.isCashier) {
+            this.navs.splice(1, 0, {
+              val: this.$t('nav.settlement'), // 清算查询
+              pathname: 'settlement'
+            });
+
+            this.navs.splice(2, 1, {
+              val: this.$t('nav.tradeMng'), // 交易管理
+              subnav: 'trans',
+              sub: [{
+                val: this.$t('nav.tradeAssign'), // 交易流水
+                pathname: 'transctl'
+              }, {
+                val: this.$t('nav.refundCheck'), // 退款审核
+                pathname: 'transCheck'
+              }]
+            });
+          }
+        }
+
       }
     }
   };

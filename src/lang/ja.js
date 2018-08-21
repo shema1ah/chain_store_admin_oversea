@@ -11,10 +11,13 @@ exports.default = {
     index: 'トップ',
     settlement: '勘定書管理',
     tradeMng: '取引管理',
-    publicAuth: '公式アカウント',
+    tradeAssign: '取引流水',
+    refundCheck: ' 返金審査',
     shopMng: 'アカウント',
     cashMng: 'キャッシャー管理',
     setup: '設定',
+    passSet: 'パスワード管理設置',
+    emailSet: 'メール設定',
     contact: 'お問い合わせ',
   },
   common: {
@@ -24,6 +27,7 @@ exports.default = {
     confirm: '確 認',
     tip: 'ヒント',
     all: '全部',
+    none: 'ない',
     netError: 'ネットワークエラー',
     loading: '一生懸命ローディング中です',
     modSucc: '変更しました!',
@@ -101,51 +105,12 @@ exports.default = {
       noticeTip: '支店を削除する前に当該支店の進行中の会員マーケティングイベントを中止させるようお薦めします'
     }
   },
-  pubSignal: { // 公众号授权
-    crumbs: {
-      authorizedPS: '授権済みの公式アカウント',
-      unauthorized: '未だWechatアカウントに関連していません。こちらより更によいサービスを提供させていただくため、先にWechatアカウントを関連してください。'
-    },
-    title: {
-      psInfo: '公式アカウントの基本情報',
-      bind: 'Wechat公式アカウントにバンディングします'
-    },
-    panel: {
-      avatar: '顔写真',
-      name: '名前',
-      id: 'ID(Wechatアカウント)',
-      psType: '公式アカウントの種類',
-      authType: '認証種類',
-      wechatScan: 'バンディングされた個人のWechatアカウントでスキャンします',
-      adminAuthConfirm: '公式アカウント管理者から授権して確認します',
-      authSucc: '授権に成功しました、公式アカウントを運営しましょう！',
-      btn: {
-        subAuthMng: '支店への授権管理',
-        deAuth: 'アカウントの授権を解除します',
-        dePrimeAuth: 'マスターアカウントの授権を解除します',
-        freeAdd: '無料でWechat公式アカウントを追加します',
-        releaseAuth: '授権を解除します'
-      }
-    },
-    dialog: {
-      m1: '授権する支店の前にチェックを入れてください。',
-      all: '全て選択'
-    },
-    msg: {
-      m1: '公式アカウント情報を取得に失敗しました',
-      m2: '商店IDを取得に失敗しました',
-      m3: 'チェーン店を取得に失敗しました',
-      m4: '解除に成功しました',
-      m5: '解除に失敗しました',
-      m6: '本当にアカウントへの授権を解除しますか？',
-      m7: '本当にマスター公式アカウントへの授権を解除しますか？'
-    }
-  },
   tradeMng: {
     crumbs: {
       L1: '取引管理',
       L2: '取引明細',
       L3: '払い戻す',
+      L4: '取引流水'
     },
     panel: {
       time: '日付',
@@ -168,10 +133,12 @@ exports.default = {
       }
     },
     table: {
-      total: '取引総額',
-      realrec: '実際の集金額',
-      succ: '取引き数',
-      undoNum: '取消し数',
+      totalAmount: '取引総金額',
+      totalNum: '取引総筆数',
+      succAmount: '成功取引金額',
+      succ: '成功取引き数',
+      refundMount: '返金金額',
+      refundNum: '返金筆数',
       bi: '',
       undo: '取消',
       shopName: '店舗名',
@@ -179,14 +146,16 @@ exports.default = {
       all: '全部',
       colWay: '集金方式',
       wechatCollect: 'Wechatで集金します',
+      alipay: '宝を支払います',
       tradeType: '取引種類',
       tradeTime: '取引時間',
       tradeAmount: '取引金額',
       tradeState: '取引状態',
       redpacket: ' 紅包（ホンバオ）割引', // 红包优惠
       sNum: 'シリアル番号',
+      remark: '備考',
       op: '操作',
-      cancel: '取消',
+      cancel: '返金',
       more: 'もっと',
       detail: '詳細確認',
       download: 'レシート',
@@ -216,7 +185,7 @@ exports.default = {
       d3: '成功',
       d4: '失敗',
       d5: 'パスワード',
-      d6: '払い戻し'
+      d6: '返金'
     },
     msg: {
       m1: 'シリアル番号は必ず数字です！',
@@ -235,6 +204,49 @@ exports.default = {
       m14: '最高な払い戻す金額',
       m15: '返金金額を入力してください',
       m16: '有効な返金金額を入力してください'
+    }
+  },
+  refundCheck: { // 退款审核
+    crumbs: {
+      L1: '取引管理',
+      L2: ' 返金審査'
+    },
+    panel: {
+      time: ' 申請時間',
+      shopName: '店舗',
+      operator: 'キャッシャー',
+      oNUm: '元取引番号',
+      tip: '元のオーダー流水番号を入力してください',
+      btn: {
+        query: '検索',
+        reset: 'リセット'
+      }
+    },
+    table: {
+      applyAmount: ' アカウント申請',
+      tradeType: '取引種類',
+      tradeTime: '取引時間',
+      refundMount: ' 返金金額',
+      tradeAmount: '取引金額',
+      sNum: 'シリアル番号',
+      checkState: '審査状態',
+      waiting: '審査待ち',
+      approved: '許可済み',
+      rejected: '拒絶済み',
+      op: '操作',
+      approve: '許可',
+      reject: '拒絶'
+    },
+    dialog: {
+      d1: '操作を撤回できないと確認されれば、確認承認？',
+      d2: '操作を撤回できないと確認されれば、確認拒絶？',
+      d3: '確認批准',
+      d4: '確認拒絕'
+    },
+    msg: {
+      m1: 'パスワード管理',
+      m2: 'パスワードを入力してください',
+      m3: '操作成功'
     }
   },
   home: { // 首页概览
@@ -263,12 +275,11 @@ exports.default = {
     },
     panel: {
       time: '日付',
-      type: 'タイプ',
       today: '今日',
       yestoday: '昨日',
       near7: '最近の７日間',
       near30: '最近の３０日間',
-      name: 'アカウント',
+      type: 'タイプ',
       btn: {
         query: '検索',
         reset: 'リセット'
@@ -276,6 +287,9 @@ exports.default = {
     },
     table: {
       settleTime: '清算時間',
+      settleType: '清算タイプ',
+      name: 'アカウント',
+      amount: ' 開設した口座名称',
       currency: '通貨',
       total: '取引総額',
       charge: '手数料',
@@ -307,7 +321,8 @@ exports.default = {
   },
   setting: { // 邮箱设置页
     crumbs: {
-      L1: '設定'
+      L1: '設定',
+      L2: 'メール設定'
     },
     panel: {
       mailSetup: 'メール設定',
@@ -327,6 +342,42 @@ exports.default = {
     },
     tip: {
       m1: '最後のメールを削除すると、メールレポート機能がオフになります。削除を確認しますか？'
+    }
+  },
+  passSet: { // 管理密码设置
+    crumbs: {
+      L1: '設置',
+      L2: ' パスワード管理設置'
+    },
+    panel: {
+      passMsg: ' パスワード管理：',
+      explain: ' 用途：設置した後に、翌日に返金審査を許可して、パスワード入力を通じて、確認検証完成する。',
+      states1: '未設置',
+      states2: '設置済み',
+      bt1: '設置',
+      bt2: 'リセット',
+      bt3: '保存',
+      title1: '設置パスワード管理',
+      title2: 'リセット管理パスワード',
+      safe: '安全検証',
+      pass: '暗証番号管理',
+      reEnter: '再度入力',
+      originPass: 'パスワードの管理',
+      newPass: '新パスワードを管理'
+    },
+    msg: {
+      m1: '登録パスワードを入力してください',
+      m2: 'パスワードを入力してください',
+      m3: '管理パスワードを再度入力してください',
+      m4: 'を入力してください6～20位数字や文字',
+      m6: '元々の管理パスワード管理を入力ください',
+      m7: '新しい管理パスワードをご入力ください',
+      m8: '新しい管理パスワードを入力してください',
+      m9: '管理パスワードとの入力が一致しない',
+      m10: '設置成功'
+    },
+    tip: {
+      m1: '* 元々のパスワードを忘れるか？ 顧客サービスに連絡してご処理下さい'
     }
   },
   cashMng: { // 收银员管理

@@ -3,6 +3,7 @@
     <div class="banner_wrapper">
       <el-breadcrumb separator=">">
         <el-breadcrumb-item>{{$t('tradeMng.crumbs.L1')}}</el-breadcrumb-item>
+        <el-breadcrumb-item>{{$t('tradeMng.crumbs.L4')}}</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
     <div class="panel down">
@@ -51,7 +52,7 @@
             </div>
           </div>
           <!-- 支付方式 -->
-          <div class="panel-select-group" v-if="isShow">
+          <div class="panel-select-group" v-if="typeList.length > 0">
             <div class="panel-select__wrapper">
               <span class="panel-select__desc">{{$t('tradeMng.table.colWay')}}</span>
               <el-form-item prop="checkAll1">
@@ -99,25 +100,29 @@
       <div class="panel-body">
         <div class="panel-btn-group__wrapper panel-body-btn-group flex-normal">
           <div class="num_total">
+            <!--<div class="num_wrapper">
+              <p class="num-title">{{$t('tradeMng.table.totalAmount')}}</p>
+              <p class="num-desc">{{ transData.total_amt | formatNumber }} {{ role.currency }}</p>
+            </div>
             <div class="num_wrapper">
-              <p class="num-title">{{$t('tradeMng.table.total')}}</p>
+              <p class="num-title">{{$t('tradeMng.table.totalNum')}}</p>
+              <p class="num-desc">{{ transData.total_num || 0 }} </p>
+            </div>-->
+            <div class="num_wrapper">
+              <p class="num-title">{{$t('tradeMng.table.succAmount')}}</p>
               <p class="num-desc">{{ transData.sucamt | formatNumber }} {{ role.currency }}</p>
-            </div>
-            <div class="num_wrapper" v-if="!role.haiwai">
-              <p class="num-title">{{$t('tradeMng.table.realrec')}}</p>
-              <p class="num-desc">{{ transData.total_txamt | formatNumber }} {{ role.currency }}</p>
-            </div>
-            <div class="num_wrapper" v-if="!role.haiwai">
-              <p class="num-title">{{$t('tradeMng.table.redpacket')}}</p>
-              <p class="num-desc">{{ transData.coupon_amt | formatNumber }} {{ role.currency }}</p>
             </div>
             <div class="num_wrapper">
               <p class="num-title">{{$t('tradeMng.table.succ')}}</p>
               <p class="num-desc">{{ transData.sucnum || 0 }}</p>
             </div>
             <div class="num_wrapper">
-              <p class="num-title">{{$t('tradeMng.table.undoNum')}}</p>
-              <p class="num-default">{{ transData.cancelnum || 0 }}</p>
+              <p class="num-title">{{$t('tradeMng.table.refundMount')}}</p>
+              <p class="num-desc">{{ transData.cancel_amt | formatNumber }} {{ role.currency }}</p>
+            </div>
+            <div class="num_wrapper">
+              <p class="num-title">{{$t('tradeMng.table.refundNum')}}</p>
+              <p class="num-default">{{ transData.cancel_num || 0 }}</p>
             </div>
           </div>
           <div class="a-wrapper">
@@ -134,6 +139,7 @@
           :data="transData.data"
           style="width: 100%"
           row-class-name="el-table__row_fix"
+          :row-class-name="getStyle"
           v-loading="loading">
           <el-table-column
             :label="$t('tradeMng.table.shopName')" min-width="90">
@@ -149,37 +155,28 @@
             prop="busicd_info"
             :label="$t('tradeMng.table.tradeType')" min-width="100">
           </el-table-column>
-          <el-table-column prop="sysdtm" min-width="95" :label="$t('tradeMng.table.tradeTime')">
+          <el-table-column prop="sysdtm" min-width="110" :label="$t('tradeMng.table.tradeTime')">
             <template slot-scope="scope">{{ scope.row.sysdtm }}</template>
           </el-table-column>
           <el-table-column
-            :label="$t('tradeMng.table.tradeAmount') + '(' + role.currency + ')'" v-if="role.haiwai" min-width="110">
+            :label="$t('tradeMng.table.tradeAmount') + '(' + role.currency + ')'" min-width="90">
             <template slot-scope="scope">
               <div class="table-title">{{ scope.row.total_amt | formatCurrency }}</div>
             </template>
           </el-table-column>
-          <el-table-column
-            label="交易金额" v-else>
+          <el-table-column prop="status_str" :label="$t('tradeMng.table.tradeState')" min-width="75">
+          </el-table-column>
+          <el-table-column min-width="105" :label="$t('tradeMng.table.sNum')">
             <template slot-scope="scope">
-              <div class="table-title">{{ scope.row.total_amt | formatCurrency }}{{ role.currency }}</div>
-              <div class="table-content">实收{{ scope.row.txamt | formatCurrency }}{{ role.currency }}</div>
-              <div v-show="scope.row.mchnt_coupon" class="table-content">商家红包{{ scope.row.mchnt_coupon | formatCurrency }}{{ role.currency }}</div>
-              <div v-show="scope.row.hj_coupon" class="table-content">平台补贴{{ scope.row.hj_coupon | formatCurrency }}{{ role.currency }}</div>
+              <div>{{ scope.row.origssn ? scope.row.syssn + '(' + $t('tradeMng.detail.syssn2') + ':' + scope.row.origssn + ')' : scope.row.syssn }}</div>
             </template>
           </el-table-column>
-          <el-table-column
-            prop="status_str"
-            :label="$t('tradeMng.table.tradeState')" min-width="76">
-          </el-table-column>
-          <el-table-column
-            prop="syssn"
-            min-width="105"
-            :label="$t('tradeMng.table.sNum')">
-          </el-table-column>
+
+          <el-table-column prop="note" :label="$t('tradeMng.table.remark')"></el-table-column>
           <el-table-column min-width="215" :label="$t('tradeMng.table.op')">
             <template slot-scope="scope">
-              <el-button v-if="role.single" type="text" size="small" :disabled="scope.row.allow_refund_amt <= 0" class="el-button__fix" @click="confirm(scope.row)">{{$t('tradeMng.table.cancel')}}</el-button>
-              <el-button type="text" size="small" class="el-button__fix" @click.native="detail(scope.row.syssn)">{{$t('tradeMng.table.detail')}}</el-button>
+              <el-button type="text" size="small" :disabled="showRefund(scope.row.sysdtm, scope.row.allow_refund_amt)" class="el-button__fix" @click="confirm(scope.row)">{{$t('tradeMng.table.cancel')}}</el-button>
+              <el-button type="text" size="small" class="el-button__fix" @click.native="detail(scope.row.syssn, scope.row.origssn)">{{$t('tradeMng.table.detail')}}</el-button>
               <a :href="downUrl" @click="downHref(scope.$index, $event)">
                   <span id="tr-download">{{ $t('tradeMng.table.download') }}</span>
               </a>
@@ -203,10 +200,10 @@
 
     <el-dialog :title="$t('tradeMng.dialog.d2')" :visible.sync="showConfirm" custom-class="mydialog" top="20%" @close="handleClose('formpwd')">
       <div style="margin-bottom: 20px;">{{$t('tradeMng.dialog.d1')}}</div>
-      <el-form :model="formpwd" :rules="pwdrules" ref="formpwd" label-width="80px">
+      <el-form :model="formpwd" :rules="pwdrules" ref="formpwd" :label-width="(lang === 'ja' || lang === 'en') ? '110px' : '80px'" autocomplete="off">
         <el-form-item prop="amount" :label="$t('tradeMng.detail.ammount2')" class="amount">
           <span>{{ role.currency }}</span>
-          <el-input class="showAmount" v-model="formpwd.amount" :placeholder="$t('tradeMng.msg.m14') + refundAmount" type="number" @keyup.enter.native="onEnter"></el-input>
+          <el-input name="amount" class="showAmount" v-model="formpwd.amount" :placeholder="$t('tradeMng.msg.m14') + refundAmount" type="number" @keyup.enter.native="onEnter"></el-input>
         </el-form-item>
         <el-form-item prop="pwd" :label="$t('tradeMng.dialog.d5')">
           <el-input v-model="formpwd.pwd" :placeholder="$t('tradeMng.msg.m9')" type="password" @keyup.enter.native="onEnter"></el-input>
@@ -223,7 +220,7 @@
 
     <el-dialog :title="refundStates?$t('tradeMng.dialog.d3'):$t('tradeMng.dialog.d4')" :visible.sync="showArefund" custom-class="mydialog refund" :class="[refundStates ? 'success' : 'fail']" top="20%" :show-close="false">
       <div v-if="refundStates">
-        <el-form label-width="(lang === 'ja' || lang === 'en') ? 150px : 90px">
+        <el-form :label-width="(lang === 'ja' || lang === 'en') ? '150px' : '90px'">
           <el-form-item :label="$t('tradeMng.detail.ammount2')">
             <div>
               <span style="font-size: 18px;">{{ role.currency }}</span>
@@ -265,15 +262,11 @@
 </template>
 
 <script>
-/* eslint-disable */
   import axios from 'axios';
   import config from 'config';
   import qs from 'qs';
   import {formatDate, formatLength} from '../../common/js/util';
   import Store from '../../common/js/store';
-
-  let typeLists = ['wxpay', 'alipay'];
-  let otherLists = ['prepaid_recharge', 'prepaid', 'coupon', 'cancel'];
 
   // cancel 0未撤销 1撤销 status  0:交易中 1:交易成功 2:交易失败 3:交易超时
 
@@ -289,7 +282,9 @@
         }
       };
       let checkAmount = (rule, val, cb) => {
-        if(+val > this.refundAmount) {
+        if(+val === 0) {
+          cb(this.$t('tradeMng.msg.m15'));
+        }else if(+val > this.refundAmount) {
           cb(this.$t('tradeMng.msg.m12'));
         } else {
           cb();
@@ -314,18 +309,6 @@
         pageSize: 10,
         status: false,
         loading: false,
-        typeList: [
-          {'name': '微信收款', 'value': 'wxpay'},
-          {'name': '支付宝收款', 'value': 'alipay'},
-          // {'name': 'QQ收款', 'value': 'qqpay'},
-          // {'name': '刷卡收款', 'value': 'card'}
-        ],
-        otherList: [
-          {'name': '储值充值', 'value': 'prepaid_recharge'},
-          {'name': '储值消费', 'value': 'prepaid'},
-          {'name': '红包优惠', 'value': 'coupon'},
-          {'name': '撤销明细', 'value': 'cancel'}
-        ],
         choosetimes: [
           {'name': this.$t('tradeMng.panel.today'), 'value': '1'},
           {'name': this.$t('tradeMng.panel.yestoday'), 'value': '2'},
@@ -340,13 +323,11 @@
           checkAll1: true,
           checkAll2: true,
           choosetime: '1',
-          type: [],
-          other: []
+          type: []
         },
         currentPage: 1,
         operaList: {},
         transData: {},
-        isShow: false,
         formrules: {
           orderno: [
             { validator: checkOrderNo, trigger: 'change' }
@@ -387,6 +368,22 @@
       shopData() {
         return this.$store.state.shopData;
       },
+
+      typeList() {
+        return this.shop.trade_type || []
+      },
+
+      allType() {
+        let type = this.shop.trade_type || [];
+        let list = [];
+        if(type.length > 0) {
+          for(let val of type) {
+            list.push(val.value);
+          }
+        }
+        return list;
+      },
+
       basicParams() {
         let str = '';
         if(!this.form.choosetime) {
@@ -403,7 +400,7 @@
           page: this.currentPage,
           maxnum: this.pageSize,
           paytypes: this.form.type.join(','),
-          filters: this.form.other.join(','),
+          // filters: this.form.other.join(','),
           lang: this.lang,
           format: 'cors'
         };
@@ -433,21 +430,10 @@
             }
           }
         }
-      },
+      }
     },
 
     created() {
-      let tradeType = window.sessionStorage.getItem("trade_type");
-      if(tradeType) {
-        let tradeTypeArr = eval(window.sessionStorage.getItem("trade_type"));
-        if(tradeTypeArr.length <= 1) {
-          this.isShow = false;
-        } else {
-          this.isShow = true;
-        }
-      } else {
-        this.isShwo = false;
-      }
       this.changeTime('1');
       // 子商户查询其收银员
       if(this.role.single) {
@@ -455,13 +441,6 @@
         this.getOperators(this.shop.uid);
       }
 
-      // 海外更多筛选特殊处理
-      if(this.role.haiwai) {
-        this.otherList = [
-          {'name': this.$t('tradeMng.panel.dd'), 'value': 'cancel'}
-        ];
-        otherLists = ['cancel'];
-      }
       this.getTransData();
     },
 
@@ -473,11 +452,20 @@
 
       // 点击下载交易汇总
       downCollection() {
-        let oper = Object.entries(this.operaList);
-        if(!this.role.haiwai && !this.form.operaValue && oper.length > 0) {
-          this.showTotal = true;
+        document.querySelector('#separate').click();
+      },
+
+      // 是否展示撤销按钮,单店展示分店当天展示
+      showRefund(val, count) {
+        if(this.role.single) {
+          let date = formatDate(this.transData.date || new Date());
+          if(formatDate(val) === date && count > 0) {
+            return false;
+          }else {
+            return true;
+          }
         }else {
-          document.querySelector('#separate').click();
+          return true;
         }
       },
 
@@ -510,7 +498,6 @@
             this.refundStates = false;
           }
         }).catch((res) => {
-          this.showConfirm = false;
           this.iconLoading = false;
           this.$message.error(this.$t('tradeMng.msg.m7'));
         });
@@ -519,13 +506,17 @@
       // 下载小票
       downHref(index, e) {
         let data = this.transData.data[index];
-        let total_amt = (data.total_amt / this.role.rate).toFixed(2);
-        e.target.parentNode.href = `${config.host}/merchant/receipt/download?username=${data.username}&busicd_info=${data.busicd_info}&sysdtm=${data.sysdtm}&total_amt=${total_amt}&status_str=${data.status_str}&syssn=${data.syssn}&format=cors`;
+        let totalAmt = (data.total_amt / this.role.rate).toFixed(2);
+        e.target.parentNode.href = `${config.host}/merchant/receipt/download?username=${data.username}&busicd_info=${data.busicd_info}&sysdtm=${data.sysdtm}&total_amt=${totalAmt}&status_str=${data.status_str}&syssn=${data.syssn}&format=cors`;
       },
 
       // 交易，撤销详情
-      detail(syssn) {
-        this.$router.push(`/main/transctl/transdetail?syssn=${syssn}&type=trans`);
+      detail(syssn, origin) {
+        let type = 'trans';
+        if(origin) {
+          type = 'refund';
+        }
+        this.$router.push(`/main/transctl/transdetail?syssn=${syssn}&type=${type}`);
       },
 
       // 点击enter键提交
@@ -614,22 +605,13 @@
 
       // 支付方式全选check选择功能
       handleCheckAllChange1(event) {
-        this.form.type = event.target.checked ? [] : typeLists;
+        this.form.type = event.target.checked ? [] : this.allType;
       },
 
       // 支付方式单选或多选
       handleCheckedCitiesChange1(value) {
         let checkCount = value.length;
         this.form.checkAll1 = !(checkCount > 0);
-      },
-
-      handleCheckAllChange2(event) {
-        this.form.other = event.target.checked ? [] : otherLists;
-      },
-
-      handleCheckedCitiesChange2(value) {
-        let checkCount = value.length;
-        this.form.checkAll2 = !(checkCount > 0);
       },
 
       // 点击查询
@@ -703,6 +685,14 @@
       handleSizeChange(size = 10) {
         this.pageSize = size;
         this.currentChange();
+      },
+
+      // 行样式
+      getStyle(row, index) {
+        if(row.allow_refund_amt === 0 && !row.is_refund) {
+          return 'trans-refund';
+        }
+        return '';
       }
     }
   };
@@ -736,6 +726,9 @@
 
   .panel-body-btn-group {
     margin: 10px 0px 20px;
+  }
+  .trans-refund {
+    color: #afafaf;
   }
 
   .el-table__row_fix {

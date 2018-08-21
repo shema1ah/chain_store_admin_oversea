@@ -3,6 +3,7 @@
     <div class="banner_wrapper">
       <el-breadcrumb separator=">">
         <el-breadcrumb-item>{{$t('tradeMng.crumbs.L1')}}</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ path: '/main/transctl' }" replace>{{$t('tradeMng.crumbs.L4')}}</el-breadcrumb-item>
         <el-breadcrumb-item>{{type === 'refund'?$t('tradeMng.crumbs.L3'):$t('tradeMng.crumbs.L2')}}</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
@@ -27,10 +28,10 @@
             <div class="info__title">{{$t('tradeMng.table.tradeType')}}</div>
             <div class="info__desc">{{ infoData.busicd_info }}</div>
           </div>
-          <div class="info">
+          <!--<div class="info">
             <div class="info__title">{{$t('tradeMng.detail.origin')}}</div>
             <div class="info__desc">{{ infoData.customer }}</div>
-          </div>
+          </div>-->
           <div class="info">
             <div class="info__title">{{type === 'refund' ? $t('tradeMng.detail.time') : $t('tradeMng.table.tradeTime')}}</div>
             <div class="info__desc">{{ infoData.sysdtm }}</div>
@@ -71,7 +72,7 @@
           </el-table-column>
           <el-table-column
             prop="txamt"
-            :label="$t('tradeMng.detail.ammount2')">
+            :label="$t('tradeMng.detail.ammount2')+ '(' + role.currency + ')'">
             <template slot-scope="scope">{{ scope.row.txamt | formatCurrency }}</template>
           </el-table-column>
           <el-table-column
@@ -119,7 +120,12 @@
       detail() {
         this.loading = true;
         let syssn = this.$route.query.syssn;
-        axios.get(`${config.host}/merchant/trade/abroad/detail?syssn=${syssn}`).then((res) => {
+        axios.get(`${config.host}/merchant/trade/abroad/detail`, {
+          params: {
+            syssn: syssn,
+            format: 'cors'
+          }
+        }).then((res) => {
           this.loading = false;
           let data = res.data;
           if(data.respcd === config.code.OK) {

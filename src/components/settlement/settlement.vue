@@ -64,7 +64,7 @@
             </template>
           </el-table-column>
           <el-table-column
-            :label="$t('settlement.panel.name')" min-width="120">
+            :label="$t('settlement.table.name')" min-width="120">
             <template slot-scope="scope">{{ scope.row.code }}</template>
           </el-table-column>
           <el-table-column prop="currency" :label="$t('settlement.table.currency')">

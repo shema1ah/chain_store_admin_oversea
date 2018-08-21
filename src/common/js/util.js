@@ -127,8 +127,10 @@ const getRole = (data = {}) => {
     country: data.country, // 国家
     rate: data.rate || 100, // 汇率
     single: data.cate !== 'bigmerchant', // 是否是单店
+    trade_type: data.trade_type || [], // 支付方式列表
     point: Number.parseInt(data.allow_point) || 0, // 精确位数
-    isCashier: Boolean(data.opinfo && data.opinfo.opuid) // 是否收银员角色
+    isCashier: Boolean(data.opinfo && data.opinfo.opuid), // 是否收银员角色
+    passState: data.has_set // 是否设置管理密码
   }
   if(data.cate !== 'bigmerchant') {
       role.type = 'single'
@@ -189,11 +191,15 @@ const formatData = (arg1, arg2) => {
 }
 
 const formatLength = (val) => {
-  let len;
+  let [len, fit] = ['', ''];
   let num = (val || 0).toString();
   if(num && num.indexOf('.') > -1) {
     len = num.split('.')[1];
     num = num.split('.')[0];
+  }
+  if(num && num.indexOf('-') > -1) {
+    fit = '-';
+    num = num.split('-')[1];
   }
 
   let result = '';
@@ -204,7 +210,7 @@ const formatLength = (val) => {
   if (num) {
     result = num + result;
   }
-  return len ? `${result}.${len}` : result;
+  return len ? `${fit}${result}.${len}` : `${fit}${result}`;
 };
 
 const getCookie = (sName) => {

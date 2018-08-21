@@ -1,6 +1,7 @@
 const test = process.env.NODE_ENV === 'test'
 const dev = process.env.NODE_ENV === 'development'
 const dubai = process.env.NODE_ENV === 'dubai'
+const jpan = process.env.NODE_ENV === 'jpan'
 
 // 生产配置
 let host = 'https://sh.qfpay.com';
@@ -10,6 +11,14 @@ let imgUpload = 'https://o2.qfpay.com';
 let o2host = 'https://o2.qfpay.com';
 let mapURL = 'https://m.amap.com/picker/';
 let mapKey = '608d75903d29ad471362f8c58c550daf';
+
+if(jpan) {
+  host = 'https://sh-jp.qfapi.com';
+  ohost = 'https://o-jp.qfapi.com';
+  payHost = 'https://openapi-jp.qfapi.com'
+  imgUpload = 'https://o2-jp.qfapi.com';
+  o2host = 'https://o2-jp.qfapi.com';
+}
 
 if(dubai) {
    host = 'https://sh-db.qfapi.com';
@@ -33,7 +42,6 @@ if (test) {
 if (dev) {
   host = 'api';
   ohost = 'https://o.qa.qfpay.net';
-  // ohost = 'api1';
   o2host = 'https://o2.qa.qfpay.net';
   payHost = 'https://openapi.qa.qfpay.net';
   imgUpload = 'https://o2.qfpay.com';

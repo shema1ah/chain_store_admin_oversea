@@ -7,10 +7,13 @@ exports.default = {
     index: '首頁概覽',
     settlement: '清算管理',
     tradeMng: '交易管理',
-    publicAuth: '公眾號授權',
+    tradeAssign: '交易流水',
+    refundCheck: '退款審核',
     shopMng: '賬戶信息',
     cashMng: '收銀員管理',
     setup: '設置',
+    passSet: '管理密碼設置',
+    emailSet: '電子郵件設置',
     contact: '聯繫我們'
   },
   common: {
@@ -20,6 +23,7 @@ exports.default = {
     confirm: '確 認',
     tip: '提示',
     all: '全部',
+    none: '無',
     netError: '網絡錯誤',
     loading: '拼命加載中',
     modSucc: '修改成功',
@@ -97,51 +101,12 @@ exports.default = {
       noticeTip: '刪除分店前建議先終止該分店正在進行的會員營銷活動。'
     }
   },
-  pubSignal: { // 公众号授权
-    crumbs: {
-      authorizedPS: '已授權公眾號',
-      unauthorized: '您還沒有關聯您的微信賬號，請關聯您的微信賬號以便我們能為您提供更多服務。'
-    },
-    title: {
-      psInfo: '公眾號基本信息',
-      bind: '綁定微信公眾號'
-    },
-    panel: {
-      avatar: '頭像',
-      name: '名稱',
-      id: 'ID (微信號)',
-      psType: '公眾號類型',
-      authType: '認證類型',
-      wechatScan: '使用綁定的個人微信號掃描',
-      adminAuthConfirm: '公眾號管理員授權確認',
-      authSucc: '授權成功，運營公眾號！',
-      btn: {
-        subAuthMng: '分店授權管理',
-        deAuth: '解除賬戶授權',
-        dePrimeAuth: '解除總賬戶授權',
-        freeAdd: '免費添加微信公眾號',
-        releaseAuth: '解除授權'
-      }
-    },
-    dialog: {
-      m1: '請勾選需要授權的分店',
-      all: '全選'
-    },
-    msg: {
-      m1: '獲取公眾號信息失敗',
-      m2: '獲取商戶ID失敗',
-      m3: '獲取連鎖店鋪失敗',
-      m4: '解除成功',
-      m5: '解除失敗',
-      m6: '請確認是否要解除賬戶授權?',
-      m7: '請確認是否要解除總賬戶公眾號?'
-    }
-  },
-  tradeMng: { // 交易管理
+  tradeMng: { // 交易流水
     crumbs: {
       L1: '交易管理',
       L2: '交易詳情',
       L3: '退款詳情',
+      L4: '交易流水'
     },
     panel: {
       time: '時間',
@@ -164,10 +129,12 @@ exports.default = {
       }
     },
     table: {
-      total: '交易總金額',
-      realrec: '交易實收',
+      totalAmount: '交易總金額',
+      totalNum: '交易總次數',
+      succAmount: '成功交易金額',
       succ: '成功交易次數',
-      undoNum: '撤銷次數',
+      refundMount: '退款金額',
+      refundNum: '退款次數',
       bi: '次',
       undo: '撤銷詳情',
       shopName: '店鋪名稱',
@@ -175,14 +142,16 @@ exports.default = {
       all: '全部',
       colWay: '收款方式',
       wechatCollect: '微信收款',
+      alipay: '支付寶收款',
       tradeType: '交易類型',
       tradeTime: '交易時間',
       tradeAmount: '交易金額',
       tradeState: '交易狀態',
       redpacket: '紅包優惠',
       sNum: '序列號',
+      remark: '備註',
       op: '操作',
-      cancel: '撤銷',
+      cancel: '退款',
       more: '更多',
       detail: '查看詳情',
       download: '下載電子小票',
@@ -233,6 +202,49 @@ exports.default = {
       m16: '請輸入有效退款金額'
     }
   },
+  refundCheck: { // 退款审核
+    crumbs: {
+      L1: '交易管理',
+      L2: '退款審核'
+    },
+    panel: {
+      time: '申請時間',
+      shopName: '交易店舖',
+      operator: '收銀員',
+      oNUm: '原訂單流水號',
+      tip: '請輸入原訂單流水號',
+      btn: {
+        query: '查詢',
+        reset: '重置'
+      }
+    },
+    table: {
+      applyAmount: '申請賬戶',
+      tradeType: '交易類型',
+      tradeTime: '交易時間',
+      refundMount: '退款金額',
+      tradeAmount: '交易金額',
+      sNum: '商戶單號',
+      checkState: '審核狀態',
+      waiting: '等待審核',
+      approved: '已批准',
+      rejected: '已拒絕',
+      op: '操作',
+      approve: '批准',
+      reject: '拒絕'
+    },
+    dialog: {
+      d1: '操作後不可撤回，是否確認批准？',
+      d2: '操作後不可撤回，是否確認拒絕？',
+      d3: '確認批准',
+      d4: '確認拒絕'
+    },
+    msg: {
+      m1: '管理密碼',
+      m2: '請輸入管理密碼',
+      m3: '操作成功'
+    }
+  },
   home: { // 首页概览
     crumbs: {
       L1: '首頁概覽'
@@ -263,7 +275,6 @@ exports.default = {
       yestoday: '昨天',
       near7: '近7天',
       near30: '近30天',
-      name: '賬號',
       type: '類型',
       btn: {
         query: '查詢',
@@ -272,6 +283,9 @@ exports.default = {
     },
     table: {
       settleTime: '清算時間',
+      settleType: '清算類型',
+      name: '帳號',
+      amount: '開戶名',
       currency: '幣種',
       total: '交易總額',
       charge: '手續費',
@@ -303,7 +317,8 @@ exports.default = {
   },
   setting: { // 邮箱设置页
     crumbs: {
-      L1: '設置'
+      L1: '設置',
+      L2: '電子郵件設置'
     },
     panel: {
       mailSetup: '電子郵件設置',
@@ -322,6 +337,42 @@ exports.default = {
     },
     tip: {
       m1: '刪除最後一個郵箱會關掉郵件報表的功能，確認刪除嗎？'
+    }
+  },
+  passSet: { // 管理密码设置
+    crumbs: {
+      L1: '設置',
+      L2: '管理密碼設置'
+    },
+    panel: {
+      passMsg: '管理密碼：',
+      explain: '用途：設置後，隔日退款審批 將通過輸入管理密碼完成確認驗證。',
+      states1: '未設置',
+      states2: '已設置',
+      bt1: '設置',
+      bt2: '重置',
+      bt3: '保存',
+      title1: '設置管理密碼',
+      title2: '重置管理密碼',
+      safe: '安全驗證',
+      pass: '管理密碼',
+      reEnter: '再次輸入',
+      originPass: '原管理密碼',
+      newPass: '新管理密碼'
+    },
+    msg: {
+      m1: '請輸入登錄密碼',
+      m2: '請輸入管理密碼',
+      m3: '請再次輸入管理密碼',
+      m4: '請輸入6~20位數字或字母',
+      m6: '請輸入原管理密碼',
+      m7: '請輸入新管理密碼',
+      m8: '請再次輸入新管理密碼',
+      m9: '與管理密碼輸入不一致',
+      m10: '設置成功'
+    },
+    tip: {
+      m1: '* 忘記原密碼？ 請聯繫客服處理'
     }
   },
   cashMng: { // 收银员管理

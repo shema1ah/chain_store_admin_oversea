@@ -110,11 +110,7 @@ export default {
       }
     }
   },
-  mounted() {
-    document.querySelector('email').value = '';
-    document.querySelector('code').value = '';
-    document.querySelector('pwd').value = '';
-  },
+
   methods: {
     // 倒计时
     count() {
@@ -227,7 +223,7 @@ export default {
               this.locked(_confirmBtn, true, 'confirmBtn');
               this.$message({
                 type: 'success',
-                message: '修改成功'
+                message: this.$t('common.modSucc')
               })
               // 跳转至登录页面
               setTimeout(() => {

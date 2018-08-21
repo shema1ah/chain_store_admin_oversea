@@ -16,8 +16,8 @@ import VueI18n from 'vue-i18n'
 import locale from 'element-ui/lib/locale'
 let langAdaptor = function(lang) {
   if(~lang.indexOf('en')) return 'en'
-  if(lang.toLowerCase() === 'zh-tw') return 'zh-TW'
-  if(lang.toLowerCase() === 'zh-cn') return 'zh-CN'
+  if(lang.toLowerCase() === 'zh-tw' || lang.toLowerCase() === 'zh-hk') return 'zh-TW'
+  if(lang.toLowerCase() === 'zh-cn' || lang.toLowerCase() === 'zh') return 'zh-CN'
   if(~lang.indexOf('ja')) return 'ja'
   return 'en';
 }

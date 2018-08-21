@@ -9,9 +9,11 @@ import settlement from 'components/settlement/settlement'
 import chainmanage from 'components/chainmanage/chainmanage'
 import singlemanage from 'components/singlemanage/singlemanage'
 import transctl from 'components/transctl/transctl'
+import checking from 'components/checking/checking'
 import transdetail from 'components/transdetail/transdetail'
 import member from 'components/member/member'
-import settings from 'components/settings/settings'
+import emailSetting from 'components/emailSetting/emailSetting'
+import passSetting from 'components/passSetting/passSetting'
 import cashiermanage from 'components/cashiermanage/cashiermanage'
 import addcashier from 'components/addcashier/addcashier'
 import cashierdetail from 'components/cashierdetail/cashierdetail'
@@ -79,6 +81,10 @@ export default new Router({
           ]
         },
         {
+          path: 'transCheck',
+          component: checking
+        },
+        {
           path: 'chainmanage',
           component: chainmanage,
         },
@@ -87,8 +93,12 @@ export default new Router({
           component: singlemanage
         },
         {
-          path: 'settings',
-          component: settings
+          path: 'emailSetting',
+          component: emailSetting
+        },
+        {
+          path: 'passSetting',
+          component: passSetting
         },
         {
           path: 'cashiermanage',
