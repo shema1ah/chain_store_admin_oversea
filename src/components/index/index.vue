@@ -20,7 +20,7 @@
           <ul>
             <li>
               <strong><i></i>{{$t('home.panel.tta')}}</strong>
-              <span><em>{{info.nums}}</em>{{role.haiwai ? '' : ' 笔'}}</span>
+              <span><em>{{info.nums || 0}}</em>{{role.haiwai ? '' : ' 笔'}}</span>
             </li>
             <li>
               <strong><i></i>{{$t('home.panel.tincome')}}</strong>

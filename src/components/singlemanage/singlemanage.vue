@@ -131,7 +131,7 @@
 </template>
 
 <script>
-  import ElButton from "../../../node_modules/element-ui/packages/button/src/button";
+  import ElButton from "../../../node_modules/qfpay-element-ui/packages/button/src/button";
   import Store from '../../common/js/store';
   import axios from 'axios';
   import config from 'config';

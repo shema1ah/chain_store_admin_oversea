@@ -140,6 +140,7 @@ exports.default = {
       shopName: '店铺名称',
       operator: '收银员',
       all: '全部',
+      main: '门店主账户',
       colWay: '收款方式',
       wechatCollect: '微信收款',
       alipay: '支付宝收款',
@@ -250,7 +251,7 @@ exports.default = {
       L1: '首页概览'
     },
     title: {
-      t1: '会员及交易数据统计',
+      t1: '交易数据统计',
       t2: '活动运营数据统计'
     },
     panel: {

@@ -144,6 +144,7 @@ exports.default = {
       shopName: 'Shop Name',
       operator: 'Cashier ',
       all: 'All',
+      main: 'Merchant Account',
       colWay: 'Transaction Type',
       wechatCollect: 'Collect by Wechat',
       alipay: 'Alipay',

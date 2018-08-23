@@ -144,6 +144,7 @@ exports.default = {
       shopName: '店舗名',
       operator: 'キャッシャー',
       all: '全部',
+      main: '店舗アカウント',
       colWay: '集金方式',
       wechatCollect: 'Wechatで集金します',
       alipay: '宝を支払います',

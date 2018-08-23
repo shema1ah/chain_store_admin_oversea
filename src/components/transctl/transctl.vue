@@ -46,6 +46,7 @@
               <el-form-item prop="operaValue">
                 <el-select v-model="form.operaValue" :placeholder="$t('tradeMng.table.all')" size="small" @change="operaChange" :disabled="form.selectShopUid === ''">
                   <el-option :label="$t('tradeMng.table.all')" value=""></el-option>
+                  <el-option :label="$t('tradeMng.table.main')" value="vl"></el-option>
                   <el-option v-for="(label, value) in operaList" :label="label" :value="value" :key="value"></el-option>
                 </el-select>
               </el-form-item>

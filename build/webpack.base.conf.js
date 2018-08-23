@@ -37,7 +37,7 @@ module.exports = {
       {
         test: /\.js$/,
         loader: 'babel-loader',
-        include: [resolve('src'), resolve('node_modules/element-ui')]
+        include: [resolve('src'), resolve('node_modules/qfpay-element-ui')]
       },
       {
         test: /\.(js|vue)$/,

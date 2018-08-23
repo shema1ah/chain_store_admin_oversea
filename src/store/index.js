@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
 import config from 'config'
-import { Message } from 'element-ui'
+import { Message } from 'qfpay-element-ui'
 
 Vue.use(Vuex)
 
