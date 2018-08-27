@@ -232,10 +232,11 @@
         if(!this.loading) {
           this.loading = true;
           let url, type = this.form.remit_type;
-          if(type === 4 || type === 5) {
-            url = 'overseas';
-          }else {
+          // 直连：1236 二清：4589
+          if(type === 1 || type === 2 || type === 3 || type === 6) {
             url = 'hkd';
+          }else {
+            url = 'overseas';
           }
           axios.get(`${config.ohost}/fund/v1/${url}/check`, {
             params: this.basicParams
