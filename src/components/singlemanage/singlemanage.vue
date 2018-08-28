@@ -39,7 +39,11 @@
               <div class="info__desc">{{ shop.bankaccount }} </div>
             </div>
             <div class="info">
-              <div class="info__title" >{{$t('shopmng.dialog.bankName')}}</div>
+              <div class="info__title">{{$t('shopmng.dialog.bankName')}}</div>
+              <div class="info__desc">{{ shop.headbankname }}</div>
+            </div>
+            <div class="info">
+              <div class="info__title"></div>
               <div class="info__desc">{{ shop.bankname }}</div>
             </div>
           </div>
@@ -131,7 +135,7 @@
 </template>
 
 <script>
-  import ElButton from "../../../node_modules/element-ui/packages/button/src/button";
+  import ElButton from "../../../node_modules/qfpay-element-ui/packages/button/src/button";
   import Store from '../../common/js/store';
   import axios from 'axios';
   import config from 'config';

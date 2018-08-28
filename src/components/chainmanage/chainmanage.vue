@@ -203,8 +203,8 @@
   import axios from 'axios';
   import config from 'config';
   import Store from '../../common/js/store';
-  import ElButton from "../../../node_modules/element-ui/packages/button/src/button";
-  import ElForm from "../../../node_modules/element-ui/packages/form/src/form";
+  import ElButton from "../../../node_modules/qfpay-element-ui/packages/button/src/button";
+  import ElForm from "../../../node_modules/qfpay-element-ui/packages/form/src/form";
   const hasSpetialChar = function (str) {
     if (!/^[\u4E00-\u9FA5\uf900-\ufa2d\u3001\u3002\u3008-\u301B\u2013\u2014\u2018\u2019\u201C\u201D\uFF01\uFF08\uFF09\uFF0C\uFF0E\uFF1A\uFF1B\uFF1F\u0020-\u007F]*$/.test(str)) {
         return 1;
@@ -579,6 +579,7 @@
         axios.get(`${config.host}/merchant/info`, {
           params: {
             userid: scope.row.uid,
+            is_abroad: 1,
             format: 'cors'
           }
         })

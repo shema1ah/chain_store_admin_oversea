@@ -139,8 +139,12 @@ export default {
 
     // 获取数据
     getData() {
-      axios.get(`${config.host}/merchant/info?format=cors`)
-        .then((res) => {
+      axios.get(`${config.host}/merchant/info`, {
+        params: {
+          is_abroad: 1,
+          format: 'cors'
+        }
+      }).then((res) => {
           let data = res.data;
           // 获取修改密码时所需参数
           this.param.mobile = data.data.mobile;

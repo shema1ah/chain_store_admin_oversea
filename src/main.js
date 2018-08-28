@@ -6,14 +6,14 @@ import 'src/filters'
 import store from './store'
 import App from './App'
 import router from './router'
-import { Tree, Upload, Select, Option, TableColumn, Table, Button, Pagination, Dropdown, DropdownItem, DropdownMenu, Loading, DatePicker, Input, Message, Form, FormItem, Radio, RadioGroup, RadioButton, Dialog, Col, MessageBox, Row, CheckboxGroup, Checkbox, Rate, Tooltip, Switch, Tabs, TabPane, Breadcrumb, BreadcrumbItem } from 'element-ui'
+import { Tree, Upload, Select, Option, TableColumn, Table, Button, Pagination, Dropdown, DropdownItem, DropdownMenu, Loading, DatePicker, Input, Message, Form, FormItem, Radio, RadioGroup, RadioButton, Dialog, Col, MessageBox, Row, CheckboxGroup, Checkbox, Rate, Tooltip, Switch, Tabs, TabPane, Breadcrumb, BreadcrumbItem } from 'qfpay-element-ui'
 import 'reset.css'
 import 'assets/scss/common.scss'
 import axios from 'axios'
 import config from 'src/config'
 import Store from 'common/js/store'
 import VueI18n from 'vue-i18n'
-import locale from 'element-ui/lib/locale'
+import locale from 'qfpay-element-ui/lib/locale'
 let langAdaptor = function(lang) {
   if(~lang.indexOf('en')) return 'en'
   if(lang.toLowerCase() === 'zh-tw' || lang.toLowerCase() === 'zh-hk') return 'zh-TW'
@@ -22,7 +22,7 @@ let langAdaptor = function(lang) {
   return 'en';
 }
 let switchlang = localStorage.getItem("lang") || JSON.stringify({value: langAdaptor(navigator.language || navigator.browserLanguage || 'en')});
-let targetLang = require('element-ui/lib/locale/lang/' + JSON.parse(switchlang).value)
+let targetLang = require('qfpay-element-ui/lib/locale/lang/' + JSON.parse(switchlang).value)
 Vue.use(VueI18n)
 
 Vue.use(Tree)

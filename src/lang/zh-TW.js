@@ -140,6 +140,7 @@ exports.default = {
       shopName: '店鋪名稱',
       operator: '收銀員',
       all: '全部',
+      main: '門店帳戶',
       colWay: '收款方式',
       wechatCollect: '微信收款',
       alipay: '支付寶收款',

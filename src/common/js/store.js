@@ -1,4 +1,4 @@
-import { Message } from 'element-ui'
+import { Message } from 'qfpay-element-ui'
 
 let isSupportStorage = () => {
   try {
