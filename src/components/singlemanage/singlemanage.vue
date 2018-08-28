@@ -39,7 +39,11 @@
               <div class="info__desc">{{ shop.bankaccount }} </div>
             </div>
             <div class="info">
-              <div class="info__title" >{{$t('shopmng.dialog.bankName')}}</div>
+              <div class="info__title">{{$t('shopmng.dialog.bankName')}}</div>
+              <div class="info__desc">{{ shop.headbankname }}</div>
+            </div>
+            <div class="info">
+              <div class="info__title"></div>
               <div class="info__desc">{{ shop.bankname }}</div>
             </div>
           </div>
