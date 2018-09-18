@@ -18,7 +18,8 @@ exports.default = {
     setup: 'Settings',
     passSet: 'Mgmt Pass Settings',
     emailSet: 'Email Settings',
-    contact: 'Contact Us'
+    contact: 'Contact Us',
+    device: 'Device Binding'
   },
   common: {
     ok: 'OK',
@@ -323,7 +324,8 @@ exports.default = {
   setting: { // 邮箱设置页
     crumbs: {
       L1: 'Settings',
-      L2: 'Email Settings'
+      L2: 'Email Settings',
+      L3: 'Device Binding'
     },
     panel: {
       mailSetup: 'Email settings',
@@ -331,14 +333,35 @@ exports.default = {
       explain: 'A daily payment report will be delivered to this email address every morning at 7 a.m.',
       dailySend: 'Send Daily Report',
       modi: 'Change',
-      confirm: 'Confirm'
+      confirm: 'Confirm',
+      amount: 'Store account',
+      device: 'Device id'
+    },
+    btn: {
+      query: 'Search',
+      reset: 'Reset'
+    },
+    table: {
+      merchant: 'Company Name',
+      shopName: 'Shop name',
+      time: 'Binding time',
+      close: 'Unbind'
+    },
+    dialog: {
+      d1: 'Add device',
+      d2: 'Unbundling device'
     },
     msg: {
       m1: 'Please enter email address.',
       m2: 'Please enter correct email address.',
       m3: 'Fetch email address failed!',
       m5: 'The email has been added!',
-      m6: 'You can only add 10 email addresses'
+      m6: 'You can only add 10 email addresses',
+      m7: 'Do you confirm unbinding?',
+      m8: 'Unbind successfully',
+      m9: 'Please enter store account.',
+      m10: 'Please enter the device number.',
+      m11: 'Add success',
     },
     tip: {
       m1: 'Delete the last email address will turn off the feature, do you confirm?'

@@ -160,7 +160,7 @@
         }
       };
       let checkPass = (rule, val, cb) => {
-        if(!val && !/^\d+$/.test(val)) {
+        if(!val) {
           if(this.role.passState) {
             cb(this.$t('refundCheck.msg.m2'));
           }else {
@@ -206,6 +206,7 @@
         },
         pwdrules: {
             pwd: [
+              { max: 20, min: 6, message: this.$t('cashMng.common.m10') },
               { validator: checkPass }
             ]
         }

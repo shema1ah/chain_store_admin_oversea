@@ -93,7 +93,7 @@
           <div>{{ opuid }}</div>
         </el-form-item>
         <el-form-item :label="$t('cashMng.common.password')" prop="password">
-          <el-input v-model="form.password" size="small" type="password" :placeholder="$t('cashMng.common.m7')" @change="passChange" @blur="passBlur"></el-input>
+          <el-input v-model="form.password" size="small" type="password" :placeholder="$t('cashMng.common.m7')" @change="passChange" @blur="passBlur" @focus="passFocus" id="end-length"></el-input>
         </el-form-item>
       </el-form>
       <div class="divider"></div>
@@ -141,6 +141,7 @@
         loading: false,
         iconShow: false,
         flag: false,
+        oldPass: '',
         isChange: false,
         showChangeInfo: false,
         form: {
@@ -279,8 +280,14 @@
       // 输入框聚焦改变时清空
       passChange(val) {
         if(!this.flag) {
+          if(this.oldPass.length > val.length) {
+            this.form.password = '';
+          }else {
+            let dom = document.querySelector("#end-length");
+            let index = dom.selectionStart - 1;
+            this.form.password = val.substr(index, 1) || '';
+          }
           this.isChange = true;
-          this.form.password = val.substr(-1) || '';
           this.flag = true;
         }
       },
@@ -288,6 +295,10 @@
       // 失焦
       passBlur() {
         this.flag = false;
+      },
+      // 聚焦
+      passFocus() {
+        this.oldPass = this.form.password;
       },
 
       // 提交修改

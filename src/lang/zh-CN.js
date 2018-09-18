@@ -14,7 +14,8 @@ exports.default = {
     setup: '设置',
     passSet: '管理密码设置',
     emailSet: '邮箱设置',
-    contact: '客服'
+    contact: '客服',
+    device: '设备绑定',
   },
   common: {
     ok: '确 定',
@@ -316,10 +317,11 @@ exports.default = {
       m5: '请输入收银员编号'
     }
   },
-  setting: { // 邮箱设置页
+  setting: { // 设置
     crumbs: {
       L1: '设置',
-      L2: '邮箱设置'
+      L2: '邮箱设置',
+      L3: '设备绑定'
     },
     panel: {
       mailSetup: '邮箱设置',
@@ -327,14 +329,35 @@ exports.default = {
       explain: '我们会在次日早上7点，把上一天的交易记录发送给您。',
       dailySend: '每日发送交易报表',
       modi: '修改',
-      confirm: '确认'
+      confirm: '确认',
+      amount: '门店账号',
+      device: '设备编号'
+    },
+    btn: {
+      query: '查询',
+      reset: '重置'
+    },
+    table: {
+      merchant: '大商户名称',
+      shopName: '店铺名称',
+      time: '绑定时间',
+      close: '解绑'
+    },
+    dialog: {
+      d1: '添加设备',
+      d2: '解绑设备'
     },
     msg: {
       m1: '请输入邮箱地址',
       m2: '请输入正确的邮箱地址',
       m3: '获取邮箱设置失败!',
       m5: '已经添加过这个邮箱了!',
-      m6: '最多只能添加10个邮箱'
+      m6: '最多只能添加10个邮箱',
+      m7: '是否确认解绑',
+      m8: '解绑成功',
+      m9: '请输入门店账号',
+      m10: '请输入设备编号',
+      m11: '添加成功',
     },
     tip: {
       m1: '删除最后一个邮箱会关掉邮件报表的功能，确认删除吗？'

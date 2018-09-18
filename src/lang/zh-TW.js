@@ -14,7 +14,8 @@ exports.default = {
     setup: '設置',
     passSet: '管理密碼設置',
     emailSet: '電子郵件設置',
-    contact: '聯繫我們'
+    contact: '聯繫我們',
+    device: '設備綁定'
   },
   common: {
     ok: '確 定',
@@ -319,7 +320,8 @@ exports.default = {
   setting: { // 邮箱设置页
     crumbs: {
       L1: '設置',
-      L2: '電子郵件設置'
+      L2: '電子郵件設置',
+      L3: '設備綁定'
     },
     panel: {
       mailSetup: '電子郵件設置',
@@ -327,14 +329,35 @@ exports.default = {
       explain: '我們會在次日上午7點，把前一天的交易記錄發送給您。',
       dailySend: '每日發送交易報表',
       modi: '修改',
-      confirm: '確認'
+      confirm: '確認',
+      amount: '門店帳號',
+      device: '設備編號'
+    },
+    btn: {
+      query: '查詢',
+      reset: '重置'
+    },
+    table: {
+      merchant: '大商戶名稱',
+      shopName: '店鋪名稱',
+      time: '綁定時間',
+      close: '解綁'
+    },
+    dialog: {
+      d1: '添加設備',
+      d2: '解綁設備'
     },
     msg: {
       m1: '請輸入郵箱地址',
       m2: '請輸入正確的電郵地址',
       m3: '獲取電郵設置失敗!',
       m5: '已經添加過這個郵箱了!',
-      m6: '最多只能添加10個郵箱'
+      m6: '最多只能添加10個郵箱',
+      m7: '是否確認解綁',
+      m8: '解綁成功',
+      m9: '請輸入門店帳號',
+      m10: '請輸入裝置編號',
+      m11: '添加成功',
     },
     tip: {
       m1: '刪除最後一個郵箱會關掉郵件報表的功能，確認刪除嗎？'

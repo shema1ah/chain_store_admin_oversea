@@ -20,6 +20,7 @@ import cashierdetail from 'components/cashierdetail/cashierdetail'
 import overseaForget from 'components/overseaforget/overseaforget'
 import firstLogin from 'components/firstlogin/firstlogin'
 import contact from 'components/contact/contact'
+import device from 'components/deviceManage/deviceManage'
 
 Vue.use(Router)
 
@@ -99,6 +100,11 @@ export default new Router({
         {
           path: 'passSetting',
           component: passSetting
+        },
+        {
+          path: 'deviceSetting',
+          name: 'device',
+          component: device
         },
         {
           path: 'cashiermanage',
