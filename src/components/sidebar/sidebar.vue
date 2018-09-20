@@ -348,7 +348,7 @@
             }
             break;
           default:
-            // 其它国家默认与日本迪拜香港一样权限
+            // 其它国家没有客服模块
             if(this.role.single) { // 其它国家 单店
               if(this.role.isCashier) { // 是收营员
                 this.navs = [
@@ -359,10 +359,6 @@
                   {
                     val: this.$t('nav.shopMng'), // 账户信息
                     pathname: 'singlemanage'
-                  },
-                  {
-                    val: this.$t('nav.contact'), // 客服
-                    pathname: 'contact'
                   }
                 ];
               } else { // 不是收营员
@@ -405,10 +401,6 @@
                         val: this.$t('nav.device'), // 绑定设备编号
                         pathname: 'deviceSetting'
                       }]
-                    },
-                    {
-                      val: this.$t('nav.contact'), // 客服
-                      pathname: 'contact'
                     }
                   ];
                 }else { // 分店
@@ -432,10 +424,6 @@
                     {
                       val: this.$t('nav.emailSet'), // 邮箱设置
                       pathname: 'emailSetting'
-                    },
-                    {
-                      val: this.$t('nav.contact'), // 客服
-                      pathname: 'contact'
                     }
                   ];
                 }
@@ -478,10 +466,6 @@
                     val: this.$t('nav.device'), // 绑定设备编号
                     pathname: 'deviceSetting'
                   }]
-                },
-                {
-                  val: this.$t('nav.contact'), // 客服
-                  pathname: 'contact'
                 }
               ];
             }
