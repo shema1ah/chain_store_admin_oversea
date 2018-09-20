@@ -136,7 +136,7 @@ const getRole = (data = {}) => {
       role.type = 'single'
   }
 
-  // 包商baoshang 日本japan 香港hongkong 印尼id 迪拜ar
+  // 包商baoshang 日本JP 香港HK 印尼ID 迪拜AR 泰国TH 柬埔寨KH
   // bigmerchant:大商户 merchant:商户 submerchant:子商户
   // if(data.group_name === 'baoshang') {
   //   role.type = 'baoshang'
