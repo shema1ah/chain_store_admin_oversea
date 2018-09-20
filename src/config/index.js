@@ -2,6 +2,8 @@ const test = process.env.NODE_ENV === 'test'
 const dev = process.env.NODE_ENV === 'development'
 const dubai = process.env.NODE_ENV === 'dubai'
 const jpan = process.env.NODE_ENV === 'jpan'
+const hk = process.env.NODE_ENV === 'hk'
+const th = process.env.NODE_ENV === 'th'
 
 // 生产配置
 let host = 'https://sh.qfpay.com';
@@ -26,6 +28,22 @@ if(dubai) {
    payHost = 'https://openapi-db.qfapi.com'
    imgUpload = 'https://o2-db.qfapi.com';
    o2host = 'https://o2-db.qfapi.com';
+}
+
+if(hk) {
+  host = 'https://sh-hk.qfapi.com';
+  ohost = 'https://o-hk.qfapi.com';
+  payHost = 'https://openapi-hk.qfapi.com'
+  imgUpload = 'https://o2-hk.qfapi.com';
+  o2host = 'https://o2-hk.qfapi.com';
+}
+
+if(th) {
+  host = 'https://sh-th.qfapi.com';
+  ohost = 'https://o-th.qfapi.com';
+  payHost = 'https://openapi-th.qfapi.com'
+  imgUpload = 'https://o2-th.qfapi.com';
+  o2host = 'https://o2-th.qfapi.com';
 }
 
 // 测试配置

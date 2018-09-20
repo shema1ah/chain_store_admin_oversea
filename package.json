@@ -11,6 +11,8 @@
     "build": "node build/build.js production",
     "dubai_build": "node build/build.js dubai",
     "jpan_build": "node build/build.js jpan",
+    "th_build": "node build/build.js th",
+    "hk_build": "node build/build.js hk",
     "lint": "eslint --ext .js,.vue src"
   },
   "dependencies": {
