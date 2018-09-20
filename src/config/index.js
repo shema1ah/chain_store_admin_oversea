@@ -1,80 +1,38 @@
-const test = process.env.NODE_ENV === 'test'
-const dev = process.env.NODE_ENV === 'development'
-const dubai = process.env.NODE_ENV === 'dubai'
-const jpan = process.env.NODE_ENV === 'jpan'
-const hk = process.env.NODE_ENV === 'hk'
-const th = process.env.NODE_ENV === 'th'
+const country = process.env.NODE_ENV;
+let host, oHost, payHost = [];
 
-// 生产配置
-let host = 'https://sh.qfpay.com';
-let ohost = 'https://o.qfpay.com';
-let payHost = 'https://openapi.qfpay.com'
-let imgUpload = 'https://o2.qfpay.com';
-let o2host = 'https://o2.qfpay.com';
-let mapURL = 'https://m.amap.com/picker/';
-let mapKey = '608d75903d29ad471362f8c58c550daf';
+switch (country) {
+  case 'test': // 线上测试
+    host = '';
+    oHost = 'https://o.qa.qfpay.net';
+    payHost = 'https://openapi.qa.qfpay.net';
+    break;
 
-if(jpan) {
-  host = 'https://sh-jp.qfapi.com';
-  ohost = 'https://o-jp.qfapi.com';
-  payHost = 'https://openapi-jp.qfapi.com'
-  imgUpload = 'https://o2-jp.qfapi.com';
-  o2host = 'https://o2-jp.qfapi.com';
-}
+  case 'development': // 本地dev
+    host = 'api';
+    oHost = 'https://o.qa.qfpay.net';
+    payHost = 'https://openapi.qa.qfpay.net';
+    break;
 
-if(dubai) {
-   host = 'https://sh-db.qfapi.com';
-   ohost = 'https://o-db.qfapi.com';
-   payHost = 'https://openapi-db.qfapi.com'
-   imgUpload = 'https://o2-db.qfapi.com';
-   o2host = 'https://o2-db.qfapi.com';
-}
+  case 'db': // 迪拜，香港，日本，泰国
+  case 'hk' :
+  case 'jp' :
+  case 'th' :
+    host = `https://sh-${country}.qfapi.com`;
+    oHost = `https://o-${country}.qfapi.com`;
+    payHost = `https://openapi-${country}.qfapi.com`;
+    break;
 
-if(hk) {
-  host = 'https://sh-hk.qfapi.com';
-  ohost = 'https://o-hk.qfapi.com';
-  payHost = 'https://openapi-hk.qfapi.com'
-  imgUpload = 'https://o2-hk.qfapi.com';
-  o2host = 'https://o2-hk.qfapi.com';
-}
-
-if(th) {
-  host = 'https://sh-th.qfapi.com';
-  ohost = 'https://o-th.qfapi.com';
-  payHost = 'https://openapi-th.qfapi.com'
-  imgUpload = 'https://o2-th.qfapi.com';
-  o2host = 'https://o2-th.qfapi.com';
-}
-
-// 测试配置
-if (test) {
-  host = ''
-  ohost = 'https://o.qa.qfpay.net'
-  o2host = 'https://o2.qa.qfpay.net'
-  payHost = 'https://openapi.qa.qfpay.net'
-  imgUpload = 'https://o2.qfpay.com';
-  mapURL = 'https://m.amap.com/picker/';
-  mapKey = '608d75903d29ad471362f8c58c550daf';
-}
-// 本地配置
-if (dev) {
-  host = 'api';
-  ohost = 'https://o.qa.qfpay.net';
-  o2host = 'https://o2.qa.qfpay.net';
-  payHost = 'https://openapi.qa.qfpay.net';
-  imgUpload = 'https://o2.qfpay.com';
-  mapURL = 'https://m.amap.com/picker/';
-  mapKey = '608d75903d29ad471362f8c58c550daf';
+  default: // 线上及其他
+    host = 'https://sh.qfpay.com';
+    oHost = 'https://o.qfpay.com';
+    payHost = 'https://openapi.qfpay.com';
 }
 
 module.exports = {
   host,
-  ohost,
-  o2host,
+  oHost,
   payHost,
-  imgUpload,
-  mapURL,
-  mapKey,
   code: {
     OK: '0000', // 成功
     DBERR: '2000', // 数据库查询错误

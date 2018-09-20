@@ -159,7 +159,6 @@
             break;
           case 'AR':
           case 'JP':
-          case 'MY': // 泰国
             if(this.role.single) { // 迪拜单店
               if(this.role.isCashier) { // 是收营员
                 this.navs = [
