@@ -218,7 +218,7 @@
               this.iconLoading = false;
               if(data.respcd === config.code.OK) {
                 this.$message.success(this.$t('setting.msg.m11'));
-                this.getDeviceData();
+                this.handleSizeChange();
 
               } else {
                 this.$message.error(data.resperr);
@@ -286,7 +286,7 @@
           this.iconLoading = false;
           if (data.respcd === config.code.OK) {
             this.$message.success(this.$t('setting.msg.m8'));
-            this.getDeviceData();
+            this.handleSizeChange();
           } else {
             this.$message.error(data.resperr);
           }
