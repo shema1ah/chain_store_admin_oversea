@@ -1,16 +1,16 @@
 const country = process.env.NODE_ENV;
-let host, oHost, payHost = [];
+let host, ohost, payHost = [];
 
 switch (country) {
   case 'test': // 线上测试
     host = '';
-    oHost = 'https://o.qa.qfpay.net';
+    ohost = 'https://o.qa.qfpay.net';
     payHost = 'https://openapi.qa.qfpay.net';
     break;
 
   case 'development': // 本地dev
     host = 'api';
-    oHost = 'https://o.qa.qfpay.net';
+    ohost = 'https://o.qa.qfpay.net';
     payHost = 'https://openapi.qa.qfpay.net';
     break;
 
@@ -19,19 +19,19 @@ switch (country) {
   case 'jp' :
   case 'th' :
     host = `https://sh-${country}.qfapi.com`;
-    oHost = `https://o-${country}.qfapi.com`;
+    ohost = `https://o-${country}.qfapi.com`;
     payHost = `https://openapi-${country}.qfapi.com`;
     break;
 
   default: // 线上及其他
     host = 'https://sh.qfpay.com';
-    oHost = 'https://o.qfpay.com';
+    ohost = 'https://o.qfpay.com';
     payHost = 'https://openapi.qfpay.com';
 }
 
 module.exports = {
   host,
-  oHost,
+  ohost,
   payHost,
   code: {
     OK: '0000', // 成功
