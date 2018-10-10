@@ -52,6 +52,10 @@
             <div class="info__title">{{$t('tradeMng.detail.account')}}</div>
             <div class="info__desc">{{ infoData.opuser }}</div>
           </div>
+          <div class="info">
+            <div class="info__title">{{$t('tradeMng.table.remark')}}</div>
+            <div class="info__desc">{{ infoData.note || $t('common.none') }}</div>
+          </div>
         </div>
       </div>
     </div>
