@@ -164,7 +164,6 @@ export default {
             // 登出时删除.qfpay.com域下cookie
             (new Image()).src = `${config.ohost}/mchnt/set_cookie?sessionid=`;
             Store.set('flag', true);
-            localStorage.removeItem('lang');
             localStorage.removeItem('hashid');
             localStorage.removeItem('uid');
             var toRemoved = document.getElementById('unique_map');

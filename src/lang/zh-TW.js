@@ -35,6 +35,12 @@ exports.default = {
       sel: '請選擇'
     }
   },
+  main: {
+    bigMerchant: '企業',
+    merchant: '單店',
+    subMerchant: '分店',
+    cashier: '收銀員'
+  },
   shopmng: { // 门店管理模块
     crumbs: {
       L1: '賬戶信息'
@@ -50,7 +56,8 @@ exports.default = {
         editPwd: '修改密碼',
         editSub: '編輯分店',
         editSubTag: '編輯分店編號',
-        down: '下載店鋪收款碼'
+        down: '下載店鋪收款碼',
+        listDown: '下載分店二維碼'
       },
       table: {
         subName: '分店名稱',
@@ -99,7 +106,9 @@ exports.default = {
       validateText: '請輸入二十以內的文字或字母',
       validateText2: '請輸入總賬戶登錄密碼',
       notice: '提示',
-      noticeTip: '刪除分店前建議先終止該分店正在進行的會員營銷活動。'
+      noticeTip: '刪除分店前建議先終止該分店正在進行的會員營銷活動。',
+      downTip: '選擇需要下載收款碼的分店名稱：',
+      all: '全選'
     }
   },
   tradeMng: { // 交易流水
@@ -253,7 +262,7 @@ exports.default = {
     },
     title: {
       t1: '交易數據統計',
-      t2: '活動運營數據統計'
+      t2: '交易走勢圖'
     },
     panel: {
       t1: '今日會員新增',
@@ -265,6 +274,15 @@ exports.default = {
       tincome: '今日實收',
       cmincome: '本月實收',
       noActivity: '暫無活動'
+    },
+    chart: {
+      bill: '筆數',
+
+      noTrans: '暫無交易',
+      account: '實收',
+      time: '時間',
+      sum: '金額',
+      tp1: '暫僅支持查詢 30 天內的走勢'
     }
   },
   settlement: { // 清算管理
@@ -403,7 +421,8 @@ exports.default = {
     crumbs: {
       L1: '收銀員管理',
       L2: '查看詳情',
-      L3: '添加收銀員'
+      L3: '添加收銀員',
+      L4: '批量添加'
     },
     common: {
       status: '帳戶狀態',
@@ -422,6 +441,14 @@ exports.default = {
       m9: '請輸入合法的手機號！',
       m10: '密碼長度為6–15位！',
       tip1: '* 收銀員登錄方式為主賬戶+收銀員編號+收銀員密碼'
+    },
+    dialog: {
+      title: '批量添加收銀員',
+      d1: '請選擇收銀員的表單文件',
+      d2: '選擇文件',
+      d3: '上傳',
+      d4: '下載模板',
+      d5: '上傳成功'
     },
     mng: {
       status1: '已啟用',

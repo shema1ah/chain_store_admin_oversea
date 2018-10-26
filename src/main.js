@@ -90,7 +90,6 @@ axios.interceptors.response.use((res) => {
     (new Image()).src = `${config.ohost}/mchnt/set_cookie?sessionid=`;
 
     Store.set('flag', true);
-    localStorage.removeItem('lang');
     localStorage.removeItem('hashid');
     localStorage.removeItem('uid');
 

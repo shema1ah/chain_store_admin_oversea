@@ -35,6 +35,12 @@ exports.default = {
       sel: '请选择'
     }
   },
+  main: {
+    bigMerchant: '企业',
+    merchant: '单店',
+    subMerchant: '分店',
+    cashier: '收银员'
+  },
   shopmng: { // 门店管理模块
     crumbs: {
       L1: '账户信息'
@@ -50,7 +56,8 @@ exports.default = {
         editPwd: '修改密码',
         editSub: '编辑分店',
         editSubTag: '编辑分店编号',
-        down: '下载店铺收款码'
+        down: '下载店铺收款码',
+        listDown: '下载分店收款码'
       },
       table: {
         subName: '分店名称',
@@ -99,7 +106,9 @@ exports.default = {
       validateText: '请输入二十位以内的文字或字母',
       validateText2: '请输入总账户登录密码',
       notice: '提示',
-      noticeTip: '删除分店前建议先终止该分店正在进行的会员营销活动。'
+      noticeTip: '删除分店前建议先终止该分店正在进行的会员营销活动。',
+      downTip: '选择需要下载收款码的分店名称：',
+      all: '全选'
     }
   },
   tradeMng: { // 交易流水
@@ -253,7 +262,7 @@ exports.default = {
     },
     title: {
       t1: '交易数据统计',
-      t2: '活动运营数据统计'
+      t2: '交易走势图'
     },
     panel: {
       t1: '今日会员新增',
@@ -265,6 +274,14 @@ exports.default = {
       tincome: '今日实收',
       cmincome: '本月实收',
       noActivity: '暂无活动'
+    },
+    chart: {
+      bill: '笔数',
+      noTrans: '暂无交易',
+      account: '实收',
+      time: '时间',
+      sum: '金额',
+      tp1: '暂仅支持查询 30 天内的走势'
     }
   },
   settlement: { // 清算管理
@@ -403,7 +420,8 @@ exports.default = {
     crumbs: {
       L1: '收银员管理',
       L2: '查看详情',
-      L3: '添加收银员'
+      L3: '添加收银员',
+      L4: '批量添加'
     },
     common: {
       status: '账户状态',
@@ -422,6 +440,14 @@ exports.default = {
       m9: '请输入正确的收银员电话',
       m10: '请输入6~20位字符',
       tip1: '* 收银员登陆方式为主账号+收银员编号+收银员密码'
+    },
+    dialog: {
+      title: '批量添加收银员',
+      d1: '请选择收银员的表单文件',
+      d2: '选择文件',
+      d3: '上传',
+      d4: '下载模板',
+      d5: '上传成功'
     },
     mng: {
       status1: '已启用',

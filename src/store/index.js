@@ -37,7 +37,7 @@ const store = new Vuex.Store({
         }
       })
       .catch(() => {
-        Message.error('获取分页店铺列表失败')
+        Message.error(this.$t('common.netError'))
       })
     },
     getShopList ({ commit }, payload) {
@@ -54,7 +54,7 @@ const store = new Vuex.Store({
         }
       })
       .catch(() => {
-        Message.error('首次获取店铺列表失败!')
+        Message.error(this.$t('common.netError'))
       })
     }
   }

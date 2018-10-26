@@ -1,5 +1,10 @@
 <template>
   <div class="login">
+    <div class="switch-language">
+      <el-select v-model="lang"  icon="caret-bottom" @change="switchLanguage" size="small" popperClass="popperBg" style="width:80%;">
+        <el-option v-for="item in langLists" :key="item.value" :label="item.label" :value="item.value"></el-option>
+      </el-select>
+    </div>
     <div class="content">
       <div class="head">{{$t('login.head')}}</div>
       <el-tabs v-model="userType" @tab-click="handleClick">
@@ -52,6 +57,12 @@
       return {
         lang: config.lang,
         role: Store.get('role') || {},
+        langLists: [
+          {label: '日本語', value: 'ja'},
+          {label: 'English', value: 'en'},
+          {label: '繁體中文', value: 'zh-TW'},
+          {label: '简体中文', value: 'zh-CN'}
+        ],
         loading: false,
         userType: 'merchant',
         merchant: {
@@ -123,6 +134,12 @@
       }
     },
     methods: {
+      // 切换语言
+      switchLanguage(value, label) {
+        localStorage.setItem("lang", JSON.stringify({label: label, value: value}));
+        window.location.reload()
+      },
+
       // 登录
       login() {
         var _this = this;
@@ -218,6 +235,13 @@
     height: 100%;
     background: #2A2A2A url("./img/bg.png") no-repeat 20px bottom;
 
+    .switch-language {
+      position: fixed;
+      right: 50px;
+      top: 50px;
+      text-align: center;
+      font-size: 14px;
+    }
     .content {
       width: 500px;
       height: auto;

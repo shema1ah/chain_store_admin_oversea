@@ -11,18 +11,18 @@
 }
 
 /*绿色按钮*/
-.panel-header-btn__associate{
+.panel-header-btn__associate {
   display: flex;
-  width: 140px;
+  width: 164px;
   padding: 0 10px;
-  height: 35px;
+  height: 36px;
   box-sizing: border-box;
   background-color: #7ED321;
   justify-content: center;
   align-items: center;
   border: none;
   border-radius: 3px;
-  font-size: 17px;
+  font-size: 14px;
   transition: .3s;
   color: #fff;
   cursor: pointer;
@@ -248,5 +248,18 @@ div.banner-btn-ja {
   a {
     background: transparent;
     color: #fe9b20;
+  }
+}
+
+// panel按钮组
+.btn-group {
+  display: flex;
+  div.banner-btn:not(:last-of-type) {
+  margin-right: 20px;
+}
+  .primary-btn {
+    color: #FE9B20;
+    background-color: #fff;
+    border: 1px solid #FE9B20;
   }
 }

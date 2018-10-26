@@ -39,6 +39,12 @@ exports.default = {
       sel: 'Please choose'
     }
   },
+  main: {
+    bigMerchant: 'Enterprise',
+    merchant: 'Single store',
+    subMerchant: 'Branch',
+    cashier: 'Cashier'
+  },
   shopmng: { // 门店管理模块
     crumbs: {
       L1: 'Account Info'
@@ -54,7 +60,8 @@ exports.default = {
         editPwd: 'Change Password',
         editSub: 'Edit Branch Shop',
         editSubTag: 'Edit Customized ID',
-        down: 'Shop QR Code'
+        down: 'Shop QR Code',
+        listDown: 'Download store QR code'
       },
       table: {
         subName: 'Branch Name',
@@ -103,7 +110,9 @@ exports.default = {
       validateText: 'Please enter charactors within 20',
       validateText2: 'Please enter the login password of master account',
       notice: 'Be Awared!',
-      noticeTip: 'Always remember to turn off the branch shop promotions before delete the branch.'
+      noticeTip: 'Always remember to turn off the branch shop promotions before delete the branch.',
+      downTip: 'Select the store name where you want to download：',
+      all: 'Select all'
     }
   },
   tradeMng: { // 交易流水
@@ -257,7 +266,7 @@ exports.default = {
     },
     title: {
       t1: 'Payment Statistics',
-      t2: 'Event Operation Statistics'
+      t2: 'Trading chart'
     },
     panel: {
       t1: 'New Customers Today',
@@ -269,6 +278,14 @@ exports.default = {
       tincome: 'Total Received (Day)',
       cmincome: 'Total Received (Month)',
       noActivity: 'No Promotion'
+    },
+    chart: {
+      bill: 'Number of pens',
+      noTrans: 'No transaction',
+      account: 'Actually Collected',
+      time: 'Time',
+      sum: 'Amount',
+      tp1: 'Only support queries for 30 days'
     }
   },
   settlement: { // 清算管理
@@ -408,7 +425,8 @@ exports.default = {
     crumbs: {
       L1: 'Cashier Management',
       L2: 'Details',
-      L3: 'Add Cashier'
+      L3: 'Add Cashier',
+      L4: 'Batch add'
     },
     common: {
       status: 'Status',
@@ -427,6 +445,14 @@ exports.default = {
       m9: 'Please input a valid phone number',
       m10: 'Please enter 6-20 characters',
       tip1: '* Cashier can login with Shop Account, Cashier No. and Cashier Password'
+    },
+    dialog: {
+      title: 'Add cashiers in batches',
+      d1: 'Please select the cashier\'s form file',
+      d2: 'Select',
+      d3: 'Upload',
+      d4: 'Down template',
+      d5: 'Upload successful'
     },
     mng: {
       status1: 'Active',

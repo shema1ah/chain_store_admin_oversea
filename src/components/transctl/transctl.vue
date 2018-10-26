@@ -35,7 +35,7 @@
             <div class="panel-select__wrapper" v-if="!role.single">
               <span class="panel-select__desc">{{$t('tradeMng.panel.shopName')}}</span>
               <el-form-item prop="selectShopUid">
-                <el-select v-model="form.selectShopUid" :placeholder="lang==='en'? 'All':'全部'" size="small" @change="getOperators(form.selectShopUid)">
+                <el-select v-model="form.selectShopUid" :placeholder="$t('common.all')" size="small" @change="getOperators(form.selectShopUid)">
                   <el-option v-for="shop in shopData.list" :label="shop.shop_name" :value="shop.uid" :key="shop.uid">
                   </el-option>
                 </el-select>
@@ -202,6 +202,9 @@
     <el-dialog :title="$t('tradeMng.dialog.d2')" :visible.sync="showConfirm" custom-class="mydialog" top="20%" @close="handleClose('formpwd')">
       <div style="margin-bottom: 20px;">{{$t('tradeMng.dialog.d1')}}</div>
       <el-form :model="formpwd" :rules="pwdrules" ref="formpwd" :label-width="(lang === 'ja' || lang === 'en') ? '110px' : '80px'" autocomplete="off">
+        <el-form-item :label="$t('tradeMng.panel.sNum')">
+          <span>{{ refundData.syssn }}</span>
+        </el-form-item>
         <el-form-item prop="amount" :label="$t('tradeMng.detail.ammount2')" class="amount">
           <span>{{ role.currency }}</span>
           <el-input name="amount" class="showAmount" v-model="formpwd.amount" :placeholder="$t('tradeMng.msg.m14') + refundAmount" type="number" @keyup.enter.native="onEnter"></el-input>
@@ -294,7 +297,7 @@
       return {
         downUrl: 'javascript:;',
         lang: config.lang,
-        refundAmount: null,
+        refundAmount: 0,
         refundStates: false,
         role: Store.get('role') || {},
         showConfirm: false,

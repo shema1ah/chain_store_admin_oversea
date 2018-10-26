@@ -6,7 +6,8 @@
 
         <div class="user_wrapper">
           <div class="user_name">
-            {{ role.isCashier?`Welcome,${shop.shopname}  ${(shop.opinfo || {}).opname}(${(shop.opinfo || {}).opuid})`:`Welcome,${shop.shopname}`}}
+            <span>{{ type }}</span>
+            {{ role.isCashier?`${shop.shopname}  ${(shop.opinfo || {}).opname}(${(shop.opinfo || {}).opuid})`:`${shop.shopname}`}}
           </div>
           <a href="javascript:;" @click="logout">
             <div class="user_operation">
@@ -33,6 +34,7 @@ export default {
   data() {
     return {
       role: Store.get('role') || {},
+      type: '',
       loading: false,
       shop: {}
     };
@@ -42,6 +44,17 @@ export default {
   },
   created() {
     this.getData();
+    if(this.role.isCashier) {
+      this.type = this.$t('main.cashier');
+    }else {
+      if(this.role.single && this.role.isMerchant) {
+        this.type = this.$t('main.merchant');
+      }else if(this.role.single) {
+        this.type = this.$t('main.subMerchant');
+      }else {
+        this.type = this.$t('main.bigMerchant');
+      }
+    }
   },
   methods: {
     // 退出登录
@@ -55,7 +68,6 @@ export default {
           // 登出时删除本域cookie
           (new Image()).src = `${config.ohost}/mchnt/set_cookie?sessionid=`;
           Store.set('flag', true);
-          localStorage.removeItem('lang');
           localStorage.removeItem('hashid');
           localStorage.removeItem('uid');
 
@@ -139,6 +151,15 @@ export default {
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
+        span {
+          background: #fff;
+          color: #FE9B20;
+          padding: 5px 15px;
+          border-radius: 10px;
+          font-size: 14px;
+          display: inline-block;
+          margin-right: 10px;
+        }
       }
       @at-root .user_operation {
         display: flex;

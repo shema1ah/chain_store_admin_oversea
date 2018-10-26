@@ -38,6 +38,10 @@
             <span>关联分店</span>
           </div> -->
           <div class="btn-group">
+            <div class="panel-header-btn__associate" @click="editShopDown" :style="lang === 'en'?'width:200px':''">
+              <i class="icon-download"></i>
+              {{$t('shopmng.panel.btn.listDown')}}
+            </div>
             <el-button type="primary" class="panel-edit-btn__subshopnum" @click.native="editSubShopNum">{{$t('shopmng.panel.btn.editSubTag')}}</el-button>
           </div>
 
@@ -162,6 +166,28 @@
       </div>
     </el-dialog>
 
+    <el-dialog :title="$t('shopmng.panel.btn.listDown')" :visible.sync="showDown" class="mydialog downlog" custom-class="mydialog_haiwai" size="small">
+      <el-form label-position="left" class="down-sub-shop" :model="downForm" ref="downForm">
+        <div class="desc" style="text-align: left">
+          {{$t('shopmng.dialog.downTip')}}
+        </div>
+        <el-form-item prop="shop">
+          <el-checkbox-group v-model="downForm.shop" @change="handleCheckedShopChange">
+            <el-checkbox v-for="(item, index) in shopData.list" v-if="index !== 0" :label="item.uid" :key="item.uid">{{ item.shop_name }}</el-checkbox>
+          </el-checkbox-group>
+        </el-form-item>
+      </el-form>
+      <div class="divider"></div>
+      <div slot="footer" class="dialog-footer">
+        <el-checkbox v-model="downForm.checkAll" @change="handleCheckAllChange">{{$t('shopmng.dialog.all')}}</el-checkbox>
+        <span class="footer-right">
+          <div @click="showDown = false" class="cancel">{{ $t('common.cancel') }}</div>
+          <div @click="downShopList" class="submit"><i class="el-icon-loading" v-show="iconShow"></i>{{$t('shopmng.dialog.confirm')}}</div>
+        </span>
+      </div>
+
+    </el-dialog>
+
     <el-dialog :title="$t('shopmng.dialog.editSubTag')" :visible.sync="showEditSubShopNum" class="mydialog" custom-class="mydialog_haiwai" size="small" @close="refreshSubShopData">
       <el-form ref="form-edit-subshop-num" label-position="left" class="edit-sub-tag">
         <div class="desc" style="text-align: left">
@@ -202,6 +228,7 @@
 <script>
   import axios from 'axios';
   import config from 'config';
+  import qs from 'qs';
   import Store from '../../common/js/store';
   import ElButton from "../../../node_modules/qfpay-element-ui/packages/button/src/button";
   import ElForm from "../../../node_modules/qfpay-element-ui/packages/form/src/form";
@@ -252,7 +279,8 @@
           console.log(val);
           cb();
         }
-      }
+      };
+
       return {
         lang: config.lang,
         role: Store.get('role') || {},
@@ -264,11 +292,16 @@
         isShowDetail: false,
         showChangePass: false,
         showEditSubShopNum: false,
+        showDown: false,
         showDeleteShopConfirm: false,
         detailData: {},
         userName: '',
         type: '',
         shouldDeleteUid: '',
+        downForm: {
+          shop: [],
+          checkAll: true
+        },
         associate_form: {
           account: '',
           password: '',
@@ -327,13 +360,63 @@
       },
       shopData() {
         return this.$store.state.shopData;
-      }
+      },
+
+      allType() {
+        let type = this.shopData.list || [];
+        let list = [];
+        if(type.length > 0) {
+          for(let val of type) {
+            val.uid && list.push(val.uid);
+          }
+        }
+        return list;
+      },
+
     },
     created() {
       this.$store.dispatch('getPageShopData');
     },
 
     methods: {
+      // 下载
+      downShopList() {
+        this.iconShow = true;
+        let params = {
+          userids: this.downForm.checkAll ? this.allType.join(",") : this.downForm.shop.join(",")
+        };
+        let downUrl = `${config.host}/merchant/download/qrcodes?${qs.stringify(params)}`;
+        let a = document.createElement('a');
+        a.setAttribute('download', 'true');
+        a.setAttribute('href', downUrl);
+        a.click();
+        setTimeout(() => {
+          this.iconShow = false;
+          this.showDown = false;
+        }, 1000)
+      },
+
+      // 点击下载分店二维码
+      editShopDown() {
+        this.downForm = {
+          shop: [],
+          checkAll: true
+        };
+
+        this.showDown = true;
+      },
+
+      // 选择分店
+      handleCheckedShopChange(value) {
+        let checkCount = value.length;
+        this.downForm.checkAll = !(checkCount > 0);
+      },
+
+      // 选择全部
+      handleCheckAllChange(value) {
+        this.downForm.shop = event.target.checked ? [] : this.allType;
+      },
+
       refreshSubShopData() {
         this.$store.dispatch('getPageShopData');
         this.$store.dispatch('getShopList');
@@ -476,7 +559,6 @@
               // 登出时删除.qfpay.com域下cookie
               (new Image()).src = `${config.ohost}/mchnt/set_cookie?sessionid=`;
               Store.set('flag', true);
-              localStorage.removeItem('lang');
               localStorage.removeItem('hashid');
               localStorage.removeItem('uid');
 
@@ -673,9 +755,11 @@
     .panel-header-btn-ja {
       width: 200px;
     }
+    .btn-group .panel-header-btn__associate+.el-button {
+      margin-left: 20px;
+    }
     .panel-edit-btn__subshopnum {
       width: 164px;
-      /*margin-left: 60%;*/
     }
     .pass {
       width: 420px;
@@ -698,6 +782,25 @@
     .edit-sub-tag {
       height:420px;
       overflow-y: auto;
+    }
+    .down-sub-shop {
+      max-height:420px;
+      overflow-y: auto;
+      .el-checkbox-group .el-checkbox {
+        display: block;
+        margin-left: 0;
+      }
+    }
+    .downlog {
+      .el-dialog__footer .dialog-footer {
+        justify-content: space-between;
+        align-items: center;
+      }
+      .footer-right {
+        flex: 1;
+        display: flex;
+        justify-content: flex-end;
+      }
     }
     .mydialog .el-dialog__body {
       padding: 0 !important;

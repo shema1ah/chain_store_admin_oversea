@@ -120,61 +120,20 @@ let deepClone = (obj) => {
 // 用户角色
 const getRole = (data = {}) => {
   let role = {
-    type: 'chain',
     isMerchant: data.cate !== 'submerchant', // 是否大商户或者单店
     haiwai: data.country !== 'CN', // 是否海外
     currency: data.currency || '元', // 货币单位
     country: data.country, // 国家
     rate: data.rate || 100, // 汇率
-    single: data.cate !== 'bigmerchant', // 是否是单店
+    single: data.cate !== 'bigmerchant', // 是否是单店或子商户
     trade_type: data.trade_type || [], // 支付方式列表
     point: Number.parseInt(data.allow_point) || 0, // 精确位数
     isCashier: Boolean(data.opinfo && data.opinfo.opuid), // 是否收银员角色
     passState: data.has_set // 是否设置管理密码
   }
-  if(data.cate !== 'bigmerchant') {
-      role.type = 'single'
-  }
 
   // 包商baoshang 日本JP 香港HK 印尼ID 迪拜AR 泰国TH 柬埔寨KH
   // bigmerchant:大商户 merchant:商户 submerchant:子商户
-  // if(data.group_name === 'baoshang') {
-  //   role.type = 'baoshang'
-  //   if (data.cate !== 'bigmerchant') {
-  //     role.type = 'baoshang_single'
-  //   }
-  // }else {
-  //   switch (data.country) {
-  //     case 'JP':
-  //       role.type = 'japan'
-  //       if (data.cate !== 'bigmerchant') {
-  //         role.type = 'japan_single'
-  //       }
-  //       break;
-  //     case 'ID':
-  //       role.type = 'id'
-  //       if (data.cate !== 'bigmerchant') {
-  //         role.type = 'id_single'
-  //       }
-  //       break;
-  //     case 'AR':
-  //       role.type = 'ar'
-  //       if (data.cate !== 'bigmerchant') {
-  //         role.type = 'ar_single'
-  //       }
-  //       break;
-  //     case 'HK':
-  //       role.type = 'hongkong'
-  //       if (data.cate !== 'bigmerchant') {
-  //         role.type = 'hongkong_single'
-  //       }
-  //       break;
-  //     default:
-  //       if (data.cate !== 'bigmerchant') {
-  //         role.type = 'single'
-  //       }
-  //   }
-  // }
 
   return role
 }

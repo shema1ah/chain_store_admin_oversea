@@ -4,7 +4,11 @@
       <el-breadcrumb separator=">">
         <el-breadcrumb-item>{{ $t('cashMng.crumbs.L1') }}</el-breadcrumb-item>
       </el-breadcrumb>
-      <div class="btn-wrap">
+      <div class="btn-wrap btn-group">
+        <div class="banner-btn primary-btn" :class="{'banner-btn-ja': lang === 'ja'}" @click="batchAdd">
+          <i class="icon-create"></i>
+          <span class="banner-btn__desc">{{ $t('cashMng.crumbs.L4') }}</span>
+        </div>
         <div class="banner-btn" :class="{'banner-btn-ja': lang === 'ja'}" @click="addCashier">
           <i class="icon-create"></i>
           <span class="banner-btn__desc">{{ $t('cashMng.crumbs.L3') }}</span>
@@ -68,6 +72,36 @@
       </div>
       <div class="table_placeholder" v-else></div>
     </div>
+    <el-dialog :title="$t('cashMng.dialog.title')" :visible.sync="showConfirm" custom-class="mydialog" top="20%">
+      <div style="margin-bottom: 20px;">{{$t('cashMng.dialog.d1')}}:</div>
+      <div class="upload-contain">
+        <div>{{ fileList.length > 0 ? fileList[0]['name'] : '' }}</div>
+        <el-upload
+          class="upload-demo"
+          ref="upload"
+          :action="uploadUrl"
+          :on-change="handleChange"
+          :on-success="avatarSuccess"
+          :on-error="avatarFailed"
+          :show-file-list="false"
+          :auto-upload="false"
+          accept="application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
+          <el-button slot="trigger" size="small" type="primary">{{ $t('cashMng.dialog.d2') }}</el-button>
+        </el-upload>
+      </div>
+
+      <div class="divider"></div>
+      <div slot="footer" class="dialog-footer">
+        <a :href="downUrl" download class="el-button--text">{{ $t('cashMng.dialog.d4') }}</a>
+        <span class="footer-right">
+          <div @click="showConfirm = false" class="cancel">{{ $t('common.cancel') }}</div>
+          <div class="submit" @click="submitUpload">
+            <span class="el-icon-loading" v-if="iconLoading"></span>
+            <span v-else>{{$t('cashMng.dialog.d3')}}</span>
+          </div>
+        </span>
+      </div>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -101,6 +135,10 @@
       return {
         role: Store.get('role') || {},
         lang: config.lang,
+        showConfirm: false,
+        iconLoading: false,
+        fileList: [],
+        uploadUrl: `${config.host}/merchant/user/add/opusers`,
         cashierData: [],
         pageSize: 10,
         rightsValue: '',
@@ -156,10 +194,56 @@
       },
       downHref() {
         return `${config.host}/merchant/qrcode?userid=${this.shop.uid}&opuid=&format=cors`;
+      },
+
+      downUrl() {
+        return `${config.host}/merchant/user/download/template?format=cors`;
       }
     },
 
     methods: {
+      submitUpload() {
+        if(this.fileList.length > 0) {
+          this.iconLoading = true;
+          this.$refs.upload.submit();
+        }else {
+          this.$message.error(this.$t('cashMng.dialog.d1'));
+        }
+
+      },
+
+      handleChange(file, fileList) {
+        let list = fileList.slice(-1);
+        list[0].status = 'ready';
+        this.fileList = list;
+      },
+
+      // 上传成功
+      avatarSuccess(res, file) {
+        if (res.respcd === config.code.OK) {
+          this.iconLoading = false;
+          this.$message.success(this.$t('cashMng.dialog.d5'));
+          this.showConfirm = false;
+          this.handleSizeChange();
+        } else {
+          this.iconLoading = false;
+          this.$message.error(res.resperr);
+        }
+      },
+
+      // 上传失败
+      avatarFailed(err, file) {
+        this.iconLoading = false;
+        this.$message.error(err);
+        console.log(file);
+      },
+
+      // 批量添加
+      batchAdd() {
+        this.fileList = [];
+        this.showConfirm = true;
+      },
+
       // 改变活动状态
       stateChange() {
         this.handleSizeChange();
@@ -309,6 +393,38 @@
       color: #777A7D;
       font-size: 12px;
     }
+    .upload-contain {
+      display: flex;
+      padding-bottom: 25px;
+      &>div:first-child {
+        flex: 1;
+      }
+      .upload-demo {
+        width: 70px;
+        padding-left: 20px;
+        .el-upload {
+          width: 100%;
+          button {
+            width: 100%;
+          }
+        }
+      }
+    }
+    .mydialog {
+      .el-button--text {
+        text-decoration: underline;
+      }
+      .el-dialog__footer .dialog-footer {
+        justify-content: space-between;
+        align-items: center;
+      }
+      .footer-right {
+        flex: 1;
+        display: flex;
+        justify-content: flex-end;
+      }
+    }
+
   }
   .form-item__detail {
     margin-top: 10px;
