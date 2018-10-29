@@ -216,7 +216,7 @@
         let myChart = echarts.init(document.getElementById('main'));
         let option = {};
         // 指定图表的配置项和数据
-        if(data.values) {
+        if(data.values.length > 0) {
           option = {
             color: ['#7ED321', '#00AAEE', '#F9291D', '#00C73C', '#255CBE', '#FF8100'],
             tooltip: {
@@ -237,6 +237,7 @@
               orient: 'vertical',
               left: 10,
               data: data.names,
+              selectedMode: false,
               textStyle: {
                 fontWeight: 'bold',
                 fontSize: 14,
@@ -257,13 +258,21 @@
             }]
           };
         }else {
-          let tradeType = this.role.trade_type;
+          let [name, list] = [data.names, []];
+          for(let item of name) {
+            list.push({
+              name: item,
+              value: 0
+            })
+          }
+
           option = {
             color: ['#7ED321', '#00AAEE', '#F9291D', '#00C73C', '#255CBE', '#FF8100'],
             legend: {
               orient: 'vertical',
               left: 10,
-              data: tradeType,
+              data: name,
+              selectedMode: false,
               textStyle: {
                 fontWeight: 'bold',
                 fontSize: 14,
@@ -292,7 +301,7 @@
                   show: false
                 }
               },
-              data: tradeType
+              data: list
             }]
           };
         }
