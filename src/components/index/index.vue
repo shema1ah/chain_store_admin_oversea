@@ -44,7 +44,7 @@
           <h2 class="panel-header__desc">{{ $t('home.title.t2') }}</h2>
         </div>
       </div>
-      <div class="panel-header panel-header__auto">
+      <div class="panel-header__auto">
         <el-form :model="form" ref="form">
           <div class="panel-select-group">
             <div class="panel-select__wrapper">
@@ -245,7 +245,7 @@
             },
             series: [{
               type: 'pie',
-              radius: ['60%', '85%'],
+              radius: ['60%', '80%'],
               label: {
                 normal: {
                   formatter: "{d}%",
@@ -253,6 +253,10 @@
                   color: '#2d2c2c',
                   fontSize: '14'
                 }
+              },
+              labelLine: {
+                length: 10,
+                length2: 5
               },
               data: data.values
             }]
@@ -280,7 +284,7 @@
             },
             series: [{
               type: 'pie',
-              radius: ['60%', '85%'],
+              radius: ['60%', '80%'],
               label: {
                 normal: {
                   position: 'center',

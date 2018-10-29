@@ -99,13 +99,13 @@
 
     created() {
       // 浏览器兼容模式下，提示
-      if(this.isIe() && !this.checkBrowser()) {
+      /* if(this.isIe() && !this.checkBrowser()) {
           this.$message({
             message: '为保证系统的正常使用，建议您将浏览器升级到最新版本并且切换至急速模式。',
             duration: 0,
             type: 'error'
           });
-      }
+      } */
       // cookie存在跳转首页
       if(getCookie('sessionid') && Store.get('flag') === false) {
         this.$router.push('/main/index');
