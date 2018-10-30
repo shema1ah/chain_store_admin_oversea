@@ -377,7 +377,7 @@
       downShopList() {
         this.iconShow = true;
         let params = {
-          userids: this.downForm.checkAll ? this.allType.join(",") : this.downForm.shop.join(",")
+          userids: this.downForm.shop.join(",")
         };
         let downUrl = `${config.host}/merchant/download/qrcodes?${qs.stringify(params)}`;
         let a = document.createElement('a');
@@ -393,7 +393,7 @@
       // 点击下载分店二维码
       editShopDown() {
         this.downForm = {
-          shop: [],
+          shop: this.allType,
           checkAll: true
         };
 

@@ -218,7 +218,8 @@
         // 指定图表的配置项和数据
         if(data.values.length > 0) {
           option = {
-            color: ['#7ED321', '#00AAEE', '#F9291D', '#00C73C', '#255CBE', '#FF8100'],
+            // color: ['#7ED321', '#00AAEE', '#F9291D', '#00C73C', '#255CBE', '#FF8100'],
+            color: data.colors,
             tooltip: {
               trigger: 'item',
               formatter: (params) => {
@@ -234,17 +235,16 @@
               }
             },
             legend: {
+              top: 'middle',
               orient: 'vertical',
-              left: 10,
+              right: '15%',
+              itemWidth: 14,
               data: data.names,
-              selectedMode: false,
-              textStyle: {
-                fontWeight: 'bold',
-                fontSize: 14,
-              }
+              selectedMode: false
             },
             series: [{
               type: 'pie',
+              center: ['30%', '50%'],
               radius: ['60%', '80%'],
               label: {
                 normal: {
@@ -271,19 +271,19 @@
           }
 
           option = {
-            color: ['#7ED321', '#00AAEE', '#F9291D', '#00C73C', '#255CBE', '#FF8100'],
+            // color: ['#7ED321', '#00AAEE', '#F9291D', '#00C73C', '#255CBE', '#FF8100'],
+            color: data.colors,
             legend: {
+              top: 'middle',
               orient: 'vertical',
-              left: 10,
+              right: '15%',
+              itemWidth: 14,
               data: name,
-              selectedMode: false,
-              textStyle: {
-                fontWeight: 'bold',
-                fontSize: 14,
-              }
+              selectedMode: false
             },
             series: [{
               type: 'pie',
+              center: ['30%', '50%'],
               radius: ['60%', '80%'],
               label: {
                 normal: {
