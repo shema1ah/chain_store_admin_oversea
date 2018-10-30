@@ -377,6 +377,7 @@
       downShopList() {
         this.iconShow = true;
         let params = {
+          lang: this.lang,
           userids: this.downForm.shop.join(",")
         };
         let downUrl = `${config.host}/merchant/download/qrcodes?${qs.stringify(params)}`;

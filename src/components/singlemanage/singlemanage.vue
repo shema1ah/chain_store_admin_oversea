@@ -191,7 +191,7 @@
     computed: {
       downHref() {
         if(this.role.isCashier) {
-          return `${config.host}/merchant/qrcode?userid=${this.shop.uid}&opuid=${this.opuid}&format=cors`;
+          return `${config.host}/merchant/qrcode?userid=${this.shop.uid}&lang=${this.lang}&opuid=${this.opuid}&format=cors`;
         }else {
           return `${config.host}/merchant/qrcode?userid=${this.shop.uid}&lang=${this.lang}&format=cors`;
         }
