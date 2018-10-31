@@ -280,7 +280,7 @@ exports.default = {
       noActivity: 'イベントなし'
     },
     chart: {
-      bill: 'ペンの数',
+      bill: '件数',
       noTrans: '取引はありません',
       account: '実収',
       time: '日付',

@@ -280,9 +280,9 @@ exports.default = {
       noActivity: 'No Promotion'
     },
     chart: {
-      bill: 'Number of pens',
+      bill: 'Count',
       noTrans: 'No transaction',
-      account: 'Actually Collected',
+      account: 'Net Amount',
       time: 'Time',
       sum: 'Amount',
       tp1: 'Only support queries for 30 days'

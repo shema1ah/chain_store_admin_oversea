@@ -277,7 +277,6 @@ exports.default = {
     },
     chart: {
       bill: '筆數',
-
       noTrans: '暫無交易',
       account: '實收',
       time: '時間',
