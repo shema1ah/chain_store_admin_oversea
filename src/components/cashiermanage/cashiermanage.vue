@@ -66,7 +66,7 @@
       </div>
       <div class="table_placeholder" v-else></div>
     </div>
-    <el-dialog :title="$t('cashMng.dialog.title')" :visible.sync="showConfirm" custom-class="mydialog" top="20%">
+    <el-dialog :title="$t('cashMng.dialog.title')" :visible.sync="showConfirm" custom-class="mydialog" top="20%" :before-close="uploadClose">
       <div style="margin-bottom: 20px;">{{$t('cashMng.dialog.d1')}}:</div>
       <div class="upload-contain">
         <div>{{ fileList.length > 0 ? fileList[0]['name'] : '' }}</div>
@@ -79,8 +79,9 @@
           :on-error="avatarFailed"
           :show-file-list="false"
           :auto-upload="false"
+          :headers="{'lang': lang}"
           accept="application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
-          <el-button slot="trigger" size="small" type="primary">{{ $t('cashMng.dialog.d2') }}</el-button>
+          <el-button slot="trigger" size="small" type="primary" @click="uploadClick">{{ $t('cashMng.dialog.d2') }}</el-button>
         </el-upload>
       </div>
 
@@ -204,9 +205,11 @@
       },
 
       handleChange(file, fileList) {
-        let list = fileList.slice(-1);
-        list[0].status = 'ready';
-        this.fileList = list;
+        if(fileList.length > 0) {
+          fileList = fileList.slice(-1);
+          fileList[0].status = 'ready';
+          this.fileList = fileList;
+        }
       },
 
       // 上传成功
@@ -229,6 +232,16 @@
         console.log(file);
       },
 
+      // 弹框关闭之前
+      uploadClose() {
+        this.$refs.upload.clearFiles();
+        this.showConfirm = false;
+      },
+
+      // 选择文件
+      uploadClick() {
+        this.$refs.upload.clearFiles();
+      },
       // 批量添加
       batchAdd() {
         this.fileList = [];
