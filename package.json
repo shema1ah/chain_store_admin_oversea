@@ -21,7 +21,6 @@
     "echarts": "^4.2.0-rc.1",
     "event-source-polyfill": "0.0.9",
     "qfpay-element-ui": "^1.0.4",
-    "qrcode": "^0.9.0",
     "reset.css": "^2.0.2",
     "vue": "^2.1.10",
     "vue-i18n": "^5.0.3",
