@@ -123,7 +123,6 @@ const getRole = (data = {}) => {
     isMerchant: data.cate !== 'submerchant', // 是否大商户或者单店
     haiwai: data.country !== 'CN', // 是否海外
     currency: data.currency || '元', // 货币单位
-    timezone: data.timezone, // 时区
     country: data.country, // 国家
     rate: data.rate || 100, // 汇率
     single: data.cate !== 'bigmerchant', // 是否是单店或子商户

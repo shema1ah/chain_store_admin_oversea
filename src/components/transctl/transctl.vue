@@ -480,7 +480,6 @@
           format: 'cors',
           txamt: this.formpwd.amount * this.role.rate,
           txcurrcd: this.role.currency === '元' ? 'CNY' : this.role.currency,
-          txzone: this.role.timezone,
           txdtm: formatDate(val.sysdtm, 'yyyy-MM-dd HH:mm:ss'),
           syssn: val.syssn,
           out_trade_no: Date.now(),
