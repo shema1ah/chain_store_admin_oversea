@@ -257,7 +257,8 @@ exports.default = {
     msg: {
       m1: 'Mgmt Pass',
       m2: 'Please enter the Mgmt Pass',
-      m3: 'Successful operation'
+      m3: 'Successful operation',
+      m4: 'The refund operation was successful and waiting for the payment channel to be processed.'
     }
   },
   home: { // 首页概览

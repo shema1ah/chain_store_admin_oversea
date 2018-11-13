@@ -322,7 +322,7 @@
       },
 
       // 改变状态
-      changeState() {
+      changeState(val) {
         axios.post(`${config.host}/merchant/trade/update_apply`, {
           id: this.refundData.id,
           state: this.approved ? 1 : 2,
@@ -332,7 +332,11 @@
           this.showConfirm = false;
           this.iconLoading = false;
           if (data.respcd === config.code.OK) {
-            this.$message.success(this.$t('refundCheck.msg.m3'));
+            let message = this.$t('refundCheck.msg.m3');
+            if(val) {
+              message = this.$t('refundCheck.msg.m4');
+            }
+            this.$message.success(message);
             this.getCheckData();
           } else {
             this.$message.error(this.$t('tradeMng.msg.m10'));
@@ -366,6 +370,8 @@
           if (data.respcd === config.code.OK) {
             this.changeState();
             // this.$message.success(this.$t('tradeMng.msg.m6'));
+          } else if(data.respcd === '1145') {
+            this.changeState(true);
           } else {
             this.showConfirm = false;
             this.iconLoading = false;
