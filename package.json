@@ -13,6 +13,7 @@
     "jp_build": "node build/build.js jp",
     "th_build": "node build/build.js th",
     "hk_build": "node build/build.js hk",
+    "sg_build": "node build/build.js sg",
     "lint": "eslint --ext .js,.vue src"
   },
   "dependencies": {

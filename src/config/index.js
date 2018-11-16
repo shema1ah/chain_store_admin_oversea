@@ -14,10 +14,11 @@ switch (country) {
     payHost = 'https://openapi.qa.qfpay.net';
     break;
 
-  case 'db': // 迪拜，香港，日本，泰国
+  case 'db': // 迪拜，香港，日本，泰国，新加坡
   case 'hk' :
   case 'jp' :
   case 'th' :
+  case 'sg' :
     host = `https://sh-${country}.qfapi.com`;
     ohost = `https://o-${country}.qfapi.com`;
     payHost = `https://openapi-${country}.qfapi.com`;
