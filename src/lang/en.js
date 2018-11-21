@@ -196,7 +196,8 @@ exports.default = {
       d3: 'Success',
       d4: 'Fail',
       d5: 'Password',
-      d6: 'refund'
+      d6: 'refund',
+      d7: 'The refund is in progress.'
     },
     msg: {
       m1: 'Transaction ID must be figures!',

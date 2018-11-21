@@ -222,8 +222,8 @@
       </div>
     </el-dialog>
 
-    <el-dialog :title="refundStates?$t('tradeMng.dialog.d3'):$t('tradeMng.dialog.d4')" :visible.sync="showArefund" custom-class="mydialog refund" :class="[refundStates ? 'success' : 'fail']" top="20%" :show-close="false">
-      <div v-if="refundStates">
+    <el-dialog :title="refundStates !==3 ? (refundStates === 1 ? $t('tradeMng.dialog.d3') : $t('tradeMng.dialog.d7')) : $t('tradeMng.dialog.d4')" :visible.sync="showArefund" custom-class="mydialog refund" :class="[refundStates !== 3 ? (refundStates === 1 ? 'success' : 'wait') : 'fail']" top="20%" :show-close="false">
+      <div v-if="refundStates !== 3">
         <el-form :label-width="(lang === 'ja' || lang === 'en') ? '150px' : '90px'">
           <el-form-item :label="$t('tradeMng.detail.ammount2')">
             <div>
@@ -298,7 +298,7 @@
         downUrl: 'javascript:;',
         lang: config.lang,
         refundAmount: 0,
-        refundStates: false,
+        refundStates: 3,
         role: Store.get('role') || {},
         showConfirm: false,
         showArefund: false,
@@ -490,16 +490,19 @@
           }
         }).then((res) => {
           this.iconLoading = false;
+          this.showConfirm = false;
           this.showArefund = true;
           let data = res.data;
           this.refundInfo = data;
           if (data.respcd === config.code.OK) {
-            this.showConfirm = false;
-            this.refundStates = true;
+            this.refundStates = 1;
+            this.getTransData();
+          } else if(data.respcd === '1145') {
+            // 退款中的处理
+            this.refundStates = 2;
             this.getTransData();
           } else {
-            this.showConfirm = false;
-            this.refundStates = false;
+            this.refundStates = 3;
           }
         }).catch((res) => {
           this.iconLoading = false;
@@ -872,14 +875,18 @@
         line-height: 36px;
       }
     }
-    .success {
-      .el-dialog__header{
-        background: url("img/success.png") top center no-repeat;
-      }
+    .success, .wait {
       .el-form-item__content {
         text-align: right;
         color: #2F323A;
       }
+    }
+
+    .success .el-dialog__header{
+      background: url("img/success.png") top center no-repeat;
+    }
+    .wait .el-dialog__header{
+      background: url("img/wait.png") top center no-repeat;
     }
     .fail .el-dialog__header{
       background: url("img/fail.png") top center no-repeat;
