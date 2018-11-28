@@ -26,7 +26,7 @@
 <script>
 import axios from 'axios';
 import config from '../../config';
-import { getRole } from '../../common/js/util';
+import { getCookie, getRole } from '../../common/js/util';
 import Store from '../../common/js/store';
 import sidebar from '../../components/sidebar/sidebar.vue';
 
@@ -43,6 +43,10 @@ export default {
     sidebar
   },
   created() {
+    // cookie存在跳转首页
+    if(getCookie('sessionid') && Store.get('flag') === false) {
+      this.$router.push('/main/index');
+    }
     this.getData();
     if(this.role.isCashier) {
       this.type = this.$t('main.cashier');

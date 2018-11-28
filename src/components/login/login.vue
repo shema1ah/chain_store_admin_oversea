@@ -50,7 +50,7 @@
 <script>
   import axios from 'axios';
   import config from 'config';
-  import { getRole, getCookie, clearCookie } from '../../common/js/util';
+  import { getRole, getCookie, clearCookie, getParams } from '../../common/js/util';
   import Store from '../../common/js/store';
   export default {
     data() {
@@ -98,6 +98,12 @@
     },
 
     created() {
+      let token = getParams('t');
+      if(token) {
+        // 其它地址跳转过来的
+        this.oldSign(token);
+      }
+
       // 浏览器兼容模式下，提示
       /* if(this.isIe() && !this.checkBrowser()) {
           this.$message({
@@ -115,24 +121,7 @@
         clearCookie('sessionid', config.ohost);
       }
     },
-    mounted() {
-      var getQuery = function (href) {
-        var Request = {};
-        if (href.indexOf('?') != -1) {
-          var str = location.hash.substring(location.hash.indexOf('?') + 1);
-          var strs = str.split('&');
-          for (var i = 0; i < strs.length; i++) {
-            var _key = strs[i].split('=')[0];
-            Request[_key] = strs[i].split('=')[1];
-          }
-        }
-        return Request;
-      };
-      var param = getQuery(location.href);
-      if(param && param.from && Boolean(this.role.haiwai)) {
-          location.replace(location.protocol + '//' + location.host);
-      }
-    },
+
     methods: {
       // 切换语言
       switchLanguage(value, label) {
@@ -142,9 +131,8 @@
 
       // 登录
       login() {
-        var _this = this;
-        _this.$refs[this.userType].validate((valid) => {
-          if(!_this.loading && valid) {
+        this.$refs[this.userType].validate((valid) => {
+          if(!this.loading && valid) {
             let params;
             if(this.userType === 'merchant') {
               params = this.merchant;
@@ -153,49 +141,120 @@
               params = {
                 username: cash.name,
                 opuid: cash.opuid,
-                password: cash.pass,
-                format: 'cors'
+                password: cash.pass
               };
             }
-            _this.loading = true;
-            axios.post(`${config.host}/merchant/login`, params).then((res) => {
-              _this.loading = false;
-              let data = res.data;
-              if(data.respcd === config.code.OK) {
-                let val = getRole(data.data);
-                this.$store.state.role = val;
-                Store.set('role', val);
-                Store.set('flag', false);
+            this.loading = true;
+            if(process.env.NODE_ENV === 'production') {
+              let hostName = location.hostname;
+              if(hostName.indexOf('sh.qfpay.com/global') > -1) {
+                Object.assign(params, {
+                  app_name: 'zh_web'
+                });
+                this.newSign(params);
 
-                // 当前域名下设置cookie
-                let bicon = new Image();
-                let sid = getCookie('sessionid') || '';
-                if(sid) {
-                  bicon.style.display = 'none';
-                  bicon.src = `${config.ohost}/mchnt/set_cookie?sessionid=${sid}`;
-                }
-
-                // 进行是否是首次登录的判断，返回need_change_pwd字段，1为需要重置，0为不需要重置
-                let needChangePwd = data.data.need_change_pwd;
-                if(needChangePwd) {
-                  setTimeout(function() {
-                    _this.$router.push('/firstlogin');
-                  }, 0)
-                } else {
-                  setTimeout(function() {
-                    _this.$router.push('/main/index');
-                  }, 0)
-                }
-
-              } else {
-                this.$message.error(data.resperr);
+              }else if(hostName.indexOf('sh-hk.qfapi.com') > -1 || hostName.indexOf('aaa') > -1) {
+                Object.assign(params, {
+                  app_name: 'hk_web'
+                });
+                this.newSign(params);
+              }else {
+                this.oldSign(params, true);
               }
-            }).catch(() => {
-              this.loading = false;
-              this.$message.error(this.$t('login.msg.m3'));
-            });
+            }else {
+              this.oldSign(params, true);
+            }
           }
         });
+      },
+
+      // 未迁移登录
+      oldSign(params, flag) {
+        let ur;
+        if(flag) {
+          ur = 'merchant/login';
+        }else {
+          ur = 'merchant/v1/login';
+        }
+        axios.post(`${config.host}/${ur}`, Object.assign({}, params, {
+          format: 'cors'
+        })).then((res) => {
+          this.loading = false;
+          let data = res.data;
+          if(data.respcd === config.code.OK) {
+            let val = getRole(data.data);
+            this.$store.state.role = val;
+            Store.set('role', val);
+            Store.set('flag', false);
+
+            // 进行是否是首次登录的判断，返回need_change_pwd字段，1为需要重置，0为不需要重置
+            let needChangePwd = data.data.need_change_pwd;
+            if(needChangePwd) {
+              setTimeout(() => {
+                this.$router.push('/firstlogin');
+              }, 0)
+            } else {
+              setTimeout(() => {
+                this.$router.push('/main/index');
+              }, 0)
+            }
+
+          } else {
+            this.$message.error(data.resperr);
+          }
+        }).catch(() => {
+          this.loading = false;
+          this.$message.error(this.$t('login.msg.m3'));
+        });
+      },
+
+      // 迁移登录
+      newSign(params) {
+        axios.post('https://g.qfapi.com/gr/v1/login', Object.assign({}, params, {
+          format: 'cors'
+        })).then((res) => {
+          this.loading = false;
+          let data = res.data;
+          if(data.respcd === config.code.OK) {
+            let con = data.data || {};
+            let token = con.token;
+
+            let ur = con.server.ssh.addrs[0].host || con.server.ssh.addrs[0].addr;
+            let hostName = location.hostname;
+            if(ur.indexOf('hostName') === -1) {
+              if(!(ur.indexOf('aaa') === -1 && hostName.indexOf('sh.qfpay.com') > -1)) {
+                window.location.href = `${ur}#/login?t=${token}`;
+                return;
+              }
+            }
+
+            this.oldSign(token);
+          } else {
+            this.$message.error(data.resperr);
+          }
+        }).catch(() => {
+          this.loading = false;
+          this.$message.error(this.$t('login.msg.m3'));
+        });
+      },
+
+      // 加密
+      compile(code) {
+        let c = String.fromCharCode(code.charCodeAt(0) + code.length);
+        for(let i = 1; i < code.length; i++) {
+          c += String.fromCharCode(code.charCodeAt(i) + code.charCodeAt(i - 1));
+        }
+        return(escape(c));
+      },
+
+      // 解密
+      unCompile(code) {
+        code = unescape(code);
+        let c = String.fromCharCode(code.charCodeAt(0) - code.length);
+        for(let i = 1; i < code.length; i++) {
+          c += String.fromCharCode(code.charCodeAt(i) - c.charCodeAt(i - 1));
+        }
+        return c;
       },
 
       // 点击enter键调用登录
