@@ -100,8 +100,17 @@
     created() {
       let token = getParams('t');
       if(token) {
-        // 其它地址跳转过来的
+        // 其它地址跳转过来的，之前有session的先清除
+        getCookie('sessionid') && clearCookie('sessionid', config.ohost);
         this.oldSign(token);
+      }else if(getCookie('sessionid')) {
+        if(Store.get('flag')) {
+          // 退出之后清除session
+          clearCookie('sessionid', config.ohost);
+        }else {
+          // cookie存在跳转首页
+          this.$router.push('/main/index');
+        }
       }
 
       // 浏览器兼容模式下，提示
@@ -112,14 +121,6 @@
             type: 'error'
           });
       } */
-      // cookie存在跳转首页
-      if(getCookie('sessionid') && Store.get('flag') === false) {
-        this.$router.push('/main/index');
-      }
-      // 退出之后清除session
-      if(getCookie('sessionid') && Store.get('flag') === true) {
-        clearCookie('sessionid', config.ohost);
-      }
     },
 
     methods: {
@@ -145,40 +146,18 @@
               };
             }
             this.loading = true;
-            if(process.env.NODE_ENV === 'production') {
-              let hostName = location.hostname;
-              if(hostName.indexOf('sh.qfpay.com/global') > -1) {
-                Object.assign(params, {
-                  app_name: 'zh_web'
-                });
-                this.newSign(params);
-
-              }else if(hostName.indexOf('sh-hk.qfapi.com') > -1 || hostName.indexOf('aaa') > -1) {
-                Object.assign(params, {
-                  app_name: 'hk_web'
-                });
-                this.newSign(params);
-              }else {
-                this.oldSign(params, true);
-              }
-            }else {
-              this.oldSign(params, true);
-            }
+            this.getAppName(params);
           }
         });
       },
 
       // 未迁移登录
-      oldSign(params, flag) {
-        let ur;
-        if(flag) {
-          ur = 'merchant/login';
-        }else {
-          ur = 'merchant/v1/login';
-        }
-        axios.post(`${config.host}/${ur}`, Object.assign({}, params, {
+      oldSign(token) {
+        let params = {
+          login_token: token,
           format: 'cors'
-        })).then((res) => {
+        };
+        axios.post(`${config.host}/merchant/v1/login`, params).then((res) => {
           this.loading = false;
           let data = res.data;
           if(data.respcd === config.code.OK) {
@@ -200,10 +179,12 @@
             }
 
           } else {
+            this.$router.push('/login');
             this.$message.error(data.resperr);
           }
         }).catch(() => {
           this.loading = false;
+          this.$router.push('/login');
           this.$message.error(this.$t('login.msg.m3'));
         });
       },
@@ -219,13 +200,11 @@
             let con = data.data || {};
             let token = con.token;
 
-            let ur = con.server.ssh.addrs[0].host || con.server.ssh.addrs[0].addr;
+            let ur = con.server.sh.addrs[0].host || con.server.sh.addrs[0].addr;
             let hostName = location.hostname;
-            if(ur.indexOf('hostName') === -1) {
-              if(!(ur.indexOf('aaa') === -1 && hostName.indexOf('sh.qfpay.com') > -1)) {
-                window.location.href = `${ur}#/login?t=${token}`;
-                return;
-              }
+            if(ur.indexOf(hostName) === -1) {
+              window.location.href = `${ur}#/login?t=${token}`;
+              return;
             }
 
             this.oldSign(token);
@@ -238,23 +217,35 @@
         });
       },
 
-      // 加密
-      compile(code) {
-        let c = String.fromCharCode(code.charCodeAt(0) + code.length);
-        for(let i = 1; i < code.length; i++) {
-          c += String.fromCharCode(code.charCodeAt(i) + code.charCodeAt(i - 1));
-        }
-        return(escape(c));
-      },
+      // 判断app_name
+      getAppName(params) {
+        let hostName = location.hostname;
+        let appName;
+        switch (hostName) {
+          case hostName.indexOf('hk.qfapi.com') > -1:
+          case hostName.indexOf('sz-t.qfapi.com') > -1:
+            appName = 'hk_web';
+            break;
+          case hostName.indexOf('jp.qfapi.com') > -1:
+            appName = 'jp_web';
+            break;
+          case hostName.indexOf('db.qfapi.com') > -1:
+            appName = 'db_web';
+            break;
+          case hostName.indexOf('th.qfapi.com') > -1:
+            appName = 'th_web';
+            break;
+          case hostName.indexOf('sg.qfapi.com') > -1:
+            appName = 'sg_web';
+            break;
+          default:
+            appName = 'zh_web';
 
-      // 解密
-      unCompile(code) {
-        code = unescape(code);
-        let c = String.fromCharCode(code.charCodeAt(0) - code.length);
-        for(let i = 1; i < code.length; i++) {
-          c += String.fromCharCode(code.charCodeAt(i) - c.charCodeAt(i - 1));
         }
-        return c;
+        Object.assign(params, {
+          app_name: appName
+        });
+        this.newSign(params);
       },
 
       // 点击enter键调用登录

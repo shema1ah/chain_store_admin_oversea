@@ -15,18 +15,28 @@
       // 设置config
       setConfig() {
         let hostName = location.hostname;
+
         let uri;
         if(hostName.indexOf('-') > -1) {
-          let u = hostName.split('-')[1];
+          let len = hostName.split('-');
+
+          let u = len.slice(1 - len.length).join('-');
           uri = {
             host: `https://sh-${u}`,
             ohost: `https://o-${u}`,
             payHost: `https://openapi-${u}`
           };
-        }else {
+        }else if(hostName.indexOf('.qfpay') > -1) {
           let len = hostName.split('.');
 
           let u = len.slice(1 - len.length).join('.');
+          uri = {
+            host: `https://sh.${u}`,
+            ohost: `https://o.${u}`,
+            payHost: `https://openapi.${u}`
+          };
+        }else {
+          let u = 'qa.qfpay.net';
           uri = {
             host: `https://sh.${u}`,
             ohost: `https://o.${u}`,
