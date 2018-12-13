@@ -202,7 +202,7 @@
 
             let ur = con.server.sh.addrs[0].host || con.server.sh.addrs[0].addr;
             let hostName = location.hostname;
-            if(ur.indexOf(hostName) === -1) {
+            if(ur.indexOf(hostName) === -1 && process.env.NODE_ENV !== 'development') {
               window.location.href = `${ur}#/login?t=${token}`;
               return;
             }
@@ -221,27 +221,20 @@
       getAppName(params) {
         let hostName = location.hostname;
         let appName;
-        switch (hostName) {
-          case hostName.indexOf('hk.qfapi.com') > -1:
-          case hostName.indexOf('sz-t.qfapi.com') > -1:
-            appName = 'hk_web';
-            break;
-          case hostName.indexOf('jp.qfapi.com') > -1:
-            appName = 'jp_web';
-            break;
-          case hostName.indexOf('db.qfapi.com') > -1:
-            appName = 'db_web';
-            break;
-          case hostName.indexOf('th.qfapi.com') > -1:
-            appName = 'th_web';
-            break;
-          case hostName.indexOf('sg.qfapi.com') > -1:
-            appName = 'sg_web';
-            break;
-          default:
-            appName = 'zh_web';
-
+        if(hostName.includes('hk.qfapi.com')) {
+          appName = 'hk_web';
+        }else if(hostName.includes('jp.qfapi.com')) {
+          appName = 'jp_web';
+        }else if(hostName.includes('db.qfapi.com')) {
+          appName = 'db_web';
+        }else if(hostName.includes('th.qfapi.com')) {
+          appName = 'th_web';
+        }else if(hostName.includes('sg.qfapi.com')) {
+          appName = 'sg_web';
+        }else {
+          appName = 'zh_web';
         }
+
         Object.assign(params, {
           app_name: appName
         });
