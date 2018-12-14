@@ -7,7 +7,6 @@
     created() {
       // 设置api地址
       this.setConfig();
-      console.log(config, 555)
 
       document.title = this.$t('login.head');
     },

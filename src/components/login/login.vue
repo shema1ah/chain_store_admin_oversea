@@ -102,7 +102,7 @@
       if(token) {
         // 其它地址跳转过来的，之前有session的先清除
         getCookie('sessionid') && clearCookie('sessionid', config.ohost);
-        this.oldSign(token);
+        this.oldSign(token, true);
       }else if(getCookie('sessionid')) {
         if(Store.get('flag')) {
           // 退出之后清除session
@@ -130,7 +130,7 @@
         window.location.reload()
       },
 
-      // 登录
+      // 点击登录
       login() {
         this.$refs[this.userType].validate((valid) => {
           if(!this.loading && valid) {
@@ -146,18 +146,32 @@
               };
             }
             this.loading = true;
-            this.getAppName(params);
+            if(location.hostname.includes('jp.qfapi')) {
+              this.oldSign(params, false);
+            }else {
+              this.getAppName(params);
+            }
           }
         });
       },
 
-      // 未迁移登录
-      oldSign(token) {
-        let params = {
-          login_token: token,
+      // 登录
+      oldSign(param, flag) {
+        let [params, uri] = [];
+        // 新登录接口
+        if(flag) {
+          params = {
+            login_token: param
+          };
+          uri = 'merchant/v1/login';
+        }else {
+          // 老登录接口
+          params = param;
+          uri = 'merchant/login';
+        }
+        axios.post(`${config.host}/${uri}`, Object.assign({}, params, {
           format: 'cors'
-        };
-        axios.post(`${config.host}/merchant/v1/login`, params).then((res) => {
+        })).then((res) => {
           this.loading = false;
           let data = res.data;
           if(data.respcd === config.code.OK) {
@@ -189,7 +203,7 @@
         });
       },
 
-      // 迁移登录
+      // 迁移商户下发域名
       newSign(params) {
         axios.post('https://g.qfapi.com/gr/v1/login', Object.assign({}, params, {
           format: 'cors'
@@ -203,11 +217,18 @@
             let ur = con.server.sh.addrs[0].host || con.server.sh.addrs[0].addr;
             let hostName = location.hostname;
             if(ur.indexOf(hostName) === -1 && process.env.NODE_ENV !== 'development') {
-              window.location.href = `${ur}#/login?t=${token}`;
+              // 北京global和海外新地址跳转
+
+              if(hostName.includes('qfpay.com/global')) {
+                window.location.href = `${ur}#/login?t=${token}`;
+              } else {
+                // 其它域名不跳转，提示商户不存在
+                this.$message.error(this.$t('login.msg.m6'));
+              }
               return;
             }
 
-            this.oldSign(token);
+            this.oldSign(token, true);
           } else {
             this.$message.error(data.resperr);
           }
@@ -221,24 +242,29 @@
       getAppName(params) {
         let hostName = location.hostname;
         let appName;
-        if(hostName.includes('hk.qfapi.com')) {
-          appName = 'hk_web';
-        }else if(hostName.includes('jp.qfapi.com')) {
-          appName = 'jp_web';
-        }else if(hostName.includes('db.qfapi.com')) {
-          appName = 'db_web';
-        }else if(hostName.includes('th.qfapi.com')) {
-          appName = 'th_web';
-        }else if(hostName.includes('sg.qfapi.com')) {
-          appName = 'sg_web';
-        }else {
-          appName = 'zh_web';
+        switch (true) {
+          case hostName.includes('hk.qfapi.com'):
+            appName = 'hk_web';
+            break;
+          case hostName.includes('jp.qfapi.com'):
+            appName = 'jp_web';
+            break;
+          case hostName.includes('db.qfapi.com'):
+            appName = 'db_web';
+            break;
+          case hostName.includes('th.qfapi.com'):
+            appName = 'th_web';
+            break;
+          case hostName.includes('sg.qfapi.com'):
+            appName = 'sg_web';
+            break;
+          default :
+            appName = 'zh_web';
         }
-
         Object.assign(params, {
           app_name: appName
         });
-        this.newSign(params);
+         this.newSign(params);
       },
 
       // 点击enter键调用登录

@@ -82,7 +82,7 @@ axios.defaults.headers.common['lang'] = JSON.parse(switchlang).value;
 
 axios.interceptors.response.use((res) => {
   if (config.env === 'development') {
-    return res
+    return res;
   }
   let data = res.data;
   if (data.respcd == config.code.SESSIONERR || data.respcd == config.code.LOGINERR) {
@@ -94,9 +94,9 @@ axios.interceptors.response.use((res) => {
     localStorage.removeItem('uid');
 
     location.replace(`${location.pathname}#/login`);
-  } else {
-    return res
   }
+  return res;
+
 }, (err) => {
   // Do something with response error
   console.log(err)
