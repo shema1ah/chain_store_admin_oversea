@@ -218,8 +218,7 @@
             let hostName = location.hostname;
             if(ur.indexOf(hostName) === -1 && process.env.NODE_ENV !== 'development') {
               // 北京global和海外新地址跳转
-
-              if(hostName.includes('qfpay.com/global')) {
+              if(hostName.includes('qfpay.com')) {
                 window.location.href = `${ur}#/login?t=${token}`;
               } else {
                 // 其它域名不跳转，提示商户不存在
