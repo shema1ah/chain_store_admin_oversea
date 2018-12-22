@@ -146,7 +146,7 @@
               };
             }
             this.loading = true;
-            if(location.hostname.includes('jp.qfapi')) {
+            if(location.hostname.includes('jp.qfapi') || process.env.NODE_ENV === 'development') {
               this.oldSign(params, false);
             }else {
               this.getAppName(params);
@@ -216,9 +216,8 @@
 
             let ur = con.server.sh.addrs[0].host || con.server.sh.addrs[0].addr;
             let hostName = location.hostname;
-            if(ur.indexOf(hostName) === -1 && process.env.NODE_ENV !== 'development') {
+            if(ur.indexOf(hostName) === -1) {
               // 北京global和海外新地址跳转
-
               if(hostName.includes('qfpay.com/global')) {
                 window.location.href = `${ur}#/login?t=${token}`;
               } else {

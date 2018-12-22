@@ -42,11 +42,15 @@
           </div>
           <div class="panel-select-group" style="height: 37px">
             <div class="panel-header-btn-group">
+              <div class="panel-header-btn panel-btn-download-green" @click="downAll">
+                <span class="icon-download"></span>
+                <span>{{ $t('settlement.panel.btn.downAll') }}</span>
+              </div>
               <div class="panel-header-btn panel-header-btn__fill" @click="search">
                 <span class="el-icon-loading" v-if="loading"></span>
-                <span v-else>{{$t('settlement.panel.btn.query')}}</span>
+                <span v-else>{{ $t('settlement.panel.btn.query') }}</span>
               </div>
-              <div class="panel-header-btn transctl-btn" @click="reset">{{$t('settlement.panel.btn.reset')}}</div>
+              <div class="panel-header-btn transctl-btn" @click="reset">{{ $t('settlement.panel.btn.reset') }}</div>
             </div>
           </div>
         </el-form>
@@ -72,7 +76,7 @@
           <el-table-column prop="amt" min-width="100" :label="$t('settlement.table.total')">
             <template slot-scope="scope">{{ scope.row.amt | formatCurrency }}</template>
           </el-table-column>
-          <el-table-column prop="fee" :label="$t('settlement.table.charge')">
+          <el-table-column prop="fee" :label="$t('settlement.table.charge')" label-class-name="toolShow">
             <template slot-scope="scope">{{ scope.row.fee | formatCurrency }}</template>
           </el-table-column>
           <el-table-column prop="settle_amt" :label="$t('settlement.table.settleAmount')">
@@ -183,12 +187,8 @@
         });
       },
 
-      getDownUrl(id, e) {
-        let downParams = {
-          biz_sn: id,
-          lang: this.lang,
-          format: 'cors'
-        };
+      // 根据清算类型拿url
+      getUrl() {
         let url, type = this.form.remit_type;
         // 直连：1236 二清：4589
         if(type === 1 || type === 2 || type === 3 || type === 6) {
@@ -196,7 +196,33 @@
         }else {
           url = 'overseas';
         }
-        e.target.parentNode.href = `${config.ohost}/fund/v1/${url}/check/download?${qs.stringify(downParams)}`
+        return url;
+      },
+
+      // 下载全部
+      downAll() {
+        let st = new Date(this.basicParams.start_date);
+        let et = new Date(this.basicParams.end_date);
+        if(et.getTime() - st.getTime() >= 30 * 24 * 3600 * 1000) {
+          this.$message.error(this.$t('settlement.msg.m2'));
+        }else {
+          let a = document.createElement('a');
+
+          let downUrl = `${config.ohost}/fund/v1/${this.getUrl()}/check/download/all?${qs.stringify(this.basicParams)}`;
+          a.setAttribute('download', 'true');
+          a.setAttribute('href', downUrl);
+          a.click();
+        }
+      },
+
+      // 单个下载
+      getDownUrl(id, e) {
+        let downParams = {
+          biz_sn: id,
+          lang: this.lang,
+          format: 'cors'
+        };
+        e.target.parentNode.href = `${config.ohost}/fund/v1/${this.getUrl()}/check/download?${qs.stringify(downParams)}`
       },
 
       // 选择时间
@@ -232,14 +258,9 @@
       getSettleData() {
         if(!this.loading) {
           this.loading = true;
-          let url, type = this.form.remit_type;
-          // 直连：1236 二清：4589
-          if(type === 1 || type === 2 || type === 3 || type === 6) {
-            url = 'hkd';
-          }else {
-            url = 'overseas';
-          }
-          axios.get(`${config.ohost}/fund/v1/${url}/check`, {
+          // 悬浮层
+          this.createDialog();
+          axios.get(`${config.ohost}/fund/v1/${this.getUrl()}/check`, {
             params: this.basicParams
           }).then((res) => {
             this.loading = false;
@@ -277,14 +298,75 @@
       handleSizeChange(size = 10) {
         this.pageSize = size;
         this.currentChange();
+      },
+
+      createDialog() {
+        let tool = document.querySelector("#toolShow");
+        if(!tool) {
+          let toolShow = document.querySelector(".toolShow");
+          // 创建弹框节点
+          let el = document.createElement("div");
+          el.innerHTML = this.$t('settlement.tip.m1');
+          el.setAttribute('id', 'toolShow');
+          toolShow.appendChild(el);
+
+          toolShow.addEventListener('mouseenter', function () {
+            el.style.display = 'block';
+          }, false);
+          toolShow.addEventListener('mouseleave', function () {
+            el.style.display = 'none';
+          }, false);
+        }
       }
     }
   };
 </script>
 <style lang="scss">
-  .type-special {
-    .el-radio-button {
-      padding-bottom: 10px;
+  .settle {
+    .type-special {
+      .el-radio-button {
+        padding-bottom: 10px;
+      }
+    }
+    .el-table__header-wrapper {
+      overflow: visible;
+    }
+    th.toolShow {
+      cursor: pointer;
+      position: relative;
+      z-index: 1;
+     overflow: visible;
+      .cell.toolShow:after {
+        content: "?";
+        font-size: 13px;
+        color: #fff;
+        border: 1px solid transparent;
+        border-radius: 50%;
+        background: #c2c2c2;
+        padding: 0 4px;
+        margin-left: 5px;
+      }
+    }
+    #toolShow {
+      position: absolute;
+      display: none;
+      z-index: 1000;
+      width: 100%;
+      background: #fff;
+      font-size: 13px;
+      color: #262424;
+      left: 0;
+      top: 34px;
+      padding: 5px 6px;
+      line-height: 22px;
+      white-space: normal;
+      border-radius: 5px;
+      box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.12);
+    }
+    .down .a-wrapper {
+      float: left;
+      margin-right: 15px;
+      padding: 5px 0;
     }
   }
 </style>

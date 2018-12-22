@@ -160,6 +160,9 @@ exports.default = {
       tradeState: '交易狀態',
       redpacket: '紅包優惠',
       sNum: '序列號',
+      chnlsn: '外部訂單號',
+      src: '用戶來源',
+      cardCd: '銀行卡號',
       remark: '備註',
       op: '操作',
       cancel: '退款',
@@ -299,7 +302,8 @@ exports.default = {
       type: '類型',
       btn: {
         query: '查詢',
-        reset: '重置'
+        reset: '重置',
+        downAll: '下載全部'
       }
     },
     table: {
@@ -315,7 +319,11 @@ exports.default = {
       download: '下載'
     },
     msg: {
-      m1: '獲取清算數據失敗'
+      m1: '獲取清算數據失敗',
+      m2: '目前僅支持查詢30天內的數據'
+    },
+    tip: {
+      m1: '手續費總額是按照每筆訂單乘以費率再進行四捨五入相加後得出'
     }
   },
   login: { // 登录页

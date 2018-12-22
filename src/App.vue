@@ -38,7 +38,9 @@
           let u = 'qa.qfpay.net';
           uri = {
             host: `https://sh.${u}`,
+            // host: `http://172.100.108.154:9099`,
             ohost: `https://o.${u}`,
+            // ohost: `http://172.100.108.109:7200`,
             payHost: `https://openapi.${u}`
           };
         }

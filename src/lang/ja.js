@@ -164,6 +164,9 @@ exports.default = {
       tradeState: '取引状態',
       redpacket: ' 紅包（ホンバオ）割引', // 红包优惠
       sNum: 'シリアル番号',
+      chnlsn: '外部注文番号',
+      src: 'ユーザーソース',
+      cardCd: '銀行カード番号',
       remark: '備考',
       op: '操作',
       cancel: '返金',
@@ -303,7 +306,8 @@ exports.default = {
       type: 'タイプ',
       btn: {
         query: '検索',
-        reset: 'リセット'
+        reset: 'リセット',
+        downAll: 'すべてをダウンロードする'
       }
     },
     table: {
@@ -319,7 +323,11 @@ exports.default = {
       download: 'ダウンロードする'
     },
     msg: {
-      m1: '情報が読み取れません'
+      m1: '情報が読み取れません',
+      m2: '現在は30日間のデータのみをサポートしています。'
+    },
+    tip: {
+      m1: '合計料金は、各注文に料金を掛けてから切り上げて計算されます。'
     }
   },
   login: {

@@ -130,7 +130,7 @@
             <el-dropdown>
               <span class="el-dropdown-link"><img src="./img/download.png" alt="download"></span>
               <el-dropdown-menu slot="dropdown">
-                <a :href="detailHref" download class="downDetail"><el-dropdown-item command=1>{{$t('tradeMng.table.btn.downDetail')}}</el-dropdown-item></a>
+                <a :href="detailHref" download><el-dropdown-item command=1>{{$t('tradeMng.table.btn.downDetail')}}</el-dropdown-item></a>
                 <a href="javascript:;" @click="downCollection"><el-dropdown-item command=2>{{$t('tradeMng.table.btn.downTrade')}}</el-dropdown-item></a>
               </el-dropdown-menu>
             </el-dropdown>
@@ -172,6 +172,10 @@
               <div>{{ scope.row.origssn ? scope.row.syssn + '(' + $t('tradeMng.detail.syssn2') + ':' + scope.row.origssn + ')' : scope.row.syssn }}</div>
             </template>
           </el-table-column>
+
+          <el-table-column prop="chnlsn" :label="$t('tradeMng.table.chnlsn')"></el-table-column>
+          <el-table-column prop="src" :label="$t('tradeMng.table.src')"></el-table-column>
+          <el-table-column prop="cardcd" :label="$t('tradeMng.table.cardCd')"></el-table-column>
 
           <el-table-column prop="note" :label="$t('tradeMng.table.remark')"></el-table-column>
           <el-table-column min-width="215" :label="$t('tradeMng.table.op')">
@@ -849,17 +853,6 @@
     justify-content: space-between;
   }
 
-  .el-dropdown-menu {
-    padding: 0;
-    .download_detail {
-      background-color: #fff;
-      color: #262323;
-      &:link,&:visited,&:hover,&:active {
-        color: #FFF;
-        background-color: darken(#7ED321, 5%);
-      }
-    }
-  }
   .transctl {
     .amount {
       span {

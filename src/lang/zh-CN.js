@@ -160,6 +160,9 @@ exports.default = {
       tradeState: '交易状态',
       redpacket: '红包优惠',
       sNum: '流水号',
+      chnlsn: '外部订单号',
+      src: '用户来源',
+      cardCd: '银行卡号',
       remark: '备注',
       op: '操作',
       cancel: '退款',
@@ -299,7 +302,8 @@ exports.default = {
       type: '类型',
       btn: {
         query: '查询',
-        reset: '重置'
+        reset: '重置',
+        downAll: '下载全部'
       }
     },
     table: {
@@ -315,7 +319,11 @@ exports.default = {
       download: '下载'
     },
     msg: {
-      m1: '获取清算数据失败'
+      m1: '获取清算数据失败',
+      m2: '目前仅支持查询30天内的数据'
+    },
+    tip: {
+      m1: '手续费总额是按照每笔订单乘以费率再进行四舍五入相加后得出'
     }
   },
   login: { // 登录页

@@ -10,7 +10,7 @@
   }
 }
 
-/*绿色按钮*/
+/*绿色背景按钮*/
 .panel-header-btn__associate {
   display: flex;
   width: 164px;
@@ -121,6 +121,19 @@
   }
 }
 
+/*白色按钮，绿色框*/
+.panel-btn-download-green {
+  background-color: #fff;
+  color: #7ED321;
+  border: 1px solid #7ED321;
+  width: auto;
+  max-width: 250px;
+  margin-right: 15px;
+  &:hover,&:active{
+    background-color: darken(#fff, 10%);
+  }
+}
+
 /*黄色按钮*/
 
 // 下载
@@ -130,7 +143,6 @@
     background-color: darken(#FE9B20, 10%);
   }
 }
-
 
 // 获取验证码
 .yanz {

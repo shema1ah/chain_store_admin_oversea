@@ -164,6 +164,9 @@ exports.default = {
       tradeState: 'Status',
       redpacket: 'Red Envelope Discount', // 红包优惠
       sNum: 'Transaction ID',
+      chnlsn: 'External Order No.',
+      src: 'User source',
+      cardCd: 'Bank card No.',
       remark: 'Remarks',
       op: 'Operation',
       cancel: 'Refund',
@@ -303,7 +306,8 @@ exports.default = {
       type: 'Type',
       btn: {
         query: 'Search',
-        reset: 'Reset'
+        reset: 'Reset',
+        downAll: 'Download all'
       }
     },
     table: {
@@ -319,7 +323,11 @@ exports.default = {
       download: 'Download'
     },
     msg: {
-      m1: 'Fail to get data .'
+      m1: 'Fail to get data .',
+      m2: 'Only queries for data less than 30 days.'
+    },
+    tip: {
+      m1: 'The total fee is calculated by multiplying each order by the rate and then rounding up.'
     }
   },
   login: { // 登录页
