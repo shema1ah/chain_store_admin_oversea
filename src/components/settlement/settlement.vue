@@ -351,7 +351,7 @@
       position: absolute;
       display: none;
       z-index: 1000;
-      width: 100%;
+      width: 200%;
       background: #fff;
       font-size: 13px;
       color: #262424;
@@ -361,7 +361,7 @@
       line-height: 22px;
       white-space: normal;
       border-radius: 5px;
-      box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.12);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12);
     }
     .down .a-wrapper {
       float: left;
