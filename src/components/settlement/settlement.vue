@@ -167,6 +167,12 @@
       this.getType();
     },
 
+    mounted() {
+      setTimeout(() => {
+        this.createDialog();
+      }, 0);
+    },
+
     methods: {
       // 获取
       getType() {
@@ -258,8 +264,6 @@
       getSettleData() {
         if(!this.loading) {
           this.loading = true;
-          // 悬浮层
-          this.createDialog();
           axios.get(`${config.ohost}/fund/v1/${this.getUrl()}/check`, {
             params: this.basicParams
           }).then((res) => {
@@ -293,6 +297,9 @@
       reset() {
         this.status = true;
         this.$refs['form'].resetFields();
+
+        let type = (this.typeList[0] || {}).remit_type;
+        this.form.remit_type = type;
       },
 
       handleSizeChange(size = 10) {
