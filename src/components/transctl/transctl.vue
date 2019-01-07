@@ -211,7 +211,7 @@
         </el-form-item>
         <el-form-item prop="amount" :label="$t('tradeMng.detail.ammount2')" class="amount">
           <span>{{ role.currency }}</span>
-          <el-input name="amount" class="showAmount" v-model="formpwd.amount" :placeholder="$t('tradeMng.msg.m14') + refundAmount" type="number" @keyup.enter.native="onEnter"></el-input>
+          <el-input name="amount" class="showAmount" v-model="formpwd.amount" :placeholder="$t('tradeMng.msg.m14') + ' ' + refundAmount" type="number" @keyup.enter.native="onEnter"></el-input>
         </el-form-item>
         <el-form-item prop="pwd" :label="$t('tradeMng.dialog.d5')">
           <el-input v-model="formpwd.pwd" :placeholder="$t('tradeMng.msg.m9')" type="password" @keyup.enter.native="onEnter"></el-input>
@@ -273,7 +273,7 @@
   import axios from 'axios';
   import config from 'config';
   import qs from 'qs';
-  import {formatDate, formatLength} from '../../common/js/util';
+  import {formatDate} from '../../common/js/util';
   import Store from '../../common/js/store';
 
   // cancel 0未撤销 1撤销 status  0:交易中 1:交易成功 2:交易失败 3:交易超时
@@ -292,7 +292,7 @@
       let checkAmount = (rule, val, cb) => {
         if(+val === 0) {
           cb(this.$t('tradeMng.msg.m15'));
-        }else if(+val > this.refundAmount) {
+        }else if(+val > +this.refundAmount) {
           cb(this.$t('tradeMng.msg.m12'));
         } else {
           cb();
@@ -425,7 +425,8 @@
       'formpwd.amount': function(val, old) {
         if(val) {
           if(this.role.point) {
-            if(!/^\d+\.?\d{0,2}$/.test(val)) {
+            let t = new RegExp('^\\d+(\\.\\d{0,' + this.role.point + '})?$');
+            if(!t.test(val)) {
               setTimeout(() => {
                 this.formpwd.amount = old;
               }, 10);
@@ -562,7 +563,22 @@
 
       // 撤销按钮
       confirm(val) {
-        this.refundAmount = this.formpwd.amount = formatLength(val.allow_refund_amt / this.role.rate);
+        // 如果有小数点，就显示小数点
+        if(this.role.point) {
+          this.formpwd.amount = val.allow_refund_amt / this.role.rate;
+          let v = this.formpwd.amount + '';
+          if(v.includes('.0')) {
+            let p = v.split('.')[1].padEnd(this.role.point, 0);
+            this.refundAmount = v.split('.')[0] + '.' + p;
+          }else {
+            let arr = '0';
+            arr = arr.padEnd(this.role.point, 0);
+            this.refundAmount = v + '.' + arr;
+          }
+
+        }else {
+          this.refundAmount = this.formpwd.amount = val.allow_refund_amt / this.role.rate;
+        }
         this.refundData = val;
         if(this.role.isCashier) {
           this.cheekRefund();
