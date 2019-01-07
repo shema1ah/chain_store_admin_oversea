@@ -425,8 +425,8 @@
       'formpwd.amount': function(val, old) {
         if(val) {
           if(this.role.point) {
-            let t = new RegExp('^\\d+(\\.\\d{0,' + this.role.point + '})?$');
-            if(!t.test(val)) {
+            // let t = new RegExp('^\\d+(\\.\\d{0,' + this.role.point + '})?$');
+            if(!/^\d+(\.\d{0,2})?$/.test(val)) {
               setTimeout(() => {
                 this.formpwd.amount = old;
               }, 10);
@@ -568,11 +568,11 @@
           this.formpwd.amount = val.allow_refund_amt / this.role.rate;
           let v = this.formpwd.amount + '';
           if(v.includes('.')) {
-            let p = v.split('.')[1].padEnd(this.role.point, 0);
+            let p = v.split('.')[1].padEnd(2, 0);
             this.refundAmount = v.split('.')[0] + '.' + p;
           }else {
             let arr = '0';
-            arr = arr.padEnd(this.role.point, 0);
+            arr = arr.padEnd(2, 0);
             this.refundAmount = v + '.' + arr;
           }
 
