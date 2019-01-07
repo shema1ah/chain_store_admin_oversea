@@ -567,7 +567,7 @@
         if(this.role.point) {
           this.formpwd.amount = val.allow_refund_amt / this.role.rate;
           let v = this.formpwd.amount + '';
-          if(v.includes('.0')) {
+          if(v.includes('.')) {
             let p = v.split('.')[1].padEnd(this.role.point, 0);
             this.refundAmount = v.split('.')[0] + '.' + p;
           }else {
