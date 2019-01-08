@@ -240,26 +240,19 @@
       // 判断app_name
       getAppName(params) {
         let hostName = location.hostname;
-        let appName;
-        switch (true) {
-          case hostName.includes('hk.qfapi.com'):
-            appName = 'hk_web';
-            break;
-          case hostName.includes('jp.qfapi.com'):
-            appName = 'jp_web';
-            break;
-          case hostName.includes('db.qfapi.com'):
-            appName = 'db_web';
-            break;
-          case hostName.includes('th.qfapi.com'):
-            appName = 'th_web';
-            break;
-          case hostName.includes('sg.qfapi.com'):
-            appName = 'sg_web';
-            break;
-          default :
-            appName = 'zh_web';
+
+        // appName对应列表
+        let list = {
+          'sh-hk.qfapi.com': 'hk_web',
+          'sh-jp.qfapi.com': 'jp_web',
+          'sh-db.qfapi.com': 'db_web',
+          'sh-th.qfapi.com': 'th_web',
+          'sh-sg.qfapi.com': 'sg_web',
+          'sh-sh-t.qfapi.com': 'shh_t_web',
+          'sh-sz-t.qfapi.com': 'shz_t_web'
         }
+        let appName = list[hostName] || 'zh_web';
+
         Object.assign(params, {
           app_name: appName
         });

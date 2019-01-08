@@ -14,7 +14,6 @@
       // 设置config
       setConfig() {
         let hostName = location.hostname;
-
         let uri;
         // 本地调试
         if(process.env.NODE_ENV === 'development') {
