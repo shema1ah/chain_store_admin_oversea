@@ -38,7 +38,7 @@
             <span>关联分店</span>
           </div> -->
           <div class="btn-group">
-            <div class="panel-header-btn__associate" @click="editShopDown" :style="lang === 'en'?'width:200px':''">
+            <div class="panel-header-btn__associate" v-if="role.country !== 'TH'" @click="editShopDown" :style="lang === 'en'?'width:200px':''">
               <i class="icon-download"></i>
               {{$t('shopmng.panel.btn.listDown')}}
             </div>
@@ -375,20 +375,25 @@
     methods: {
       // 下载
       downShopList() {
-        this.iconShow = true;
-        let params = {
-          lang: this.lang,
-          userids: this.downForm.shop.join(",")
-        };
-        let downUrl = `${config.host}/merchant/download/qrcodes?${qs.stringify(params)}`;
-        let a = document.createElement('a');
-        a.setAttribute('download', 'true');
-        a.setAttribute('href', downUrl);
-        a.click();
-        setTimeout(() => {
-          this.iconShow = false;
-          this.showDown = false;
-        }, 1000)
+        if(this.downForm.shop.length > 0) {
+          this.iconShow = true;
+          let params = {
+            lang: this.lang,
+            userids: this.downForm.shop.join(",")
+          };
+          let downUrl = `${config.host}/merchant/download/qrcodes?${qs.stringify(params)}`;
+          let a = document.createElement('a');
+          a.setAttribute('download', 'true');
+          a.setAttribute('href', downUrl);
+          a.click();
+          setTimeout(() => {
+            this.iconShow = false;
+            this.showDown = false;
+          }, 1000)
+        }else {
+          this.$message.error(this.$t('shopmng.dialog.nullTip'));
+        }
+
       },
 
       // 点击下载分店二维码

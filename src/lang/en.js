@@ -112,6 +112,7 @@ exports.default = {
       notice: 'Be Awared!',
       noticeTip: 'Always remember to turn off the branch shop promotions before delete the branch.',
       downTip: 'Select the store name where you want to download：',
+      nullTip: 'Please select at least one branch',
       all: 'Select all'
     }
   },
