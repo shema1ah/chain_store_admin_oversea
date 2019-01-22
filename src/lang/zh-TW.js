@@ -108,6 +108,7 @@ exports.default = {
       notice: '提示',
       noticeTip: '刪除分店前建議先終止該分店正在進行的會員營銷活動。',
       downTip: '選擇需要下載收款碼的分店名稱：',
+      nullTip: '請至少選擇一家分店',
       all: '全選'
     }
   },
