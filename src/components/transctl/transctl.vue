@@ -143,45 +143,48 @@
           :row-class-name="getStyle"
           v-loading="loading">
           <el-table-column
-            :label="$t('tradeMng.table.shopName')" min-width="90">
+            :label="$t('tradeMng.table.shopName')" width="110">
             <template slot-scope="scope">
               <div>{{ scope.row.username }}</div>
             </template>
           </el-table-column>
           <el-table-column
-            :label="$t('tradeMng.table.operator')" min-width="70">
+            :label="$t('tradeMng.table.operator')" width="100">
             <template slot-scope="scope">{{ scope.row.opuser || '-' }}</template>
           </el-table-column>
           <el-table-column
             prop="busicd_info"
             :label="$t('tradeMng.table.tradeType')" min-width="100">
           </el-table-column>
-          <el-table-column prop="sysdtm" min-width="110" :label="$t('tradeMng.table.tradeTime')">
+          <el-table-column prop="sysdtm" min-width="160" :label="$t('tradeMng.table.tradeTime')">
             <template slot-scope="scope">{{ scope.row.sysdtm }}</template>
           </el-table-column>
+
           <el-table-column
-            :label="$t('tradeMng.table.tradeAmount') + '(' + role.currency + ')'" min-width="90">
-            <template slot-scope="scope">
-              <div class="table-title">{{ scope.row.total_amt | formatCurrency }}</div>
+            :label="$t('tradeMng.table.tradeAmount') + '(' + role.currency + ')'" min-width="100" >
+            <template slot-scope="scope" >
+              <div class="table-title">{{ scope.row.txamt | formatCurrency }}</div>
+              <div class="table-content" v-if="scope.row.busicd === '802101'">{{ $t('tradeMng.table.originAmount') }} {{ scope.row.order_amt | formatCurrency }}</div>
             </template>
           </el-table-column>
-          <el-table-column prop="status_str" :label="$t('tradeMng.table.tradeState')" min-width="75">
+
+          <el-table-column prop="status_str" :label="$t('tradeMng.table.tradeState')" min-width="80">
           </el-table-column>
-          <el-table-column min-width="105" :label="$t('tradeMng.table.sNum')">
+          <el-table-column min-width="160" :label="$t('tradeMng.table.sNum')">
             <template slot-scope="scope">
               <div>{{ scope.row.origssn ? scope.row.syssn + '(' + $t('tradeMng.detail.syssn2') + ':' + scope.row.origssn + ')' : scope.row.syssn }}</div>
             </template>
           </el-table-column>
 
-          <el-table-column prop="chnlsn" :label="$t('tradeMng.table.chnlsn')"></el-table-column>
-          <el-table-column prop="src" :label="$t('tradeMng.table.src')"></el-table-column>
-          <el-table-column prop="cardcd" :label="$t('tradeMng.table.cardCd')"></el-table-column>
+          <el-table-column prop="chnlsn" :label="$t('tradeMng.table.chnlsn')" min-width="120"></el-table-column>
+          <el-table-column prop="src" :label="$t('tradeMng.table.src')" min-width="80"></el-table-column>
+          <el-table-column prop="cardcd" :label="$t('tradeMng.table.cardCd')" min-width="80"></el-table-column>
 
-          <el-table-column prop="note" :label="$t('tradeMng.table.remark')"></el-table-column>
+          <el-table-column prop="note" :label="$t('tradeMng.table.remark')" min-width="80"></el-table-column>
           <el-table-column min-width="215" :label="$t('tradeMng.table.op')">
             <template slot-scope="scope">
               <el-button type="text" size="small" :disabled="showRefund(scope.row.sysdtm, scope.row.allow_refund_amt)" class="el-button__fix" @click="confirm(scope.row)">{{$t('tradeMng.table.cancel')}}</el-button>
-              <el-button type="text" size="small" class="el-button__fix" @click.native="detail(scope.row.syssn, scope.row.origssn)">{{$t('tradeMng.table.detail')}}</el-button>
+              <el-button type="text" size="small" class="el-button__fix" @click.native="detail(scope.row)">{{$t('tradeMng.table.detail')}}</el-button>
               <a :href="downUrl" @click="downHref(scope.$index, $event)">
                   <span id="tr-download">{{ $t('tradeMng.table.download') }}</span>
               </a>
@@ -209,7 +212,7 @@
         <el-form-item :label="$t('tradeMng.panel.sNum')">
           <span>{{ refundData.syssn }}</span>
         </el-form-item>
-        <el-form-item prop="amount" :label="$t('tradeMng.detail.ammount2')" class="amount">
+        <el-form-item prop="amount" :label="$t('tradeMng.detail.amount2')" class="amount">
           <span>{{ role.currency }}</span>
           <el-input name="amount" class="showAmount" v-model="formpwd.amount" :placeholder="$t('tradeMng.msg.m14') + ' ' + refundAmount" type="number" @keyup.enter.native="onEnter"></el-input>
         </el-form-item>
@@ -229,7 +232,7 @@
     <el-dialog :title="refundStates !==3 ? (refundStates === 1 ? $t('tradeMng.dialog.d3') : $t('tradeMng.dialog.d7')) : $t('tradeMng.dialog.d4')" :visible.sync="showArefund" custom-class="mydialog refund" :class="[refundStates !== 3 ? (refundStates === 1 ? 'success' : 'wait') : 'fail']" top="20%" :show-close="false">
       <div v-if="refundStates !== 3">
         <el-form :label-width="(lang === 'ja' || lang === 'en') ? '150px' : '90px'">
-          <el-form-item :label="$t('tradeMng.detail.ammount2')">
+          <el-form-item :label="$t('tradeMng.detail.amount2')">
             <div>
               <span style="font-size: 18px;">{{ role.currency }}</span>
               <span style="font-size: 24px;">{{ refundInfo.txamt | formatCurrency }}</span>
@@ -253,19 +256,6 @@
         </div>
       </div>
     </el-dialog>
-
-    <el-dialog title="交易流水Excel下载" :visible.sync="showTotal" custom-class="mydialog extra" top="20%" @close="handleClose">
-      <div style="margin-bottom: 20px;">检测到门店有收银员角色，交易汇总是否要区分收银员？</div>
-      <div class="divider"></div>
-      <div slot="footer" class="dialog-footer total-footer">
-        <div class="separate" @click="showTotal = false">
-          <a :href="separateHref" download id="separate">区分收银员</a>
-        </div>
-        <div class="submit" @click="showTotal = false">
-          <a :href="mergeHref" download>合并收银员</a>
-        </div>
-      </div>
-    </el-dialog>
   </div>
 </template>
 
@@ -273,7 +263,7 @@
   import axios from 'axios';
   import config from 'config';
   import qs from 'qs';
-  import {formatDate} from '../../common/js/util';
+  import {formatDate, formatData} from '../../common/js/util';
   import Store from '../../common/js/store';
 
   // cancel 0未撤销 1撤销 status  0:交易中 1:交易成功 2:交易失败 3:交易超时
@@ -306,7 +296,6 @@
         role: Store.get('role') || {},
         showConfirm: false,
         showArefund: false,
-        showTotal: false,
         refundData: {},
         refundInfo: {},
         formpwd: {
@@ -483,7 +472,7 @@
         let val = this.refundData;
         let params = {
           format: 'cors',
-          txamt: this.formpwd.amount * this.role.rate,
+          txamt: formatData(this.formpwd.amount, this.role.rate),
           txdtm: formatDate(val.sysdtm, 'yyyy-MM-dd HH:mm:ss'),
           syssn: val.syssn,
           out_trade_no: Date.now(),
@@ -518,17 +507,20 @@
       // 下载小票
       downHref(index, e) {
         let data = this.transData.data[index];
-        let totalAmt = (data.total_amt / this.role.rate).toFixed(2);
+        let totalAmt = (formatData(data.total_amt, 1 / this.role.rate)).toFixed(2);
         e.target.parentNode.href = `${config.host}/merchant/receipt/download?username=${data.username}&busicd_info=${data.busicd_info}&sysdtm=${data.sysdtm}&total_amt=${totalAmt}&status_str=${data.status_str}&syssn=${data.syssn}&format=cors`;
       },
 
       // 交易，撤销详情
-      detail(syssn, origin) {
+      detail(item) {
         let type = 'trans';
-        if(origin) {
+        if(item.origssn) {
           type = 'refund';
         }
-        this.$router.push(`/main/transctl/transdetail?syssn=${syssn}&type=${type}`);
+        if(item.busicd === '802101') {
+          type = 'digital';
+        }
+        this.$router.push(`/main/transctl/transdetail?syssn=${item.syssn}&type=${type}`);
       },
 
       // 点击enter键提交
@@ -565,7 +557,7 @@
       confirm(val) {
         // 如果有小数点，就显示小数点
         if(this.role.point) {
-          this.formpwd.amount = val.allow_refund_amt / this.role.rate;
+          this.formpwd.amount = formatData(val.allow_refund_amt, 1 / this.role.rate);
           let v = this.formpwd.amount + '';
           if(v.includes('.')) {
             let p = v.split('.')[1].padEnd(2, 0);
@@ -577,7 +569,7 @@
           }
 
         }else {
-          this.refundAmount = this.formpwd.amount = val.allow_refund_amt / this.role.rate;
+          this.refundAmount = this.formpwd.amount = formatData(val.allow_refund_amt, 1 / this.role.rate);
         }
         this.refundData = val;
         if(this.role.isCashier) {
@@ -819,7 +811,8 @@
       font-weight: 500;
     }
     .table-content {
-      font-size: 12px;
+      font-size: 14px;
+      text-decoration: line-through;
     }
     .num_total {
       text-align: center;

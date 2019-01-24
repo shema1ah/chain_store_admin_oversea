@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Store from '../common/js/store'
-import { formatLength } from '../common/js/util'
+import { formatLength, formatData } from '../common/js/util'
 
 let filters = {
 
@@ -12,9 +12,9 @@ let filters = {
     }
     let role = Store.get('role') || {};
     if(role.haiwai) {
-      return formatLength(number / role.rate)
+      return formatLength(formatData(number, 1 / role.rate))
     }else {
-      return formatLength((number / role.rate).toFixed(2))
+      return formatLength(formatData(number, 1 / role.rate).toFixed(2))
     }
   },
 
@@ -26,9 +26,9 @@ let filters = {
     }
     let role = Store.get('role') || {};
     if(role.haiwai) {
-      return formatLength(string / role.rate)
+      return formatLength(formatData(string, 1 / role.rate))
     }else {
-      return formatLength((string / role.rate).toFixed(2))
+      return formatLength(formatData(string, 1 / role.rate).toFixed(2))
     }
   },
 

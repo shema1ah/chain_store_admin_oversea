@@ -158,6 +158,7 @@ exports.default = {
       tradeType: '交易类型',
       tradeTime: '交易时间',
       tradeAmount: '交易金额',
+      originAmount: '应收',
       tradeState: '交易状态',
       redpacket: '红包优惠',
       sNum: '流水号',
@@ -179,8 +180,8 @@ exports.default = {
       }
     },
     detail: {
-      ammount1: '订单金额',
-      ammount2: '退款金额',
+      amount1: '订单金额',
+      amount2: '退款金额',
       origin: '消费者来源',
       time: '退款时间',
       syssn1: '订单流水号',
@@ -188,7 +189,11 @@ exports.default = {
       syssn3: '退款流水号',
       store: '交易门店',
       account: '操作账户',
-      history: '退款历史'
+      history: '退款历史',
+      amount3: '实收金额',
+      count1: '实收币数',
+      count2: '订单币数',
+      syssn4: '区块链订单号'
     },
     dialog: {
       d1: '操作一旦确认将无法撤回，是否确认？',
