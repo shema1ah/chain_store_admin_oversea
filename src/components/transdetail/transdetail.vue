@@ -17,8 +17,23 @@
       <div class="panel-body">
         <div class="info_wrapper" :class="{'wrapper': lang === 'ja' || lang === 'en'}">
           <div class="info">
-            <div class="info__title">{{type === 'refund' ? $t('tradeMng.detail.ammount2') : $t('tradeMng.detail.ammount1')}}</div>
-            <div class="info__desc">{{ role.currency }} {{ infoData.txamt | formatCurrency }}</div>
+            <div class="info__title">{{type === 'refund' ? $t('tradeMng.detail.amount2') : $t('tradeMng.detail.amount1')}}</div>
+            <div class="info__desc" v-if="type === 'digital'">{{ role.currency }} {{ infoData.order_amt | formatCurrency }}</div>
+            <div class="info__desc" v-else>{{ role.currency }} {{ infoData.txamt | formatCurrency }}</div>
+          </div>
+          <div v-if="type === 'digital'">
+            <div class="info">
+              <div class="info__title">{{$t('tradeMng.detail.amount3')}}</div>
+              <div class="info__desc">{{ role.currency }} {{ infoData.txamt | formatCurrency }}</div>
+            </div>
+            <div class="info">
+              <div class="info__title">{{$t('tradeMng.detail.count2')}}</div>
+              <div class="info__desc">{{ infoData.order_quantity }}</div>
+            </div>
+            <div class="info">
+              <div class="info__title">{{$t('tradeMng.detail.count1')}}</div>
+              <div class="info__desc">{{ infoData.actual_quantity }}</div>
+            </div>
           </div>
           <div class="info">
             <div class="info__title">{{$t('tradeMng.table.tradeState')}}</div>
@@ -36,6 +51,12 @@
             <div class="info__title">{{type === 'refund' ? $t('tradeMng.detail.time') : $t('tradeMng.table.tradeTime')}}</div>
             <div class="info__desc">{{ infoData.sysdtm }}</div>
           </div>
+
+          <div class="info" v-if="type === 'digital'">
+            <div class="info__title">{{$t('tradeMng.detail.syssn4')}}</div>
+            <div class="info__desc">{{ infoData.chain_order_no }}</div>
+          </div>
+
           <div class="info">
             <div class="info__title">{{type === 'refund' ? $t('tradeMng.detail.syssn3') : $t('tradeMng.detail.syssn1')}}</div>
             <div class="info__desc">{{ infoData.syssn }}</div>
@@ -76,7 +97,7 @@
           </el-table-column>
           <el-table-column
             prop="txamt"
-            :label="$t('tradeMng.detail.ammount2')+ '(' + role.currency + ')'">
+            :label="$t('tradeMng.detail.amount2')+ '(' + role.currency + ')'">
             <template slot-scope="scope">{{ scope.row.txamt | formatCurrency }}</template>
           </el-table-column>
           <el-table-column

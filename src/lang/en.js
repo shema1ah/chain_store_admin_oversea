@@ -162,6 +162,7 @@ exports.default = {
       tradeType: 'Type',
       tradeTime: 'Time',
       tradeAmount: 'Amount',
+      originAmount: 'Receivables',
       tradeState: 'Status',
       redpacket: 'Red Envelope Discount', // 红包优惠
       sNum: 'Transaction ID',
@@ -183,8 +184,8 @@ exports.default = {
       }
     },
     detail: {
-      ammount1: 'Transaction amount',
-      ammount2: 'Refund amount',
+      amount1: 'Transaction amount',
+      amount2: 'Refund amount',
       origin: 'Source of consumers',
       time: 'Refund time',
       syssn1: 'Transaction ID',
@@ -192,7 +193,11 @@ exports.default = {
       syssn3: 'Refund ID',
       store: 'Store name',
       account: 'Operating Account',
-      history: 'Refund History'
+      history: 'Refund History',
+      amount3: 'Actual Amounts',
+      count1: 'Actual Quantity',
+      count2: 'Order Quantity',
+      syssn4: 'Chain Order No.'
     },
     dialog: {
       d1: 'This action cannot be undone, do you want to refund?',

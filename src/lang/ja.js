@@ -162,6 +162,7 @@ exports.default = {
       tradeType: '取引種類',
       tradeTime: '取引時間',
       tradeAmount: '取引金額',
+      originAmount: '売掛金',
       tradeState: '取引状態',
       redpacket: ' 紅包（ホンバオ）割引', // 红包优惠
       sNum: 'シリアル番号',
@@ -183,16 +184,20 @@ exports.default = {
       }
     },
     detail: {
-      ammount1: '取引金額',
-      ammount2: '払い戻す金額',
+      amount1: '取引金額',
+      amount2: '払い戻す金額',
       origin: 'ユーザーの地域',
       time: '払い戻す時間',
       syssn1: '取引番号',
       syssn2: '元取引番号',
       syssn3: '払い戻す取引番号',
       store: '店舗',
-      account: 'オペレータアカウント',
-      history: '払い戻し履歴'
+      account: '営業アカウント',
+      history: '払い戻し履歴',
+      amount3: '支払金額',
+      count1: '支払通貨',
+      count2: '注文通貨',
+      syssn4: 'ブロックチェーン注文番号'
     },
     dialog: {
       d1: 'この動作が取り返しのつかない、払い戻すことができたい？',

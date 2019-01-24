@@ -158,6 +158,7 @@ exports.default = {
       tradeType: '交易類型',
       tradeTime: '交易時間',
       tradeAmount: '交易金額',
+      originAmount: '應收',
       tradeState: '交易狀態',
       redpacket: '紅包優惠',
       sNum: '序列號',
@@ -179,8 +180,8 @@ exports.default = {
       }
     },
     detail: {
-      ammount1: '訂單金額',
-      ammount2: '退款金額',
+      amount1: '訂單金額',
+      amount2: '退款金額',
       origin: '消費者來源',
       time: '退款時間',
       syssn1: '訂單流水號',
@@ -188,7 +189,11 @@ exports.default = {
       syssn3: '退款流水號',
       store: '交易店舖',
       account: '操作帳戶',
-      history: '退款歷史'
+      history: '退款歷史',
+      amount3: '實收金額',
+      count1: '實收幣數',
+      count2: '訂單幣數',
+      syssn4: '區塊鏈訂單號'
     },
     dialog: {
       d1: '操作後不可撤回，是否確認？',
