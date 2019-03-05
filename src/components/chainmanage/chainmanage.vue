@@ -630,7 +630,8 @@
       unbind(uid) {
         axios.get(`${config.host}/merchant/sub/remove`, {
           params: {
-            sub_uid: uid
+            sub_uid: uid,
+            format: 'cors'
           }
         })
           .then((res) => {

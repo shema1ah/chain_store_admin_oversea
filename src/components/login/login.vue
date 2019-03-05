@@ -102,6 +102,14 @@
       if(token) {
         // 其它地址跳转过来的，之前有session的先清除
         getCookie('sessionid') && clearCookie('sessionid', config.ohost);
+
+        let host = {
+          host: getParams('host'),
+          ohost: getParams('ohost'),
+          payHost: getParams('payHost'),
+        };
+        Store.set('hosts', host);
+        Object.assign(config, host);
         this.oldSign(token, true);
       }else if(getCookie('sessionid')) {
         if(Store.get('flag')) {
@@ -146,10 +154,10 @@
               };
             }
             this.loading = true;
-            if(location.hostname.includes('jp.qfapi') || process.env.NODE_ENV === 'development') {
+            if(location.hostname.includes('jp.qfapi') || process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
               this.oldSign(params, false);
             }else {
-              this.getAppName(params);
+              this.newSign(params);
             }
           }
         });
@@ -205,21 +213,30 @@
 
       // 迁移商户下发域名
       newSign(params) {
-        axios.post('https://g.qfapi.com/gr/v1/login', Object.assign({}, params, {
+        let hostName = location.hostname;
+        let p = Object.assign({}, params, {
+          app_name: 'web',
+          domain_name: hostName,
           format: 'cors'
-        })).then((res) => {
+        });
+        axios.post('https://g.qfapi.com/gr/v1/login', p).then((res) => {
           let data = res.data;
           if(data.respcd === config.code.OK) {
             let con = data.data || {};
             let token = con.token;
 
-            let ur = con.server.sh.addrs[0].host || con.server.sh.addrs[0].addr;
-            let hostName = location.hostname;
-            if(ur.indexOf(hostName) === -1) {
+            let hosts = con.server;
+            let host = {
+              host: hosts.sh.addrs[0].addr,
+              ohost: hosts.o.addrs[0].addr,
+              payHost: hosts.openapi.addrs[0].addr,
+            };
+
+            if(!host.sh.includes(hostName) && !hostName.includes('wimerchant.com')) {
               this.loading = false;
-              // 北京global和海外新地址跳转
+              // 北京global跳转
               if(hostName.includes('qfpay.com')) {
-                window.location.href = `${ur}#/login?t=${token}`;
+                window.location.href = `${host.host}#/login?t=${token}&host=${host.host}&ohost=${host.ohost}&payHost=${host.payHost}`;
               } else {
                 // 其它域名不跳转，提示商户不存在
                 this.$message.error(this.$t('login.msg.m6'));
@@ -227,6 +244,8 @@
               return;
             }
 
+            Store.set('hosts', host);
+            Object.assign(config, host);
             this.oldSign(token, true);
           } else {
             this.loading = false;
@@ -236,28 +255,6 @@
           this.loading = false;
           this.$message.error(this.$t('login.msg.m3'));
         });
-      },
-
-      // 判断app_name
-      getAppName(params) {
-        let hostName = location.hostname;
-
-        // appName对应列表
-        let list = {
-          'sh-hk.qfapi.com': 'hk_web',
-          // 'sh-jp.qfapi.com': 'jp_web',
-          'sh-db.qfapi.com': 'db_web',
-          'sh-th.qfapi.com': 'th_web',
-          'sh-sg.qfapi.com': 'sg_web',
-          'sh-sh-t.qfapi.com': 'shh_t_web',
-          'sh-sz-t.qfapi.com': 'shz_t_web'
-        }
-        let appName = list[hostName] || 'zh_web';
-
-        Object.assign(params, {
-          app_name: appName
-        });
-         this.newSign(params);
       },
 
       // 点击enter键调用登录

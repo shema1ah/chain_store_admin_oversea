@@ -131,7 +131,7 @@
               <span class="el-dropdown-link"><img src="./img/download.png" alt="download"></span>
               <el-dropdown-menu slot="dropdown">
                 <a :href="detailHref" download><el-dropdown-item command=1>{{$t('tradeMng.table.btn.downDetail')}}</el-dropdown-item></a>
-                <a href="javascript:;" @click="downCollection"><el-dropdown-item command=2>{{$t('tradeMng.table.btn.downTrade')}}</el-dropdown-item></a>
+                <a :href="separateHref" download><el-dropdown-item command=2>{{$t('tradeMng.table.btn.downTrade')}}</el-dropdown-item></a>
               </el-dropdown-menu>
             </el-dropdown>
           </div>
@@ -446,11 +446,6 @@
       // 关闭弹出层
       handleClose(form) {
         this.$refs[form] && this.$refs[form].resetFields();
-      },
-
-      // 点击下载交易汇总
-      downCollection() {
-        document.querySelector('#separate').click();
       },
 
       // 是否展示撤销按钮,单店展示分店当天展示
