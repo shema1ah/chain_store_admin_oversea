@@ -232,7 +232,8 @@
               payHost: hosts.openapi.addrs[0].addr,
             };
 
-            if(!host.sh.includes(hostName) && !hostName.includes('wimerchant.com')) {
+            // 不包括新加坡白牌
+            if(!host.host.includes(hostName) && !hostName.includes('wimerchant.com')) {
               this.loading = false;
               // 北京global跳转
               if(hostName.includes('qfpay.com')) {
