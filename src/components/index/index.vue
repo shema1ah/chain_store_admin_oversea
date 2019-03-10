@@ -193,7 +193,7 @@
         Promise.all([this.fetchDashboardData(), this.getData()]).then((data) => {
           this.loading = false;
           this.info = data[0];
-
+          
           this.chartPie(this.info.trade_stats);
           this.chartLine(data[1]);
         }).catch(() => {

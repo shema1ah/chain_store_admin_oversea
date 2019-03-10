@@ -8,6 +8,15 @@ module.exports = {
     env: {
       NODE_ENV: "'" + process.argv[2] + "'"
     },
+    proxyTable: {
+      '/api': {
+        target: 'https://sh-hk.qfapi.com',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/api': '/'
+        }
+      }
+    },
     port: 8098,
     index: path.resolve(__dirname, '../dist/main.html'),
     assetsRoot: path.resolve(__dirname, '../dist'),

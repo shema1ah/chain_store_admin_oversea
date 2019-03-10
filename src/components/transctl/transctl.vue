@@ -180,7 +180,7 @@
           <el-table-column prop="src" :label="$t('tradeMng.table.src')" min-width="80"></el-table-column>
           <el-table-column prop="cardcd" :label="$t('tradeMng.table.cardCd')" min-width="80"></el-table-column>
 
-          <el-table-column prop="note" :label="$t('tradeMng.table.remark')" min-width="80"></el-table-column>
+          <el-table-column prop="note" :label="$t('tradeMng.table.remark')" min-width="88"></el-table-column>
           <el-table-column min-width="215" :label="$t('tradeMng.table.op')">
             <template slot-scope="scope">
               <el-button type="text" size="small" :disabled="showRefund(scope.row.sysdtm, scope.row.allow_refund_amt)" class="el-button__fix" @click="confirm(scope.row)">{{$t('tradeMng.table.cancel')}}</el-button>
@@ -790,9 +790,11 @@
       .panel-select__desc {
         width: 120px;
         margin: 0;
+        display: inline-block;
       }
       .el-input__inner {
         width: 220px;
+        display:inline-block;
       }
       .el-checkbox__label {
         color: #090909;

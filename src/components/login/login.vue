@@ -154,7 +154,7 @@
               };
             }
             this.loading = true;
-            if(location.hostname.includes('jp.qfapi') || process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
+            if(location.hostname.includes('jp.qfapi') || process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') { 
               this.oldSign(params, false);
             }else {
               this.newSign(params);
@@ -354,6 +354,7 @@
         margin-bottom: 5px;
         background-color: transparent;
         outline: none;
+        display:inline-block;
       }
 
       .cashier {

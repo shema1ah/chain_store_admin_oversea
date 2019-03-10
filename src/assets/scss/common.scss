@@ -12,7 +12,9 @@
   font-weight: normal;
   font-style: normal;
 }
-
+span {
+  display:inline-block;
+}
 [class^="icon-"], [class*=" icon-"] {
   /* use !important to prevent issues with browser extensions that change fonts */
   font-family: 'myicon' !important;
@@ -80,7 +82,9 @@ input:-webkit-autofill { box-shadow: 0 0 0px 1000px white inset !important;}
 .el-icon-loading{
   margin-right: 0;
 }
-
+.el-table th > .cell {
+  word-break: keep-all;
+}
 // 时分秒选择控件
 .el-form-item__content {
   .el-date-editor--datetimerange {
@@ -93,6 +97,15 @@ input:-webkit-autofill { box-shadow: 0 0 0px 1000px white inset !important;}
       padding: 3px 10px;
     }
   }
+}
+.el-input__inner {
+  display: inline-block;
+}
+.el-form-item__label {
+  display: inline-block;
+}
+.el-dialog__headerbtn {
+  background-color: transparent;
 }
 .el-picker-panel__link-btn {
   display: none;
