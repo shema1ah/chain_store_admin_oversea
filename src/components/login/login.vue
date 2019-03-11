@@ -219,7 +219,8 @@
           domain_name: hostName,
           format: 'cors'
         });
-        axios.post('https://g.qfapi.com/gr/v1/login', p).then((res) => {
+        // axios.post('https://g.qfapi.com/gr/v1/login', p).then((res) => {
+        axios.post('https://g-t.qfapi.com/gr/v1/ping', p).then((res) => {
           let data = res.data;
           if(data.respcd === config.code.OK) {
             let con = data.data || {};
