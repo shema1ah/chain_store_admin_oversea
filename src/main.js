@@ -87,7 +87,7 @@ axios.interceptors.response.use((res) => {
   let data = res.data;
   if (data.respcd == config.code.SESSIONERR || data.respcd == config.code.LOGINERR) {
     // 清除本地cookie
-    (new Image()).src = `${config.ohost}/mchnt/set_cookie?sessionid=`;
+    (new Image()).src = `${config.oHost}/mchnt/set_cookie?sessionid=`;
 
     Store.set('flag', true);
     localStorage.removeItem('hashid');

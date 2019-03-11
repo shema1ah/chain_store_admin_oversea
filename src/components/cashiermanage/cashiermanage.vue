@@ -331,7 +331,7 @@
         }
         if(!this.loading) {
           this.loading = true;
-          axios.post(`${config.ohost}/mchnt/opuser/change`, {
+          axios.post(`${config.oHost}/mchnt/opuser/change`, {
             opuid: id,
             status: st,
             format: 'cors'
@@ -365,7 +365,7 @@
         }
         if(!this.loading) {
           this.loading = true;
-          axios.post(`${config.ohost}/mchnt/opuser/perm/change`, {
+          axios.post(`${config.oHost}/mchnt/opuser/perm/change`, {
             opuid: id,
             type: 'refund',
             status: rg,

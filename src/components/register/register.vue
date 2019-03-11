@@ -142,7 +142,7 @@
                     mode: 'saleman',
                     format: 'cors'
                   };
-                  axios.post(`${config.ohost}/mchnt/user/check`, qs.stringify(params), {
+                  axios.post(`${config.oHost}/mchnt/user/check`, qs.stringify(params), {
                     headers: {
                       'Content-Type': 'application/x-www-form-urlencoded'
                     }
@@ -195,7 +195,7 @@
 
       // 发送验证码请求
       getQuest(param) {
-        axios.get(`${config.ohost}/mchnt/smscode/send`, {
+        axios.get(`${config.oHost}/mchnt/smscode/send`, {
           params: param
         }).then((res) => {
           let data = res.data;
@@ -265,7 +265,7 @@
               };
               val = "reset_pwd";
             }
-            axios.post(`${config.ohost}/mchnt/user/${val}`, qs.stringify(params), {
+            axios.post(`${config.oHost}/mchnt/user/${val}`, qs.stringify(params), {
               headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
               }

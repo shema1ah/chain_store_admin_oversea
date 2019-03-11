@@ -220,7 +220,7 @@
             let data = res.data;
             if (data.respcd === config.code.OK) {
               // 登出时删除.qfpay.com域下cookie
-              (new Image()).src = `${config.ohost}/mchnt/set_cookie?sessionid=`;
+              (new Image()).src = `${config.oHost}/mchnt/set_cookie?sessionid=`;
               Store.set('flag', true);
               localStorage.removeItem('hashid');
               localStorage.removeItem('uid');
@@ -240,7 +240,7 @@
           if(!this.iconShow && valid) {
             this.iconShow = true;
 
-            axios.post(`${config.ohost}/mchnt/user/reset_pwd`, {
+            axios.post(`${config.oHost}/mchnt/user/reset_pwd`, {
               mobile: this.shop.mobile,
               password: this.form.pass,
               mode: 'change',

@@ -211,7 +211,7 @@
       changeStatus(st) {
         if(!this.loading) {
           this.loading = true;
-          axios.post(`${config.ohost}/mchnt/opuser/change`, {
+          axios.post(`${config.oHost}/mchnt/opuser/change`, {
             opuid: this.opuid,
             status: st,
             format: 'cors'
@@ -243,7 +243,7 @@
       changeRights(rg) {
         if(!this.loading) {
           this.loading = true;
-          axios.post(`${config.ohost}/mchnt/opuser/perm/change`, {
+          axios.post(`${config.oHost}/mchnt/opuser/perm/change`, {
             opuid: this.opuid,
             type: 'refund',
             status: rg,
@@ -320,7 +320,7 @@
                 format: 'cors'
               }
             }
-            axios.post(`${config.ohost}/mchnt/opuser/change`, params).then((res) => {
+            axios.post(`${config.oHost}/mchnt/opuser/change`, params).then((res) => {
               this.iconShow = false;
               this.showChangeInfo = false;
               let data = res.data;

@@ -176,7 +176,7 @@
     methods: {
       // 获取
       getType() {
-        axios.get(`${config.ohost}/fund/v1/check/types?lang=${this.lang}&format=cors`).then(
+        axios.get(`${config.oHost}/fund/v1/check/types?lang=${this.lang}&format=cors`).then(
           (res) => {
             let data = res.data;
             if(data.respcd === config.code.OK) {
@@ -214,7 +214,7 @@
         }else {
           let a = document.createElement('a');
 
-          let downUrl = `${config.ohost}/fund/v1/${this.getUrl()}/check/download/all?${qs.stringify(this.basicParams)}`;
+          let downUrl = `${config.oHost}/fund/v1/${this.getUrl()}/check/download/all?${qs.stringify(this.basicParams)}`;
           a.setAttribute('download', 'true');
           a.setAttribute('href', downUrl);
           a.click();
@@ -228,7 +228,7 @@
           lang: this.lang,
           format: 'cors'
         };
-        e.target.parentNode.href = `${config.ohost}/fund/v1/${this.getUrl()}/check/download?${qs.stringify(downParams)}`
+        e.target.parentNode.href = `${config.oHost}/fund/v1/${this.getUrl()}/check/download?${qs.stringify(downParams)}`
       },
 
       // 选择时间
@@ -264,7 +264,7 @@
       getSettleData() {
         if(!this.loading) {
           this.loading = true;
-          axios.get(`${config.ohost}/fund/v1/${this.getUrl()}/check`, {
+          axios.get(`${config.oHost}/fund/v1/${this.getUrl()}/check`, {
             params: this.basicParams
           }).then((res) => {
             this.loading = false;
