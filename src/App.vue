@@ -28,7 +28,7 @@
         }else if(process.env.NODE_ENV === 'test') {
           // 独立包
           uri = {
-            host: `http://sh-test.qfapi.com`,
+            host: `http://sh-test.cimb.com`,
             oHost: `http://o-test.cimb.com`,
             payHost: `http://openapi-test.cimb.com`,
           };
