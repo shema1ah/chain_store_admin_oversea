@@ -112,7 +112,7 @@
         this.$refs['form'].validate((valid) => {
           if (valid && !this.loading1) {
             this.loading1 = true;
-            axios.post(`${config.ohost}/mchnt/opuser/add`, Object.assign({}, this.form, {
+            axios.post(`${config.oHost}/mchnt/opuser/add`, Object.assign({}, this.form, {
               opuid: this.opuid,
               format: 'cors'
             })).then((res) => {
@@ -138,7 +138,7 @@
       // 获取收银员编号
       getOpuid() {
         this.loading = true;
-        axios.get(`${config.ohost}/mchnt/opuser/opuid?format=cors`).then((res) => {
+        axios.get(`${config.oHost}/mchnt/opuser/opuid?format=cors`).then((res) => {
           this.loading = false;
           let data = res.data;
           if (data.respcd === config.code.OK) {

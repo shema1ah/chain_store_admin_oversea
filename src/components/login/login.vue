@@ -101,11 +101,11 @@
       let token = getParams('t');
       if(token) {
         // 其它地址跳转过来的，之前有session的先清除
-        getCookie('sessionid') && clearCookie('sessionid', config.ohost);
+        getCookie('sessionid') && clearCookie('sessionid', config.oHost);
 
         let host = {
           host: getParams('host'),
-          ohost: getParams('ohost'),
+          oHost: getParams('oHost'),
           payHost: getParams('payHost'),
         };
         Store.set('hosts', host);
@@ -114,7 +114,7 @@
       }else if(getCookie('sessionid')) {
         if(Store.get('flag')) {
           // 退出之后清除session
-          clearCookie('sessionid', config.ohost);
+          clearCookie('sessionid', config.oHost);
         }else {
           // cookie存在跳转首页
           this.$router.push('/main/index');
@@ -228,7 +228,7 @@
             let hosts = con.server;
             let host = {
               host: hosts.sh.addrs[0].addr,
-              ohost: hosts.o.addrs[0].addr,
+              oHost: hosts.o.addrs[0].addr,
               payHost: hosts.openapi.addrs[0].addr,
             };
 
@@ -237,7 +237,7 @@
               this.loading = false;
               // 北京global跳转
               if(hostName.includes('qfpay.com')) {
-                window.location.href = `${host.host}#/login?t=${token}&host=${host.host}&ohost=${host.ohost}&payHost=${host.payHost}`;
+                window.location.href = `${host.host}#/login?t=${token}&host=${host.host}&oHost=${host.oHost}&payHost=${host.payHost}`;
               } else {
                 // 其它域名不跳转，提示商户不存在
                 this.$message.error(this.$t('login.msg.m6'));

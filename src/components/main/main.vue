@@ -66,7 +66,7 @@ export default {
         this.loading = false;
         if (data.respcd === config.code.OK) {
           // 登出时删除本域cookie
-          (new Image()).src = `${config.ohost}/mchnt/set_cookie?sessionid=`;
+          (new Image()).src = `${config.oHost}/mchnt/set_cookie?sessionid=`;
           Store.set('flag', true);
           localStorage.removeItem('hashid');
           localStorage.removeItem('uid');
