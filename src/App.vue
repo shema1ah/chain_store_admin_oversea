@@ -15,6 +15,7 @@
       // 设置config
       setConfig() {
         let [uri, u] = [];
+        // let [uri] = [];
         // 本地调试
         if(process.env.NODE_ENV === 'development') {
           u = 'qa.qfpay.net';
@@ -25,6 +26,12 @@
             // ohost: `http://172.100.108.190:7200`,
             payHost: `https://openapi.${u}`,
           };
+          // uri = Store.get('hosts') || {
+          //   host: `https://sh.qfpay.com`,
+          //   ohost: `https://o.qfpay.com`,
+          //   payHost: `https://openapi.qfpay.com`,
+          // };
+
         }else if(process.env.NODE_ENV === 'test') {
           // 独立包
           uri = {

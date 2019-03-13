@@ -217,6 +217,8 @@
           let downUrl = `${config.ohost}/fund/v1/${this.getUrl()}/check/download/all?${qs.stringify(this.basicParams)}`;
           a.setAttribute('download', 'true');
           a.setAttribute('href', downUrl);
+          a.setAttibute('target', '_self');
+          document.body.appendChild(a);
           a.click();
         }
       },

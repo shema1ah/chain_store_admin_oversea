@@ -385,6 +385,8 @@
           let a = document.createElement('a');
           a.setAttribute('download', 'true');
           a.setAttribute('href', downUrl);
+          a.setAttribute('target', '_self');
+          document.body.appendChild(a);
           a.click();
           setTimeout(() => {
             this.iconShow = false;
