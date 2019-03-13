@@ -51,7 +51,7 @@ export default {
   methods: {
     getContact() {
       // 获取相关的联系方式
-      axios.get(`${config.ohost}/mchnt/user/csinfo?format=cors`)
+      axios.get(`${config.oHost}/mchnt/user/csinfo?format=cors`)
       .then((res) => {
         let data = res.data;
         if(data.respcd === config.code.OK) {

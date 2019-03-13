@@ -152,7 +152,7 @@ export default {
         email: this.form.email,
         format: 'cors'
       }
-      axios.get(`${config.ohost}/mchnt/emailcode/send`, {
+      axios.get(`${config.oHost}/mchnt/emailcode/send`, {
         params: param
       }).then((res) => {
         // 发送成功
@@ -182,7 +182,7 @@ export default {
 
     // 验证码验证
     checkCode(param, cb) {
-      axios.post(`${config.ohost}/mchnt/smscode/check`, qs.stringify(param), {
+      axios.post(`${config.oHost}/mchnt/smscode/check`, qs.stringify(param), {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded'
         }
@@ -214,7 +214,7 @@ export default {
             password: this.form.newPassword,
             format: 'cors'
           }
-          axios.post(`${config.ohost}/mchnt/user/reset_pwd`, qs.stringify(param), {
+          axios.post(`${config.oHost}/mchnt/user/reset_pwd`, qs.stringify(param), {
             headers: {
               'Content-Type': 'application/x-www-form-urlencoded'
             }

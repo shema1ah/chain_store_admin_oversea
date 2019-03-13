@@ -576,7 +576,7 @@
 
       // 验证收银员退款权限
       cheekRefund() {
-        axios.get(`${config.ohost}/mchnt/opuser/perms?format=cors`).then((res) => {
+        axios.get(`${config.oHost}/mchnt/opuser/perms?format=cors`).then((res) => {
           let data = res.data;
           if(data.respcd === config.code.OK) {
             let response = data.data || {};
