@@ -554,7 +554,11 @@
 
       // 退出登录
       logout() {
-        axios.get(`${config.host}/merchant/signout?format=cors`)
+        axios.get(`${config.host}/merchant/signout`, {
+          params: {
+            format: 'cors'
+          }
+        })
           .then((res) => {
             let data = res.data;
             if (data.respcd === config.code.OK) {

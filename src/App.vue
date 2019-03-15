@@ -27,9 +27,9 @@
             payHost: `https://openapi.${u}`,
           };
           // uri = Store.get('hosts') || {
-          //   host: `https://sh.qfpay.com`,
-          //   ohost: `https://o.qfpay.com`,
-          //   payHost: `https://openapi.qfpay.com`,
+          //   host: `http://sh-test.cimb.com`,
+          //   ohost: `http://o-test.cimb.com`,
+          //   payHost: `http://openapi-test.cimb.com`,
           // };
 
         }else if(process.env.NODE_ENV === 'test') {

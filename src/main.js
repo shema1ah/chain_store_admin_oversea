@@ -81,9 +81,13 @@ axios.defaults.withCredentials = true; // 允许跨域请求携带cookie
 axios.defaults.headers.common['lang'] = JSON.parse(switchlang).value;
 axios.defaults.headers.common['Pragma'] = 'no-cache';
 
+var isIE = function() {
+  if (!!window.ActiveXObject || "ActiveXObject" in window) return true;
+  return false;
+}
 axios.interceptors.request.use((req) => {
-  if(req.method.toLowerCase() == 'get') {
-    req.params._t = (new Date()).getTime();
+  if(isIE() && req.method.toLowerCase() == 'get' && req.params) {
+    req.params['t'] = (new Date()).getTime();
   }
   return req;
 })

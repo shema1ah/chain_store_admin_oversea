@@ -393,7 +393,11 @@
       // 交易统计
       fetchDashboardData() {
         return new Promise((resolve, reject) => {
-          axios.get(`${config.host}/merchant/dashboard/abroad/stats?format=cors`).then((res) => {
+          axios.get(`${config.host}/merchant/dashboard/abroad/stats`, {
+          params: {
+            format: 'cors'
+          }
+        }).then((res) => {
             let data = res.data;
             if(data.respcd === config.code.OK) {
               resolve(data.data || {});

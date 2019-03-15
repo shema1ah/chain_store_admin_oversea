@@ -82,7 +82,11 @@
     methods: {
       // 获取email
       getEmails() {
-        axios.get(`${config.host}/merchant/get/email?format=cors`).then((res) => {
+        axios.get(`${config.host}/merchant/get/email`, {
+          params: {
+            format: 'cors'
+          }
+        }).then((res) => {
           let data = res.data;
           console.log(data)
           if(data.respcd === config.code.OK) {

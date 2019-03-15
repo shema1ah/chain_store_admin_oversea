@@ -176,7 +176,12 @@
     methods: {
       // 获取
       getType() {
-        axios.get(`${config.oHost}/fund/v1/check/types?lang=${this.lang}&format=cors`).then(
+        axios.get(`${config.oHost}/fund/v1/check/types`, {
+          params: {
+            lang: this.lang,
+            format: 'cors'
+          }
+        }).then(
           (res) => {
             let data = res.data;
             if(data.respcd === config.code.OK) {

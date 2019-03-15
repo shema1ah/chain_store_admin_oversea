@@ -41,7 +41,11 @@ const store = new Vuex.Store({
       })
     },
     getShopList ({ commit }, payload) {
-      axios.get(`${config.host}/merchant/sub/list?format=cors`)
+      axios.get(`${config.host}/merchant/sub/list`, {
+        params: {
+          format: 'cors'
+        }
+      })
       .then((res) => {
         let data = res.data
         if (data.respcd === config.code.OK) {

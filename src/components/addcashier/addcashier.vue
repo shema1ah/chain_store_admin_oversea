@@ -138,7 +138,11 @@
       // 获取收银员编号
       getOpuid() {
         this.loading = true;
-        axios.get(`${config.oHost}/mchnt/opuser/opuid?format=cors`).then((res) => {
+        axios.get(`${config.oHost}/mchnt/opuser/opuid`, {
+          params: {
+            format: 'cors'
+          }
+        }).then((res) => {
           this.loading = false;
           let data = res.data;
           if (data.respcd === config.code.OK) {
