@@ -14,23 +14,23 @@
     methods: {
       // 设置config
       setConfig() {
-        let [uri, u] = [];
-        // let [uri] = [];
+        // let [uri, u] = [];
+        let [uri] = [];
         // 本地调试
         if(process.env.NODE_ENV === 'development') {
-          u = 'qa.qfpay.net';
-          uri = {
-            host: `https://sh.${u}`,
-            // host: `http://172.100.108.154:9099`,
-            oHost: `https://o.${u}`,
-            // oHost: `http://172.100.108.190:7200`,
-            payHost: `https://openapi.${u}`,
-          };
-          // uri = Store.get('hosts') || {
-          //   host: `http://sh-test.cimb.com`,
-          //   ohost: `http://o-test.cimb.com`,
-          //   payHost: `http://openapi-test.cimb.com`,
+          // u = 'qa.qfpay.net';
+          // uri = {
+          //   host: `https://sh.${u}`,
+          //   // host: `http://172.100.108.154:9099`,
+          //   oHost: `https://o.${u}`,
+          //   // oHost: `http://172.100.108.190:7200`,
+          //   payHost: `https://openapi.${u}`,
           // };
+          uri = Store.get('hosts') || {
+            host: `http://sh-test.cimb.com`,
+            oHost: `http://o-test.cimb.com`,
+            payHost: `http://openapi-test.cimb.com`,
+          };
 
         }else if(process.env.NODE_ENV === 'test') {
           // 独立包

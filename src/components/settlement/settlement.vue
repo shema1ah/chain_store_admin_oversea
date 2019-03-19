@@ -170,7 +170,7 @@
     mounted() {
       setTimeout(() => {
         this.createDialog();
-      }, 0);
+      }, 2000);
     },
 
     methods: {
@@ -216,9 +216,10 @@
         let et = new Date(this.basicParams.end_date);
         if(et.getTime() - st.getTime() >= 30 * 24 * 3600 * 1000) {
           this.$message.error(this.$t('settlement.msg.m2'));
+        }else if(!this.form.remit_type) {
+          this.$message.error(this.$t('settlement.msg.m3'));
         }else {
           let a = document.createElement('a');
-
           let downUrl = `${config.oHost}/fund/v1/${this.getUrl()}/check/download/all?${qs.stringify(this.basicParams)}`;
           a.setAttribute('download', 'true');
           a.setAttribute('href', downUrl);

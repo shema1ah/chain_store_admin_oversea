@@ -330,7 +330,8 @@ exports.default = {
     },
     msg: {
       m1: 'Fail to get data .',
-      m2: 'Only queries for data less than 30 days.'
+      m2: 'Only queries for data less than 30 days.',
+      m3: 'No data for download.'
     },
     tip: {
       m1: 'The total fee is calculated by multiplying each order by the rate and then rounding up.'

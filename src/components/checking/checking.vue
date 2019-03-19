@@ -77,17 +77,17 @@
           v-loading="loading">
           <el-table-column prop="ctime" :label="$t('refundCheck.panel.time')" min-width="90"></el-table-column>
           <el-table-column prop="username" :label="$t('refundCheck.panel.shopName')"></el-table-column>
-          <el-table-column prop="opuser" :label="$t('refundCheck.table.applyAmount')"></el-table-column>
+          <el-table-column min-width="100" prop="opuser" :label="$t('refundCheck.table.applyAmount')"></el-table-column>
           <el-table-column prop="busicd_info" :label="$t('refundCheck.table.tradeType')"></el-table-column>
           <el-table-column prop="sysdtm" min-width="90" :label="$t('refundCheck.table.tradeTime')"></el-table-column>
           <el-table-column
-            :label="$t('refundCheck.table.refundMount') + '(' + role.currency + ')'" min-width="90">
+            :label="$t('refundCheck.table.refundMount') + '(' + role.currency + ')'" min-width="100">
             <template slot-scope="scope">
               <div class="table-title">{{ scope.row.refund_amt | formatCurrency }}</div>
             </template>
           </el-table-column>
           <el-table-column
-            :label="$t('refundCheck.table.tradeAmount') + '(' + role.currency + ')'" min-width="90">
+            :label="$t('refundCheck.table.tradeAmount') + '(' + role.currency + ')'" min-width="100">
             <template slot-scope="scope">
               <div class="table-title">{{ scope.row.txamt | formatCurrency }}</div>
             </template>

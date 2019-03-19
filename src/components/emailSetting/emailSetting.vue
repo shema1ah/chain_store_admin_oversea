@@ -29,7 +29,7 @@
             <div class="emails-box" v-if="emails.length > 0">
               <h5>{{ $t('overseaForget.emailAddr') }}:</h5>
               <ul class="emails-list">
-                <li v-for="(email, index) in emails">{{ email }} <span @click="delEmail(index)">{{ $t('common.del') }}</span></li>
+                <li v-for="(email, index) in emails" :key="index">{{ email }} <span @click="delEmail(index)">{{ $t('common.del') }}</span></li>
               </ul>
             </div>
             <!-- 每日发送日报 -->
@@ -94,7 +94,7 @@
             let temp = String(data.data.status);
             this.form.status = temp; // 状态
 
-            if (data.data.email.length) {
+            if (data.data.email && data.data.email.length) {
               this.emails = data.data.email.split(","); // 邮箱列表
             }
           } else {
