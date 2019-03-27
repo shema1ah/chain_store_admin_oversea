@@ -361,6 +361,13 @@
           mchid: val.userid,
           bigmch_refund_mark: 'bigmch_refund_mark'
         };
+        // 数字货币
+        if(val.wallet_address) {
+          Object.assign(params, {
+            crypto_customer_wallet_address: val.wallet_address
+          })
+        }
+
         axios.post(`${config.payHost}/trade/v1/refund`, qs.stringify(params), {
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded'

@@ -154,7 +154,7 @@
               };
             }
             this.loading = true;
-            if(location.hostname.includes('jp.qfapi') || process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') { 
+            if(location.hostname.includes('jp.qfapi') || process.env.NODE_ENV === 'development') {
               this.oldSign(params, false);
             }else {
               this.newSign(params);
