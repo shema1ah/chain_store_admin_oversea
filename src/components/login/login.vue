@@ -157,7 +157,7 @@
             if(location.hostname.includes('jp.qfapi') || process.env.NODE_ENV === 'development') {
               this.oldSign(params, false);
             }else {
-              this.newSign(params);
+              this.getAppName(params);
             }
           }
         });
@@ -214,12 +214,9 @@
       // 迁移商户下发域名
       newSign(params) {
         let hostName = location.hostname;
-        let p = Object.assign({}, params, {
-          app_name: 'web',
-          domain_name: hostName,
+        axios.post('https://g.qfapi.com/gr/v1/login', Object.assign({}, params, {
           format: 'cors'
-        });
-        axios.post('https://g.qfapi.com/gr/v1/login', p).then((res) => {
+        })).then((res) => {
           let data = res.data;
           if(data.respcd === config.code.OK) {
             let con = data.data || {};
@@ -256,6 +253,29 @@
           this.loading = false;
           this.$message.error(this.$t('login.msg.m3'));
         });
+      },
+
+      // 判断app_name
+      getAppName(params) {
+        let hostName = location.hostname;
+
+        // appName对应列表
+        let list = {
+          'sh-hk.qfapi.com': 'hk_web',
+          // 'sh-jp.qfapi.com': 'jp_web',
+          'sh-db.qfapi.com': 'db_web',
+          'sh-th.qfapi.com': 'th_web',
+          'sh-sg.qfapi.com': 'sg_web',
+          'wimerchant.com': 'sg_web',
+          'sh-sh-t.qfapi.com': 'shh_t_web',
+          'sh-sz-t.qfapi.com': 'shz_t_web'
+        };
+        let appName = list[hostName] || 'zh_web';
+
+        Object.assign(params, {
+          app_name: appName
+        });
+        this.newSign(params);
       },
 
       // 点击enter键调用登录
