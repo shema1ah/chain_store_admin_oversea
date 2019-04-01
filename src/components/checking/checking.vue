@@ -364,7 +364,7 @@
         // 数字货币
         if(val.wallet_address) {
           Object.assign(params, {
-            crypto_customer_wallet_address: val.wallet_address
+            crypto_address: val.wallet_address
           })
         }
 
