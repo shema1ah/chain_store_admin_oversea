@@ -17,5 +17,6 @@ npm run build_test
 # build for production with minification
 npm run build
 ```
+# dev（开发） HK（线上）属于香港环境分支，SG（开发） master（线上）是海外主版本分支
 
 For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).

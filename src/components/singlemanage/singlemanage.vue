@@ -49,12 +49,12 @@
           </div>
           <div class="panel-btn-group__wrapper">
             <!-- 下载店铺收款码 -->
-            <!-- <a :href="downHref" download v-if="!role.haiwai || role.country === 'HK'">
+            <a :href="downHref" download v-if="role.country === 'TH'">
               <div class="panel-btn__download panel-btn__download_detail">
                 <i class="icon-download"></i>
                 <span>{{$t('shopmng.panel.btn.down')}}</span>
               </div>
-            </a> -->
+            </a>
             <div class="panel-btn__download panel-btn__download_record" @click="changePass(shop.mobile)">{{$t('shopmng.panel.table.editPwd')}}</div>
           </div>
         </div>
@@ -89,22 +89,7 @@
             <div class="info__title"></div>
             <div class="gray-explain">{{ $t('cashMng.common.tip1') }}</div>
           </div>
-          <div class="info next-bottom" v-if="!role.haiwai">
-            <div class="info__title">退款权限</div>
-            <div class="info__desc">{{ opinfo.refund?'有权限': '无权限'}}</div>
-          </div>
-          <div class="info" v-if="!role.haiwai">
-            <div class="info__title"></div>
-            <div class="gray-explain">* 目前收银员仅支持查看活动信息，不支持对红包、集点、储值活动、特卖、店铺公告、会员特权的增删改</div>
-          </div>
-          <div class="panel-btn-group__wrapper">
-            <a :href="downHref" download v-if="!role.haiwai">
-              <div class="panel-header-btn panel-header-btn__fill">
-                <i class="icon-download"></i>
-                <span>下载收款二维码</span>
-              </div>
-            </a>
-          </div>
+
         </div>
       </div>
     </div>
