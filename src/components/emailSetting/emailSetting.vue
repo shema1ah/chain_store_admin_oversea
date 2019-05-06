@@ -53,9 +53,9 @@
       let emailValid = (rul, val, cb) => {
         if (val === '') {
           cb(this.$t('overseaForget.enterEmail'));
-        } else if(!/^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z\d]{1,5}$/.test(val)) {
+        } else if(!/^[\w-]+[\w-.]*@[a-zA-Z\d-]+(\.[a-zA-Z\d-]+)*\.[a-zA-Z\d]{2,6}$/.test(val)) {
           // 不满足邮箱的格式，出现错误提示信息
-          cb(this.$t('overseaForget.invalidEmail'))
+          cb(this.$t('overseaForget.invalidEmail'));
         }else{
           cb();
         }
