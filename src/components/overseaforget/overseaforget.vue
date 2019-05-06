@@ -3,7 +3,7 @@
     <div class="head">{{ $t('nav.mmp') }}</div>
     <div class="tip">
       <p v-if="isNext">{{ $t('overseaForget.enterEmail') }}</p>
-      <p v-if="isConfirm">{{ $t('overseaForget.text1') }}<span>{{ emailAddr }}</span>,{{ $t('overseaForget.text2') }}</p>
+      <p v-else>{{ $t('overseaForget.text1') }}<span>{{ emailAddr }}</span>,{{ $t('overseaForget.text2') }}</p>
     </div>
     <el-form :model='form' :rules='formrules' ref="form">
       <!-- next -->
@@ -14,23 +14,22 @@
       </el-form-item>
       <!-- Confirm -->
       <!-- 验证码 -->
-      <el-form-item :label="$t('overseaForget.code')" prop="vCode" v-if="isConfirm">
-        <el-input v-model="form.vCode" id="code"></el-input>
+      <el-form-item :label="$t('overseaForget.code')" prop="vCode" v-if="!isNext">
+        <el-input v-model="form.vCode" auto-complete="new-password"></el-input>
         <span class="del" v-if="isErr2">+</span>
         <p class="count" v-if="resend">{{ $t('overseaForget.secend1') + countDown + $t('overseaForget.secend2') }}</p>
         <p class="count resend" v-if="!resend" @click="resendCode()">{{ $t('overseaForget.resend') }}</p>
       </el-form-item>
       <!-- 新密码 -->
-      <el-form-item :label="$t('overseaForget.newPwd')" v-if="isConfirm" prop="newPassword">
-        <el-input type="password" v-model="form.newPassword" id="pwd"></el-input>
+      <el-form-item :label="$t('overseaForget.newPwd')" v-if="!isNext" prop="newPassword">
+        <el-input type="password" v-model="form.newPassword" auto-complete="new-password"></el-input>
       </el-form-item>
 
-      <div class="panel-header-btn panel-header-btn__fill" id="nextBtn" v-if="isNext" @click="handleNext('form')">
-        <span>{{ $t('overseaForget.next') }}</span>
+      <div class="panel-header-btn panel-header-btn__fill" @click="isNext ? handleNext('form') : confirm('form')">
+        <span class="el-icon-loading" v-if="loading"></span>
+        <span v-else>{{ isNext ? $t('overseaForget.next') : $t('overseaForget.confirm') }}</span>
       </div>
-      <div class="panel-header-btn panel-header-btn__fill" id="confirmBtn" v-if="isConfirm" @click="confirm('form',$event)">
-        <span>{{ $t('overseaForget.confirm') }}</span>
-      </div>
+
     </el-form>
   </div>
 </template>
@@ -45,7 +44,7 @@ export default {
     let emailValid = (rul, val, cb) => {
       if (val === '') {
         cb(this.$t('overseaForget.enterEmail'))
-      } else if(!/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/.test(val)) {
+      } else if(!/^[\w-]+[\w-.]*@[a-zA-Z\d-]+(\.[a-zA-Z\d-]+)*\.[a-zA-Z\d]{2,6}$/.test(val)) {
         // 不满足邮箱的格式，出现错误提示信息
         this.isErr = true;
         cb(this.$t('overseaForget.invalidEmail'));
@@ -85,7 +84,7 @@ export default {
     }
     return {
       isNext: true,
-      isConfirm: false,
+      loading: false,
       isErr: false,
       isErr2: false,
       resend: true,
@@ -128,8 +127,9 @@ export default {
 
     // 点击next按钮
     handleNext(formname) {
-      this.$refs[formname].validate((valid) => {
-          if (valid) {
+      this.$refs[formname].validateField('email', (valid) => {
+          if (valid === '' && !this.loading) {
+            this.loading = true;
             // 向邮箱发送验证码
             this.sendCode();
             // 倒计时
@@ -142,6 +142,7 @@ export default {
 
     // 点击再次发送验证码按钮
     resendCode() {
+      this.loading = true;
       this.sendCode();
       this.count();
     },
@@ -151,14 +152,14 @@ export default {
       let param = {
         email: this.form.email,
         format: 'cors'
-      }
+      };
       axios.get(`${config.oHost}/mchnt/emailcode/send`, {
         params: param
       }).then((res) => {
+        this.loading = false;
         // 发送成功
         if(res.data.respcd === config.code.OK) {
           // 切换出验证的表单
-          this.isConfirm = true;
           this.isNext = false;
           // 隐藏@前的三位
           let arr = this.form.email.split("@");
@@ -170,13 +171,10 @@ export default {
           })
         } else {
           this.$message.error(res.data.respmsg);
-          this.isConfirm = false;
-          this.isNext = true;
         }
       }).catch(() => {
         this.$message.error(this.$t('common.netError'));
-        this.isConfirm = false;
-        this.isNext = true;
+        this.loading = false;
       });
     },
 
@@ -200,14 +198,10 @@ export default {
     },
 
     // 提交
-    confirm(formname, e) {
-      let _confirmBtn = e.target;
-      // locked为true就被锁定不能多次提交，false就可以提交
-      if(_confirmBtn.getAttribute("locked") == 'true') return;
-      this.locked(_confirmBtn, false, 'confirmBtn');
+    confirm(formname) {
       this.$refs[formname].validate((valid) => {
-        if(valid) {
-          // 提交成功
+        if(valid && !this.loading) {
+          this.loading = true;
           let param = {
             username: this.form.email,
             code: this.form.vCode,
@@ -220,25 +214,24 @@ export default {
             }
           }).then((res) => {
             if(res.data.respcd === config.code.OK) {
-              this.locked(_confirmBtn, true, 'confirmBtn');
               this.$message({
                 type: 'success',
                 message: this.$t('common.modSucc')
               })
               // 跳转至登录页面
               setTimeout(() => {
+                this.loading = false;
                 this.$router.push('/login')
-              }, 3000)
+              }, 2000)
             } else {
-              this.locked(_confirmBtn, false, 'confirmBtn');
+              this.loading = false;
               this.$message.error(res.data.respmsg);
             }
           }).catch(() => {
-            this.locked(_confirmBtn, false, 'confirmBtn');
+            this.loading = false;
             this.$message.error(this.$t('common.netError'));
           });
         } else {
-          this.locked(_confirmBtn, false, 'confirmBtn');
           this.$message.error(this.$t('common.modFailed'));
           return false;
         }
@@ -246,25 +239,12 @@ export default {
       })
     },
 
-    // 设置locked
-    locked(el, type, elName) {
-      el.setAttribute("locked", type);
-      if(type) {
-        document.getElementById(elName).style.backgroundColor = "#ccc"
-        document.getElementById(elName).style.border = "1px solid #ccc";
-      } else {
-        document.getElementById(elName).style.backgroundColor = "#FE9B20"
-        document.getElementById(elName).style.border = "1px solid #FE9B20";
-      }
-    },
-
     //  点击回车
     onEnter() {
         if(this.isNext) {
-          this.handleNext('form')
-
-        } else if(this.isConfirm) {
-          this.confirm('form', this.$event);
+          this.handleNext('form');
+        } else {
+          this.confirm('form');
         }
     },
   }
