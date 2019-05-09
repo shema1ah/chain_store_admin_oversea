@@ -22,10 +22,10 @@
         <div v-else class="panel-header-btn panel-header-btn__fill send">{{ buttonCotent }}</div>
       </div>
       <el-form-item label="输入新密码" prop="password">
-        <el-input v-model.trim="form.password" size="small" type="password" placeholder="请输入新密码"></el-input>
+        <el-input v-model.trim="form.password" size="small" auto-complete="new-password" type="password" placeholder="请输入新密码"></el-input>
       </el-form-item>
       <el-form-item label="确认新密码" prop="repass">
-        <el-input v-model.trim="form.repass" size="small" type="password" placeholder="请输入确认新密码"></el-input>
+        <el-input v-model.trim="form.repass" size="small" auto-complete="new-password" type="password" placeholder="请输入确认新密码"></el-input>
       </el-form-item>
       <el-form-item label="商户名称" prop="shopname" v-if="isRegister">
         <el-input v-model.trim="form.shopname" size="small" type="text" placeholder="请输入商户名称"></el-input>

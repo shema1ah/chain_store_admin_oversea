@@ -28,14 +28,14 @@
               <span class="input-content">{{ opuid }}</span>
             </el-form-item>
             <el-form-item :label="$t('cashMng.common.password')" prop="password">
-              <el-input size="small" type="password" v-model.trim="form.password" :placeholder="$t('cashMng.common.m7')" class="panel-select-input-220"></el-input>
+              <el-input size="small" auto-complete="new-password" type="password" v-model.trim="form.password" :placeholder="$t('cashMng.common.m7')" class="panel-select-input-220"></el-input>
             </el-form-item>
             <div class="gray-explain">{{ $t('cashMng.common.tip1') }}</div>
           </el-form>
           <div class="divider"></div>
           <div class="form-submit_wrapper">
             <span class="cancel" @click="cancelCreat">{{ $t('cashMng.add.btn1') }}</span>
-            <div class="panel-btn__download panel-btn__download_detail" @click="submit">
+            <div class="panel-btn__download panel-btn__download_detail" @click="submit" v-if="!role.isCashier">
               <span class="el-icon-loading" v-if="loading1"></span>
               <span v-else>{{ $t('cashMng.add.btn2') }}</span>
             </div>

@@ -125,9 +125,9 @@
 
     <el-dialog :title="approved ? $t('refundCheck.dialog.d3') : $t('refundCheck.dialog.d4')" :visible.sync="showConfirm" custom-class="mydialog" top="20%" @close="handleClose('formpwd')">
       <div style="margin-bottom: 20px;">{{approved ? $t('refundCheck.dialog.d1') : $t('refundCheck.dialog.d2')}}</div>
-      <el-form :model="formpwd" :rules="pwdrules" ref="formpwd" :label-width="(lang === 'ja' || lang === 'en') ? '110px' : '80px'" autocomplete="off">
+      <el-form :model="formpwd" :rules="pwdrules" ref="formpwd" :label-width="(lang === 'ja' || lang === 'en') ? '110px' : '80px'">
         <el-form-item prop="pwd" :label="role.passState ? $t('refundCheck.msg.m1') : $t('tradeMng.dialog.d5')">
-          <el-input v-model.trim="formpwd.pwd" :placeholder="role.passState ? $t('refundCheck.msg.m2') :$t('tradeMng.msg.m9') " type="password" @keyup.enter.native="onEnter"></el-input>
+          <el-input v-model.trim="formpwd.pwd" :placeholder="role.passState ? $t('refundCheck.msg.m2') :$t('tradeMng.msg.m9') " auto-complete="new-password" type="password" @keyup.enter.native="onEnter"></el-input>
         </el-form-item>
       </el-form>
       <div class="divider"></div>

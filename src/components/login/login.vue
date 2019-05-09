@@ -11,9 +11,9 @@
         <el-tab-pane :label="$t('login.tab1')" name="merchant"></el-tab-pane>
         <el-tab-pane :label="$t('login.tab2')" name="cash"></el-tab-pane>
       </el-tabs>
-      <el-form :model="merchant" :rules="merchantRules" ref="merchant" v-if="userType === 'merchant'">
+      <el-form :model="merchant" :rules="merchantRules" ref="merchant" v-if="userType === 'merchant'" key="merchant">
         <el-form-item prop="username" class="username">
-          <el-input v-model.trim="merchant.username" size="small" type="text" :placeholder="$t('login.reg')" @keyup.enter.native="onEnter"></el-input>
+          <el-input v-model.trim="merchant.username" size="small" auto-complete="new-password" type="text" :placeholder="$t('login.reg')" @keyup.enter.native="onEnter"></el-input>
         </el-form-item>
         <el-form-item prop="password" class="password">
           <el-input v-model.trim="merchant.password" size="small" type="password" :placeholder="$t('login.ltsix')" @keyup.enter.native="onEnter"></el-input>
@@ -23,7 +23,7 @@
           <span v-else>{{$t('login.login')}}</span>
         </div>
       </el-form>
-      <el-form :model="cash" :rules="cashRules" ref="cash" v-else>
+      <el-form :model="cash" :rules="cashRules" ref="cash" v-else key="cash">
         <el-form-item prop="name" class="username">
           <el-input v-model.trim="cash.name" size="small" type="text" :placeholder="$t('login.user')" @keyup.enter.native="onEnter"></el-input>
         </el-form-item>
@@ -31,7 +31,7 @@
           <el-input v-model.trim="cash.opuid" size="small" type="text" :placeholder="$t('login.cash')" @keyup.enter.native="onEnter"></el-input>
         </el-form-item>
         <el-form-item prop="pass" class="password">
-          <el-input v-model.trim="cash.pass" size="small" type="password" :placeholder="$t('login.ltsix')" @keyup.enter.native="onEnter"></el-input>
+          <el-input v-model.trim="cash.pass" size="small" auto-complete="new-password" type="password" :placeholder="$t('login.ltsix')" @keyup.enter.native="onEnter"></el-input>
         </el-form-item>
         <div class="panel-header-btn panel-header-btn__fill" @click="login">
           <span class="el-icon-loading" v-if="loading"></span>
@@ -67,8 +67,7 @@
         userType: 'merchant',
         merchant: {
           username: '',
-          password: '',
-          format: 'cors'
+          password: ''
         },
         merchantRules: {
           username: [
@@ -154,7 +153,8 @@
               };
             }
             this.loading = true;
-            if(location.hostname.includes('jp.qfapi') || process.env.NODE_ENV === 'development') {
+            // 日本和欧洲不走gr
+            if(location.hostname.includes('jp.qfapi') || location.hostname.includes('eur.qfapi.com') || process.env.NODE_ENV === 'development') {
               this.oldSign(params, false);
             }else {
               this.getAppName(params);
@@ -262,7 +262,6 @@
         // appName对应列表
         let list = {
           'sh-hk.qfapi.com': 'hk_web',
-          // 'sh-jp.qfapi.com': 'jp_web',
           'sh-db.qfapi.com': 'db_web',
           'sh-th.qfapi.com': 'th_web',
           'sh-sg.qfapi.com': 'sg_web',

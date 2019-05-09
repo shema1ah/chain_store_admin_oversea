@@ -28,13 +28,13 @@
     <el-dialog :title="$t('passSet.panel.title1')" :visible.sync="setPass" @close="handleClose('form1')" :custom-class="(lang === 'ja' || lang === 'en')?'mydialog haiwiadialog':'mydialog'" top="20%" :show-close="false">
       <el-form :model="form1" :rules="form1rules" ref="form1" :label-width="lang === 'en' ? '120px' : '90px'">
         <el-form-item :label="$t('passSet.panel.safe')" prop="pass">
-          <el-input v-model.trim="form1.pass" size="small" type="password" :placeholder="$t('passSet.msg.m1')"></el-input>
+          <el-input v-model.trim="form1.pass" size="small" auto-complete="new-password" type="password" :placeholder="$t('passSet.msg.m1')"></el-input>
         </el-form-item>
         <el-form-item :label="$t('passSet.panel.pass')" prop="msgPass">
-          <el-input v-model.trim="form1.msgPass" size="small" type="password" :placeholder="$t('passSet.msg.m2')"></el-input>
+          <el-input v-model.trim="form1.msgPass" size="small" auto-complete="new-password" type="password" :placeholder="$t('passSet.msg.m2')"></el-input>
         </el-form-item>
         <el-form-item :label="$t('passSet.panel.reEnter')" prop="rePass">
-          <el-input v-model="form1.rePass" size="small" type="password" :placeholder="$t('passSet.msg.m3')"></el-input>
+          <el-input v-model="form1.rePass" size="small" auto-complete="new-password" type="password" :placeholder="$t('passSet.msg.m3')"></el-input>
         </el-form-item>
       </el-form>
       <div class="divider"></div>
@@ -49,13 +49,13 @@
     <el-dialog :title="$t('passSet.panel.title2')" :visible.sync="resetPass" @close="handleClose('form2')" :custom-class="(lang === 'ja' || lang === 'en')?'mydialog haiwiadialog':'mydialog'" top="20%" :show-close="false">
       <el-form :model="form2" :rules="form2rules" ref="form2" :label-width="(lang === 'ja' || lang === 'en') ? '140px' : '90px'">
         <el-form-item :label="$t('passSet.panel.originPass')" prop="oldPass">
-          <el-input v-model.trim="form2.oldPass" size="small" type="password" :placeholder="$t('passSet.msg.m6')"></el-input>
+          <el-input v-model.trim="form2.oldPass" size="small" auto-complete="new-password" type="password" :placeholder="$t('passSet.msg.m6')"></el-input>
         </el-form-item>
         <el-form-item :label="$t('passSet.panel.newPass')" prop="msgPass">
-          <el-input v-model.trim="form2.msgPass" size="small" type="password" :placeholder="$t('passSet.msg.m7')"></el-input>
+          <el-input v-model.trim="form2.msgPass" size="small" auto-complete="new-password" type="password" :placeholder="$t('passSet.msg.m7')"></el-input>
         </el-form-item>
         <el-form-item :label="$t('passSet.panel.reEnter')" prop="rePass">
-          <el-input v-model="form2.rePass" size="small" type="password" :placeholder="$t('passSet.msg.m8')"></el-input>
+          <el-input v-model="form2.rePass" size="small" auto-complete="new-password" type="password" :placeholder="$t('passSet.msg.m8')"></el-input>
         </el-form-item>
         <div class="gray-explain" style="margin-left: 0; padding-top: 10px;">{{ $t('passSet.tip.m1') }}</div>
       </el-form>

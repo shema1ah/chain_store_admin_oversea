@@ -217,7 +217,7 @@
           <el-input name="amount" class="showAmount" v-model="formpwd.amount" :placeholder="$t('tradeMng.msg.m14') + ' ' + refundAmount" type="number" @keyup.enter.native="onEnter"></el-input>
         </el-form-item>
         <el-form-item prop="pwd" :label="$t('tradeMng.dialog.d5')">
-          <el-input v-model="formpwd.pwd" :placeholder="$t('tradeMng.msg.m9')" type="password" @keyup.enter.native="onEnter"></el-input>
+          <el-input v-model="formpwd.pwd" :placeholder="$t('tradeMng.msg.m9')" auto-complete="new-password" type="password" @keyup.enter.native="onEnter"></el-input>
         </el-form-item>
       </el-form>
       <div class="divider"></div>

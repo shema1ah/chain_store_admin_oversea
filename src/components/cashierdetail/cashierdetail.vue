@@ -93,7 +93,7 @@
           <div>{{ opuid }}</div>
         </el-form-item>
         <el-form-item :label="$t('cashMng.common.password')" prop="password">
-          <el-input v-model="form.password" size="small" type="password" :placeholder="$t('cashMng.common.m7')" @change="passChange" @blur="passBlur" @focus="passFocus" id="end-length"></el-input>
+          <el-input v-model="form.password" size="small" auto-complete="new-password" type="password" :placeholder="$t('cashMng.common.m7')" @change="passChange" @blur="passBlur" @focus="passFocus" id="end-length"></el-input>
         </el-form-item>
       </el-form>
       <div class="divider"></div>

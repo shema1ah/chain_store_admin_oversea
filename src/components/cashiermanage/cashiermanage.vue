@@ -4,7 +4,7 @@
       <el-breadcrumb separator=">">
         <el-breadcrumb-item>{{ $t('cashMng.crumbs.L1') }}</el-breadcrumb-item>
       </el-breadcrumb>
-      <div class="btn-wrap btn-group">
+      <div class="btn-wrap btn-group" v-if="!role.isCashier">
         <div class="banner-btn primary-btn" :class="{'banner-btn-ja': lang === 'ja'}" @click="batchAdd">
           <i class="icon-create"></i>
           <span class="banner-btn__desc">{{ $t('cashMng.crumbs.L4') }}</span>

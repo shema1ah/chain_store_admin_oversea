@@ -100,10 +100,10 @@
           <div>{{ userName }}</div>
         </el-form-item>
         <el-form-item :label="$t('shopmng.dialog.inputNewPwd')" prop="pass">
-          <el-input v-model="form.pass" size="small" type="password" :placeholder="$t('shopmng.dialog.msg.m1')"></el-input>
+          <el-input v-model="form.pass" size="small" auto-complete="new-password" type="password" :placeholder="$t('shopmng.dialog.msg.m1')"></el-input>
         </el-form-item>
         <el-form-item :label="$t('shopmng.dialog.confirmNewPwd')" prop="repass">
-          <el-input v-model="form.repass" size="small" type="password" :placeholder="$t('shopmng.dialog.msg.m2')"></el-input>
+          <el-input v-model="form.repass" size="small" auto-complete="new-password" type="password" :placeholder="$t('shopmng.dialog.msg.m2')"></el-input>
         </el-form-item>
       </el-form>
       <div class="divider"></div>

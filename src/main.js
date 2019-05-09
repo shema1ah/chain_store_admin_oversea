@@ -104,7 +104,7 @@ axios.interceptors.response.use((res) => {
     localStorage.removeItem('hashid');
     localStorage.removeItem('uid');
 
-    location.replace(`${location.pathname}#/login`);
+    location.replace(`${location.pathname}`);
   }
   return res;
 
