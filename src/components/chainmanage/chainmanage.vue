@@ -39,7 +39,7 @@
           </div> -->
 
           <div class="btn-group">
-            <div class="panel-header-btn__associate" v-if="role.country === 'TH'" @click="editShopDown" :style="lang === 'en'?'width:200px':''">
+            <div class="panel-header-btn__associate" @click="editShopDown" :style="lang === 'en'?'width:200px':''">
               <i class="icon-download"></i>
               {{$t('shopmng.panel.btn.listDown')}}
             </div>
@@ -417,6 +417,7 @@
 
       // 选择全部
       handleCheckAllChange(event) {
+        console.log(3333)
         this.downForm.shop = event.target.checked ? this.allType : [];
       },
 

@@ -13,7 +13,7 @@
           <span class="panel-header__desc">{{ $t('cashMng.detail.title') }}</span>
         </div>
       </div>
-      <div class="panel-body" >
+      <div class="panel-body">
         <div class="info_wrapper" :class="{'wrapper': lang === 'ja' || lang === 'en'}">
           <div class="info">
             <div class="info__title">{{ $t('cashMng.common.status') }}</div>

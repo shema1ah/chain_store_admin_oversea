@@ -16,6 +16,7 @@ exports.default = {
     emailSet: '邮箱设置',
     contact: '客服',
     device: '设备绑定',
+    surcharge: '附加费率设置',
   },
   common: {
     ok: '确 定',
@@ -31,6 +32,10 @@ exports.default = {
     modFailed: '修改失败',
     logout: '退出',
     del: '删除',
+    next: '下一步',
+    previous: '上一步',
+    edit: '编辑',
+    submit: '提交',
     msg: {
       sel: '请选择'
     }
@@ -174,6 +179,8 @@ exports.default = {
       ac: '实收', // 实收
       red: '商家红包', // 商家红包
       plat: '平台补贴', // 平台补贴
+      surAmount: '附加费金额',
+      surRate: '附加费费率',
       btn: {
         downDetail: '下载交易明细',
         downTrade: '下载交易汇总'
@@ -356,7 +363,9 @@ exports.default = {
     crumbs: {
       L1: '设置',
       L2: '邮箱设置',
-      L3: '设备绑定'
+      L3: '设备绑定',
+      L4: '添加附加费费率',
+      L5: '编辑附加费费率',
     },
     panel: {
       mailSetup: '邮箱设置',
@@ -366,7 +375,8 @@ exports.default = {
       modi: '修改',
       confirm: '确认',
       amount: '门店账号',
-      device: '设备编号'
+      device: '设备编号',
+      merchant: '分店账号',
     },
     btn: {
       query: '查询',
@@ -376,11 +386,15 @@ exports.default = {
       merchant: '大商户名称',
       shopName: '店铺名称',
       time: '绑定时间',
-      close: '解绑'
+      close: '解绑',
+      createTime: '创建时间',
+      subName: '分店名称',
+      rate: '附加费费率',
     },
     dialog: {
       d1: '添加设备',
-      d2: '解绑设备'
+      d2: '解绑设备',
+      d3: '删除附加费费率',
     },
     msg: {
       m1: '请输入邮箱地址',
@@ -393,9 +407,17 @@ exports.default = {
       m9: '请输入门店账号',
       m10: '请输入设备编号',
       m11: '添加成功',
+      m12: '请输入分店账号',
+      m13: '删除成功',
+      m14: '请输入0到100之间的整数',
     },
     tip: {
-      m1: '删除最后一个邮箱会关掉邮件报表的功能，确认删除吗？'
+      m1: '删除最后一个邮箱会关掉邮件报表的功能，确认删除吗？',
+      m2: '设置支付方式附加费费率',
+      m3: '门店附加费均已设置，可在列表页直接修改',
+      m4: '请选择你要设置附加费率的门店',
+      nullTip: '请至少选择一家门店',
+      all: '全选'
     }
   },
   passSet: { // 管理密码设置

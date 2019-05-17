@@ -92,7 +92,7 @@ axios.interceptors.request.use((req) => {
   return req;
 })
 axios.interceptors.response.use((res) => {
-  if (config.env === 'development') {
+  if (process.env.NODE_ENV === 'development') {
     return res;
   }
   let data = res.data;

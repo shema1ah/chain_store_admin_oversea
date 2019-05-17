@@ -20,7 +20,7 @@
            u = 'qa.qfpay.net';
            uri = {
              host: `https://sh.${u}`,
-             // host: `http://172.100.108.154:9099`,
+             // host: `http://172.100.108.56:9099`,
              oHost: `https://o.${u}`,
              // oHost: `http://172.100.108.190:7200`,
              payHost: `https://openapi.${u}`,

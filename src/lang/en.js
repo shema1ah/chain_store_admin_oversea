@@ -19,7 +19,8 @@ exports.default = {
     passSet: 'Mgmt Pass Settings',
     emailSet: 'Email Settings',
     contact: 'Contact Us',
-    device: 'Device Binding'
+    device: 'Device Binding',
+    surcharge: 'Surcharge Settings',
   },
   common: {
     ok: 'OK',
@@ -35,6 +36,10 @@ exports.default = {
     modFailed: 'Failed to modify',
     logout: 'Logout',
     del: 'Delete',
+    next: 'Next',
+    previous: 'Previous',
+    edit: 'Edit',
+    submit: 'Submit',
     msg: {
       sel: 'Please choose'
     }
@@ -178,6 +183,8 @@ exports.default = {
       ac: 'Actually Collected', // 实收
       red: 'paid from the red envelope', // 商家红包
       plat: 'paid from the platform', // 平台补贴
+      surAmount: 'Surcharges',
+      surRate: 'Surcharge Rate',
       btn: {
         downDetail: 'Download The Transaction Details',
         downTrade: 'Download The Transaction Summary'
@@ -360,7 +367,9 @@ exports.default = {
     crumbs: {
       L1: 'Settings',
       L2: 'Email Settings',
-      L3: 'Device Binding'
+      L3: 'Device Binding',
+      L4: 'Add Surcharge Rate',
+      L5: 'Edit Surcharge Tate',
     },
     panel: {
       mailSetup: 'Email settings',
@@ -370,7 +379,8 @@ exports.default = {
       modi: 'Change',
       confirm: 'Confirm',
       amount: 'Store account',
-      device: 'Device id'
+      device: 'Device id',
+      merchant: 'Merchant Account',
     },
     btn: {
       query: 'Search',
@@ -380,11 +390,15 @@ exports.default = {
       merchant: 'Company Name',
       shopName: 'Shop name',
       time: 'Binding time',
-      close: 'Unbind'
+      close: 'Unbind',
+      createTime: 'Create Time',
+      subName: 'Branch Name',
+      rate: 'Surcharge Rate',
     },
     dialog: {
       d1: 'Add device',
-      d2: 'Unbundling device'
+      d2: 'Unbundling device',
+      d3: 'Delete Surcharge Rate',
     },
     msg: {
       m1: 'Please enter email address.',
@@ -397,9 +411,17 @@ exports.default = {
       m9: 'Please enter store account.',
       m10: 'Please enter the device number.',
       m11: 'Add success',
+      m12: 'Please enter merchant account.',
+      m13: 'Delete success',
+      m14: 'Please enter an integer between 0 and 100',
     },
     tip: {
-      m1: 'Delete the last email address will turn off the feature, do you confirm?'
+      m1: 'Delete the last email address will turn off the feature, do you confirm?',
+      m2: 'Set Payment Method Surcharge Rate',
+      m3: 'Merchant surcharges were set and can be modified from the list page.',
+      m4: 'Select Store where you want to set surcharge Rate.',
+      nullTip: 'Please select at least one branch',
+      all: 'Select all'
     }
 
   },

@@ -97,8 +97,10 @@ export default {
             let val = getRole(data.data);
             Store.set('role', val);
 
-            this.$store.dispatch('getShopList');
-            // this.$store.dispatch('getMemberTotal');
+            // 收银员不需要店铺列表
+            if(!val.isCashier) {
+              this.$store.dispatch('getShopList');
+            }
 
             this.shop = data.data || {};
 

@@ -15,7 +15,8 @@ exports.default = {
     passSet: '管理密碼設置',
     emailSet: '電子郵件設置',
     contact: '聯繫我們',
-    device: '設備綁定'
+    device: '設備綁定',
+    surcharge: '附加費率設置',
   },
   common: {
     ok: '確 定',
@@ -31,6 +32,10 @@ exports.default = {
     modFailed: '修改失敗',
     logout: '退出',
     del: '刪除',
+    next: '下一步',
+    previous: '上一步',
+    edit: '編輯',
+    submit: '提交',
     msg: {
       sel: '請選擇'
     }
@@ -101,7 +106,7 @@ exports.default = {
       cardHolder: '持卡人',
       bankAccount: '銀行賬戶',
       bankName: '銀行名稱',
-      editSubTag: '编辑分店编号',
+      editSubTag: '編輯分店编号',
       diaTip: '分店編號設置成功後將會顯示在下載的交易明細和交易匯總中',
       validateText: '請輸入二十以內的文字或字母',
       validateText2: '請輸入總賬戶登錄密碼',
@@ -174,6 +179,8 @@ exports.default = {
       ac: '實收', // 实收
       red: '商家紅包', // 商家红包
       plat: '平台補貼', // 平台补贴
+      surAmount: '附加費金額',
+      surRate: '附加費費率',
       btn: {
         downDetail: '下載交易明細',
         downTrade: '下載交易匯總'
@@ -356,7 +363,9 @@ exports.default = {
     crumbs: {
       L1: '設置',
       L2: '電子郵件設置',
-      L3: '設備綁定'
+      L3: '設備綁定',
+      L4: '添加附加費費率',
+      L5: '編輯附加費費率',
     },
     panel: {
       mailSetup: '電子郵件設置',
@@ -366,7 +375,8 @@ exports.default = {
       modi: '修改',
       confirm: '確認',
       amount: '門店帳號',
-      device: '設備編號'
+      device: '設備編號',
+      merchant: '分店賬號',
     },
     btn: {
       query: '查詢',
@@ -376,11 +386,15 @@ exports.default = {
       merchant: '大商戶名稱',
       shopName: '店鋪名稱',
       time: '綁定時間',
-      close: '解綁'
+      close: '解綁',
+      createTime: '創建時間',
+      subName: '分店名稱',
+      rate: '附加費費率',
     },
     dialog: {
       d1: '添加設備',
-      d2: '解綁設備'
+      d2: '解綁設備',
+      d3: '刪除附加費費率',
     },
     msg: {
       m1: '請輸入郵箱地址',
@@ -393,9 +407,17 @@ exports.default = {
       m9: '請輸入門店帳號',
       m10: '請輸入裝置編號',
       m11: '添加成功',
+      m12: '請輸入分店帳號',
+      m13: '删除成功',
+      m14: '請輸入0到100之間的整數',
     },
     tip: {
-      m1: '刪除最後一個郵箱會關掉郵件報表的功能，確認刪除嗎？'
+      m1: '刪除最後一個郵箱會關掉郵件報表的功能，確認刪除嗎？',
+      m2: '設置支付方式附加費費率',
+      m3: '門店附加費均已設置，可在列表頁修改',
+      m4: '請選擇你要設置附加費率的門店',
+      nullTip: '請至少選擇一家門店',
+      all: '全選'
     }
   },
   passSet: { // 管理密码设置
