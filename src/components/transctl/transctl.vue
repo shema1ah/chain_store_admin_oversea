@@ -178,7 +178,6 @@
           <el-table-column prop="chnlsn" :label="$t('tradeMng.table.chnlsn')" min-width="150"></el-table-column>
           <el-table-column prop="src" :label="$t('tradeMng.table.src')" min-width="120"></el-table-column>
           <el-table-column prop="cardcd" :label="$t('tradeMng.table.cardCd')" min-width="120"></el-table-column>
-
           <el-table-column prop="surcharge_rate" :label="$t('tradeMng.table.surRate')" min-width="125"></el-table-column>
           <el-table-column prop="surcharge_fee" :label="$t('tradeMng.table.surAmount')" min-width="100"></el-table-column>
           <el-table-column prop="note" :label="$t('tradeMng.table.remark')" min-width="88"></el-table-column>
