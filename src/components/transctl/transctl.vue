@@ -175,13 +175,14 @@
               <div>{{ scope.row.origssn ? scope.row.syssn + '(' + $t('tradeMng.detail.syssn2') + ':' + scope.row.origssn + ')' : scope.row.syssn }}</div>
             </template>
           </el-table-column>
+          <el-table-column prop="chnlsn" :label="$t('tradeMng.table.chnlsn')" min-width="150"></el-table-column>
+          <el-table-column prop="src" :label="$t('tradeMng.table.src')" min-width="120"></el-table-column>
+          <el-table-column prop="cardcd" :label="$t('tradeMng.table.cardCd')" min-width="120"></el-table-column>
 
-          <el-table-column prop="chnlsn" :label="$t('tradeMng.table.chnlsn')" min-width="120"></el-table-column>
-          <el-table-column prop="src" :label="$t('tradeMng.table.src')" min-width="80"></el-table-column>
-          <el-table-column prop="cardcd" :label="$t('tradeMng.table.cardCd')" min-width="80"></el-table-column>
-
+          <el-table-column prop="surcharge_rate" :label="$t('tradeMng.table.surRate')" min-width="125"></el-table-column>
+          <el-table-column prop="surcharge_fee" :label="$t('tradeMng.table.surAmount')" min-width="100"></el-table-column>
           <el-table-column prop="note" :label="$t('tradeMng.table.remark')" min-width="88"></el-table-column>
-          <el-table-column min-width="215" :label="$t('tradeMng.table.op')">
+          <el-table-column min-width="215" :label="$t('tradeMng.table.op')" fixed="right">
             <template slot-scope="scope">
               <el-button type="text" size="small" :disabled="showRefund(scope.row.sysdtm, scope.row.allow_refund_amt)" class="el-button__fix" @click="confirm(scope.row)">{{$t('tradeMng.table.cancel')}}</el-button>
               <el-button type="text" size="small" class="el-button__fix" @click.native="detail(scope.row)">{{$t('tradeMng.table.detail')}}</el-button>
