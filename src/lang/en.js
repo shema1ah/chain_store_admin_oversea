@@ -369,7 +369,7 @@ exports.default = {
       L2: 'Email Settings',
       L3: 'Device Binding',
       L4: 'Add Surcharge Rate',
-      L5: 'Edit Surcharge ate',
+      L5: 'Edit Surcharge Rate',
     },
     panel: {
       mailSetup: 'Email settings',

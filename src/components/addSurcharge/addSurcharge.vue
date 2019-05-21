@@ -18,8 +18,11 @@
       <div class="panel-body" v-loading="loading">
         <!--新建第一步-->
         <el-form v-if="first" label-position="left" class="down-sub-shop" :model="surcharge" ref="surcharge">
-          <div class="desc">
-            {{ shopData.count > 0 ? $t('setting.tip.m4') : $t('setting.tip.m3')}}
+          <div class="desc" v-if="shopData.count > 0">
+          {{ $t('setting.tip.m4') }}
+          </div>
+          <div class="desc explain-desc" v-if="shopData.count === 0">
+            {{ $t('setting.tip.m3') }}
           </div>
           <el-form-item prop="shop" v-if="shopData.count > 0">
             <el-checkbox-group v-model="surcharge.shop" @change="handleCheckedShopChange">
@@ -54,7 +57,7 @@
       </div>
     </div>
 
-    <el-dialog title="$t('setting.dialog.d3')" :visible.sync="showConfirm" :custom-class="(lang === 'ja' || lang === 'en')?'mydialog haiwiadialog':'mydialog'" top="20%" @close="handleClose('formpwd')">
+    <el-dialog :title="$t('setting.dialog.d3')" :visible.sync="showConfirm" :custom-class="(lang === 'ja' || lang === 'en')?'mydialog haiwiadialog':'mydialog'" top="20%" @close="handleClose('formpwd')">
       <el-form :model="formpwd" :rules="pwdRules" ref="formpwd" :label-width="(lang === 'ja' || lang === 'en') ? '110px' : '80px'">
         <el-form-item prop="pwd" :label="role.passState ? $t('refundCheck.msg.m1') : $t('tradeMng.dialog.d5')">
           <el-input v-model.trim="formpwd.pwd" :placeholder="role.passState ? $t('refundCheck.msg.m2') :$t('tradeMng.msg.m9') " auto-complete="new-password" type="password" @keyup.enter.native="onEnter"></el-input>
@@ -357,6 +360,9 @@
     text-align: left;
     padding: 10px 0;
     margin-bottom: 30px;
+  }
+  .explain-desc {
+    color: #ff4949;
   }
   .panel-body {
     padding-left: 15px;
