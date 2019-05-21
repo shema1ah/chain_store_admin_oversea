@@ -54,7 +54,7 @@
       </div>
     </div>
 
-    <el-dialog :title="id ? $t('setting.crumbs.L5') : $t('setting.crumbs.L4')" :visible.sync="showConfirm" :custom-class="(lang === 'ja' || lang === 'en')?'mydialog haiwiadialog':'mydialog'" top="20%" @close="handleClose('formpwd')">
+    <el-dialog title="$t('setting.dialog.d3')" :visible.sync="showConfirm" :custom-class="(lang === 'ja' || lang === 'en')?'mydialog haiwiadialog':'mydialog'" top="20%" @close="handleClose('formpwd')">
       <el-form :model="formpwd" :rules="pwdRules" ref="formpwd" :label-width="(lang === 'ja' || lang === 'en') ? '110px' : '80px'">
         <el-form-item prop="pwd" :label="role.passState ? $t('refundCheck.msg.m1') : $t('tradeMng.dialog.d5')">
           <el-input v-model.trim="formpwd.pwd" :placeholder="role.passState ? $t('refundCheck.msg.m2') :$t('tradeMng.msg.m9') " auto-complete="new-password" type="password" @keyup.enter.native="onEnter"></el-input>
@@ -102,7 +102,7 @@
         showConfirm: false,
         surcharge: {
           shop: [],
-          checkAll: true,
+          checkAll: false,
         },
         rates: {},
         formpwd: {
@@ -217,7 +217,6 @@
               this.shopData = data.data;
 
               this.allType = this.getAllType();
-              this.surcharge.shop = this.allType;
             } else {
               this.$message.error(data.resperr);
             }

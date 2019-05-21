@@ -82,6 +82,9 @@ input:-webkit-autofill { box-shadow: 0 0 0px 1000px white inset !important;}
 .el-icon-loading{
   margin-right: 0;
 }
+.el-table__empty-block {
+  position: static;
+}
 .el-table th > .cell {
   word-break: keep-all;
   text-overflow: clip;

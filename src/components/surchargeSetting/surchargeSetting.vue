@@ -17,7 +17,7 @@
         <el-form :model="form" ref="form">
           <div class="panel-select-group">
             <div class="panel-select__wrapper">
-              <span class="panel-select__desc">{{$t('setting.panel.merchant')}}</span>
+              <span class="panel-desc">{{$t('setting.panel.merchant')}}</span>
               <el-form-item prop="merchant">
                 <el-input v-model="form.merchant" type="text" :placeholder="$t('setting.msg.m12')" size="small"></el-input>
               </el-form-item>
@@ -27,7 +27,6 @@
                 <span class="el-icon-loading" v-if="loading"></span>
                 <span v-else>{{$t('setting.btn.query')}}</span>
               </div>
-              <div class="panel-header-btn transctl-btn" @click="reset">{{$t('setting.btn.reset')}}</div>
             </div>
           </div>
         </el-form>
@@ -276,11 +275,6 @@
         this.getSurchargeData();
       },
 
-      // 重置表单
-      reset() {
-        this.$refs['form'].resetFields();
-      },
-
       handleSizeChange(size = 10) {
         this.pageSize = size;
         this.currentChange();
@@ -294,6 +288,9 @@
 .surcharge {
   .banner-btn {
     width: auto;
+  }
+  .panel-desc {
+    margin-right: 15px;
   }
 }
 </style>

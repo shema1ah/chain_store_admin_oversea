@@ -369,7 +369,7 @@ exports.default = {
       L2: 'Email Settings',
       L3: 'Device Binding',
       L4: 'Add Surcharge Rate',
-      L5: 'Edit Surcharge Tate',
+      L5: 'Edit Surcharge ate',
     },
     panel: {
       mailSetup: 'Email settings',
@@ -392,13 +392,13 @@ exports.default = {
       time: 'Binding time',
       close: 'Unbind',
       createTime: 'Create Time',
-      subName: 'Branch Name',
+      subName: 'Merchant Name',
       rate: 'Surcharge Rate',
     },
     dialog: {
       d1: 'Add device',
       d2: 'Unbundling device',
-      d3: 'Delete Surcharge Rate',
+      d3: 'Operate Confirm',
     },
     msg: {
       m1: 'Please enter email address.',
