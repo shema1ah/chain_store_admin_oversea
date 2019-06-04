@@ -35,7 +35,7 @@
               <span class="panel-select__desc">{{$t('settlement.panel.type')}}</span>
               <el-form-item prop="remit_type">
                 <el-radio-group v-model="form.remit_type">
-                  <el-radio-button v-for="type in typeList" :label="type.remit_type" :key="type.remit_type">{{ type.code }}</el-radio-button>
+                  <el-radio-button v-for="type in typeList" :label="type.remit_type_id" :key="type.remit_type_id">{{ type.code }}</el-radio-button>
                 </el-radio-group>
               </el-form-item>
             </div>
@@ -186,7 +186,7 @@
             let data = res.data;
             if(data.respcd === config.code.OK) {
               this.typeList = data.data || [];
-              this.form.remit_type = (this.typeList[0] || {}).remit_type;
+              this.form.remit_type = (this.typeList[0] || {}).remit_type_id;
 
               this.getSettleData();
             } else {
@@ -201,13 +201,16 @@
       // 根据清算类型拿url
       getUrl() {
         let url, type = this.form.remit_type;
-        // 直连：1236 二清：4589
-        if(type === 1 || type === 2 || type === 3 || type === 6) {
-          url = 'hkd';
-        }else {
-          url = 'overseas';
+        for(let list of this.typeList) {
+          if(list['remit_type_id'] === type) {
+            if (list['remit_type']) {
+              url = 'hkd';
+            } else {
+              url = 'overseas';
+            }
+          }
         }
-        return url;
+          return url;
       },
 
       // 下载全部
@@ -306,7 +309,7 @@
         this.status = true;
         this.$refs['form'].resetFields();
 
-        let type = (this.typeList[0] || {}).remit_type;
+        let type = (this.typeList[0] || {}).remit_type_id;
         this.form.remit_type = type;
       },
 
