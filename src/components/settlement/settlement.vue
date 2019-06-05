@@ -163,6 +163,7 @@
     },
 
     created() {
+      console.log(1111);
       this.changeTime('1');
       this.getType();
     },
