@@ -26,6 +26,8 @@ import addSurcharge from 'components/addSurcharge/addSurcharge'
 import preAuth from 'components/preAuth/preAuth'
 import newMember from 'components/newMember/newMember'
 import preAuthDetail from 'components/preAuthDetail/preAuthDetail'
+import merchandise from 'components/merchandise/merchandise'
+import qrcode from 'components/qrcode/qrcode'
 
 Vue.use(Router)
 
@@ -166,6 +168,16 @@ export default new Router({
           path: 'contact',
           name: 'contact',
           component: contact
+        },
+        {
+          path: 'merchandise',
+          name: 'merchandise',
+          component: merchandise
+        },
+        {
+          path: 'qrcode',
+          name: 'qrcode',
+          component: qrcode
         }
       ]
     }

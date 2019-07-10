@@ -29,8 +29,11 @@
             // oHost: `http://172.100.108.190:7200`,
 
             // payHost: `https://openapi.${u}`,
-            payHost: `https://openapi-kh.qfapi.com`,
+            payHost: `https://openapi-kh.qfapi.com`
 
+            // uploadUrl: `${host}/goods/overseas_upload`,
+            // downloadUrl: `${host}/goods/overseas_error_download`,
+            // imgUpUrl: `https://test-o-db.qfapi.com/mchnt/tool/upfile`
            };
         } else {
           let u = location.hostname;
@@ -39,6 +42,9 @@
             host: `${pro}//${u}`,
             oHost: `${pro}//${u.replace('sh', 'o')}`,
             payHost: `${pro}//${u.replace('sh', 'openapi')}`
+            // uploadUrl: `${host}/goods/overseas_upload`,
+            // downloadUrl: `${host}/goods/overseas_error_download`,
+            // imgUpUrl: `${ohost}/mchnt/tool/upfile`
           }
         }
         Object.assign(config, uri);
@@ -46,3 +52,9 @@
     }
   }
 </script>
+<style lang="">
+  .qr-in-label .el-form-item__label{
+    color: #282B2D;
+    font-size: 14px;
+  }
+</style>
