@@ -129,7 +129,8 @@ const getRole = (data = {}) => {
     trade_type: data.trade_type || [], // 支付方式列表
     point: Number.parseInt(data.allow_point) || 0, // 精确小数点1代表2位
     isCashier: Boolean(data.opinfo && data.opinfo.opuid), // 是否收银员角色
-    passState: data.has_set // 是否设置管理密码
+    passState: data.has_set, // 是否设置管理密码
+    preAuth: data.show_preauth // 预授权管理  0不展示   1展示
   }
 
   // 包商baoshang 日本JP 香港HK 印尼ID 迪拜AR 泰国TH 柬埔寨KH

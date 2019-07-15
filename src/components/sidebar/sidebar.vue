@@ -36,7 +36,7 @@
     data() {
       return {
         lang: config.lang,
-        role: Store.get('role') || {},
+        role: {},
         navs: [],
         isDark: {
           trans: true,
@@ -59,8 +59,13 @@
 
     created() {
       this.getNav();
+      this.role = Store.get('role');
     },
-
+    mounted () {
+      this.$nextTick(() => {
+        this.role = Store.get('role');
+      });
+    },
     methods: {
       switchLanguage(value, label) {
         localStorage.setItem("lang", JSON.stringify({label: label, value: value}));
@@ -76,6 +81,385 @@
 
       getNav() {
         switch (this.role.country) {
+          case 'KH':
+            if(this.role.single) { // 柬埔寨单店,无收银员管理
+              if(this.role.isCashier) { // 是收营员
+                this.navs = [
+                  {
+                    val: this.$t('nav.tradeMng'), // 交易管理
+                    pathname: 'transctl'
+                  },
+                  {
+                    val: this.$t('nav.shopMng'), // 账户信息
+                    pathname: 'singlemanage'
+                  },
+                  {
+                    val: this.$t('nav.contact'), // 客服
+                    pathname: 'contact'
+                  }
+                ];
+              } else { // 不是收营员
+                if(this.role.isMerchant) { // 单店
+                  if(this.role.preAuth) { // 预授权管理
+                    this.navs = [
+                      {
+                        val: this.$t('nav.index'), // 首页
+                        pathname: 'index'
+                      },
+                      {
+                        val: this.$t('nav.settlement'), // 清算查询
+                        pathname: 'settlement'
+                      },
+                      {
+                        val: this.$t('nav.tradeMng'), // 交易管理
+                        subnav: 'trans',
+                        sub: [{
+                          val: this.$t('nav.tradeAssign'), // 交易流水
+                          pathname: 'transctl'
+                        }, {
+                          val: this.$t('nav.refundCheck'), // 退款审核
+                          pathname: 'transCheck'
+                        }]
+                      },
+                      {
+                        val: this.$t('preAuth.message.m5'), // 预授权管理
+                        pathname: 'preAuth'
+                      },
+                      {
+                        val: this.$t('nav.shopMng'), // 账户信息
+                        pathname: 'singlemanage'
+                      },
+                      {
+                        val: this.$t('nav.setup'), // 设置
+                        subnav: 'Setting',
+                        sub: [{
+                          val: this.$t('nav.emailSet'), // 邮箱设置
+                          pathname: 'emailSetting'
+                        }, {
+                          val: this.$t('nav.device'), // 绑定设备编号
+                          pathname: 'deviceSetting'
+                        }, {
+                          val: this.$t('nav.surcharge'), // 附加费设置
+                          pathname: 'surchargeSetting'
+                        }]
+                      },
+                      {
+                        val: this.$t('nav.contact'), // 客服
+                        pathname: 'contact'
+                      }
+                    ];
+                  } else {
+                    this.navs = [
+                      {
+                        val: this.$t('nav.index'), // 首页
+                        pathname: 'index'
+                      },
+                      {
+                        val: this.$t('nav.settlement'), // 清算查询
+                        pathname: 'settlement'
+                      },
+                      {
+                        val: this.$t('nav.tradeMng'), // 交易管理
+                        subnav: 'trans',
+                        sub: [{
+                          val: this.$t('nav.tradeAssign'), // 交易流水
+                          pathname: 'transctl'
+                        }, {
+                          val: this.$t('nav.refundCheck'), // 退款审核
+                          pathname: 'transCheck'
+                        }]
+                      },
+                      {
+                        val: this.$t('nav.shopMng'), // 账户信息
+                        pathname: 'singlemanage'
+                      },
+                      {
+                        val: this.$t('nav.setup'), // 设置
+                        subnav: 'Setting',
+                        sub: [{
+                          val: this.$t('nav.emailSet'), // 邮箱设置
+                          pathname: 'emailSetting'
+                        }, {
+                          val: this.$t('nav.device'), // 绑定设备编号
+                          pathname: 'deviceSetting'
+                        }, {
+                          val: this.$t('nav.surcharge'), // 附加费设置
+                          pathname: 'surchargeSetting'
+                        }]
+                      },
+                      {
+                        val: this.$t('nav.contact'), // 客服
+                        pathname: 'contact'
+                      }
+                    ];
+                  }
+                  
+                }else { // 分店
+                  this.navs = [
+                    {
+                      val: this.$t('nav.index'), // 首页
+                      pathname: 'index'
+                    },
+                    {
+                      val: this.$t('nav.tradeMng'), // 交易管理
+                      pathname: 'transctl'
+                    },
+                    {
+                      val: this.$t('nav.shopMng'), // 账户信息
+                      pathname: 'singlemanage'
+                    },
+                    {
+                      val: this.$t('nav.emailSet'), // 邮箱设置
+                      pathname: 'emailSetting'
+                    },
+                    {
+                      val: this.$t('nav.contact'), // 客服
+                      pathname: 'contact'
+                    }
+                  ];
+                }
+
+              }
+            } else { // 柬埔寨大商户
+              if(this.role.preAuth) {
+                this.navs = [
+                  {
+                    val: this.$t('nav.index'), // 首页
+                    pathname: 'index'
+                  },
+                  {
+                    val: this.$t('nav.settlement'), // 清算查询
+                    pathname: 'settlement'
+                  },
+                  {
+                    val: this.$t('nav.tradeMng'), // 交易管理
+                    subnav: 'trans',
+                    sub: [{
+                      val: this.$t('nav.tradeAssign'), // 交易流水
+                      pathname: 'transctl'
+                    }, {
+                      val: this.$t('nav.refundCheck'), // 退款审核
+                      pathname: 'transCheck'
+                    }]
+                  },
+                  {
+                    val: this.$t('preAuth.message.m5'), // 预授权管理
+                    pathname: 'preAuth'
+                  },
+                  {
+                    val: this.$t('nav.shopMng'), // 账户信息
+                    pathname: 'chainmanage'
+                  },
+                  {
+                    val: this.$t('nav.setup'), // 设置
+                    subnav: 'Setting',
+                    sub: [{
+                        val: this.$t('nav.passSet'), // 管理密码设置
+                        pathname: 'passSetting'
+                      }, {
+                      val: this.$t('nav.emailSet'), // 邮箱设置
+                      pathname: 'emailSetting'
+                    }, {
+                      val: this.$t('nav.device'), // 绑定设备编号
+                      pathname: 'deviceSetting'
+                    }, {
+                      val: this.$t('nav.surcharge'), // 附加费设置
+                      pathname: 'surchargeSetting'
+                    }]
+                  },
+                  {
+                    val: this.$t('nav.contact'), // 客服
+                    pathname: 'contact'
+                  }
+                ];
+              } else {
+                this.navs = [
+                  {
+                    val: this.$t('nav.index'), // 首页
+                    pathname: 'index'
+                  },
+                  {
+                    val: this.$t('nav.settlement'), // 清算查询
+                    pathname: 'settlement'
+                  },
+                  {
+                    val: this.$t('nav.tradeMng'), // 交易管理
+                    subnav: 'trans',
+                    sub: [{
+                      val: this.$t('nav.tradeAssign'), // 交易流水
+                      pathname: 'transctl'
+                    }, {
+                      val: this.$t('nav.refundCheck'), // 退款审核
+                      pathname: 'transCheck'
+                    }]
+                  },
+                  {
+                    val: this.$t('nav.shopMng'), // 账户信息
+                    pathname: 'chainmanage'
+                  },
+                  {
+                    val: this.$t('nav.setup'), // 设置
+                    subnav: 'Setting',
+                    sub: [{
+                        val: this.$t('nav.passSet'), // 管理密码设置
+                        pathname: 'passSetting'
+                      }, {
+                      val: this.$t('nav.emailSet'), // 邮箱设置
+                      pathname: 'emailSetting'
+                    }, {
+                      val: this.$t('nav.device'), // 绑定设备编号
+                      pathname: 'deviceSetting'
+                    }, {
+                      val: this.$t('nav.surcharge'), // 附加费设置
+                      pathname: 'surchargeSetting'
+                    }]
+                  },
+                  {
+                    val: this.$t('nav.contact'), // 客服
+                    pathname: 'contact'
+                  }
+                ];
+              }
+              
+            }
+            break;
+          case 'SG':
+            if(this.role.single) { // 新加坡单店,无收银员管理
+              if(this.role.isCashier) { // 是收营员
+                this.navs = [
+                  {
+                    val: this.$t('nav.tradeMng'), // 交易管理
+                    pathname: 'transctl'
+                  },
+                  {
+                    val: this.$t('nav.shopMng'), // 账户信息
+                    pathname: 'singlemanage'
+                  },
+                  {
+                    val: this.$t('nav.contact'), // 客服
+                    pathname: 'contact'
+                  }
+                ];
+              } else { // 不是收营员
+                if(this.role.isMerchant) { // 单店
+                  this.navs = [
+                    {
+                      val: this.$t('nav.index'), // 首页
+                      pathname: 'index'
+                    },
+                    {
+                      val: this.$t('nav.settlement'), // 清算查询
+                      pathname: 'settlement'
+                    },
+                    {
+                      val: this.$t('nav.tradeMng'), // 交易管理
+                      subnav: 'trans',
+                      sub: [{
+                        val: this.$t('nav.tradeAssign'), // 交易流水
+                        pathname: 'transctl'
+                      }, {
+                        val: this.$t('nav.refundCheck'), // 退款审核
+                        pathname: 'transCheck'
+                      }]
+                    },
+                    {
+                      val: this.$t('nav.shopMng'), // 账户信息
+                      pathname: 'singlemanage'
+                    },
+                    {
+                      val: this.$t('nav.setup'), // 设置
+                      subnav: 'Setting',
+                      sub: [{
+                        val: this.$t('nav.emailSet'), // 邮箱设置
+                        pathname: 'emailSetting'
+                      }, {
+                        val: this.$t('nav.device'), // 绑定设备编号
+                        pathname: 'deviceSetting'
+                      }, {
+                        val: this.$t('nav.surcharge'), // 附加费设置
+                        pathname: 'surchargeSetting'
+                      }]
+                    },
+                    {
+                      val: this.$t('nav.contact'), // 客服
+                      pathname: 'contact'
+                    }
+                  ];
+                }else { // 分店
+                  this.navs = [
+                    {
+                      val: this.$t('nav.index'), // 首页
+                      pathname: 'index'
+                    },
+                    {
+                      val: this.$t('nav.tradeMng'), // 交易管理
+                      pathname: 'transctl'
+                    },
+                    {
+                      val: this.$t('nav.shopMng'), // 账户信息
+                      pathname: 'singlemanage'
+                    },
+                    {
+                      val: this.$t('nav.emailSet'), // 邮箱设置
+                      pathname: 'emailSetting'
+                    },
+                    {
+                      val: this.$t('nav.contact'), // 客服
+                      pathname: 'contact'
+                    }
+                  ];
+                }
+
+              }
+            } else { // 新加坡大商户
+              this.navs = [
+                {
+                  val: this.$t('nav.index'), // 首页
+                  pathname: 'index'
+                },
+                {
+                  val: this.$t('nav.settlement'), // 清算查询
+                  pathname: 'settlement'
+                },
+                {
+                  val: this.$t('nav.tradeMng'), // 交易管理
+                  subnav: 'trans',
+                  sub: [{
+                    val: this.$t('nav.tradeAssign'), // 交易流水
+                    pathname: 'transctl'
+                  }, {
+                    val: this.$t('nav.refundCheck'), // 退款审核
+                    pathname: 'transCheck'
+                  }]
+                },
+                {
+                  val: this.$t('nav.shopMng'), // 账户信息
+                  pathname: 'chainmanage'
+                },
+                {
+                  val: this.$t('nav.setup'), // 设置
+                  subnav: 'Setting',
+                  sub: [{
+                      val: this.$t('nav.passSet'), // 管理密码设置
+                      pathname: 'passSetting'
+                    }, {
+                    val: this.$t('nav.emailSet'), // 邮箱设置
+                    pathname: 'emailSetting'
+                  }, {
+                    val: this.$t('nav.device'), // 绑定设备编号
+                    pathname: 'deviceSetting'
+                  }, {
+                    val: this.$t('nav.surcharge'), // 附加费设置
+                    pathname: 'surchargeSetting'
+                  }]
+                },
+                {
+                  val: this.$t('nav.contact'), // 客服
+                  pathname: 'contact'
+                }
+              ];
+            }
+            break;
           case 'HK':
             if(this.role.single) { // 香港单店,无收银员管理
               if(this.role.isCashier) { // 是收营员
@@ -358,6 +742,10 @@
               ];
             }
             break;
+          
+          
+          
+          
           default:
             // 其它国家没有客服模块
             if(this.role.single) { // 其它国家 单店
@@ -462,6 +850,10 @@
                     val: this.$t('nav.refundCheck'), // 退款审核
                     pathname: 'transCheck'
                   }]
+                },
+                {
+                  val: this.$t('preAuth.message.m5'), // 预授权管理
+                  pathname: 'preAuth'
                 },
                 {
                   val: this.$t('nav.shopMng'), // 账户信息

@@ -20,18 +20,19 @@
            u = 'qa.qfpay.net';
            uri = {
              host: `https://sh.${u}`,
-             // host: `http://172.100.108.56:9099`,
+            //  host: `http://172.100.108.211:9099`,
              oHost: `https://o.${u}`,
              // oHost: `http://172.100.108.190:7200`,
-             payHost: `https://openapi.${u}`,
+             payHost: 'api'
+            //  payHost: `https://openapi.${u}`,
            };
 
-        } else if(location.hostname.includes('jp.qfapi')) {
+        } else if(location.hostname.includes('sg.qfapi')) {
           // 日本独立包
           uri = {
-            host: `https://sh-jp.qfapi.com`,
-            oHost: `https://o-jp.qfapi.com`,
-            payHost: `https://openapi-jp.qfapi.com`,
+            host: `https://sh-sg.qfapi.com`,
+            oHost: `https://o-sg.qfapi.com`,
+            payHost: `https://openapi-sg.qfapi.com`,
           };
         }else {
           uri = Store.get('hosts') || {
