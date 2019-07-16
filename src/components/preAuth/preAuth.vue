@@ -486,7 +486,6 @@
             this.loading = false;
             let data = res.data;
             if(data.respcd === config.code.OK) {
-              console.log(this.shop);
               this.transData = data.data;
             } else {
               this.$message.error(data.resperr);
