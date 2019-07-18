@@ -195,28 +195,58 @@
                   }
                   
                 }else { // 分店
-                  this.navs = [
-                    {
-                      val: this.$t('nav.index'), // 首页
-                      pathname: 'index'
-                    },
-                    {
-                      val: this.$t('nav.tradeMng'), // 交易管理
-                      pathname: 'transctl'
-                    },
-                    {
-                      val: this.$t('nav.shopMng'), // 账户信息
-                      pathname: 'singlemanage'
-                    },
-                    {
-                      val: this.$t('nav.emailSet'), // 邮箱设置
-                      pathname: 'emailSetting'
-                    },
-                    {
-                      val: this.$t('nav.contact'), // 客服
-                      pathname: 'contact'
-                    }
-                  ];
+                  if(this.role.preAuth) { // 预授权管理
+                    this.navs = [
+                      {
+                        val: this.$t('nav.index'), // 首页
+                        pathname: 'index'
+                      },
+                      {
+                        val: this.$t('nav.tradeMng'), // 交易管理
+                        pathname: 'transctl'
+                      },
+                      {
+                        val: this.$t('preAuth.message.m5'), // 预授权管理
+                        pathname: 'preAuth'
+                      },
+                      {
+                        val: this.$t('nav.shopMng'), // 账户信息
+                        pathname: 'singlemanage'
+                      },
+                      {
+                        val: this.$t('nav.emailSet'), // 邮箱设置
+                        pathname: 'emailSetting'
+                      },
+                      {
+                        val: this.$t('nav.contact'), // 客服
+                        pathname: 'contact'
+                      }
+                    ];
+                  } else {
+                    this.navs = [
+                      {
+                        val: this.$t('nav.index'), // 首页
+                        pathname: 'index'
+                      },
+                      {
+                        val: this.$t('nav.tradeMng'), // 交易管理
+                        pathname: 'transctl'
+                      },
+                      {
+                        val: this.$t('nav.shopMng'), // 账户信息
+                        pathname: 'singlemanage'
+                      },
+                      {
+                        val: this.$t('nav.emailSet'), // 邮箱设置
+                        pathname: 'emailSetting'
+                      },
+                      {
+                        val: this.$t('nav.contact'), // 客服
+                        pathname: 'contact'
+                      }
+                    ];
+                  }
+                  
                 }
 
               }
@@ -850,10 +880,6 @@
                     val: this.$t('nav.refundCheck'), // 退款审核
                     pathname: 'transCheck'
                   }]
-                },
-                {
-                  val: this.$t('preAuth.message.m5'), // 预授权管理
-                  pathname: 'preAuth'
                 },
                 {
                   val: this.$t('nav.shopMng'), // 账户信息

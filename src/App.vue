@@ -14,8 +14,6 @@
     methods: {
       // 设置config
       setConfig() {
-        console.log('process.env.NODE_ENV:' + process.env.NODE_ENV);
-        console.log(process.argv[2]);
         let [uri, u] = [];
         // 本地调试
         if(process.env.NODE_ENV === 'development') {
@@ -29,12 +27,12 @@
              payHost: `https://openapi.${u}`,
            };
 
-        } else if(location.hostname.includes('sg.qfapi')) {
-          // 日本独立包
+        } else if(location.hostname.includes('kh.qfapi')) {
+          // 柬埔寨环境
           uri = {
-            host: `https://sh-sg.qfapi.com`,
-            oHost: `https://o-sg.qfapi.com`,
-            payHost: `https://openapi-sg.qfapi.com`,
+            host: `https://sh-kh.qfapi.com`,
+            oHost: `https://o-kh.qfapi.com`,
+            payHost: `https://openapi-kh.qfapi.com`,
           };
         }else {
           uri = Store.get('hosts') || {
@@ -44,7 +42,7 @@
           };
         }
         Object.assign(config, uri);
-      },
+      }
     }
   }
 </script>

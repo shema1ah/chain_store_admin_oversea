@@ -409,6 +409,23 @@
           this.form.choosetime = '';
         }
         this.status = false;
+      },
+      'formpwd.amount': function(val, old) {
+        if(val) {
+          if(this.role.point) {
+            if(!/^\d+(\.\d{0,2})?$/.test(val)) {
+              setTimeout(() => {
+                this.formpwd.amount = old;
+              }, 10);
+            }
+          }else {
+            if(!/^\d+$/.test(val)) {
+              setTimeout(() => {
+                this.formpwd.amount = old;
+              }, 10);
+            }
+          }
+        }
       }
    },
    created() {
