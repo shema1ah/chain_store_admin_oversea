@@ -153,12 +153,7 @@
               };
             }
             this.loading = true;
-            // 日本和欧洲不走gr
-            if(location.hostname.includes('jp.qfapi') || location.hostname.includes('eur.qfapi.com') || process.env.NODE_ENV === 'development') {
-              this.oldSign(params, false);
-            }else {
-              this.getAppName(params);
-            }
+            this.oldSign(params, false);
           }
         });
       },
@@ -255,27 +250,7 @@
         });
       },
 
-      // 判断app_name
-      getAppName(params) {
-        let hostName = location.hostname;
-
-        // appName对应列表
-        let list = {
-          'sh-hk.qfapi.com': 'hk_web',
-          'sh-db.qfapi.com': 'db_web',
-          'sh-th.qfapi.com': 'th_web',
-          'sh-sg.qfapi.com': 'sg_web',
-          'wimerchant.com': 'sg_web',
-          'sh-sh-t.qfapi.com': 'shh_t_web',
-          'sh-sz-t.qfapi.com': 'shz_t_web'
-        };
-        let appName = list[hostName] || 'zh_web';
-
-        Object.assign(params, {
-          app_name: appName
-        });
-        this.newSign(params);
-      },
+     
 
       // 点击enter键调用登录
       onEnter() {
