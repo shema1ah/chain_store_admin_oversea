@@ -36,7 +36,7 @@
     data() {
       return {
         lang: config.lang,
-        role: {},
+        role: Store.get('role') || {},
         navs: [],
         isDark: {
           trans: true,
@@ -59,12 +59,6 @@
 
     created() {
       this.getNav();
-      this.role = Store.get('role');
-    },
-    mounted () {
-      this.$nextTick(() => {
-        this.role = Store.get('role');
-      });
     },
     methods: {
       switchLanguage(value, label) {
