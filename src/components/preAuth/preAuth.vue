@@ -134,7 +134,7 @@
             <el-dropdown>
               <span class="el-dropdown-link"><img src="./img/download.png" alt="download"></span>
               <el-dropdown-menu slot="dropdown">
-                <a :href="detailHref" download><el-dropdown-item command=1>{{$t('tradeMng.table.btn.downDetail')}}</el-dropdown-item></a>
+                <a :href="detailHref" download><el-dropdown-item command=1>{{$t('preAuth.message.m31')}}</el-dropdown-item></a>
                 <!-- <a :href="separateHref" download><el-dropdown-item command=2>{{$t('tradeMng.table.btn.downTrade')}}</el-dropdown-item></a> -->
               </el-dropdown-menu>
             </el-dropdown>
