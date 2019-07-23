@@ -60,6 +60,11 @@
     created() {
       this.getNav();
     },
+    computed: {
+      preAuthA() {
+        return Store.get('role');
+      }
+    },
     methods: {
       switchLanguage(value, label) {
         localStorage.setItem("lang", JSON.stringify({label: label, value: value}));
@@ -94,7 +99,7 @@
                 ];
               } else { // 不是收营员
                 if(this.role.isMerchant) { // 单店
-                  if(this.role.preAuth) { // 预授权管理
+                  if(this.preAuthA) { // 预授权管理
                     this.navs = [
                       {
                         val: this.$t('nav.index'), // 首页
@@ -189,7 +194,7 @@
                   }
                   
                 }else { // 分店
-                  if(this.role.preAuth) { // 预授权管理
+                  if(this.preAuthA) { // 预授权管理
                     this.navs = [
                       {
                         val: this.$t('nav.index'), // 首页
@@ -245,7 +250,7 @@
 
               }
             } else { // 柬埔寨大商户
-              if(this.role.preAuth) {
+              if(this.preAuthA) {
                 this.navs = [
                   {
                     val: this.$t('nav.index'), // 首页
