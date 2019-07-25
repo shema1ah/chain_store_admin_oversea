@@ -14,7 +14,6 @@
 
       <!-- 查询条件start -->
       <div class="panel-header panel-header__auto">
-
         <el-form :model="form" :rules="formrules" ref="form">
           <!-- 时间start -->
           <div class="panel-select-group">
@@ -74,13 +73,16 @@
           <div class="panel-select-group" v-if="typeList.length > 0">
             <div class="panel-select__wrapper">
               <span class="panel-select__desc">{{$t('tradeMng.table.colWay')}}</span>
-              <el-form-item prop="checkAll1">
+              <!-- <el-form-item prop="checkAll1">
                 <el-checkbox v-model="form.checkAll1" @change="handleCheckAllChange1">{{$t('tradeMng.panel.noLimit')}}</el-checkbox>
               </el-form-item>
               <el-form-item prop="type">
                 <el-checkbox-group v-model="form.type" @change="handleCheckedCitiesChange1">
                   <el-checkbox v-for="item in typeList" :label="item.value" :key="item.value">{{ item.name }}</el-checkbox>
                 </el-checkbox-group>
+              </el-form-item> -->
+              <el-form-item prop="checkAll1">
+                  <el-checkbox v-model="form.checkAll1" @change="handleCheck">{{ $t('preAuth.message.m32') }}</el-checkbox>
               </el-form-item>
             </div>
           </div>
@@ -209,7 +211,7 @@
             </template>
           </el-table-column>
 
-          <!-- 交易流水号 -->
+          <!-- 订单流水号 -->
           <el-table-column 
           :label="$t('preAuth.message.m18')" min-width="180">
             <template slot-scope="scope">
@@ -481,10 +483,15 @@
       operaChange(opuid) {
         this.basicParams.opuid = opuid;
       },
+      handleCheck(event) {
+        this.form.checkAll1 = true;
+      },
       handleCheckAllChange1(event) {
+        console.log(event.target.checked);
         this.form.type = event.target.checked ? [] : this.allType;
       },
       handleCheckedCitiesChange1(value) {
+        console.log(value);
         let checkCount = value.length;
         this.form.checkAll1 = !(checkCount > 0);
       },
@@ -714,7 +721,7 @@
         return this.$store.state.shopData;
       },
       allType() {
-        let type = this.shop.trade_type || [];
+        let type = this.shop.preauth_trade_type || [];
         let list = [];
         if(type.length > 0) {
           for(let val of type) {

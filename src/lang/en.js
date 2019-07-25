@@ -571,7 +571,7 @@ exports.default = {
       m15: 'Service order number',
       m16: 'Order Amount',
       m17: 'Order Status',
-      m18: 'TransactionID',
+      m18: 'Transaction ID',
       m19: 'capture amount',
       m20: 'Maximum capture amount',
       m21: 'Please enter the capture amount',
@@ -584,7 +584,8 @@ exports.default = {
       m28: 'Confirm to release',
       m29: 'Successfully released',
       m30: 'Release failed',
-      m31: 'Download The Order Details'
+      m31: 'Download The Order Details',
+      m32: 'Alipay pre-auth'
     }
   }
 }
