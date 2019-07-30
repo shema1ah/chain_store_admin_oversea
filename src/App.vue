@@ -14,10 +14,12 @@
     methods: {
       // 设置config
       setConfig() {
-        let [uri, u] = [];
+        let uri = {};
+        let u = location.hostname;
+        let pro = location.protocol;
         // 本地调试
         if (process.env.NODE_ENV === 'development') {
-           u = 'qa.qfpay.net';
+          //  u = 'qa.qfpay.net';
            uri = {
 
             // host: `https://sh.${u}`,
@@ -29,22 +31,19 @@
             // oHost: `http://172.100.108.190:7200`,
 
             // payHost: `https://openapi.${u}`,
-            payHost: `https://openapi-kh.qfapi.com`
-
-            // uploadUrl: `${host}/goods/overseas_upload`,
-            // downloadUrl: `${host}/goods/overseas_error_download`,
-            // imgUpUrl: `https://test-o-db.qfapi.com/mchnt/tool/upfile`
+            payHost: `https://openapi-kh.qfapi.com`,
+            uploadUrl: `${pro}//${u}/goods/overseas_upload`,
+            downloadUrl: `${pro}//${u}/goods/overseas_error_download`,
+            imgUpUrl: `https://test-o-db.qfapi.com/mchnt/tool/upfile`
            };
         } else {
-          let u = location.hostname;
-          let pro = location.protocol;
           uri = {
             host: `${pro}//${u}`,
             oHost: `${pro}//${u.replace('sh', 'o')}`,
-            payHost: `${pro}//${u.replace('sh', 'openapi')}`
-            // uploadUrl: `${host}/goods/overseas_upload`,
-            // downloadUrl: `${host}/goods/overseas_error_download`,
-            // imgUpUrl: `${ohost}/mchnt/tool/upfile`
+            payHost: `${pro}//${u.replace('sh', 'openapi')}`,
+            uploadUrl: `${pro}//${u}/goods/overseas_upload`,
+            downloadUrl: `${pro}//${u}/goods/overseas_error_download`,
+            imgUpUrl: `${pro}//${u.replace('sh', 'o')}/mchnt/tool/upfile`
           }
         }
         Object.assign(config, uri);

@@ -5,7 +5,7 @@
       <!-- <h1 class="sidebar-logo__title">{{ shop.shopname }}</h1> -->
     </div>
     <ul class="left-nav">
-      <li v-for="nav in navs">
+      <li v-for="(nav,i) in navs" :key="i">
         <router-link class="sidebar-nav__item" v-if="nav.pathname" :to="router('main/' + nav.pathname)">{{ nav.val }}</router-link>
         <a v-else class="sidebar-nav__item" @click="toggle(nav.subnav)" :class="{'dark': $route.fullPath.indexOf(nav.subnav) > -1}">
           {{ nav.val }}
@@ -13,7 +13,7 @@
         </a>
         <transition name="collpase">
           <ul v-if="nav.sub" v-show="isDark[nav.subnav]" class="collpase" :class="{'dark': $route.fullPath.indexOf(nav.subnav) > -1}">
-            <li v-for="ls in nav.sub">
+            <li v-for="(ls,i) in nav.sub" :key="i">
               <router-link class="sidebar-nav__item sidebar-nav__subitem" :to="router('main/' + ls.pathname)">
                 {{ ls.val }}
               </router-link>
