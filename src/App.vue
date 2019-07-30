@@ -32,11 +32,10 @@
             payHost: `https://openapi-kh.qfapi.com`,
 
            };
-
         } else {
           let u = location.hostname;
           let pro = location.protocol;
-          uir = {
+          uri = {
             host: `${pro}//${u}`,
             oHost: `${pro}//${u.replace('sh', 'o')}`,
             payHost: `${pro}//${u.replace('sh', 'openapi')}`
