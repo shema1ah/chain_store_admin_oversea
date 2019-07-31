@@ -14,6 +14,7 @@ exports.default = {
     setup: '设置',
     passSet: '管理密码设置',
     emailSet: '邮箱设置',
+    surcharge: '附加费率设置',
     contact: '客服',
     device: '设备绑定',
     smart: '智慧餐厅',

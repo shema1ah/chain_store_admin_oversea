@@ -18,6 +18,7 @@ exports.default = {
     setup: 'Settings',
     passSet: 'Mgmt Pass Settings',
     emailSet: 'Email Settings',
+    surcharge: 'Surcharge Settings',
     contact: 'Contact Us',
     device: 'Device Binding',
     smart: 'Smart Restaurant',

@@ -14,6 +14,7 @@ exports.default = {
     setup: '設置',
     passSet: '管理密碼設置',
     emailSet: '電子郵件設置',
+    surcharge: '附加費率設置',
     contact: '聯繫我們',
     device: '設備綁定',
     smart: '智慧餐廳',

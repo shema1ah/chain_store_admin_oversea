@@ -397,6 +397,10 @@
                       pathname: 'singlemanage'
                     },
                     {
+                      val: this.$t('nav.cashMng'), // 收银员管理
+                      pathname: 'cashiermanage'
+                    },
+                    {
                       val: this.$t('nav.setup'), // 设置
                       subnav: 'Setting',
                       sub: [{
@@ -409,10 +413,6 @@
                         val: this.$t('nav.surcharge'), // 附加费设置
                         pathname: 'surchargeSetting'
                       }]
-                    },
-                    {
-                      val: this.$t('nav.contact'), // 客服
-                      pathname: 'contact'
                     }
                   ];
                 }else { // 分店
@@ -430,12 +430,12 @@
                       pathname: 'singlemanage'
                     },
                     {
-                      val: this.$t('nav.emailSet'), // 邮箱设置
-                      pathname: 'emailSetting'
+                      val: this.$t('nav.cashMng'), // 收银员管理
+                      pathname: 'cashiermanage'
                     },
                     {
-                      val: this.$t('nav.contact'), // 客服
-                      pathname: 'contact'
+                      val: this.$t('nav.emailSet'), // 邮箱设置
+                      pathname: 'emailSetting'
                     }
                   ];
                 }
@@ -482,10 +482,6 @@
                     val: this.$t('nav.surcharge'), // 附加费设置
                     pathname: 'surchargeSetting'
                   }]
-                },
-                {
-                  val: this.$t('nav.contact'), // 客服
-                  pathname: 'contact'
                 }
               ];
             }
