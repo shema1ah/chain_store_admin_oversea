@@ -561,7 +561,7 @@ exports.default = {
       m2: 'Please enter your order no.',
       m3: 'Capture amount',
       m4: 'No. of Captures',
-      m5: 'Pre-authorization management',
+      m5: 'Pre-auth Mgmt',
       m6: 'order details',
       m7: 'capture',
       m8: 'Release',
