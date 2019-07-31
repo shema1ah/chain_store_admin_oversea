@@ -772,6 +772,7 @@
               ];
             }
             break;
+          
           case 'AR':
             // 迪拜环境 除智慧餐厅 其他和通用版相同
             if(this.role.single) { // 其它国家 单店
@@ -917,6 +918,129 @@
               ];
             }
             break;
+          case 'LA':
+            // 老挝
+            if(this.role.single) { // 老挝 单店
+              if(this.role.isCashier) { // 是收营员
+                this.navs = [
+                  {
+                    val: this.$t('nav.tradeMng'), // 交易管理
+                    pathname: 'transctl'
+                  },
+                  {
+                    val: this.$t('nav.shopMng'), // 账户信息
+                    pathname: 'singlemanage'
+                  }
+                ];
+              } else { // 不是收营员
+                if(this.role.isMerchant) { // 单店
+                  this.navs = [ // 单店
+                    {
+                      val: this.$t('nav.index'), // 首页
+                      pathname: 'index'
+                    },
+                    {
+                      val: this.$t('nav.settlement'), // 清算查询
+                      pathname: 'settlement'
+                    },
+                    {
+                      val: this.$t('nav.tradeMng'), // 交易管理
+                      subnav: 'trans',
+                      sub: [{
+                        val: this.$t('nav.tradeAssign'), // 交易流水
+                        pathname: 'transctl'
+                      }, {
+                        val: this.$t('nav.refundCheck'), // 退款审核
+                        pathname: 'transCheck'
+                      }]
+                    },
+                    {
+                      val: this.$t('nav.shopMng'), // 账户信息
+                      pathname: 'singlemanage'
+                    },
+                    {
+                      val: this.$t('nav.cashMng'), // 收银员管理
+                      pathname: 'cashiermanage'
+                    },
+                    {
+                      val: this.$t('nav.setup'), // 设置
+                      subnav: 'Setting',
+                      sub: [{
+                        val: this.$t('nav.emailSet'), // 邮箱设置
+                        pathname: 'emailSetting'
+                      }, {
+                        val: this.$t('nav.device'), // 绑定设备编号
+                        pathname: 'deviceSetting'
+                      }]
+                    }
+                  ];
+                }else { // 分店
+                  this.navs = [ // 单店
+                    {
+                      val: this.$t('nav.index'), // 首页
+                      pathname: 'index'
+                    },
+                    {
+                      val: this.$t('nav.tradeMng'), // 交易管理
+                      pathname: 'transctl'
+                    },
+                    {
+                      val: this.$t('nav.shopMng'), // 账户信息
+                      pathname: 'singlemanage'
+                    },
+                    {
+                      val: this.$t('nav.cashMng'), // 收银员管理
+                      pathname: 'cashiermanage'
+                    },
+                    {
+                      val: this.$t('nav.emailSet'), // 邮箱设置
+                      pathname: 'emailSetting'
+                    }
+                  ];
+                }
+              }
+            } else { // 老挝大商户
+              this.navs = [
+                {
+                  val: this.$t('nav.index'), // 首页
+                  pathname: 'index'
+                },
+                {
+                  val: this.$t('nav.settlement'), // 清算查询
+                  pathname: 'settlement'
+                },
+                {
+                  val: this.$t('nav.tradeMng'), // 交易管理
+                  subnav: 'trans',
+                  sub: [{
+                    val: this.$t('nav.tradeAssign'), // 交易流水
+                    pathname: 'transctl'
+                  }, {
+                    val: this.$t('nav.refundCheck'), // 退款审核
+                    pathname: 'transCheck'
+                  }]
+                },
+                {
+                  val: this.$t('nav.shopMng'), // 账户信息
+                  pathname: 'chainmanage'
+                },
+                {
+                  val: this.$t('nav.setup'), // 设置
+                  subnav: 'Setting',
+                  sub: [{
+                    val: this.$t('nav.passSet'), // 管理密码设置
+                    pathname: 'passSetting'
+                  }, {
+                    val: this.$t('nav.emailSet'), // 邮箱设置
+                    pathname: 'emailSetting'
+                  }, {
+                    val: this.$t('nav.device'), // 绑定设备编号
+                    pathname: 'deviceSetting'
+                  }]
+                }
+              ];
+            }
+            break;
           default:
             // 其它国家没有客服模块
             if(this.role.single) { // 其它国家 单店
@@ -961,19 +1085,6 @@
                       val: this.$t('nav.cashMng'), // 收银员管理
                       pathname: 'cashiermanage'
                     },
-                    // 需要注释
-                    // {
-                    //   val: this.$t('diancan.Qr.smart'), // 智慧餐厅
-                    //   subnav: 'merchant',
-                    //   sub: [{
-                    //     val: this.$t('diancan.Qr.qr'), // 桌台二维码
-                    //     pathname: 'qrcode'
-                    //   }, {
-                    //     val: this.$t('diancan.Manage.manage'), // 桌台二维码
-                    //     pathname: 'merchandise'
-                    //   }]
-                    // },
-                    // 需要注释
                     {
                       val: this.$t('nav.setup'), // 设置
                       subnav: 'Setting',
