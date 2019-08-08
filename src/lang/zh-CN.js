@@ -617,7 +617,10 @@ exports.default = {
       'rule2': '起始桌号必须小于结尾桌号',
       'rule3': '单次最多生成50个二维码',
       'rule4': '区域名称限定10个字符以内',
-      'rule5': '桌号必须为长度在四位以内的非零数字'
+      'rule5': '桌号必须为长度在四位以内的非零数字',
+      'idermsg': '获取商户id失败',
+      'qrgenerate': '正在生成...',
+      'generalert': '生成数量较多时可能需要较长时间，请稍候...'
     },
     "Manage": {
       "manage": "商品管理",
@@ -664,6 +667,21 @@ exports.default = {
       'confirm2': '确认',
       'confirm3': '取消',
       'uploadtitle': '未选择任何文件'
+    },
+    "Rank": {
+      "index": "商品排序",
+      "category": "商品分类",
+      "name": "商品名称",
+      "sort": "排序",
+      "op": "操作",
+      "top": "置顶",
+      "up": "上移",
+      "down": "下移",
+      "rank": "商品排序",
+      "total": "共{0}项",
+      "save": "保存",
+      "cancel": "取消",
+      "saved": "保存成功"
     }
   }
 }

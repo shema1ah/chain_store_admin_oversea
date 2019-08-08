@@ -52,8 +52,18 @@
   }
 </script>
 <style lang="">
-  .qr-in-label .el-form-item__label{
-    color: #282B2D;
-    font-size: 14px;
-  }
+.qr-in-label .el-form-item__label{
+  color: #282B2D;
+  font-size: 14px;
+}
+.dc-cate-table .el-table__body-wrapper{
+  height: calc(100vh - 350px);
+  overflow: hidden;
+  overflow-y: scroll;
+}
+.dc-pro-table .el-table__body-wrapper{
+  height: calc(100vh - 400px);
+  overflow: hidden;
+  overflow-y: scroll;
+}
 </style>

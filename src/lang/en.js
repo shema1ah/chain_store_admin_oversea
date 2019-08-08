@@ -622,7 +622,10 @@ exports.default = {
       'rule2': 'start number must be less than end number',
       'rule3': 'once 50 pcs qrcodes at most',
       'rule4': 'the length of area name must be less than 10',
-      'rule5': 'table number must be positive integer within four digits'
+      'rule5': 'table number must be positive integer within four digits',
+      'idermsg': 'failed to get merchant id',
+      'qrgenerate': 'generating',
+      'generalert': 'It may take some time, please wait a moment...'
     },
     "Manage": {
       "manage": "Product Mgmt",
@@ -669,6 +672,21 @@ exports.default = {
       'confirm2': 'Confirm',
       'confirm3': 'Cancel',
       'uploadtitle': 'no file chosen'
+    },
+    "Rank": {
+      "index": "Product Sorting",
+      "category": "Product Category",
+      "name": "Product Name",
+      "sort": "Sorting",
+      "op": "Operation",
+      "top": "Top",
+      "up": "Move Up",
+      "down": "Move Down",
+      "rank": "Product Sorting",
+      "total": "Total {0}",
+      "save": "Save",
+      "cancel": "Cancel",
+      "saved": "Saved Success"
     }
   }
 }

@@ -28,6 +28,7 @@ import newMember from 'components/newMember/newMember'
 import preAuthDetail from 'components/preAuthDetail/preAuthDetail'
 import merchandise from 'components/merchandise/merchandise'
 import qrcode from 'components/qrcode/qrcode'
+import rank from 'components/rank/rank'
 
 Vue.use(Router)
 
@@ -178,6 +179,11 @@ export default new Router({
           path: 'qrcode',
           name: 'qrcode',
           component: qrcode
+        },
+        {
+          path: 'rank',
+          name: 'rank',
+          component: rank
         }
       ]
     }

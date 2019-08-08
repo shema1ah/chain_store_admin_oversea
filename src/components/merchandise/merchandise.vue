@@ -202,16 +202,20 @@ export default {
   },
   methods: {
     async changeStatus (row, idx) {
-      let res = await Http.post('goods/overseas_goods_modify_status', {
-        'unionid': this.mList[idx].unionid,
-        'available': row.available,
-        'format': 'cors'
-      })
-      let data = res.data;
-      if (data.respcd === config.code.OK) {
-        this.$message.success(this.$t('diancan.Manage.statuschange'));
-      } else {
-        this.$message.error(data.resperr);
+      try {
+        let res = await Http.post('goods/overseas_goods_modify_status', {
+          'unionid': this.mList[idx].unionid,
+          'available': row.available,
+          'format': 'cors'
+        })
+        let data = res.data;
+        if (data.respcd === config.code.OK) {
+          this.$message.success(this.$t('diancan.Manage.statuschange'));
+        } else {
+          this.$message.error(data.resperr);
+        }
+      } catch (e) {
+        this.$message.error(this.$t('common.netError'))
       }
     },
     dlCtrl(uid) {
@@ -221,16 +225,20 @@ export default {
         type: 'warning',
         center: true
       }).then(async () => {
-        let res = await Http.post('goods/overseas_goods_delete', {
-          unionid: uid,
-          'format': 'cors'
-        })
-        let data = res.data;
-        if (data.respcd === config.code.OK) {
-          this.$message.success(this.$t('diancan.Manage.delok'));
-          this.getData()
-        } else {
-          this.$message.error(data.resperr);
+        try {
+          let res = await Http.post('goods/overseas_goods_delete', {
+            unionid: uid,
+            'format': 'cors'
+          })
+          let data = res.data;
+          if (data.respcd === config.code.OK) {
+            this.$message.success(this.$t('diancan.Manage.delok'));
+            this.getData()
+          } else {
+            this.$message.error(data.resperr);
+          }
+        } catch (e) {
+          this.$message.error(this.$t('common.netError'))
         }
       })
     },
@@ -247,7 +255,7 @@ export default {
       }
       this.loading = true;
       try {
-        let res = await Http.get(`${config.host}/goods/overseas_list`, {
+        let res = await Http.get(`/goods/overseas_list`, {
           start: this.currentPage - 1,
           length: this.pageSize,
           language: lang,
@@ -271,7 +279,6 @@ export default {
       this.pageSize = size;
       this.currentChange(1);
     },
-
     // 改变当前页
     currentChange(current) {
       if (!current && this.currentPage !== 1) {
@@ -283,7 +290,6 @@ export default {
         this.getData();
       }
     },
-
     // 上传之前
     avatarBefore(file) {
       // application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
@@ -296,13 +302,11 @@ export default {
         return false;
       }
     },
-
     // 开始上传
     startAvatarUpload() {
       this.state = false;
       this.uploadLoading = true;
     },
-
     // 上传成功
     avatarSuccess(res, file) {
       if (res.respcd === config.code.OK) {
@@ -319,14 +323,12 @@ export default {
         this.$message.error(res.resperr);
       }
     },
-
     // 上传失败
     avatarFailed(err, file) {
       this.uploadLoading = false;
       this.$message.error(err);
       console.log(file);
     },
-
     // 选择图片
     chooseFile(event, uid, index) {
       const { files } = event.target;
@@ -338,7 +340,6 @@ export default {
           this.$message.error(this.$t("diancan.Manage.uploadsize"));
           return
         }
-
         if (!file0type) {
           this.$message.error(this.$t("diancan.Manage.cannotupload"));
           return;
@@ -353,21 +354,6 @@ export default {
         this.uploadFile(file, uid);
       }
     },
-    // UploadImgToBase64 (file) {
-    //   return new Promise((resolve, reject) => {
-    //     const reader = new FileReader()
-    //     reader.readAsDataURL(file)
-    //     reader.onload = function () {  // 图片转base64完成后返回reader对象
-    //       resolve(reader)
-    //     }
-    //     reader.onerror = reject
-    //   })
-    // },
-    // async beforeUpload (file, uid, filename) {
-    //   let res = await this.UploadImgToBase64(file)
-    //   let img = res.result
-    //   this.uploadFile(img, uid, filename)
-    // },
     async uploadFile (img, uid) {
       let blobimg = new Blob([img])
       let form = new FormData()
@@ -380,171 +366,40 @@ export default {
       form.append('enuserid', 'EPeRaNEt') // for test
       this.upLoading = true
       const url = `${config.imgUpUrl}`
-      axios({
-        method: 'post',
-        url: url,
-        data: form,
-        config: {
-          headers: {
-            'Content-Type': 'multipart/form-data'
+      try {
+        axios({
+          method: 'post',
+          url: url,
+          data: form,
+          config: {
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            }
           }
-        }
-      }).then(async (_res) => {
-        _res = _res.data
-        if (_res.respcd === config.code.OK) {
-          let imgurl = _res.data.url
-          let result = await Http.post(`${config.host}/goods/overseas_setimg`, qs.stringify({
-            img: imgurl,
-            format: 'cors',
-            unionid: uid
-          }))
-          result = result.data
-          if (result.respcd === config.code.OK) {
-            this.$message.success(this.$t("diancan.Manage.addok"))
-            this.merchantData.list[this.index]["img"] = imgurl
+        }).then(async (_res) => {
+          _res = _res.data
+          if (_res.respcd === config.code.OK) {
+            let imgurl = _res.data.url
+            let result = await Http.post(`/goods/overseas_setimg`, qs.stringify({
+              img: imgurl,
+              format: 'cors',
+              unionid: uid
+            }))
+            result = result.data
+            if (result.respcd === config.code.OK) {
+              this.$message.success(this.$t("diancan.Manage.addok"))
+              this.merchantData.list[this.index]["img"] = imgurl
+            } else {
+              this.$message.error(this.$t("diancan.Manage.addfail") + result.resperr)
+            }
           } else {
-            this.$message.error(this.$t("diancan.Manage.addfail") + result.resperr)
+            this.$message.error(
+              this.$t("diancan.Manage.addfail") + _res.resperr
+            );
           }
-        } else {
-          this.$message.error(
-            this.$t("diancan.Manage.addfail") + _res.resperr
-          );
-        }
-      })
-    },
-    // dataURLtoBlob (dataurl) {
-    //   let arr = dataurl.split(',')
-    //   let mime = arr[0].match(/:(.*?);/)[1]
-    //   console.log('m---', mime)
-    //   let bstr = atob(arr[1])
-    //   let n = bstr.length
-    //   let u8arr = new Uint8Array(n)
-    //   while (n--) {
-    //     u8arr[n] = bstr.charCodeAt(n)
-    //   }
-    //   return new Blob([u8arr], { type: mime })
-    // },
-    // 图片上传，先获取token，key
-    // beforeUpload(file, uid) {
-    //   axios
-    //     .get(`https://openapi.qfpay.com/tool/v1/qiniu_token`, {
-    //       params: {
-    //         appcode: "40F12F92A55747B8AD759E05968A331D",
-    //         func: "upload",
-    //         format: "cors"
-    //       }
-    //     })
-    //     .then(res => {
-    //       let data = res.data;
-    //       if (data.respcd === config.code.OK) {
-    //         let da = data.data;
-    //         let info = {
-    //           token: da.token,
-    //           key: da.key,
-    //           domain: da.domain
-    //         };
-    //         this.uploadFile(info, file, uid);
-    //       } else {
-    //         this.$message.error(this.$t("diancan.Manage.qiniufail"));
-    //       }
-    //     })
-    //     .catch(() => {
-    //       this.$message.error(this.$t("diancan.Manage.qiniufail"));
-    //     });
-    // },
-
-    // 图片上传
-    // uploadFile(info, file, uid) {
-    //   let formData = new FormData();
-    //   formData.append("file", file);
-    //   formData.append("token", info.token);
-    //   formData.append("key", info.key);
-
-    //   axios
-    //     .post(`https://upload.qiniup.com/`, formData, {
-    //       withCredentials: false
-    //     })
-    //     .then(res => {
-    //       if (!res.data.key) {
-    //         this.$message.error(this.$t("diancan.Manage.failupload"));
-    //         return false;
-    //       } else {
-    //         let url = `${info.domain}/${res.data.key}`;
-
-    //         axios
-    //           .post(
-    //             `${config.host}/goods/setimg`,
-    //             qs.stringify({
-    //               unionid: uid,
-    //               img: url
-    //             })
-    //           )
-    //           .then(rp => {
-    //             let data = rp.data;
-    //             if (data.respcd === config.code.OK) {
-    //               this.$message.success(this.$t("diancan.Manage.addok"));
-    //               this.merchantData.list[this.index]["img"] = url;
-    //             } else {
-    //               this.$message.error(
-    //                 this.$t("diancan.Manage.addfail") + data.resperr
-    //               );
-    //             }
-    //           })
-    //           .catch(() => {
-    //             this.$message.error(this.$t("diancan.Manage.addfail"));
-    //           });
-    //       }
-    //     })
-    //     .catch(() => {
-    //       this.$message.error(this.$t("diancan.Manage.qiniuuploadfail"));
-    //     });
-    // },
-
-    // 点击下载
-    downMode() {
-      // this.getBlob(
-      //   "https://o-db.qfapi.com/meal_template/ProductManagementTemplate.xlsx"
-      // ).then(blob => {
-      //   this.saveAs(blob, this.$t("diancan.Manage.template") + ".xlsx");
-      // });
-    },
-
-    // 转换二进制流
-    getBlob(url) {
-      return new Promise(resolve => {
-        const xhr = new XMLHttpRequest();
-
-        xhr.open("GET", url, true);
-        xhr.responseType = "blob";
-        xhr.onload = () => {
-          if (xhr.status === 200) {
-            resolve(xhr.response);
-          }
-        };
-
-        xhr.send();
-      });
-    },
-
-    // 保存本地
-    saveAs(blob, filename) {
-      if (window.navigator.msSaveOrOpenBlob) {
-        navigator.msSaveBlob(blob, filename);
-      } else {
-        const link = document.createElement("a");
-        const body = document.querySelector("body");
-
-        link.href = window.URL.createObjectURL(blob);
-        link.download = filename;
-
-        // fix Firefox
-        link.style.display = "none";
-        body.appendChild(link);
-
-        link.click();
-        body.removeChild(link);
-
-        window.URL.revokeObjectURL(link.href);
+        })
+      } catch (e) {
+        this.$message.error(this.$t('common.netError'))
       }
     }
   }
@@ -632,6 +487,7 @@ export default {
 .dl-sty{
   color: #FF8100;
   font-size: 14px;
+  cursor: pointer;
 }
 .amt-sty{
   color: #262424;

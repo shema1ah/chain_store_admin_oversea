@@ -822,6 +822,9 @@
                       }, {
                         val: this.$t('diancan.Manage.manage'), // 桌台二维码
                         pathname: 'merchandise'
+                      }, {
+                        val: this.$t('diancan.Rank.index'), // 商品排序
+                        pathname: 'rank'
                       }]
                     },
                     {

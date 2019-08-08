@@ -617,7 +617,10 @@ exports.default = {
       'rule2': '起始桌號必須小於結尾桌號',
       'rule3': '單次最多生成50個二維碼',
       'rule4': '區域名稱限定10個字符以內',
-      'rule5': '桌號必須為長度在四位以內的非零數字'
+      'rule5': '桌號必須為長度在四位以內的非零數字',
+      'idermsg': '獲取商戶id失敗',
+      'qrgenerate': '正在生成...',
+      'generalert': '生成數量較多時可能需要較長時間，請稍候...'
     },
     "Manage": {
       "manage": "商品管理",
@@ -664,6 +667,21 @@ exports.default = {
       'confirm2': '確認',
       'confirm3': '取消',
       'uploadtitle': '未選擇任何文件'
+    },
+    "Rank": {
+      "index": "商品排序",
+      "category": "商品分類",
+      "name": "商品名稱",
+      "sort": "排序",
+      "op": "操作",
+      "top": "置顶",
+      "up": "上移",
+      "down": "下移",
+      "rank": "商品排序",
+      "total": "共{0}項",
+      "save": "保存",
+      "cancel": "取消",
+      "saved": "保存成功"
     }
   }
 }

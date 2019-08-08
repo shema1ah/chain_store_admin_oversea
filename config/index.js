@@ -35,6 +35,7 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
+<<<<<<< HEAD
       // '/api': {
       //   target: 'https://openapi.qa.qfpay.net',
       //   //target: 'http://172.100.108.185:9099',
@@ -43,6 +44,16 @@ module.exports = {
       //     '^/api': '/'
       //   }
       // }
+=======
+      '/api': {
+        target: 'https://test-sh-db.qfapi.com',
+        // target: 'https://yyk.qa.qfpay.net',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/api': '/'
+        }
+      }
+>>>>>>> 4d05cdb... .
     },
     // CSS Sourcemaps off by default because relative paths are "buggy"
     // with this option, according to the CSS-Loader README

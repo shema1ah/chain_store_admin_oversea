@@ -71,7 +71,6 @@ module.exports = {
           name: '[name].[hash:7].[ext]',
           publicPath: '../../',
           outputPath: utils.assetsPath('fonts/')
-
         }
       }
     ]
