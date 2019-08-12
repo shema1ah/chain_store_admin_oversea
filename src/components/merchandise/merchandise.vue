@@ -19,7 +19,7 @@
             <span>1</span>
           </p>
           <p class="step-text">{{$t('diancan.Manage.step1')}}</p>
-          <a class="banner-btn" href="https://o-db.qfapi.com/meal_template/ProductManagementTemplate.xlsx">
+          <a class="banner-btn" :href="oHost + '/meal_template/ProductManagementTemplate.xlsx'">
             <i class="icon-download"></i>
             <span class="banner-btn__desc">{{$t('diancan.Manage.download')}}</span>
           </a>
@@ -188,7 +188,8 @@ export default {
       },
       tableLang: localStorage.getItem('table-lang') || "en",
       mList: [],
-      role: Store.get("role") || {}
+      role: Store.get("role") || {},
+      oHost: `${config.oHost}`
     };
   },
   computed: {
