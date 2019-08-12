@@ -182,7 +182,7 @@
             this.$store.state.role = val;
             Store.set('role', val);
             Store.set('flag', false);
-
+            
             // 进行是否是首次登录的判断，返回need_change_pwd字段，1为需要重置，0为不需要重置
             let needChangePwd = data.data.need_change_pwd;
             if(needChangePwd) {

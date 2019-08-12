@@ -23,11 +23,11 @@
            uri = {
 
             // host: `https://sh.${u}`,
-            host: `https://sh-kh.qfapi.com`,
+            host: `https://test-sh-db.qfapi.com`,
             //  host: `http://172.100.108.211:9099`,
 
             // oHost: `https://o.${u}`,
-            oHost: `https://o-kh.qfapi.com`,
+            oHost: `https://test-o-db.qfapi.com`,
             // oHost: `http://172.100.108.190:7200`,
 
             // payHost: `https://openapi.${u}`,
@@ -43,7 +43,8 @@
             payHost: `${pro}//${u.replace('sh', 'openapi')}`,
             uploadUrl: `${pro}//${u}/goods/overseas_upload`,
             downloadUrl: `${pro}//${u}/goods/overseas_error_download`,
-            imgUpUrl: `${pro}//${u.replace('sh', 'o')}/mchnt/tool/upfile`
+            imgUpUrl: `${pro}//${u.replace('sh', 'o')}/mchnt/tool/upfile`,
+            downzipUrl: `${pro}//${u}/goods/overseas_downlaod_QRcode`
           }
         }
         Object.assign(config, uri);

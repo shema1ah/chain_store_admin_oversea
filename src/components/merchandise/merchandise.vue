@@ -121,13 +121,13 @@
                     </el-button>
                   </template>
                 </el-table-column>
-                <el-table-column :label="$t('diancan.Manage.price')" min-width="150" prop="price">
+                <el-table-column :label="$t('diancan.Manage.price', [role.currency])" min-width="150" prop="price">
                   <template slot-scope="scope">
                     <span class="amt-sty">{{scope.row.txamt}}</span>
                     <span class="line-th">{{scope.row.origamt}}</span>
                   </template>
                 </el-table-column>
-                <el-table-column :label="$t('diancan.Manage.spec')" min-width="150" prop="spec"></el-table-column>
+                <el-table-column :label="$t('diancan.Manage.spec', [role.currency])" min-width="150" prop="spec"></el-table-column>
                 <el-table-column :label="$t('diancan.Manage.attr')" min-width="150" prop="attr"></el-table-column>
                 <el-table-column :label="$t('diancan.Manage.status')" min-width="150">
                   <template slot-scope="scope">
@@ -166,6 +166,7 @@ import axios from "axios";
 import config from "config";
 import qs from "qs";
 import Http from "../../http";
+import Store from '../../common/js/store'
 
 export default {
   data() {
@@ -186,7 +187,8 @@ export default {
         "zh-CN": "中文菜谱"
       },
       tableLang: localStorage.getItem('table-lang') || "en",
-      mList: []
+      mList: [],
+      role: Store.get("role") || {}
     };
   },
   computed: {

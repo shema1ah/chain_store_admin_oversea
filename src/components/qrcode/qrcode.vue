@@ -68,7 +68,7 @@
               </div>
             </el-col>
           </el-row>
-          <img id="bg" src="/static/img/bgnew.png" style="display:none">
+          <img id="bg" src="/static/img/bgsg.png" style="display:none">
           <!-- <img id="demobg" src="/static/img/demobg.png" style="display:none"> -->
           <div id="tableQrcodeContainer" style="display:none"></div>
           <div id="qrcodeContainer" style="display:none"></div>
@@ -477,7 +477,7 @@ export default {
     }
   }
   #tablePreview {
-    background: url('/static/img/bgnew.png') no-repeat;
+    background: url('/static/img/bgsg.png') no-repeat;
     background-size: 100% auto;
     width: 250px;
     height: 350px;
