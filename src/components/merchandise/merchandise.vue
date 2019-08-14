@@ -110,7 +110,10 @@
                 <el-table-column :label="$t('diancan.Manage.cate')" prop="cate_name" min-width="150"></el-table-column>
                 <el-table-column :label="$t('diancan.Manage.img')" min-width="150">
                   <template slot-scope="scope">
-                    <img v-if="scope.row.img" :src="scope.row.img" alt width="44" height="44">
+                    <div v-if="scope.row.img" class="upload-img">
+                      <img :src="scope.row.img" alt width="44" height="44">
+                      <input type="file" @change="chooseFile($event, scope.row.unionid, scope.$index)" accept=".png, .jpeg, .jpg" title="">
+                    </div>
                     <el-button v-else size="small" type="primary" class="upload-img">
                       {{$t('diancan.Manage.upimg')}}
                       <input
