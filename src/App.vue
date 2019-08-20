@@ -22,16 +22,16 @@
           //  u = 'qa.qfpay.net';
            uri = {
 
-            // host: `https://sh.${u}`,
-            host: `https://test-sh-db.qfapi.com`,
+            host: `https://sh-sg.qfapi.com`,
+            // host: `https://test-sh-db.qfapi.com`,
             //  host: `http://172.100.108.211:9099`,
 
-            // oHost: `https://o.${u}`,
-            oHost: `https://test-o-db.qfapi.com`,
+            oHost: `https://o-sg.qfapi.com`,
+            // oHost: `https://test-o-db.qfapi.com`,
             // oHost: `http://172.100.108.190:7200`,
 
             // payHost: `https://openapi.${u}`,
-            payHost: `https://openapi-kh.qfapi.com`,
+            payHost: `https://openapi-sg.qfapi.com`,
             uploadUrl: `${pro}//${u}/goods/overseas_upload`,
             downloadUrl: `${pro}//${u}/goods/overseas_error_download`,
             imgUpUrl: `https://test-o-db.qfapi.com/mchnt/tool/upfile`

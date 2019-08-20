@@ -134,7 +134,8 @@
           dateRangeValue: '',
           choosetime: '1'
         },
-        settleData: {}
+        settleData: {},
+        url: ''
       };
     },
 
@@ -163,7 +164,6 @@
     },
 
     created() {
-      console.log(2222);
       this.changeTime('1');
       this.getType();
     },
@@ -188,8 +188,9 @@
             if(data.respcd === config.code.OK) {
               this.typeList = data.data || [];
               this.form.remit_type = (this.typeList[0] || {}).remit_type_id;
-
-              this.getSettleData();
+              this.getUrl().then((res) => {
+                this.getSettleData(res);
+              });
             } else {
               this.$message.error(data.resperr);
             }
@@ -201,18 +202,34 @@
 
       // 根据清算类型拿url
       getUrl() {
-        let url, type = this.form.remit_type;
-        for(let list of this.typeList) {
-          if(list['remit_type_id'] === type) {
-            if (list['remit_type']) {
-              url = 'hkd';
-            } else {
-              url = 'overseas';
+        return new Promise((resolve, reject) => {
+          let url, type = this.form.remit_type;
+          for(let list of this.typeList) {
+            if(list['remit_type_id'] === type) {
+                if (list['remit_type']) {
+                  url = 'hkd';
+                } else {
+                  url = 'overseas';
+                }
+                this.url = url;
+                resolve(url);
             }
           }
-        }
-          return url;
+        })
       },
+      // getUrl() {
+      //   let url, type = this.form.remit_type;
+      //   for(let list of this.typeList) {
+      //     if(list['remit_type_id'] === type) {
+      //       if (list['remit_type']) {
+      //         url = 'hkd';
+      //       } else {
+      //         url = 'overseas';
+      //       }
+      //     }
+      //   }
+      //     return url;
+      // },
 
       // 下载全部
       downAll() {
@@ -273,10 +290,12 @@
       },
 
       // 获取数据
-      getSettleData() {
+      getSettleData(data) {
+
+        let url = data || this.url;
         if(!this.loading) {
           this.loading = true;
-          axios.get(`${config.oHost}/fund/v1/${this.getUrl()}/check`, {
+          axios.get(`${config.oHost}/fund/v1/${url}/check`, {
             params: this.basicParams
           }).then((res) => {
             this.loading = false;
@@ -301,7 +320,7 @@
         if (current) {
           this.currentPage = current;
         }
-
+    
         this.getSettleData();
       },
 
