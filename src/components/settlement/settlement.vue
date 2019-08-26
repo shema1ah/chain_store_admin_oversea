@@ -241,7 +241,7 @@
           this.$message.error(this.$t('settlement.msg.m3'));
         }else {
           let a = document.createElement('a');
-          let downUrl = `${config.oHost}/fund/v1/${this.getUrl()}/check/download/all?${qs.stringify(this.basicParams)}`;
+          let downUrl = `${config.oHost}/fund/v1/${this.url}/check/download/all?${qs.stringify(this.basicParams)}`;
           a.setAttribute('download', 'true');
           a.setAttribute('href', downUrl);
           a.setAttribute('target', '_self');
@@ -257,7 +257,7 @@
           lang: this.lang,
           format: 'cors'
         };
-        e.target.parentNode.href = `${config.oHost}/fund/v1/${this.getUrl()}/check/download?${qs.stringify(downParams)}`
+        e.target.parentNode.href = `${config.oHost}/fund/v1/${this.url}/check/download?${qs.stringify(downParams)}`
       },
 
       // 选择时间
