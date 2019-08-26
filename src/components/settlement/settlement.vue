@@ -135,7 +135,7 @@
           choosetime: '1'
         },
         settleData: {},
-        url: ''
+        url: 'overseas'
       };
     },
 
