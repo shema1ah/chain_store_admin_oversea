@@ -171,10 +171,6 @@
       setTimeout(() => {
         this.createDialog();
       }, 2000);
-      
-      setInterval(() => {
-        console.log(this.form.remit_type);
-      }, 2000);
     },
 
     methods: {
