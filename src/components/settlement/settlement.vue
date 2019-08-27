@@ -134,8 +134,7 @@
           dateRangeValue: '',
           choosetime: '1'
         },
-        settleData: {},
-        url: 'overseas'
+        settleData: {}
       };
     },
 
@@ -172,6 +171,10 @@
       setTimeout(() => {
         this.createDialog();
       }, 2000);
+      
+      setInterval(() => {
+        console.log(this.form.remit_type);
+      }, 2000);
     },
 
     methods: {
@@ -188,9 +191,10 @@
             if(data.respcd === config.code.OK) {
               this.typeList = data.data || [];
               this.form.remit_type = (this.typeList[0] || {}).remit_type_id;
-              this.getUrl().then((res) => {
-                this.getSettleData(res);
-              });
+
+              this.getSettleData();
+
+
             } else {
               this.$message.error(data.resperr);
             }
@@ -202,34 +206,18 @@
 
       // 根据清算类型拿url
       getUrl() {
-        return new Promise((resolve, reject) => {
-          let url, type = this.form.remit_type;
-          for(let list of this.typeList) {
-            if(list['remit_type_id'] === type) {
-                if (list['remit_type']) {
-                  url = 'hkd';
-                } else {
-                  url = 'overseas';
-                }
-                this.url = url;
-                resolve(url);
+        let url, type = this.form.remit_type;
+        for(let list of this.typeList) {
+          if(list['remit_type_id'] === type) {
+            if (list['remit_type']) {
+              url = 'hkd';
+            } else {
+              url = 'overseas';
             }
           }
-        })
+        }
+          return url;
       },
-      // getUrl() {
-      //   let url, type = this.form.remit_type;
-      //   for(let list of this.typeList) {
-      //     if(list['remit_type_id'] === type) {
-      //       if (list['remit_type']) {
-      //         url = 'hkd';
-      //       } else {
-      //         url = 'overseas';
-      //       }
-      //     }
-      //   }
-      //     return url;
-      // },
 
       // 下载全部
       downAll() {
@@ -241,7 +229,7 @@
           this.$message.error(this.$t('settlement.msg.m3'));
         }else {
           let a = document.createElement('a');
-          let downUrl = `${config.oHost}/fund/v1/${this.url}/check/download/all?${qs.stringify(this.basicParams)}`;
+          let downUrl = `${config.oHost}/fund/v1/${this.getUrl()}/check/download/all?${qs.stringify(this.basicParams)}`;
           a.setAttribute('download', 'true');
           a.setAttribute('href', downUrl);
           a.setAttribute('target', '_self');
@@ -257,7 +245,7 @@
           lang: this.lang,
           format: 'cors'
         };
-        e.target.parentNode.href = `${config.oHost}/fund/v1/${this.url}/check/download?${qs.stringify(downParams)}`
+        e.target.parentNode.href = `${config.oHost}/fund/v1/${this.getUrl()}/check/download?${qs.stringify(downParams)}`
       },
 
       // 选择时间
@@ -290,12 +278,10 @@
       },
 
       // 获取数据
-      getSettleData(data) {
-
-        let url = data || this.url;
+      getSettleData() {
         if(!this.loading) {
           this.loading = true;
-          axios.get(`${config.oHost}/fund/v1/${url}/check`, {
+          axios.get(`${config.oHost}/fund/v1/${this.getUrl()}/check`, {
             params: this.basicParams
           }).then((res) => {
             this.loading = false;
