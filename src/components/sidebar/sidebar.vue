@@ -49,7 +49,7 @@
           {label: 'English', value: 'en'},
           {label: '繁體中文', value: 'zh-TW'},
           {label: '简体中文', value: 'zh-CN'}
-          ]
+        ]
       };
     },
 
@@ -61,6 +61,22 @@
 
     created() {
       this.getNav();
+      if (this.role.diancan && !this.role.isCashier) {
+        this.navs.splice(-1, 0, {
+          val: this.$t('diancan.Qr.smart'), // 智慧餐厅
+          subnav: 'merchant',
+          sub: [{
+            val: this.$t('diancan.Qr.qr'), // 桌台二维码
+            pathname: 'qrcode'
+          }, {
+            val: this.$t('diancan.Manage.manage'), // 桌台二维码
+            pathname: 'merchandise'
+          }, {
+            val: this.$t('diancan.Rank.index'), // 商品排序
+            pathname: 'rank'
+          }]
+        })
+      }
     },
     computed: {
       preAuthA() {
@@ -75,7 +91,6 @@
       router(router) {
         return `/${router}`;
       },
-
       toggle(val) {
         this.isDark[val] = !this.isDark[val];
       },

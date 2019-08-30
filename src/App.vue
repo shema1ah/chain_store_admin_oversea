@@ -26,8 +26,8 @@
             // host: `https://test-sh-db.qfapi.com`,
             //  host: `http://172.100.108.92:9099`,
 
-            oHost: `https://o-sg.qfapi.com`,
-            // oHost: `https://test-o-db.qfapi.com`,
+            // oHost: `https://o-sg.qfapi.com`,
+            oHost: `https://test-o-sg.qfapi.com`,
             // oHost: `http://172.100.108.190:7200`,
 
             // payHost: `https://openapi.${u}`,
