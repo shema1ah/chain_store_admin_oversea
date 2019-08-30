@@ -26,9 +26,9 @@ import addSurcharge from 'components/addSurcharge/addSurcharge'
 import preAuth from 'components/preAuth/preAuth'
 import newMember from 'components/newMember/newMember'
 import preAuthDetail from 'components/preAuthDetail/preAuthDetail'
-import merchandise from 'components/merchandise/merchandise'
-import qrcode from 'components/qrcode/qrcode'
-import rank from 'components/rank/rank'
+import smartMerchant from 'components/merchandise/merchandise'
+import smartQrcode from 'components/qrcode/qrcode'
+import smartRank from 'components/rank/rank'
 
 Vue.use(Router)
 
@@ -171,19 +171,19 @@ export default new Router({
           component: contact
         },
         {
-          path: 'merchandise',
-          name: 'merchandise',
-          component: merchandise
+          path: 'smartMerchant',
+          name: 'smartMerchant',
+          component: smartMerchant
         },
         {
-          path: 'qrcode',
-          name: 'qrcode',
-          component: qrcode
+          path: 'smartQrcode',
+          name: 'smartQrcode',
+          component: smartQrcode
         },
         {
-          path: 'rank',
-          name: 'rank',
-          component: rank
+          path: 'smartRank',
+          name: 'smartRank',
+          component: smartRank
         }
       ]
     }

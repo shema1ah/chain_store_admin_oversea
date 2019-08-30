@@ -24,7 +24,7 @@
 
             host: `https://sh-sg.qfapi.com`,
             // host: `https://test-sh-db.qfapi.com`,
-            //  host: `http://172.100.108.211:9099`,
+            //  host: `http://172.100.108.92:9099`,
 
             oHost: `https://o-sg.qfapi.com`,
             // oHost: `https://test-o-db.qfapi.com`,
