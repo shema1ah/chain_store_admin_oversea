@@ -61,22 +61,6 @@
 
     created() {
       this.getNav();
-      // if (this.role.diancan && !this.role.isCashier) {
-      //   this.navs.splice(-1, 0, {
-      //     val: this.$t('diancan.Qr.smart'), // 智慧餐厅
-      //     subnav: 'merchant',
-      //     sub: [{
-      //       val: this.$t('diancan.Qr.qr'), // 桌台二维码
-      //       pathname: 'qrcode'
-      //     }, {
-      //       val: this.$t('diancan.Manage.manage'), // 桌台二维码
-      //       pathname: 'merchandise'
-      //     }, {
-      //       val: this.$t('diancan.Rank.index'), // 商品排序
-      //       pathname: 'rank'
-      //     }]
-      //   })
-      // }
     },
     computed: {
       preAuthA() {
@@ -208,28 +192,28 @@
     overflow: hidden;
   }
   .collpase-enter-active {
-    animation: expand-enter .3s cubic-bezier(.33,.48,.74,.86);
+    animation: expand-enter .4s cubic-bezier(.33,.48,.74,.86);
   }
   .collpase-leave-active {
-    animation: expand-leave .3s cubic-bezier(.33,.48,.74,.86);
+    animation: expand-leave .4s cubic-bezier(.33,.48,.74,.86);
   }
 
   @keyframes expand-enter {
     0% {
-      height: 0px;
+      max-height: 0px;
     }
 
     100% {
-      height: 144px;
+      max-height: 192px;
     }
   }
   @keyframes expand-leave {
     0% {
-      height: 144px;
+      max-height: 192px;
     }
 
     100% {
-      height: 0px;
+      max-height: 0px;
     }
   }
   .popperBg {
