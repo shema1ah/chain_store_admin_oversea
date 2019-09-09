@@ -8,6 +8,7 @@
     "start": "NODE_ENV=production node build/prod-server.js production",
     "dev": "node build/dev-server.js development",
     "build": "node build/build.js production",
+    "build_test": "node build/build.js production",
     "lint": "eslint --ext .js,.vue src"
   },
   "dependencies": {
@@ -17,6 +18,7 @@
     "event-source-polyfill": "0.0.9",
     "qfpay-element-ui": "^1.0.4",
     "qrcode": "^0.9.0",
+    "qs": "^6.7.0",
     "reset.css": "^2.0.2",
     "vue": "^2.1.10",
     "vue-i18n": "^5.0.3",

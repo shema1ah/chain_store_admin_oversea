@@ -7,6 +7,7 @@ var baseWebpackConfig = require('./webpack.base.conf')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
 var OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
+const packagejson = require("../package.json")
 
 var webpackConfig = merge(baseWebpackConfig, {
   module: {
@@ -58,26 +59,49 @@ var webpackConfig = merge(baseWebpackConfig, {
       // necessary to consistently work with multiple chunks via CommonsChunkPlugin
       chunksSortMode: 'dependency'
     }),
-    // split vendor js into its own file
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendor',
-      minChunks: function (module, count) {
+     // 将element-ui文件单独打包
+     new webpack.optimize.CommonsChunkPlugin({
+      name: 'element-ui',
+      minChunks: function (module) {
         // any required modules inside node_modules are extracted to vendor
-        return (
-          module.resource &&
-          /\.js$/.test(module.resource) &&
-          module.resource.indexOf(
-            path.join(__dirname, '../node_modules')
-          ) === 0
-        )
+        for (const key in packagejson.dependencies) {
+          if (module.context && module.context.includes(key)) {
+            return true
+          }
+        }
+      }
+    }),
+    // 将其余第三方文件单独打包
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'vendor', //新打包文件名
+      chunks: ['element-ui'], //拆分模块名
+      minChunks: function (module) {
+        return !module.context.includes("qfpay-element-ui")
+      }
+    }),
+    // 将vue相关文件单独打包
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'vue', //新打包文件名
+      chunks: ['vendor'], //拆分模块名
+      minChunks: function (module) {
+        return module.context.includes("vue")
       }
     }),
     // extract webpack runtime and module manifest to its own file in order to
     // prevent vendor hash from being updated whenever app bundle is updated
     new webpack.optimize.CommonsChunkPlugin({
       name: 'manifest',
-      chunks: ['vendor']
-    })
+      minChunks: Infinity
+    }),
+    // This instance extracts shared chunks from code splitted chunks and bundles them
+    // in a separate chunk, similar to the vendor chunk
+    // see: https://webpack.js.org/plugins/commons-chunk-plugin/#extra-async-commons-chunk
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'app',
+      async: 'vendor-async',
+      children: true,
+      minChunks: 3
+    }),
   ]
 })
 

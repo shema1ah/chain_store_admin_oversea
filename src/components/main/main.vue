@@ -96,7 +96,7 @@ export default {
             // 本地调试或者刷新页面时设置role
             let val = getRole(data.data);
             Store.set('role', val);
-
+            this.$store.state.role = val;
             // 收银员不需要店铺列表
             if(!val.isCashier) {
               this.$store.dispatch('getShopList');

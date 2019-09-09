@@ -117,6 +117,20 @@ Vue.prototype.$message = Message
 Vue.prototype.$confirm = MessageBox.confirm
 Vue.prototype.$prompt = MessageBox.prompt
 
+// table滚动刷新
+Vue.directive('loadmore', {
+  bind(el, binding) {
+    const selectWrap = el.querySelector('.el-table__body-wrapper')
+    selectWrap.addEventListener('scroll', function() {
+      let sign = 100
+      const scrollDistance = this.scrollHeight - this.scrollTop - this.clientHeight
+      if (scrollDistance <= sign) {
+        binding.value()
+      }
+    })
+  }
+})
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

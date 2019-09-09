@@ -143,7 +143,7 @@
         } else if(this.form.pass && this.form.pass !== val) {
           cb(this.$t('shopmng.dialog.msg.m3'));
         } else {
-          console.log(val);
+          // console.log(val);
           cb();
         }
       };

@@ -163,7 +163,6 @@
     },
 
     created() {
-      console.log(2222);
       this.changeTime('1');
       this.getType();
     },
@@ -190,6 +189,8 @@
               this.form.remit_type = (this.typeList[0] || {}).remit_type_id;
 
               this.getSettleData();
+
+
             } else {
               this.$message.error(data.resperr);
             }
@@ -301,7 +302,7 @@
         if (current) {
           this.currentPage = current;
         }
-
+    
         this.getSettleData();
       },
 

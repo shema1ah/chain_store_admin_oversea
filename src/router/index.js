@@ -23,6 +23,12 @@ import emailSetting from 'components/emailSetting/emailSetting'
 import passSetting from 'components/passSetting/passSetting'
 import surcharge from 'components/surchargeSetting/surchargeSetting'
 import addSurcharge from 'components/addSurcharge/addSurcharge'
+import preAuth from 'components/preAuth/preAuth'
+import newMember from 'components/newMember/newMember'
+import preAuthDetail from 'components/preAuthDetail/preAuthDetail'
+import smartMerchant from 'components/merchandise/merchandise'
+import smartQrcode from 'components/qrcode/qrcode'
+import smartRank from 'components/rank/rank'
 
 Vue.use(Router)
 
@@ -88,6 +94,21 @@ export default new Router({
           component: checking
         },
         {
+          path: 'preAuth',
+          component: newMember,
+          children: [
+            {
+              path: '',
+              component: preAuth
+            },
+            {
+              path: 'preAuthDetail',
+              name: 'preAuthDetail',
+              component: preAuthDetail
+            }
+          ]
+        },
+        {
           path: 'chainmanage',
           component: chainmanage,
         },
@@ -148,6 +169,21 @@ export default new Router({
           path: 'contact',
           name: 'contact',
           component: contact
+        },
+        {
+          path: 'smartMerchant',
+          name: 'smartMerchant',
+          component: smartMerchant
+        },
+        {
+          path: 'smartQrcode',
+          name: 'smartQrcode',
+          component: smartQrcode
+        },
+        {
+          path: 'smartRank',
+          name: 'smartRank',
+          component: smartRank
         }
       ]
     }

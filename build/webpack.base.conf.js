@@ -59,7 +59,7 @@ module.exports = {
         query: {
           limit: 10000,
           name: '[name].[hash:7].[ext]',
-          publicPath: '../../',
+          publicPath: '/',
           outputPath: utils.assetsPath('img/')
         }
       },
@@ -71,7 +71,6 @@ module.exports = {
           name: '[name].[hash:7].[ext]',
           publicPath: '../../',
           outputPath: utils.assetsPath('fonts/')
-
         }
       }
     ]
