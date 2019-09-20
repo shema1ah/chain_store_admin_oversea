@@ -39,7 +39,7 @@
           </div> -->
 
           <div class="btn-group">
-            <div class="panel-header-btn__associate" v-if="role.country === 'TH'" @click="editShopDown" :style="lang === 'en'?'width:200px':''">
+            <div class="panel-header-btn__associate" v-if="'THAR'.indexOf(role.country)>-1" @click="editShopDown" :style="lang === 'en'?'width:200px':''">
               <i class="icon-download"></i>
               {{$t('shopmng.panel.btn.listDown')}}
             </div>
@@ -75,7 +75,7 @@
           <el-table-column
             :label="$t('shopmng.panel.table.op')">
             <template slot-scope="scope">
-              <el-button type="text" size="small" class="el-button__fix" @click="showDetail(scope)">{{$t('shopmng.panel.table.detail')}}</el-button>
+              <el-button type="text" size="small" class="el-button__fix" @click="showDetail(scope)" :loading="btnloading">{{$t('shopmng.panel.table.detail')}}</el-button>
               <!--<el-button type="text" size="small" class="el-button__fix" @click="unbind(scope)">解绑此分店</el-button>-->
               <el-dropdown>
                 <span class="el-dropdown-link el-dropdown-link__fix">
@@ -283,6 +283,7 @@
         pageSize: 10,
         visible: false,
         loading: false,
+        btnloading: false,
         iconShow: false,
         isShowDetail: false,
         showChangePass: false,
@@ -666,6 +667,7 @@
       },
 
       showDetail(scope) {
+        this.btnloading = true;
         axios.get(`${config.host}/merchant/info`, {
           params: {
             userid: scope.row.uid,
@@ -681,6 +683,7 @@
             } else {
               this.$message.error(data.respmsg);
             }
+            this.btnloading = false;
           });
       }
     }
