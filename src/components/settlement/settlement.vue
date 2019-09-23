@@ -42,7 +42,7 @@
           </div>
           <div class="panel-select-group" style="height: 37px">
             <div class="panel-header-btn-group">
-              <div class="panel-header-btn panel-btn-download-green" @click="downAll">
+              <div class="panel-header-btn panel-btn-download-green" @click="downAll" v-if="!('AR'.indexOf(role.country) > -1)">
                 <span class="icon-download"></span>
                 <span>{{ $t('settlement.panel.btn.downAll') }}</span>
               </div>
@@ -112,12 +112,14 @@
   import axios from 'axios';
   import config from 'config';
   import qs from 'qs';
+  import Store from '../../common/js/store';
   import {formatDate} from '../../common/js/util';
 
   export default {
     data() {
       return {
         lang: config.lang,
+        role: Store.get('role') || {},
         downUrl: 'javascript:;',
         pageSize: 10,
         currentPage: 1,
