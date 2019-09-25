@@ -227,13 +227,7 @@
         }else if(!this.form.remit_type) {
           this.$message.error(this.$t('settlement.msg.m3'));
         }else {
-          let a = document.createElement('a');
-          let downUrl = `${config.oHost}/fund/v1/${this.activeUrl}/check/download/all?${qs.stringify(this.basicParams)}`;
-          a.setAttribute('download', 'true');
-          a.setAttribute('href', downUrl);
-          a.setAttribute('target', '_self');
-          document.body.appendChild(a);
-          a.click();
+          window.location.href = `${config.oHost}/fund/v1/${this.activeUrl}/check/download/all?${qs.stringify(this.basicParams)}`;
         }
       },
 
