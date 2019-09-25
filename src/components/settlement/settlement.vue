@@ -136,7 +136,8 @@
           dateRangeValue: '',
           choosetime: '1'
         },
-        settleData: {}
+        settleData: {},
+        activeUrl: ''
       };
     },
 
@@ -189,10 +190,10 @@
             if(data.respcd === config.code.OK) {
               this.typeList = data.data || [];
               this.form.remit_type = (this.typeList[0] || {}).remit_type_id;
-
-              this.getSettleData();
-
-
+              this.activeUrl = this.getUrl()
+              if (this.activeUrl) {
+                this.getSettleData();
+              }
             } else {
               this.$message.error(data.resperr);
             }
@@ -227,7 +228,7 @@
           this.$message.error(this.$t('settlement.msg.m3'));
         }else {
           let a = document.createElement('a');
-          let downUrl = `${config.oHost}/fund/v1/${this.getUrl()}/check/download/all?${qs.stringify(this.basicParams)}`;
+          let downUrl = `${config.oHost}/fund/v1/${this.activeUrl}/check/download/all?${qs.stringify(this.basicParams)}`;
           a.setAttribute('download', 'true');
           a.setAttribute('href', downUrl);
           a.setAttribute('target', '_self');
@@ -243,7 +244,7 @@
           lang: this.lang,
           format: 'cors'
         };
-        e.target.parentNode.href = `${config.oHost}/fund/v1/${this.getUrl()}/check/download?${qs.stringify(downParams)}`
+        e.target.parentNode.href = `${config.oHost}/fund/v1/${this.activeUrl}/check/download?${qs.stringify(downParams)}`
       },
 
       // 选择时间
@@ -279,20 +280,25 @@
       getSettleData() {
         if(!this.loading) {
           this.loading = true;
-          axios.get(`${config.oHost}/fund/v1/${this.getUrl()}/check`, {
-            params: this.basicParams
-          }).then((res) => {
+            if (this.activeUrl) {
+            axios.get(`${config.oHost}/fund/v1/${this.activeUrl}/check`, {
+              params: this.basicParams
+            }).then((res) => {
+              this.loading = false;
+              let data = res.data;
+              if(data.respcd === config.code.OK) {
+                this.settleData = data.data;
+              } else {
+                this.$message.error(data.resperr);
+              }
+            }).catch(() => {
+              this.loading = false;
+              this.$message.error(this.$t('settlement.msg.m1'));
+            });
+          }else {
             this.loading = false;
-            let data = res.data;
-            if(data.respcd === config.code.OK) {
-              this.settleData = data.data;
-            } else {
-              this.$message.error(data.resperr);
-            }
-          }).catch(() => {
-            this.loading = false;
-            this.$message.error(this.$t('settlement.msg.m1'));
-          });
+            this.$message.error(this.$t('settlement.msg.m4'));
+          }
         }
       },
 
