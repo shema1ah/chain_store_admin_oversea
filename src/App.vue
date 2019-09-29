@@ -22,19 +22,19 @@
           //  u = 'qa.qfpay.net';
            uri = {
 
-            host: `https://test-sh-db.qfapi.com`,
+            host: `https://sh-hk.qfapi.com`,
             // host: `https://test-sh-db.qfapi.com`,
             //  host: `http://172.100.108.92:9099`,
 
             // oHost: `https://o-sg.qfapi.com`,
-            oHost: `https://test-o-db.qfapi.com`,
+            oHost: `https://o-hk.qfapi.com`,
             // oHost: `http://172.100.108.190:7200`,
 
             // payHost: `https://openapi.${u}`,
-            payHost: `https://openapi-sg.qfapi.com`,
+            payHost: `https://openapi-hk.qfapi.com`,
             uploadUrl: `${pro}//${u}/goods/overseas_upload`,
             downloadUrl: `${pro}//${u}/goods/overseas_error_download`,
-            imgUpUrl: `https://test-o-db.qfapi.com/mchnt/tool/upfile`
+            imgUpUrl: `https://o-hk.qfapi.com/mchnt/tool/upfile`
            };
         } else {
           uri = {

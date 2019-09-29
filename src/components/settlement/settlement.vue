@@ -34,7 +34,7 @@
             <div class="panel-select__wrapper">
               <span class="panel-select__desc">{{$t('settlement.panel.type')}}</span>
               <el-form-item prop="remit_type">
-                <el-radio-group v-model="form.remit_type">
+                <el-radio-group v-model="form.remit_type" @change="changeRemitType">
                   <el-radio-button v-for="type in typeList" :label="type.remit_type_id" :key="type.remit_type_id">{{ type.code }}</el-radio-button>
                 </el-radio-group>
               </el-form-item>
@@ -202,7 +202,9 @@
           this.$message.error(this.$t('common.netError'));
         });
       },
-
+      changeRemitType(val) {
+        this.activeUrl = this.getUrl()
+      },
       // 根据清算类型拿url
       getUrl() {
         let url, type = this.form.remit_type;
