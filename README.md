@@ -20,3 +20,7 @@ npm run build
 # kh属于柬埔寨环境分支,tag用kH开头.
 
 For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+
+## 注意
+
+前端显示版本号(sidebar组件里)：每次迭代前端手动更新，根据需求定版本号，不是前端仓库tag

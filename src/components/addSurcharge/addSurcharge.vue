@@ -142,7 +142,7 @@
       addRyles() {
         let [list, lists, rules] = [[], {}, {}];
         let checkValue = (rule, val, cb) => {
-          if(/^([1-9]{1}[0-9]?|0|100)$/.test(val)) {
+          if(/^([1-9]{1}[0-9]?|0|100|([0-9]{1}[0-9]?\.\d{1,2}))$/.test(val)) {
             cb();
           }else {
             cb(this.$t('setting.msg.m14'));

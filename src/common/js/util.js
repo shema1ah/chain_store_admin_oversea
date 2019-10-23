@@ -128,6 +128,8 @@ const getRole = (data = {}) => {
     single: data.cate !== 'bigmerchant', // 是否是单店或子商户
     trade_type: data.trade_type || [], // 支付方式列表
     point: Number.parseInt(data.allow_point) || 0, // 精确小数点1代表2位
+    show_qrcode: data.show_qrcode || false, // 单店下载二维码
+    show_batch_qrcode: data.show_batch_qrcode || false, // 连锁店下载二维码
     isCashier: Boolean(data.opinfo && data.opinfo.opuid), // 是否收银员角色
     diancan: data.diancan_display === 1, // 是否展示智慧餐厅
     passState: data.has_set, // 是否设置管理密码

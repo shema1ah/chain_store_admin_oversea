@@ -42,7 +42,7 @@
           </div>
           <div class="panel-select-group" style="height: 37px">
             <div class="panel-header-btn-group">
-              <div class="panel-header-btn panel-btn-download-green" @click="downAll" v-if="!('AR'.indexOf(role.country) > -1)">
+              <div class="panel-header-btn panel-btn-download-green" @click="downAll">
                 <span class="icon-download"></span>
                 <span>{{ $t('settlement.panel.btn.downAll') }}</span>
               </div>

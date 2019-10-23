@@ -49,7 +49,7 @@
           </div>
           <div class="panel-btn-group__wrapper">
             <!-- 下载店铺收款码 -->
-            <a :href="downHref" download v-if="role.country === 'TH'">
+            <a :href="downHref" download v-if="role.show_qrcode">
               <div class="panel-btn__download panel-btn__download_detail">
                 <i class="icon-download"></i>
                 <span>{{$t('shopmng.panel.btn.down')}}</span>
