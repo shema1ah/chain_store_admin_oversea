@@ -306,7 +306,7 @@
         if (current) {
           this.currentPage = current;
         }
-    
+
         this.getSettleData();
       },
 
@@ -332,14 +332,15 @@
           let el = document.createElement("div");
           el.innerHTML = this.$t('settlement.tip.m1');
           el.setAttribute('id', 'toolShow');
-          toolShow.appendChild(el);
-
-          toolShow.addEventListener('mouseenter', function () {
-            el.style.display = 'block';
-          }, false);
-          toolShow.addEventListener('mouseleave', function () {
-            el.style.display = 'none';
-          }, false);
+          if (toolShow) { // 由于是定时触发 当快速切换菜单后当前组件内容被销毁 toolShow 为null
+            toolShow.appendChild(el);
+            toolShow.addEventListener('mouseenter', function () {
+              el.style.display = 'block';
+            }, false);
+            toolShow.addEventListener('mouseleave', function () {
+              el.style.display = 'none';
+            }, false);
+          }
         }
       }
     }
