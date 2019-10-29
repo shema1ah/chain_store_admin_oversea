@@ -367,7 +367,7 @@
   .panel-body {
     padding-left: 15px;
     .el-form-item {
-      margin-bottom: 22px;
+      margin-bottom: 26px;
     }
     .el-form-item__label {
       width: 150px;
