@@ -32,6 +32,18 @@ let filters = {
     }
   },
 
+  // 附加费率 显示百分比 保留两位小数
+  percentNumber (number) {
+    if(isNaN(number)) {
+      return 0
+    } else if(number === 0) {
+      return 0
+    }
+    let str = Number(number * 100).toFixed(2)
+    str += "%"
+    return str
+  },
+
   // 交易类型选填: 1储值(充值) 或 2(消费) 或3(消费退款) 或4(手动储值)
   formatType (type) {
     switch (type) {

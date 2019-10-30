@@ -23,9 +23,10 @@
       </li>
     </ul>
     <div class="copyright_wrapper">
-      <el-select v-model="lang"  icon="caret-bottom" @change="switchLanguage" size="small" popperClass="popperBg" style="width:80%;">
+      <el-select v-model="lang"  icon="caret-bottom" @change="switchLanguage" size="small" popperClass="popperBg" style="width:66%;">
         <el-option v-for="item in langLists" :key="item.value" :label="item.label" :value="item.value"></el-option>
       </el-select>
+      <div class="copyright-info">V1.0.3</div>
     </div>
   </div>
 </template>
@@ -104,7 +105,7 @@
     height: 100%;
     background-color: #2A2A2A;
     @at-root .sidebar-logo__wrapper {
-      margin: 20px auto 28px;
+      margin: 20px auto 0px;
       text-align: center;
     }
     @at-root .sidebar-img {
@@ -160,7 +161,7 @@
       }
     }
     .left-nav {
-      padding-bottom: 50px;
+      padding-bottom: 70px;
     }
   }
   .icon-down_arrow__rotate {
@@ -172,7 +173,7 @@
 
   .copyright_wrapper {
     position: fixed;
-    left: 6px;
+    width: inherit;
     bottom: 10px;
     text-align: center;
     font-size: 14px;
@@ -218,5 +219,10 @@
   }
   .popperBg {
     background-color: white;
+  }
+  .copyright-info {
+    color: #8A8C92;
+    text-align: center;
+    margin-top: 10px;
   }
 </style>

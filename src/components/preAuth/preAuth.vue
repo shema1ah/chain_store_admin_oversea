@@ -154,7 +154,7 @@
 
 
           <!-- 创建时间 -->
-          <el-table-column 
+          <el-table-column
           :label="$t('preAuth.message.m13')" min-width="130">
             <template slot-scope="scope">
               <div>{{ scope.row.sysdtm }}</div>
@@ -187,7 +187,7 @@
           </el-table-column>
 
           <!-- 业务订单号 -->
-          <el-table-column 
+          <el-table-column
           :label="$t('preAuth.message.m15')" min-width="180">
             <template slot-scope="scope">
               <div>{{ scope.row.chnlsn}}</div>
@@ -195,7 +195,7 @@
           </el-table-column>
 
           <!-- 订单金额 -->
-          <el-table-column 
+          <el-table-column
           :label="$t('preAuth.message.m16')" min-width="100">
             <template slot-scope="scope">
               <div>{{ scope.row.total_amt | formatNumber}}</div>
@@ -212,7 +212,7 @@
           </el-table-column>
 
           <!-- 订单流水号 -->
-          <el-table-column 
+          <el-table-column
           :label="$t('preAuth.message.m18')" min-width="180">
             <template slot-scope="scope">
               <div>{{ scope.row.origssn ? scope.row.syssn + '(' + $t('tradeMng.detail.syssn2') + ':' + scope.row.origssn + ')' : scope.row.syssn }}</div>
@@ -388,7 +388,7 @@
               { required: true, message: this.$t('tradeMng.msg.m9') }
             ],
           amount: [
-            { required: true, message: this.$t('tradeMng.msg.m15') },
+            { required: true, message: this.$t('preAuth.message.m21') },
             { validator: checkAmount, trigger: 'change,blur' }
           ]
         },
@@ -550,7 +550,7 @@
       },
       // 跳转详情
       detail(item) {
-        this.$router.push({ path: '/main/preAuth/preAuthDetail', 
+        this.$router.push({ path: '/main/preAuth/preAuthDetail',
         query: {
           sysdtm: encodeURI(item.sysdtm),
           username: encodeURI(item.username),

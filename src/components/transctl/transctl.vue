@@ -178,8 +178,16 @@
           <el-table-column prop="chnlsn" :label="$t('tradeMng.table.chnlsn')" min-width="150"></el-table-column>
           <el-table-column prop="src" :label="$t('tradeMng.table.src')" min-width="120"></el-table-column>
           <el-table-column prop="cardcd" :label="$t('tradeMng.table.cardCd')" min-width="120"></el-table-column>
-          <el-table-column prop="surcharge_rate" :label="$t('tradeMng.table.surRate')" min-width="125"></el-table-column>
-          <el-table-column prop="surcharge_fee" :label="$t('tradeMng.table.surAmount')" min-width="100"></el-table-column>
+          <el-table-column :label="$t('tradeMng.table.surRate')" min-width="125">
+            <template slot-scope="scope" >
+              <div>{{ scope.row.surcharge_rate | percentNumber}}</div>
+            </template>
+          </el-table-column>
+          <el-table-column :label="$t('tradeMng.table.surAmount')" min-width="100">
+            <template slot-scope="scope" >
+              <div>{{ scope.row.surcharge_fee | formatCurrency }}</div>
+            </template>
+          </el-table-column>
           <el-table-column prop="note" :label="$t('tradeMng.table.remark')" min-width="88"></el-table-column>
           <el-table-column min-width="215" :label="$t('tradeMng.table.op')" fixed="right">
             <template slot-scope="scope">
@@ -206,7 +214,7 @@
       <div class="table_placeholder" v-else></div>
     </div>
 
-    <el-dialog :title="$t('tradeMng.dialog.d2')" :visible.sync="showConfirm" custom-class="mydialog" top="20%" @close="handleClose('formpwd')">
+    <el-dialog :title="$t('tradeMng.dialog.d2')" v-if="showConfirm" :visible.sync="showConfirm" custom-class="mydialog" top="20%" @close="handleClose('formpwd')">
       <div style="margin-bottom: 20px;">{{$t('tradeMng.dialog.d1')}}</div>
       <el-form :model="formpwd" :rules="pwdrules" ref="formpwd" :label-width="(lang === 'ja' || lang === 'en') ? '110px' : '80px'" autocomplete="off">
         <el-form-item :label="$t('tradeMng.panel.sNum')">
@@ -229,7 +237,7 @@
       </div>
     </el-dialog>
 
-    <el-dialog :title="refundStates !==3 ? (refundStates === 1 ? $t('tradeMng.dialog.d3') : $t('tradeMng.dialog.d7')) : $t('tradeMng.dialog.d4')" :visible.sync="showArefund" custom-class="mydialog refund" :class="[refundStates !== 3 ? (refundStates === 1 ? 'success' : 'wait') : 'fail']" top="20%" :show-close="false">
+    <el-dialog :title="refundStates !==3 ? (refundStates === 1 ? $t('tradeMng.dialog.d3') : $t('tradeMng.dialog.d7')) : $t('tradeMng.dialog.d4')" v-if="showArefund" :visible.sync="showArefund" custom-class="mydialog refund" :class="[refundStates !== 3 ? (refundStates === 1 ? 'success' : 'wait') : 'fail']" top="20%" :show-close="false">
       <div v-if="refundStates !== 3">
         <el-form :label-width="(lang === 'ja' || lang === 'en') ? '150px' : '90px'">
           <el-form-item :label="$t('tradeMng.detail.amount2')">
@@ -883,6 +891,10 @@
         text-align: right;
         color: #2F323A;
       }
+    }
+
+    .el-loading-mask {
+      z-index: 2000;
     }
 
     .success .el-dialog__header{

@@ -417,7 +417,7 @@ exports.default = {
       m11: 'Add success',
       m12: 'Please enter merchant account.',
       m13: 'Delete success',
-      m14: 'Please enter an integer between 0 and 100',
+      m14: 'Please enter a number from 0-100, only two decimal place allowed',
     },
     tip: {
       m1: 'Delete the last email address will turn off the feature, do you confirm?',

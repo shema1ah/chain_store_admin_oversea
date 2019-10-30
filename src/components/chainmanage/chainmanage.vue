@@ -39,7 +39,7 @@
           </div> -->
 
           <div class="btn-group">
-            <div class="panel-header-btn__associate" v-if="'THAR'.indexOf(role.country)>-1" @click="editShopDown" :style="lang === 'en'?'width:200px':''">
+            <div class="panel-header-btn__associate" @click="editShopDown" :style="lang === 'en'?'width:200px':''" v-if="role.show_batch_qrcode">
               <i class="icon-download"></i>
               {{$t('shopmng.panel.btn.listDown')}}
             </div>
