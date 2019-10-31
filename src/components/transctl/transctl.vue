@@ -214,7 +214,7 @@
       <div class="table_placeholder" v-else></div>
     </div>
 
-    <el-dialog :title="$t('tradeMng.dialog.d2')" v-if="showConfirm" :visible.sync="showConfirm" custom-class="mydialog" top="20%" @close="handleClose('formpwd')">
+    <el-dialog :title="$t('tradeMng.dialog.d2')" :visible.sync="showConfirm" custom-class="mydialog" top="20%" @close="handleClose('formpwd')">
       <div style="margin-bottom: 20px;">{{$t('tradeMng.dialog.d1')}}</div>
       <el-form :model="formpwd" :rules="pwdrules" ref="formpwd" :label-width="(lang === 'ja' || lang === 'en') ? '110px' : '80px'" autocomplete="off">
         <el-form-item :label="$t('tradeMng.panel.sNum')">
