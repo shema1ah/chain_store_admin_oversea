@@ -23,4 +23,4 @@ For detailed explanation on how things work, checkout the [guide](http://vuejs-t
 
 ## 注意
 
-前端显示版本号(sidebar组件里)：每次迭代前端手动更新，根据需求定版本号，不是前端仓库tag
+前端显示版本号(sidebar组件里)：每次迭代前端手动更新
