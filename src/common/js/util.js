@@ -133,7 +133,8 @@ const getRole = (data = {}) => {
     isCashier: Boolean(data.opinfo && data.opinfo.opuid), // 是否收银员角色
     diancan: data.diancan_display === 1, // 是否展示智慧餐厅
     passState: data.has_set, // 是否设置管理密码
-    preAuth: data.show_preauth // 预授权管理  0不展示   1展示
+    preAuth: data.show_preauth, // 预授权管理  0不展示   1展示
+    taxNo: data.tax_no // 商户是否设置税号
   }
 
   // 包商baoshang 日本JP 香港HK 印尼ID 迪拜AR 泰国TH 柬埔寨KH

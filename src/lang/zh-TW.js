@@ -307,7 +307,8 @@ exports.default = {
   },
   settlement: { // 清算管理
     crumbs: {
-      L1: '清算管理'
+      L1: '清算管理',
+      L2: '清算記錄'
     },
     panel: {
       time: '時間',
@@ -342,6 +343,44 @@ exports.default = {
     },
     tip: {
       m1: '手續費總額是按照每筆訂單乘以費率再進行四捨五入相加後得出'
+    }
+  },
+  invoice: { // 下载发票
+    crumbs: {
+      L1: '清算管理',
+      L2: '下載發票'
+    },
+    title: {
+      t1: '稅號設置'
+    },
+    panel: {
+      trn: '稅號',
+      merchantTrn: '商戶的稅號',
+      invoice: '稅務發票編號',
+      shopList: '店舖列表',
+      btn: {
+        query: '查詢',
+        downAll: '下載全部',
+        save: '保存'
+      }
+    },
+    table: {
+      invoiceNo: '稅務發票編號',
+      sid: '店舖ID',
+      shopName: '店舖名稱',
+      trnNo: '稅號',
+      invoiceDate: '生成發票日期',
+      op: '操作',
+      downloadInvoice: '下載發票'
+    },
+    msg: {
+      m1: '請輸入稅號',
+      m2: '稅號僅支持15位數字'
+    },
+    tip: {
+      m1: '請輸入公司的註冊稅號。',
+      m2: '設置後，如果需要修改稅號，請聯繫QFPay團隊。',
+      m3: '設置稅號後，稅務發票會在每個月的第5-6個工作日生成。'
     }
   },
   login: { // 登录页

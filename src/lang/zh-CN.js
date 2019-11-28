@@ -307,7 +307,8 @@ exports.default = {
   },
   settlement: { // 清算管理
     crumbs: {
-      L1: '清算管理'
+      L1: '清算管理',
+      L2: '清算记录'
     },
     panel: {
       time: '时间',
@@ -342,6 +343,44 @@ exports.default = {
     },
     tip: {
       m1: '手续费总额是按照每笔订单乘以费率再进行四舍五入相加后得出'
+    }
+  },
+  invoice: { // 下载发票
+    crumbs: {
+      L1: '清算管理',
+      L2: '下载发票'
+    },
+    title: {
+      t1: '税号设置'
+    },
+    panel: {
+      trn: '税号',
+      merchantTrn: '商户的税号',
+      invoice: '税务发票编号',
+      shopList: '店铺列表',
+      btn: {
+        query: '查询',
+        downAll: '下载全部',
+        save: '保存'
+      }
+    },
+    table: {
+      invoiceNo: '税务发票编号',
+      sid: '店铺ID',
+      shopName: '店铺名称',
+      trnNo: '税号',
+      invoiceDate: '生成发票日期',
+      op: '操作',
+      downloadInvoice: '下载发票'
+    },
+    msg: {
+      m1: '请输入税号',
+      m2: '税号仅支持15位数字'
+    },
+    tip: {
+      m1: '请输入公司的注册税号。',
+      m2: '设置后，如果需要修改税号，请联系QFPay团队。',
+      m3: '设置税号后，税务发票会在每个月的第5-6个工作日生成。'
     }
   },
   login: { // 登录页

@@ -3,6 +3,7 @@
     <div class="banner_wrapper">
       <el-breadcrumb separator=">">
         <el-breadcrumb-item>{{$t('settlement.crumbs.L1')}}</el-breadcrumb-item>
+        <el-breadcrumb-item v-if="!single">{{$t('settlement.crumbs.L2')}}</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
     <div class="panel down">
@@ -121,6 +122,7 @@
         lang: config.lang,
         role: Store.get('role') || {},
         downUrl: 'javascript:;',
+        single: false, // 判断清算管理是否是二级菜单
         pageSize: 10,
         currentPage: 1,
         loading: false,
@@ -164,10 +166,10 @@
         this.status = false;
       }
     },
-
     created() {
       this.changeTime('1');
       this.getType();
+      this.single = this.$route.query.single
     },
 
     mounted() {
