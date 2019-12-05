@@ -348,7 +348,7 @@ exports.default = {
   invoice: { // 下载发票
     crumbs: {
       L1: '清算管理',
-      L2: '下載發票'
+      L2: '發票下載'
     },
     title: {
       t1: '稅號設置'

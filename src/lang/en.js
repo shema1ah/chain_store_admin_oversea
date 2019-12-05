@@ -261,12 +261,12 @@ exports.default = {
       tradeAmount: 'Amount',
       sNum: 'Transaction ID',
       checkState: 'Approval Status',
-      waiting: 'Moderated',
+      waiting: 'Pending',
       approved: 'Approved',
       rejected: 'Rejected',
       op: 'Operation',
       approve: 'Approve',
-      reject: 'Refuse'
+      reject: 'Reject'
     },
     dialog: {
       d1: 'The operation will not be withdrawn once confirmed, whether approved?',
@@ -352,7 +352,7 @@ exports.default = {
   invoice: { // 下载发票
     crumbs: {
       L1: 'Settlement Mgmt',
-      L2: 'Download Invoice'
+      L2: 'Invoice Download'
     },
     title: {
       t1: 'Tax Invoice Setup'

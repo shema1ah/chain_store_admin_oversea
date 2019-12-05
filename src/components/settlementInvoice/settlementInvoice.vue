@@ -393,7 +393,8 @@
           date: formatDate(this.searchForm.dateValue, str),
           userid: this.searchForm.selectShopUid,
           page: this.currentPage - 1,
-          size: this.pageSize
+          size: this.pageSize,
+          format: 'cors'
         }
       }
     },
@@ -402,7 +403,8 @@
         this.$refs['trn-form'].validate((valid) => {
           if (valid) {
             axios.post(`${config.host}/merchant/user/add/tax`, {
-              tax_no: this.trnForm.tax_no
+              tax_no: this.trnForm.tax_no,
+              format: 'cors'
             }).then((res) => {
               let data = res.data;
               if(data.respcd === config.code.OK) {
@@ -514,7 +516,8 @@
         if (row.id) {
           axios.get(`${config.oHost}/fund/v1/download/vat/report`, {
             params: {
-              id: row.id
+              id: row.id,
+              format: 'cors'
             }
           }).then((res) => {
             let data = res.data;
