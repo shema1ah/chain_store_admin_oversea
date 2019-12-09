@@ -117,7 +117,7 @@
         </el-pagination>
       </div>
       <div class="table_placeholder" v-else></div>
-      <div style="text-align:center;overflow-y:auto;" v-for="(currentInvioceData, index) in reportList">
+      <div style="text-align:center;overflow-y:auto;display: none;" v-for="(currentInvioceData, index) in reportList">
         <svg width="595px" height="840px" viewBox="0 0 595 840" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="svgs">
             <title>img_invoice</title>
             <defs>
@@ -186,21 +186,35 @@
                         <text id="Merchant-TRN-No:-100" :font-family="fontFamily" font-size="10" font-weight="normal" fill="#2F323A">
                             <tspan x="54" y="307">Merchant TRN No: {{currentInvioceData.merchant_trn_no}}</tspan>
                         </text>
-                        <g id="编组-2" transform="translate(54.000000, 222.000000)" fill="#2F323A" font-size="11">
+                        <g id="编组-2" v-if="currentInvioceData.merchant_name.length > 30 || currentInvioceData.relation_merchant_name.length > 42" transform="translate(54.000000, 222.000000)" fill="#2F323A" font-size="11">
                             <text id="Al-Mana-Retail-LLC" :font-family="fontFamily" font-weight="normal">
-                                <tspan x="88" y="10">{{currentInvioceData.merchant_name}}</tspan>
+                                <tspan x="82" y="6">{{strSlice(currentInvioceData.merchant_name, 30)[0]}}</tspan>
+                                <tspan x="82" y="18">{{strSlice(currentInvioceData.merchant_name, 30)[1]}}</tspan>
                             </text>
                             <text id="Merchant-Name:" :font-family="fontFamilyBold">
-                                <tspan x="0" y="10">Merchant Name:</tspan>
+                                <tspan x="0" y="6">Merchant Name:</tspan>
                             </text>
-                        </g>
-                        <g id="编组-2备份" transform="translate(252.000000, 222.000000)" fill="#2F323A" font-size="11">
                             <text id="2490547-–-Hermes-The" :font-family="fontFamily" font-weight="normal">
-                                <tspan x="28" y="10">{{currentInvioceData.relation_merchant_name}}</tspan>
+                              <tspan x="278" y="6">{{strSlice(currentInvioceData.relation_merchant_name, 42)[0]}}</tspan>
+                              <tspan x="278" y="18">{{strSlice(currentInvioceData.relation_merchant_name, 42)[1]}}</tspan>
                             </text>
                             <text id="-Ref" :font-family="fontFamilyBold">
-                                <tspan x="0" y="10">-Ref </tspan>
+                                <tspan x="256" y="6">-Ref </tspan>
                             </text>
+                        </g>
+                        <g id="编组-2备份" v-else transform="translate(54.000000, 222.000000)" fill="#2F323A" font-size="11">
+                          <text id="Al-Mana-Retail-LLC" :font-family="fontFamily" font-weight="normal">
+                              <tspan x="82" y="10">{{currentInvioceData.merchant_name}}</tspan>
+                          </text>
+                          <text id="Merchant-Name:" :font-family="fontFamilyBold">
+                              <tspan x="0" y="10">Merchant Name:</tspan>
+                          </text>
+                          <text id="2490547-–-Hermes-The" :font-family="fontFamily" font-weight="normal">
+                            <tspan x="278" y="10">{{currentInvioceData.relation_merchant_name}}</tspan>
+                          </text>
+                          <text id="-Ref" :font-family="fontFamilyBold">
+                              <tspan x="256" y="10">-Ref </tspan>
+                          </text>
                         </g>
                         <text id="TRN：10007176900003" :font-family="fontFamilyBold" font-size="11.5" fill="#2F323A">
                             <tspan x="241.078125" y="161">TRN: 10007176900003</tspan>
@@ -253,7 +267,7 @@
                             <tspan x="109.195923" y="349">Description</tspan>
                         </text>
                         <text id="MDR-for-the-Month-of" :font-family="fontFamilyBold" font-size="11" fill="#2F323A">
-                            <tspan x="54" y="408">{{currentInvioceData.description}}</tspan>
+                            <tspan x="50" y="408">{{currentInvioceData.description}}</tspan>
                         </text>
                         <text id="VAT:-5%-VAT-is-inclu" :font-family="fontFamilyBold" font-size="11" fill="#2F323A">
                             <tspan x="54" y="530">VAT: 5% VAT is inclusive in MDR.</tspan>
@@ -399,6 +413,17 @@
       }
     },
     methods: {
+      strSlice(str, num) {
+        let length = str.length
+        let resArr = []
+        if (str.split('')[num] == ' ') {
+          resArr.push(str.slice(0, num).trim(), str.slice(num).trim())
+        } else {
+          let index = str.slice(0, num).lastIndexOf(' ')
+          resArr.push(str.slice(0, index).trim(), str.slice(index).trim())
+        }
+        return resArr
+      },
       addRrnno() {
         this.$refs['trn-form'].validate((valid) => {
           if (valid) {
@@ -426,7 +451,6 @@
       getInvoiceData() {
         if(!this.loading) {
           this.loading = true;
-          //
           axios.get(`${config.oHost}/fund/v1/find/vat/records`, {
             params: this.basicParams
           }).then((res) => {
@@ -483,7 +507,6 @@
           }
         })
         pdf && type === 'single' ? pdf.save(`Invoice No_${no}_TRN.pdf`) : pdf.save(`Invoice No.pdf`);
-        this.reportList = []
       },
       downAll() { // 下载全部
         this.getReportList()

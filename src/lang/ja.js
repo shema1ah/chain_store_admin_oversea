@@ -356,19 +356,19 @@ exports.default = {
     panel: {
       trn: 'TRN No',
       merchantTrn: 'Merchant TRN',
-      invoice: 'Tax Invoice No',
+      invoice: 'Tax Invoice No.',
       shopList: 'Shop List',
       btn: {
         query: 'Query',
-        downAll: 'Download all',
+        downAll: 'Download All',
         save: 'Save'
       }
     },
     table: {
-      invoiceNo: 'Tax Invoice No',
+      invoiceNo: 'Tax Invoice No.',
       sid: 'SID',
       shopName: 'Shop Name',
-      trnNo: 'TRN No',
+      trnNo: 'TRN No.',
       invoiceDate: 'Invoice Date',
       op: 'Operation',
       downloadInvoice: 'Download Invoice'
