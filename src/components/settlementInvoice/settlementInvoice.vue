@@ -75,30 +75,27 @@
           style="width: 100%"
           row-class-name="el-table__row_fix"
           v-loading="loading">
-          <el-table-column
-            :label="$t('invoice.table.invoiceNo')" min-width="60">
+          <el-table-column :label="$t('invoice.table.invoiceNo')" min-width="60">
             <template slot-scope="scope">
               <div>{{ scope.row.report_date }}</div>
             </template>
           </el-table-column>
           <el-table-column
-            :label="$t('invoice.table.sid')" min-width="40">
+            :label="$t('invoice.table.sid')">
             <template slot-scope="scope">{{ scope.row.userid }}</template>
           </el-table-column>
-          <el-table-column
-            prop="merchant_name"
-            :label="$t('invoice.table.shopName')" min-width="120">
+          <el-table-column prop="sub_merchant_name" min-width="170" :label="$t('invoice.table.shopName')">
           </el-table-column>
-          <el-table-column prop="merchant_trn_no" :label="$t('invoice.table.trnNo')" width="200">
+          <el-table-column prop="merchant_trn_no" :label="$t('invoice.table.trnNo')">
             <template slot-scope="scope">{{ scope.row.merchant_trn_no }}</template>
           </el-table-column>
           <el-table-column
-            :label="$t('invoice.table.invoiceDate')" width="200" >
+            :label="$t('invoice.table.invoiceDate')" >
             <template slot-scope="scope" >
               <div class="table-title">{{ scope.row.ctime }}</div>
             </template>
           </el-table-column>
-          <el-table-column :label="$t('invoice.table.op')" width="180" label-class-name="toolShow">
+          <el-table-column :label="$t('invoice.table.op')" label-class-name="toolShow">
             <template slot-scope="scope">
               <el-button type="text" size="small" class="el-button__fix" @click="downloadInvoice(scope.row)">{{$t('invoice.table.downloadInvoice')}}</el-button>
             </template>
