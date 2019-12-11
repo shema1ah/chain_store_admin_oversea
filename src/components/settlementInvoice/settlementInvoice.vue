@@ -298,7 +298,7 @@
                             <tspan x="321.86499" y="362">Inclusive)</tspan>
                         </text>
                         <text id="VAT-Rate-(%)" :font-family="fontFamilyBold" font-size="11.5" fill="#2F323A">
-                            <tspan x="386.768799" y="334">VAT</tspan>
+                            <tspan x="384.768799" y="334">MDR</tspan>
                             <tspan x="385.536255" y="348">Rate</tspan>
                             <tspan x="388.725708" y="362">(%)</tspan>
                         </text>
@@ -401,7 +401,7 @@
       basicParams() {
         let str = 'yyyy-MM';
         return {
-          date: formatDate(this.searchForm.dateValue, str),
+          date: typeof this.searchForm.dateValue === 'string' ? this.searchForm.dateValue : formatDate(this.searchForm.dateValue, str),
           userid: this.searchForm.selectShopUid,
           page: this.currentPage - 1,
           size: this.pageSize,
