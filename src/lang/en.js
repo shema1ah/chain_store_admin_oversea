@@ -261,12 +261,12 @@ exports.default = {
       tradeAmount: 'Amount',
       sNum: 'Transaction ID',
       checkState: 'Approval Status',
-      waiting: 'Moderated',
+      waiting: 'Pending',
       approved: 'Approved',
       rejected: 'Rejected',
       op: 'Operation',
       approve: 'Approve',
-      reject: 'Refuse'
+      reject: 'Reject'
     },
     dialog: {
       d1: 'The operation will not be withdrawn once confirmed, whether approved?',
@@ -311,7 +311,8 @@ exports.default = {
   },
   settlement: { // 清算管理
     crumbs: {
-      L1: 'Settlement Mgmt'
+      L1: 'Settlement Mgmt',
+      L2: 'Settlement Record'
     },
     panel: {
       time: 'Time Range',
@@ -323,7 +324,7 @@ exports.default = {
       btn: {
         query: 'Search',
         reset: 'Reset',
-        downAll: 'Download all'
+        downAll: 'Download All'
       }
     },
     table: {
@@ -346,6 +347,44 @@ exports.default = {
     },
     tip: {
       m1: 'The total fee is calculated by multiplying each order by the rate and then rounding up.'
+    }
+  },
+  invoice: { // 下载发票
+    crumbs: {
+      L1: 'Settlement Mgmt',
+      L2: 'Invoice Download'
+    },
+    title: {
+      t1: 'Tax Invoice Setup'
+    },
+    panel: {
+      trn: 'TRN No',
+      merchantTrn: 'Merchant TRN',
+      invoice: 'Tax Invoice No.',
+      shopList: 'Shop List',
+      btn: {
+        query: 'Query',
+        downAll: 'Download All',
+        save: 'Save'
+      }
+    },
+    table: {
+      invoiceNo: 'Tax Invoice No.',
+      sid: 'SID',
+      shopName: 'Shop Name',
+      trnNo: 'TRN No.',
+      invoiceDate: 'Invoice Date',
+      op: 'Operation',
+      downloadInvoice: 'Download Invoice'
+    },
+    msg: {
+      m1: 'Please input TRN',
+      m2: 'TRN should be 15 digits'
+    },
+    tip: {
+      m1: 'Please input company tax registration number (TRN). ',
+      m2: 'To modify TRN after setup, please contact QFPay Team for further assistance.',
+      m3: 'Tax Invoice is generated every 5th or 6th working day of every month based on the Merchant TRN submitted.'
     }
   },
   login: { // 登录页

@@ -308,7 +308,8 @@ exports.default = {
   },
   settlement: { // 清算管理
     crumbs: {
-      L1: '勘定書管理'
+      L1: '勘定書管理',
+      L2: 'Settlement Record'
     },
     panel: {
       time: '日付',
@@ -342,6 +343,44 @@ exports.default = {
     },
     tip: {
       m1: '合計料金は、各注文に料金を掛けてから切り上げて計算されます。'
+    }
+  },
+  invoice: { // 下载发票
+    crumbs: {
+      L1: 'Settlement Mgmt',
+      L2: 'Invoice Download'
+    },
+    title: {
+      t1: 'Tax Invoice Setup'
+    },
+    panel: {
+      trn: 'TRN No',
+      merchantTrn: 'Merchant TRN',
+      invoice: 'Tax Invoice No.',
+      shopList: 'Shop List',
+      btn: {
+        query: 'Query',
+        downAll: 'Download All',
+        save: 'Save'
+      }
+    },
+    table: {
+      invoiceNo: 'Tax Invoice No.',
+      sid: 'SID',
+      shopName: 'Shop Name',
+      trnNo: 'TRN No.',
+      invoiceDate: 'Invoice Date',
+      op: 'Operation',
+      downloadInvoice: 'Download Invoice'
+    },
+    msg: {
+      m1: 'Please input TRN',
+      m2: 'TRN should be 15 digits'
+    },
+    tip: {
+      m1: 'Please input company tax registration number (TRN). ',
+      m2: 'To modify TRN after setup, please contact QFPay Team for further assistance.',
+      m3: 'Tax Invoice is generated every 5th or 6th working day of every month based on the Merchant TRN submitted.'
     }
   },
   login: {

@@ -6,7 +6,7 @@
     </div>
     <ul class="left-nav">
       <li v-for="(nav,i) in navs" :key="i">
-        <router-link class="sidebar-nav__item" v-if="nav.code" :to="router('main/' + nav.code)">{{ nav.name }}</router-link>
+        <router-link class="sidebar-nav__item" v-if="nav.code" :to="router('main/' + nav.code + '?single=true')">{{ nav.name }}</router-link>
         <a v-else class="sidebar-nav__item" @click="toggle(nav.super_code)" :class="{'dark': $route.fullPath.indexOf(nav.super_code) > -1}">
           {{ nav.name }}
           <i v-if="nav.sub_menu" class="icon-down_arrow" :class="{'icon-down_arrow__rotate': !isDark[nav.super_code]}"></i>
@@ -26,7 +26,7 @@
       <el-select v-model="lang"  icon="caret-bottom" @change="switchLanguage" size="small" popperClass="popperBg" style="width:66%;">
         <el-option v-for="item in langLists" :key="item.value" :label="item.label" :value="item.value"></el-option>
       </el-select>
-      <div class="copyright-info">V1.2.1</div>
+      <div class="copyright-info">V1.3.2</div>
     </div>
   </div>
 </template>
@@ -43,7 +43,8 @@
         isDark: {
           trans: true,
           Setting: true,
-          smart: true
+          smart: true,
+          settlement: true
         },
         langLists: [
           {label: '日本語', value: 'ja'},
