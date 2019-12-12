@@ -26,7 +26,7 @@
       <el-select v-model="lang"  icon="caret-bottom" @change="switchLanguage" size="small" popperClass="popperBg" style="width:66%;">
         <el-option v-for="item in langLists" :key="item.value" :label="item.label" :value="item.value"></el-option>
       </el-select>
-      <div class="copyright-info">V1.3.2</div>
+      <div class="copyright-info">V1.3.3</div>
     </div>
   </div>
 </template>
