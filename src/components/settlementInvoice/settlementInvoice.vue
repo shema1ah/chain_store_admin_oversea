@@ -504,6 +504,7 @@
           }
         })
         pdf && type === 'single' ? pdf.save(`Invoice No_${no}_TRN.pdf`) : pdf.save(`Invoice No.pdf`);
+        this.reportList = []
       },
       downAll() { // 下载全部
         this.getReportList()
